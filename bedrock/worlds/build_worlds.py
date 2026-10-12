@@ -160,7 +160,7 @@ def manifest(mod: str, kind: str) -> dict:
             "description": "Private local conversion from pinned Java resources; experimental behavior.",
             "uuid": uid(f"{mod}-{kind}-header"),
             "version": [0, 2, 8],
-            "min_engine_version": [1, 21, 80],
+            "min_engine_version": [1, 21, 110] if mod == "bop" else [1, 21, 80],
         },
         "modules": [{
             "type": "data" if kind == "BP" else "resources",
@@ -423,7 +423,8 @@ def validate_pack(bp: Path, rp: Path, mod: str) -> None:
     if mod == "aether":
         assert (bp / "scripts/biome_profiles.js").is_file()
     if mod == "bop":
-        assert len(list((bp / "biomes").glob("*.json"))) == len(BIOMES)
+        assert len(list((bp / "biomes").glob("*.json"))) >= len(BIOMES)
+        assert (bp.parent / "worldgen_conversion_report.json").is_file()
         for name, spec in BIOMES.items():
             assert (bp / f"biomes/{name}.json").is_file()
             if spec["tree"]:
@@ -486,6 +487,11 @@ def build(mod: str, output: Path) -> Path:
     else:
         jwrite(rp / "models/blocks/cross.geo.json", geometry("cross"))
         add_biomes(bp, rp)
+        from bop.worldgen_full import build_all
+        result = build_all(BIOME_SOURCE, bp, rp, set(ASSETS["bop"]),
+                           tree_feature, flower_feature)
+        print(f"BOP Java biome definitions: {result['source_count']} extracted; "
+              f"native replacements: {result['coverage']}")
     validate_pack(bp, rp, mod)
     out = output / f"Minizin_Worlds_{mod}_v0.2.8.mcaddon"
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
