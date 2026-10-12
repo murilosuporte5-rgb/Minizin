@@ -203,6 +203,48 @@ async function withdraw(p,id,slot,revision){
     tell(p,"Retirados "+delivered+" × "+safeName(payload)+".");
   }catch(error){restore(inv,backup);throw error;}
 }
+async function depositAll(p,id,revision){
+  const inv=invOf(p),state=assertSession(p,id,revision),backup=snapshot(inv);
+  let slots=clone(state.slots),selected=[],moved=0,skipped=0;
+  for(let i=0;i<inv.size;i++){
+    const item=inv.getItem(i);
+    if(!item||item.typeId===ID)continue;
+    let payload;
+    try{payload=encode(item);validate(payload);}catch{skipped++;continue;}
+    const trial=clone(slots);
+    let rest=payload.amount;
+    // Preserve the original stack intact if the entire contents cannot fit.
+    for(let n=0;n<CAPACITY&&rest>0;n++){
+      const cur=trial[n];
+      if(!cur||!compatible(cur,payload))continue;
+      const can=Math.min(rest,item.maxAmount-cur.amount);
+      if(can>0){cur.amount+=can;rest-=can;}
+    }
+    for(let n=0;n<CAPACITY&&rest>0;n++){
+      if(trial[n]!==null)continue;
+      const can=Math.min(rest,item.maxAmount);
+      trial[n]={...payload,amount:can};rest-=can;
+    }
+    if(rest){skipped++;continue;}
+    slots=trial;selected.push(i);moved+=payload.amount;
+  }
+  if(!selected.length){tell(p,"Nenhuma pilha inteira pôde ser guardada.");return;}
+  const next={...state,slots,revision:state.revision+1};
+  try {
+    // Inventory and world persistence are synchronous; restore inventory on failure.
+    for(const slot of selected)inv.setItem(slot,undefined);
+    writeState(id,next);
+  }catch(error){restore(inv,backup);throw error;}
+  tell(p,"Guardados "+moved+" itens em "+selected.length+" pilhas; ignoradas "+skipped+".");
+}
+async function sortBag(p,id,revision){
+  const state=assertSession(p,id,revision);
+  const ordered=state.slots.filter(Boolean).map(clone)
+    .sort((a,b)=>a.type.localeCompare(b.type)||(a.name??"").localeCompare(b.name??""));
+  writeState(id,{...state,revision:state.revision+1,
+    slots:[...ordered,...Array(CAPACITY-ordered.length).fill(null)]});
+  tell(p,"Itens reordenados sem alterar seus metadados.");
+}
 async function open(p){
   if(busyPlayers.has(p.id))return;
   busyPlayers.add(p.id);
@@ -219,9 +261,13 @@ async function open(p){
       const item=state.slots[slot];
       form.button(String(slot+1).padStart(2,"0")+"  "+(item?safeName(item)+" ×"+item.amount:"— vazio —"));
     }
+    form.button("Guardar todas as pilhas compatíveis");
+    form.button("Organizar por tipo");
     const result=await form.show(p);
     if(result.canceled||result.selection===undefined||!p.isValid)return;
     const slot=result.selection;
+    if(slot===CAPACITY){await depositAll(p,id,state.revision);return;}
+    if(slot===CAPACITY+1){await sortBag(p,id,state.revision);return;}
     if(slot<0||slot>=CAPACITY)return;
     const current=assertSession(p,id,state.revision).slots[slot];
     if(current){
