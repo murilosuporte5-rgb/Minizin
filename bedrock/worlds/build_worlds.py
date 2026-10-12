@@ -56,6 +56,7 @@ ASSETS = {
         "white_flower": ("natural/white_flower.png", "grass"),
         "purple_flower": ("natural/purple_flower.png", "grass"),
         "berry_bush": ("natural/berry_bush.png", "grass"),
+        "sun_altar": ("utility/sun_altar_side.png", "stone"),
     },
     "bop": {
         "lavender": ("lavender.png", "grass"),
@@ -90,6 +91,7 @@ FACES = {
                         "down": "natural/skyroot_log_top.png"},
         "pillar": {"up": "dungeon/pillar_top.png",
                    "down": "dungeon/pillar_top.png"},
+        "sun_altar": {"up": "utility/sun_altar_top.png", "down": "utility/sun_altar_top.png"},
     },
     "bop": {
         "magic_log": {"up": "magic_log_top.png", "down": "magic_log_top.png"},
@@ -484,6 +486,10 @@ def build(mod: str, output: Path) -> Path:
         results = convert_all(destination,
             {f"minizin_aether:{name}" for name in ASSETS["aether"]})
         print(f"Aether Java structures: {sum(x['status'].startswith('converted') for x in results)}/{len(results)} converted (audit in build/)")
+        from aether.build_entities import build_all as build_entities
+        print("Aether Java model -> Bedrock: ", build_entities(bp, rp))
+        from aether.convert_loot import build_loot
+        print("Aether original loot coverage:", build_loot(bp, rp, set(ASSETS["aether"])))
     else:
         jwrite(rp / "models/blocks/cross.geo.json", geometry("cross"))
         add_biomes(bp, rp)
