@@ -32,7 +32,8 @@ async function show(p,npc){
         "\nFilhos: "+row.children)
       .button("Cumprimentar").button("Conversar").button("Presentear esmeralda")
       .button("Pedir em casamento (70 de afinidade)")
-      .button("Ter um filho (casamento e 90 de afinidade)");
+      .button("Ter um filho (casamento e 90 de afinidade)")
+      .button("Divórcio").button("Ver histórico familiar");
     const choice=await form.show(p);
     if(choice.canceled||choice.selection===undefined||!near(p,npc))return;
     const action=choice.selection,{all, row:old}=current(npc,pid);
@@ -59,6 +60,23 @@ async function show(p,npc){
       p.setDynamicProperty(SPOUSE,nid);npc.setDynamicProperty(SPOUSE,pid);
       tell(p,"Casamento registrado com "+(npc.nameTag||"o morador")+".");return;
     }
+    if(action===5){
+      if(!row.married||p.getDynamicProperty(SPOUSE)!==nid||
+        npc.getDynamicProperty(SPOUSE)!==pid){
+        tell(p,"Você não é casado com este morador.");return;
+      }
+      row.married=false;row.affinity=clamp(row.affinity-25,0,100);
+      all[pid]=row;write(npc,KEY,all);
+      p.setDynamicProperty(SPOUSE,undefined);
+      npc.setDynamicProperty(SPOUSE,undefined);
+      tell(p,"Divórcio registrado. Os vínculos com os filhos foram preservados.");return;
+    }
+    if(action===6){
+      const link=read(npc,FAMILY,null);
+      tell(p,"Identidade: "+nid+" | Filhos: "+row.children+
+        (link?" | Ascendência: "+link.player+" / "+link.npc:""));
+      return;
+    }
     if(action!==4)return;
     if(!row.married||p.getDynamicProperty(SPOUSE)!==nid||row.affinity<90){
       tell(p,"Exige casamento e 90 de afinidade.");return;
@@ -76,8 +94,9 @@ async function show(p,npc){
         spawnEvent:"minecraft:entity_born",initialPersistence:true
       });
       // Failure to create a real baby cannot become a decorative/adult substitute.
-      if(!baby.getComponent("minecraft:ageable"))
-        throw Error("A versão Bedrock não ativou o grupo baby/ageable.");
+      const age=baby.getComponent("minecraft:ageable");
+      if(!age||!Number.isFinite(age.duration)||age.duration===0)
+        throw Error("O aldeão não possui estado ageable de bebê confirmado.");
       write(baby,FAMILY,{player:pid,npc:nid});
     }catch(error){
       if(baby?.isValid)baby.remove();
