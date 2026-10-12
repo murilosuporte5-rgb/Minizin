@@ -12,7 +12,7 @@ import re
 import shutil
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[2]
 JAVA_MODELS = ROOT / "mods/41-the-aether/upstream/src/main/java/com/aetherteam/aether/client/renderer/entity/model"
 ORIGINAL_TEXTURES = ROOT / "mods/41-the-aether/upstream/src/main/resources/assets/aether/textures/entity"
 MOD_NAMESPACE = "minizin_aether"
@@ -257,9 +257,6 @@ def animations(mob: str) -> dict:
     target = KNOWN_ANIMATION_BONES[mob]
     # Angles are adapted gameplay clips. The bones themselves and model UV
     # originate from Java. No original authored animation keyframes existed.
-    attack = {name: {"rotation": [0, action, 0] if mob == "slider" else action}
-              for name, action in target.items()
-              if isinstance(action, list)}
     idle = {name: {"rotation": [
         "math.sin(query.anim_time*80.0)*1.5", 0, 0]} for name in target}
     # Bedrock accepts animation poses as vectors; a mode change uses playAnimation
