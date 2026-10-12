@@ -1,0 +1,43 @@
+[submodule "mods/15-waystones/upstream"]
+	path = mods/15-waystones/upstream
+	url = https://github.com/TwelveIterations/Waystones.git
+
+[submodule "mods/16-ice-and-fire/upstream"]
+	path = mods/16-ice-and-fire/upstream
+	url = https://github.com/AlexModGuy/Ice_and_Fire.git
+
+[submodule "mods/19-biomes-o-plenty/upstream"]
+	path = mods/19-biomes-o-plenty/upstream
+	url = https://github.com/Glitchfiend/BiomesOPlenty.git
+
+[submodule "mods/33-mca-reborn/upstream"]
+	path = mods/33-mca-reborn/upstream
+	url = https://github.com/Luke100000/minecraft-comes-alive.git
+
+[submodule "mods/34-carry-on/upstream"]
+	path = mods/34-carry-on/upstream
+	url = https://github.com/Tschipp/CarryOn.git
+
+[submodule "mods/41-the-aether/upstream"]
+	path = mods/41-the-aether/upstream
+	url = https://github.com/The-Aether-Team/The-Aether.git
+
+[submodule "mods/42-alexs-caves/upstream"]
+	path = mods/42-alexs-caves/upstream
+	url = https://github.com/AlexModGuy/AlexsCaves.git
+
+[submodule "mods/44-mowzies-mobs/upstream"]
+	path = mods/44-mowzies-mobs/upstream
+	url = https://github.com/BobMowzie/MowziesMobs-Public.git
+
+[submodule "mods/53-immersive-portals/upstream"]
+	path = mods/53-immersive-portals/upstream
+	url = https://github.com/iPortalTeam/ImmersivePortalsMod.git
+
+[submodule "mods/54-rftools/upstream"]
+	path = mods/54-rftools/upstream
+	url = https://github.com/McJtyMods/RFTools.git
+
+[submodule "mods/55-origins/upstream"]
+	path = mods/55-origins/upstream
+	url = https://github.com/apace100/origins-fabric.git

@@ -51,3 +51,16 @@ Repositório de **engenharia reversa e implementação independente** de funcion
 - [ ] Pacote `.mcaddon` instalável.
 
 **Última revisão:** 2026-10-11.
+## Código-fonte vinculado (11 submódulos)
+
+Onze diretórios `mods/*/upstream` são **git submodules**, apontando para commits fixos de repositórios públicos dos respectivos autores. Isso permite estudar as fontes sem copiá-las como se fossem código próprio.
+
+```bash
+git clone --recurse-submodules https://github.com/murilosuporte5-rgb/Minizin.git
+# Para uma cópia já clonada:
+git submodule update --init --recursive
+```
+
+**Atenção:** clonagem recursiva de todos os mods Java pode consumir muito espaço; não é recomendada diretamente em celulares com pouco armazenamento. Os submódulos não rodam no Minecraft Bedrock. A licença e os créditos do upstream permanecem aplicáveis.
+
+**Referências sem submódulo:** Cataclysm (fonte original não confirmada), Xaero's Minimap (All Rights Reserved) e Distant Horizons (fonte principal no GitLab; conferir commit e licença antes de vincular).
