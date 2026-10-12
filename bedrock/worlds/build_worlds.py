@@ -487,6 +487,7 @@ def build(mod: str, output: Path) -> Path:
     shutil.copyfile(HERE / mod / "main.js", bp / "scripts/main.js")
     if mod == "aether":
         shutil.copyfile(HERE / "aether/bosses.js", bp / "scripts/bosses.js")
+        shutil.copyfile(HERE / "aether/wildlife.js", bp / "scripts/wildlife.js")
     if mod == "aether":
         jwrite(rp / "models/blocks/portal.geo.json", geometry("portal"))
         jwrite(rp / "models/blocks/cross.geo.json", geometry("cross"))
