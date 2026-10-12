@@ -52,7 +52,7 @@ class OriginalAetherEntityTests(unittest.TestCase):
             self.assertTrue(all(b["name"] for b in geo["minecraft:geometry"][0]["bones"]))
 
     def test_composite_native_quadruped_body_with_original_java_wings(self):
-        self.assertEqual(len(models.MOBS), 19)
+        self.assertEqual(len(models.MOBS), 21)
         for mob, body in (("phyg", "geometry.pig.v3"),
                           ("flying_cow", "geometry.cow.v2")):
             descriptor = models.client_entity(mob)["minecraft:client_entity"]["description"]
