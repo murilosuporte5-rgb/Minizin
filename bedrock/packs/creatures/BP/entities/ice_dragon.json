@@ -1,0 +1,115 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minizin_creatures:ice_dragon",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false,
+      "properties": {
+        "minizin_creatures:attack": {
+          "type": "enum",
+          "values": [
+            "idle",
+            "bite",
+            "tail",
+            "wing",
+            "stream",
+            "charge",
+            "kick",
+            "whip",
+            "stomp",
+            "shield_smash",
+            "soul_sweep",
+            "ultimate",
+            "phase2",
+            "phase3"
+          ],
+          "default": "idle",
+          "client_sync": true
+        },
+        "minizin_creatures:stage": {
+          "type": "int",
+          "range": [
+            1,
+            5
+          ],
+          "default": 1,
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "minizin_creatures",
+          "mob"
+        ]
+      },
+      "minecraft:health": {
+        "value": 250,
+        "max": 250
+      },
+      "minecraft:collision_box": {
+        "width": 2,
+        "height": 2.5
+      },
+      "minecraft:physics": {},
+      "minecraft:movement": {
+        "value": 0.23
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:navigation.walk": {},
+      "minecraft:behavior.random_stroll": {
+        "priority": 5,
+        "speed_multiplier": 0.7
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 6,
+        "look_distance": 16
+      },
+      "minecraft:rideable": {
+        "seat_count": 1,
+        "family_types": [
+          "player"
+        ],
+        "seats": [
+          {
+            "position": [
+              0,
+              1.7,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    "component_groups": {
+      "minizin_creatures:in_flight": {
+        "minecraft:physics": {
+          "has_gravity": false
+        },
+        "minecraft:movement.fly": {},
+        "minecraft:navigation.fly": {
+          "can_path_over_water": true
+        }
+      }
+    },
+    "events": {
+      "minizin_creatures:fly": {
+        "add": {
+          "component_groups": [
+            "minizin_creatures:in_flight"
+          ]
+        }
+      },
+      "minizin_creatures:land": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:in_flight"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minizin_creatures:ignis",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false,
+      "properties": {
+        "minizin_creatures:attack": {
+          "type": "enum",
+          "values": [
+            "idle",
+            "bite",
+            "tail",
+            "wing",
+            "stream",
+            "charge",
+            "kick",
+            "whip",
+            "stomp",
+            "shield_smash",
+            "soul_sweep",
+            "ultimate",
+            "phase2",
+            "phase3"
+          ],
+          "default": "idle",
+          "client_sync": true
+        },
+        "minizin_creatures:phase": {
+          "type": "int",
+          "range": [
+            0,
+            2
+          ],
+          "default": 0,
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "minizin_creatures",
+          "boss"
+        ]
+      },
+      "minecraft:health": {
+        "value": 450,
+        "max": 450
+      },
+      "minecraft:collision_box": {
+        "width": 1.5,
+        "height": 4
+      },
+      "minecraft:physics": {},
+      "minecraft:movement": {
+        "value": 0.27
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:navigation.walk": {},
+      "minecraft:behavior.random_stroll": {
+        "priority": 5,
+        "speed_multiplier": 0.7
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 6,
+        "look_distance": 16
+      },
+      "minecraft:boss": {
+        "name": "Ignis",
+        "hud_range": 32,
+        "should_darken_sky": false
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Minizin Creatures — Gameplay research",
+    "description": "Isolated AI modules; visual assets must be staged before deployment",
+    "uuid": "56d35152-64cf-4b42-8e8c-e193ed1c8c1c",
+    "version": [
+      0,
+      1,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "fe7e6b0c-5e67-46bf-b0f2-84f05cc4b350",
+      "version": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "entry": "scripts/main.js",
+      "uuid": "4a8cf589-03ee-45e3-b767-fb2a1446957c",
+      "version": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.0.0"
+    }
+  ]
+}
