@@ -58,7 +58,7 @@ AUDIO={
  "bluff_spike":("44-mowzies-mobs","mowziesmobs","entity/bluff/spike_explode.ogg"),
  "umvuthi_supernova":("44-mowzies-mobs","mowziesmobs","entity/umvuthi/supernova_end.ogg"),
  "umvuthi_supernova_start":("44-mowzies-mobs","mowziesmobs","entity/umvuthi/supernova_start.ogg"),
- "ender_stomp":("43-cataclysm","cataclysm","entity/ender_guardian_stomp.ogg")
+ "ender_stomp":("43-cataclysm","cataclysm","entity/monstrosityland.ogg")
 }
 POSE_SETS={"bite":["Bite1","Bite2","Bite3"],
            "tail":["Tail1","Tail2","Tail3"],
