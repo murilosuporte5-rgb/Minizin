@@ -50,9 +50,15 @@ export function decode(data){
   for(const [key,value] of Object.entries(data.props||{}))item.setDynamicProperty(key,value);
   return item;
 }
+function canonical(value){
+  if(Array.isArray(value))return value.map(canonical);
+  if(value&&typeof value==="object")return Object.fromEntries(
+    Object.keys(value).sort().map(key=>[key,canonical(value[key])]));
+  return value;
+}
 function validate(data){
-  // Unknown item payloads must not silently lose metadata on rehydration.
-  if(JSON.stringify(encode(decode(data)))!==JSON.stringify(data))
+  // Legacy v1 serialized fields in a different order; compare by value.
+  if(JSON.stringify(canonical(encode(decode(data))))!==JSON.stringify(canonical(data)))
     throw Error("Item não preservável: transferência recusada sem alterações.");
 }
 function getState(id){
@@ -194,11 +200,11 @@ async function withdraw(p,id,slot,revision){
 async function open(p){
   if(busyPlayers.has(p.id))return;
   busyPlayers.add(p.id);
-  let id;
+  let id,locked=false;
   try{
     id=assign(p);
     if(busyBags.has(id)){tell(p,"Esta mochila já está sendo usada.");return;}
-    busyBags.add(id);
+    busyBags.add(id);locked=true;
     migrateLegacy(p,id);
     const state=getState(id);
     const form=new ActionFormData().title("Mochila • 27 espaços")
@@ -221,7 +227,7 @@ async function open(p){
       if(actions.selection===1)await deposit(p,id,slot,state.revision);
     }else await deposit(p,id,slot,state.revision);
   }catch(error){tell(p,"Operação não concluída: "+String(error));}
-  finally{busyPlayers.delete(p.id);if(id)busyBags.delete(id);}
+  finally{busyPlayers.delete(p.id);if(locked)busyBags.delete(id);}
 }
 world.beforeEvents.playerInteractWithBlock.subscribe(e=>{
   if(e.itemStack?.typeId!==ID||e.isFirstEvent===false)return;
