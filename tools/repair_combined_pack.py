@@ -113,7 +113,7 @@ def repair(source,output):
             files=list((ROOT/'mods'/mod/'upstream').glob('**/assets/'+namespace+'/lang/'+language.lower()+'.json'))
             dictionaries[namespace][language]={}
             for file in files:
-                try:dictionaries[namespace][language].update(json.loads(file.read_text(),strict=False))
+                try:dictionaries[namespace][language].update(json.loads(file.read_text(encoding='utf-8-sig'),strict=False))
                 except ValueError as error:language_warnings.append({'source':str(file.relative_to(ROOT)),'error':str(error)})
     pt_overrides={
       'minizin:andesite_waystone_block':'Marco de Teleporte',
@@ -233,7 +233,7 @@ def repair(source,output):
     write(registry_path,registry)
     for language,entries in languages.items():
         target=rp/'texts'/f'{language}.lang';target.parent.mkdir(parents=True,exist_ok=True)
-        target.write_text('\n'.join(k+'='+v for k,v in sorted(entries.items()))+'\n')
+        target.write_text('\n'.join(k+'='+v for k,v in sorted(entries.items()))+'\n',encoding='utf-8')
     write(rp/'texts/languages.json',list(languages))
     shutil.copy2(ROOT/'bedrock/runtime/item_actions.js',bp/'scripts/item_actions.js')
     main=bp/'scripts/main.js';main.write_text(main.read_text()+'\nimport "./item_actions.js";\n')
