@@ -323,6 +323,7 @@ def build(mod: str, output: Path) -> Path:
     (rp / "texts/languages.json").write_text('["en_US", "pt_BR"]\n', encoding="utf-8")
     if mod == "aether":
         jwrite(rp / "models/blocks/portal.geo.json", geometry("portal"))
+        (bp / "scripts").mkdir(parents=True, exist_ok=True)
         shutil.copyfile(HERE / "aether/main.js", bp / "scripts/main.js")
     else:
         jwrite(rp / "models/blocks/cross.geo.json", geometry("cross"))
