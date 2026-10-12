@@ -74,6 +74,11 @@ def extract(source:Path,mod:str,output:Path,copy=True):
             dst.write_bytes(b)
             row["staged"]=dst.relative_to(output).as_posix()
         rows.append(row)
+    if copy:
+        license_name="LICENSE.md" if mod=="rftools" else "LICENSE"
+        license_file=source/license_name
+        if license_file.exists():
+            shutil.copy2(license_file,output/"UPSTREAM_LICENSE.txt")
     counts=dict(sorted(Counter(row["category"] for row in rows).items()))
     report={"mod":mod,"source_repo":SPECS[mod]["repo"],
             "source_checkout":str(source),"file_count":len(rows),"categories":counts,
