@@ -71,6 +71,10 @@ Criar **cópia de um mundo** antes de instalar. Importar cada pack individualmen
 
 **Desvios constatados:** Os blocos trancados da Silver Dungeon são resistentes a mineração e explosões, mas a sequência Java de desafio de boss/chave que libera o acesso ainda não existe. A exportação **21/21** é exclusivamente estrutural, não uma prova de jogabilidade nem renderização.  NBT de estrutura contém estados Java e block entities incompatíveis; o conversor intencionalmente descarta propriedades de bloco Java sem mapeamento comprovado, não transporta conteúdos de baús/boss/entidades, e omite nomes não registrados no Bedrock. Mesmo os templates gerados **não são reconstruções perfeitas**. A taxa de 21/21 refere-se apenas à exportação estrutural, não a aparência verificada ou combate a bosses. O maior template Gold é condicionado ao volume máximo de segurança móvel.
 
+### Vinculação de portais distantes
+
+A entrada do jogador agora calcula a célula Aether mais próxima de suas coordenadas X/Z do Overworld (malha de 80 blocos), cria/retoma a respectiva ilha, limpa uma plataforma de pouso segura, acrescenta uma moldura de saída nessa célula e mantém coordenadas de retorno por jogador em propriedade dinâmica. **Não** é o algoritmo de seleção de portal da versão Java; não foi validado em multiplayer, troca de dispositivo ou com portais próximos a bordas de células. A instalação do pack ainda exige a Beta API no Bedrock.
+
 ## Referências
 
 - Fontes originais fixadas nos gitlinks citados acima.
