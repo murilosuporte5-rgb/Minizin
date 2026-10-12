@@ -40,7 +40,7 @@ function harness() {
     setDynamicProperty:(k,v)=>playerProps.set(k,v)};
   const api=new Function("world","system","ItemStack","EnchantmentTypes",
     "ActionFormData","ModalFormData",source+
-    "\nreturn {assign,encode,decode,getState,writeState,migrateLegacy,validate,compatible};")(
+    "\nreturn {assign,encode,decode,getState,writeState,migrateLegacy,validate,compatible,depositAll,sortBag};")(
       world,{},Stack,{get:id=>({id})},class {},class {}
     );
   return {api,worldProps,playerProps,inv,player};
@@ -83,4 +83,22 @@ test("migration never discards legacy data when a target already holds other ite
   assert.throws(()=>api.migrateLegacy(player,id),/Mochila ocupada/);
   assert.deepEqual(JSON.parse(playerProps.get("minizin:personal_backpack_v1")),[old]);
   assert.deepEqual(api.getState(id).slots[0],existing);
+});
+
+test("bulk deposit moves real item stacks, keeps individual bag state and sorting",async()=>{
+  const {api,inv,player}=harness();
+  inv.items[1]=new Stack("minecraft:stone",32);
+  inv.items[2]=new Stack("minecraft:diamond_sword",1);
+  inv.items[2].nameTag="Named gear";
+  const id=api.assign(player);
+  await api.depositAll(player,id,0);
+  assert.equal(inv.items[1],undefined);
+  assert.equal(inv.items[2],undefined);
+  const bag=api.getState(id);
+  assert.equal(bag.slots[0].amount,32);
+  assert.equal(bag.slots[1].name,"Named gear");
+  await api.sortBag(player,id,bag.revision);
+  assert.equal(api.getState(id).revision,2);
+  assert.equal(api.getState(id).slots[0].name,"Named gear");
+  assert.equal(api.getState(id).slots[1].amount,32);
 });
