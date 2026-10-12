@@ -9,7 +9,7 @@ import shutil
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 JAVA_LOOT = ROOT / "mods/41-the-aether/upstream/src/generated/resources/data/aether/loot_table"
 ITEM_TEXTURES = ROOT / "mods/41-the-aether/upstream/src/main/resources/assets/aether/textures/item"
 ITEM_SOURCE = {
