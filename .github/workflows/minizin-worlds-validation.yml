@@ -28,6 +28,7 @@ jobs:
         run: |
           node --check bedrock/worlds/aether/main.js
           node --check bedrock/worlds/bop/main.js
+          node --check bedrock/worlds/aether/bosses.js
       - name: Install conversion dependencies
         run: python -m pip install --disable-pip-version-check Pillow nbtlib numpy
       - name: Run static tests
@@ -35,6 +36,13 @@ jobs:
       - name: Build packs locally with originals (do not upload copyrighted assets)
         run: |
           python bedrock/worlds/build_worlds.py --mod both
+      - name: Validate generated modules
+        run: |
+          node --check build/worlds/aether/BP/scripts/main.js
+          node --check build/worlds/aether/BP/scripts/bosses.js
+          node --check build/worlds/aether/BP/scripts/dungeon_loot.js
+          node --check build/worlds/bop/BP/scripts/main.js
+          node --check build/worlds/bop/BP/scripts/native_biomes.js
       - name: Inspect generated Bedrock ZIP layout and resource wiring
         run: |
           python - <<'PY'
@@ -55,6 +63,19 @@ jobs:
                   if mod == "aether":
                       assert "BP/scripts/main.js" in names
                       assert "BP/scripts/biome_profiles.js" in names
+                      assert "BP/scripts/bosses.js" in names
+                      assert "BP/scripts/dungeon_loot.js" in names
+                      for mob in ("slider", "valkyrie_queen", "sun_spirit",
+                                  "zephyr", "aechor_plant", "fire_minion",
+                                  "aerbunny", "cockatrice", "sheepuff"):
+                          assert f"BP/entities/{mob}.json" in names, mob
+                          assert f"RP/models/entity/{mob}.geo.json" in names, mob
+                          assert f"RP/entity/{mob}.entity.json" in names, mob
+                          assert f"RP/textures/entity/minizin_aether/{mob}.png" in names, mob
+                      for key in ("bronze_dungeon_key", "silver_dungeon_key", "gold_dungeon_key"):
+                          assert f"BP/items/{key}.json" in names
+                      for boss in ("slider", "valkyrie_queen", "sun_spirit"):
+                          assert f"BP/loot_tables/minizin_aether/entities/{boss}.json" in names
                       profiles = z.read("BP/scripts/biome_profiles.js").decode("utf-8")
                       for key in ("skyroot_forest", "skyroot_grove", "skyroot_meadow", "skyroot_woodland"):
                           assert "aether:" + key in profiles, key
@@ -79,7 +100,12 @@ jobs:
                       assert "minecraft:replace_biomes" in lavender["minecraft:biome"]["components"]
                       end_biome = json.loads(z.read("BP/biomes/end_reef.json"))
                       assert "minecraft:replace_biomes" not in end_biome["minecraft:biome"]["components"]
-                      assert bp["header"]["min_engine_version"] == [1, 21, 110]
+                      assert bp["header"]["min_engine_version"] == [1, 21, 120]
+                      assert "BP/scripts/native_biomes.js" in names
+                      import re
+                      native = z.read("BP/scripts/native_biomes.js").decode("utf-8")
+                      assert "minizin_bop:redwood_forest" in native
+                      assert "minizin_bop:erupting_inferno" in native
                       assert sum(n.startswith("BP/features/") and n.endswith("_feature.json") for n in names) >= 10
           print("Static ZIP and pack manifests passed; in-game behavior NOT validated.")
           PY
