@@ -20,6 +20,11 @@ const SPEC = [
   { biome: "mystic_grove", log: "magic_log", leaves: "magic_leaves", flower: "glowflower", trees: 4, plants: 8 },
   { biome: "redwood_forest", log: "redwood_log", leaves: "redwood_leaves", flower: null, trees: 5, plants: 0 },
   { biome: "ominous_woods", log: "umbran_log", leaves: "umbran_leaves", flower: null, trees: 6, plants: 0 },
+  { biome: "coniferous_forest", log: "fir_log", leaves: "fir_leaves", flower: null, trees: 6, plants: 0 },
+  { biome: "maple_woods", log: "maple_log", leaves: "maple_leaves", flower: null, trees: 5, plants: 0 },
+  { biome: "jade_cliffs", log: "jacaranda_log", leaves: "jacaranda_leaves", flower: null, trees: 4, plants: 0 },
+  { biome: "tropics", log: "palm_log", leaves: "palm_leaves", flower: null, trees: 4, plants: 0 },
+  { biome: "highland", log: "pine_log", leaves: "pine_leaves", flower: null, trees: 4, plants: 0 },
 ];
 const permutations = new Map();
 function block(dim, p) {
@@ -99,13 +104,15 @@ async function generate(cx, cz, referenceY, dim) {
   if (world.getDynamicProperty(key) === true) return;
   const spec = pick(cx, cz);
   const ox = cx * CELL, oz = cz * CELL;
-  let attempts = 0, writes = 0;
+  let attempts = 0, writes = 0, observed = 0;
   const total = spec.trees + spec.plants;
   for (let n = 0; n < total; n++) {
     // Keep patches toward cell center and inside the player's loaded chunks.
     const s = noise(cx * 97 + n, cz * 131 - n);
     const x = ox + 8 + (s % (CELL - 16));
     const z = oz + 8 + ((s >>> 8) % (CELL - 16));
+    if (!dim.isChunkLoaded({ x, y: Math.floor(referenceY), z })) continue;
+    observed++;
     const floor = surface(dim, x, z, referenceY);
     if (floor === null) continue;
     const y = floor + 1;
@@ -123,7 +130,12 @@ async function generate(cx, cz, referenceY, dim) {
     if (++attempts % PLACEMENTS_PER_TICK === 0)
       await new Promise(resolve => system.runTimeout(resolve, 1));
   }
-  // Persistence protects worlds from duplicate generation; no rewriting on relog.
+  // Do not permanently commit empty cells that were outside render distance.
+  // The player may revisit them with a larger simulation radius later.
+  if (observed < Math.max(1, Math.floor(total * .6))) {
+    console.warn("[Minizin BOP] Deferred region " + key + " (chunks unloaded)");
+    return;
+  }
   world.setDynamicProperty(key, true);
   console.warn("[Minizin BOP] Region " + key + " (" + spec.biome + ") " + writes + " features.");
 }
