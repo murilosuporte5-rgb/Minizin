@@ -173,7 +173,7 @@ def manifest(mod: str, kind: str) -> dict:
             "description": "Private local conversion from pinned Java resources; experimental behavior.",
             "uuid": uid(f"{mod}-{kind}-header"),
             "version": [0, 2, 8],
-            "min_engine_version": [1, 21, 110] if mod == "bop" else [1, 21, 80],
+            "min_engine_version": [1, 21, 120] if mod == "bop" else [1, 21, 80],
         },
         "modules": [{
             "type": "data" if kind == "BP" else "resources",
@@ -191,7 +191,7 @@ def manifest(mod: str, kind: str) -> dict:
                 "uuid": uid(f"{mod}-BP-script"),
                 "version": [0, 2, 8],
             })
-            data["dependencies"].append({"module_name": "@minecraft/server", "version": "beta" if mod == "aether" else "2.0.0"})
+            data["dependencies"].append({"module_name": "@minecraft/server", "version": "beta" if mod == "aether" else "2.3.0"})
     return data
 
 def block_def(mod: str, name: str) -> dict:
