@@ -57,6 +57,17 @@ ASSETS = {
         "purple_flower": ("natural/purple_flower.png", "grass"),
         "berry_bush": ("natural/berry_bush.png", "grass"),
         "sun_altar": ("utility/sun_altar_side.png", "stone"),
+        "locked_carved_stone": ("dungeon/carved_stone.png", "stone"),
+        "locked_sentry_stone": ("dungeon/sentry_stone.png", "stone"),
+        "boss_doorway_carved_stone": ("dungeon/door.png", "stone"),
+        "locked_light_angelic_stone": ("dungeon/light_angelic_stone.png", "stone"),
+        "trapped_angelic_stone": ("dungeon/angelic_stone.png", "stone"),
+        "trapped_light_angelic_stone": ("dungeon/light_angelic_stone.png", "stone"),
+        "treasure_doorway_angelic_stone": ("dungeon/treasure.png", "stone"),
+        "locked_hellfire_stone": ("dungeon/hellfire_stone.png", "stone"),
+        "locked_light_hellfire_stone": ("dungeon/light_hellfire_stone.png", "stone"),
+        "boss_doorway_hellfire_stone": ("dungeon/door.png", "stone"),
+        "treasure_doorway_hellfire_stone": ("dungeon/treasure.png", "stone"),
     },
     "bop": {
         "lavender": ("lavender.png", "grass"),
@@ -203,7 +214,8 @@ def block_def(mod: str, name: str) -> dict:
         components["minecraft:collision_box"] = False
         components["minecraft:selection_box"] = {"origin": [-7, 0, -7], "size": [14, 16, 14]}
         components["minecraft:material_instances"]["*"]["render_method"] = "alpha_test"
-    if mod == "aether" and name in ("locked_angelic_stone", "boss_doorway_angelic_stone"):
+    if mod == "aether" and ("locked_" in name or "trapped_" in name
+                            or "boss_doorway_" in name or "treasure_doorway_" in name):
         # Source has dungeon lock semantics. Until original boss progression is
         # ported these must stay locked rather than granting fake access.
         components["minecraft:destructible_by_mining"] = False
