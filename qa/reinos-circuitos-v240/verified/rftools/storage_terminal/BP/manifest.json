@@ -1,0 +1,39 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "RFTools Recovered — Storage Terminal BP",
+    "description": "Original model and texture research; not a functional RFTools port",
+    "uuid": "e92aad31-942d-5616-99db-8163a3801069",
+    "version": [
+      0,
+      1,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      90
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "f15a80a6-45c4-5f13-b1fe-3f23247c7a55",
+      "version": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "ad9765f3-8600-5e5e-a912-3d4d5f19c4a0",
+      "version": [
+        0,
+        1,
+        0
+      ]
+    }
+  ]
+}

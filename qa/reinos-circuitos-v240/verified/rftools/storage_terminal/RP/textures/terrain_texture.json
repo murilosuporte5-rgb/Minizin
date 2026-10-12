@@ -1,0 +1,9 @@
+{
+  "resource_pack_name": "rftools_recovered",
+  "texture_name": "atlas.terrain",
+  "texture_data": {
+    "rftools_storage_terminal": {
+      "textures": "textures/blocks/storage_terminal_atlas"
+    }
+  }
+}

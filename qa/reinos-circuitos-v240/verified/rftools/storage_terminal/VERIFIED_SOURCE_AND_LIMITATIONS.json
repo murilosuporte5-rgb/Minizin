@@ -1,0 +1,21 @@
+{
+  "status": "GENERATED_NOT_GAME_TESTED",
+  "source_repo": "McJtyMods/RFTools",
+  "commit": "030a495c8530183bdfe47475ed41d45386e56f6c",
+  "model": "src/main/resources/assets/rftools/models/block/storage_terminal.json",
+  "original_textures": [
+    "machinestorageterminal.png",
+    "machineside.png",
+    "machinebottom.png"
+  ],
+  "geometry_cubes": 1,
+  "texture_atlas_size": [
+    67,
+    32
+  ],
+  "atlas_sha256": "77658dc9a06e6547a3f4dac4e5077bd569f928630afaae7a3b3def46226f9b09",
+  "warnings": [
+    "No original RFTools machine logic, recipes, GUI or inventory behavior.",
+    "Bedrock Content Log and hand/placed block visual testing pending."
+  ]
+}
