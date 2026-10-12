@@ -93,6 +93,26 @@
         "minecraft:navigation.fly": {
           "can_path_over_water": true
         }
+      },
+      "minizin_creatures:armor_1": {
+        "minecraft:armor": {
+          "value": 2
+        }
+      },
+      "minizin_creatures:armor_2": {
+        "minecraft:armor": {
+          "value": 4
+        }
+      },
+      "minizin_creatures:armor_3": {
+        "minecraft:armor": {
+          "value": 6
+        }
+      },
+      "minizin_creatures:armor_4": {
+        "minecraft:armor": {
+          "value": 8
+        }
       }
     },
     "events": {
@@ -107,6 +127,62 @@
         "remove": {
           "component_groups": [
             "minizin_creatures:in_flight"
+          ]
+        }
+      },
+      "minizin_creatures:armor_1": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:armor_2",
+            "minizin_creatures:armor_3",
+            "minizin_creatures:armor_4"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:armor_1"
+          ]
+        }
+      },
+      "minizin_creatures:armor_2": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:armor_1",
+            "minizin_creatures:armor_3",
+            "minizin_creatures:armor_4"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:armor_2"
+          ]
+        }
+      },
+      "minizin_creatures:armor_3": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:armor_1",
+            "minizin_creatures:armor_2",
+            "minizin_creatures:armor_4"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:armor_3"
+          ]
+        }
+      },
+      "minizin_creatures:armor_4": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:armor_1",
+            "minizin_creatures:armor_2",
+            "minizin_creatures:armor_3"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:armor_4"
           ]
         }
       }

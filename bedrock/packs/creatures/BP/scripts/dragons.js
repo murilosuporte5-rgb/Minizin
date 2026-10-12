@@ -35,6 +35,10 @@ export function tickDragons(e,tick){
   if(age>=DAY_TICKS){put(e,"days",Number(get(e,"days",0))+1);put(e,"age_ticks",age-DAY_TICKS);}
   else put(e,"age_ticks",age);
   const level=stage(e);state(e,"stage",level);
+  const armor=Number(get(e,"armor",0));
+  if(armor>0&&get(e,"armor_applied",0)!==armor){
+    try{e.triggerEvent("minizin_creatures:armor_"+armor);put(e,"armor_applied",armor);}catch{}
+  }
   const pilot=rider(e);
   if(pilot&&level>=3&&own(e,pilot)){
     if(get(e,"flight",false)){

@@ -6,14 +6,14 @@ export function tickAtlatitan(e,tick){
   const frames=Number(get(e,"frames",0)),move=get(e,"move","idle"),pilot=rider(e);
   if(frames>0){
     const remaining=frames-10;put(e,"frames",remaining);
-    if(move==="stomp"&&frames>=30&&remaining<30){
+    if(move==="stomp"&&frames>=20&&remaining<20){
       for(const x of nearby(e,15))if(distance(x.location,e.location)>=4)hit(e,x,12,1.2);
       eventSound(e,"minizin_creatures.atlatitan.stomp");
     }
     if(move==="whip"&&frames>=30&&remaining<30){
       for(const x of nearby(e,12))hit(e,x,8,1);
     }
-    if(move==="kick"&&frames>=10&&remaining<10){
+    if(move==="kick"&&frames>=20&&remaining<20){
       for(const x of nearby(e,5))hit(e,x,6.4,1);
     }
     if(remaining<=0)state(e,"attack","idle");
