@@ -250,11 +250,61 @@ function chestAt(dimension, location, stage) {
     return false;
   }
 }
+function completeDungeonReward(dim, arena, stage, clearedKey, pendingKey) {
+  const rewardedKey = D + "dungeon_rewarded:" + arena.cx + ":" + arena.cz;
+  if (world.getDynamicProperty(clearedKey) === true) return true;
+  // A previously completed chest must never roll its drops twice.
+  if (world.getDynamicProperty(rewardedKey) !== true) {
+    if (!chestAt(dim, arena, stage)) return false;
+    world.setDynamicProperty(rewardedKey, true);
+  }
+  world.setDynamicProperty(clearedKey, true);
+  world.setDynamicProperty(pendingKey, undefined);
+  for (const p of world.getAllPlayers()) {
+    if (p.dimension.id === dim.id)
+      p.sendMessage("§eMasmorra " + stage + " concluída! A recompensa foi desbloqueada.");
+  }
+  return true;
+}
+// Recover interrupted reward delivery after a relog or a chunk-load error.
+// No scanning unless a player is in the Aether; bounded to the existing
+// pending boss records, whose coordinates are integrity-checked.
+system.runInterval(() => {
+  try {
+    const dim = world.getDimension(D + "sky");
+    if (!world.getAllPlayers().some(p => p.dimension.id === dim.id)) return;
+    for (const key of world.getDynamicPropertyIds()) {
+      if (!key.startsWith(D + "dungeon_pending:")) continue;
+      const value = world.getDynamicProperty(key);
+      if (typeof value !== "string") continue;
+      let data;
+      try { data = JSON.parse(value); } catch { continue; }
+      const a = data?.arena;
+      if (!a || !STAGES[Object.keys(STAGES).find(x => STAGES[x].tier === data.stage)] ||
+          ![a.x,a.y,a.z,a.cx,a.cz].every(Number.isFinite)) continue;
+      if (!world.getAllPlayers().some(p => {
+        const v = p.location;
+        return p.dimension.id === dim.id &&
+          Math.abs(v.x - a.x) < 48 && Math.abs(v.z - a.z) < 48;
+      })) continue;
+      const cleared = D + "dungeon_cleared:" + a.cx + ":" + a.cz;
+      if (world.getDynamicProperty(cleared) !== true) {
+        system.runJob(unlockArena(dim, a, data.stage));
+        completeDungeonReward(dim, a, data.stage, cleared, key);
+      } else {
+        world.setDynamicProperty(key, undefined);
+      }
+    }
+  } catch (error) {
+    console.warn("[Aether dungeon] pending reward reconciliation: " + String(error));
+  }
+}, 200);
 export function spawnDungeonBoss(dim, tier, location, cx, cz) {
   const name = Object.keys(STAGES).find(key => STAGES[key].tier === tier);
   if (!name) return;
   const key = D + "dungeon_cleared:" + cx + ":" + cz;
-  if (world.getDynamicProperty(key) === true) return;
+  const pending = D + "dungeon_pending:" + cx + ":" + cz;
+  if (world.getDynamicProperty(key) === true || world.getDynamicProperty(pending)) return;
   // Allow structure placement to settle before spawning hostile actors.
   system.runTimeout(() => {
     if (world.getDynamicProperty(key) === true) return;
@@ -324,15 +374,15 @@ world.afterEvents.entityDie.subscribe(event => {
   const arena = readArena(defeated);
   if (!arena) return;
   const key = D + "dungeon_cleared:" + arena.cx + ":" + arena.cz;
-  if (world.getDynamicProperty(key) === true) return;
-  world.setDynamicProperty(key, true);
+  const pending = D + "dungeon_pending:" + arena.cx + ":" + arena.cz;
+  if (world.getDynamicProperty(key) === true ||
+      world.getDynamicProperty(pending)) return;
+  // Persist first; a crash or unloaded loot chest can now be reconciled.
+  world.setDynamicProperty(pending, JSON.stringify({ arena, stage }));
   const dim = defeated.dimension;
   system.runJob(unlockArena(dim, arena, stage));
   system.runTimeout(() => {
-    chestAt(dim, arena, stage);
-    for (const p of world.getAllPlayers())
-      if (p.dimension.id === dim.id)
-        p.sendMessage("§eMasmorra " + stage + " concluída! A recompensa foi desbloqueada.");
+    completeDungeonReward(dim, arena, stage, key, pending);
   }, 25);
   ticks.delete(defeated.id);
 });
