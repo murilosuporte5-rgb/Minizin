@@ -25,7 +25,9 @@ jobs:
         with:
           node-version: "22"
       - name: Validate runtime syntax
-        run: node --check bedrock/worlds/aether/main.js
+        run: |
+          node --check bedrock/worlds/aether/main.js
+          node --check bedrock/worlds/bop/main.js
       - name: Run static tests
         run: python -m unittest discover -s bedrock/worlds/tests -v
       - name: Build packs locally with originals (do not upload copyrighted assets)
