@@ -1,0 +1,24 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minizin:mca_female_1",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/minizin/mca_female_1"
+      },
+      "geometry": {
+        "default": "geometry.minizin.mca_humanoid"
+      },
+      "render_controllers": [
+        "controller.render.minizin.mca_npc"
+      ],
+      "spawn_egg": {
+        "base_color": "#88654c",
+        "overlay_color": "#b89e80"
+      }
+    }
+  }
+}
