@@ -58,7 +58,7 @@ jobs:
                       report = json.loads(z.read("BP/structures/minizin_aether/conversion_report.json"))
                       files = [t for t in report["templates"] if t["status"].startswith("converted")]
                       skipped = [t for t in report["templates"] if t["status"] == "skipped"]
-                      assert len(files) >= 10, ("Original NBT loss", len(files))
+                      assert len(files) == len(report["templates"]) == 21, ("Original NBT templates missing", len(files), skipped)
                       for family in ("bronze_dungeon", "silver_dungeon", "gold_dungeon"):
                           assert any(t["source"].startswith(family + "/") for t in files), family
                       for t in skipped:
