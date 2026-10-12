@@ -126,7 +126,7 @@ def build_items(bp: Path, rp: Path) -> None:
         shutil.copyfile(path, target)
         atlas["texture_data"][key] = {"textures": f"textures/items/{key}"}
         is_key = name.endswith("_dungeon_key")
-        component = {"minecraft:icon": key, "minecraft:max_stack_size": 1 if is_key else 64,
+        component = {"minecraft:icon": {"textures": {"default": key}}, "minecraft:max_stack_size": 1 if is_key else 64,
                      "minecraft:display_name": {"value": name.replace("_", " ").title()}}
         dump(bp / "items" / (name + ".json"), {
             "format_version": "1.21.80",
