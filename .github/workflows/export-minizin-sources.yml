@@ -1,4 +1,4 @@
-name: Stage isolated Minizin source for private integration
+name: Stage latest Minizin source for private integration
 on:
   push:
     branches:
@@ -36,3 +36,4 @@ jobs:
           path: stage/
           if-no-files-found: error
           retention-days: 2
+          compression-level: 9
