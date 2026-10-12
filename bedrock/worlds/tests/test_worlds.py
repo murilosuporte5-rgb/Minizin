@@ -22,7 +22,7 @@ class WorldBuilderTests(unittest.TestCase):
             bp = worlds.manifest(mod, "BP")
             rp = worlds.manifest(mod, "RP")
             self.assertEqual(bp["dependencies"][0]["uuid"], rp["header"]["uuid"])
-            self.assertEqual(bp["header"]["min_engine_version"], [1, 21, 110] if mod == "bop" else [1, 21, 80])
+            self.assertEqual(bp["header"]["min_engine_version"], [1, 21, 120] if mod == "bop" else [1, 21, 80])
             identifiers.extend([bp["header"]["uuid"], rp["header"]["uuid"],
                                 bp["modules"][0]["uuid"], rp["modules"][0]["uuid"]])
             self.assertEqual(bp, worlds.manifest(mod, "BP"))
@@ -154,6 +154,8 @@ class WorldBuilderTests(unittest.TestCase):
         self.assertIn("world.setDynamicProperty(key, true)", bop)
         self.assertIn("PLACEMENTS_PER_TICK", bop)
         self.assertIn("minecraft:overworld", bop)
+        self.assertIn("NATIVE_BOP", bop)
+        self.assertIn("dim.getBiome", bop)
 
 
 if __name__ == "__main__":
