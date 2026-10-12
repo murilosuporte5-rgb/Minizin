@@ -97,7 +97,9 @@ class OriginalAetherEntityTests(unittest.TestCase):
 
 class FullBopTests(unittest.TestCase):
     def test_native_replacements_are_dimension_scoped(self):
-        self.assertIsNone(biomes.native_replacement("end_reef"))
+        self.assertIsNotNone(biomes.native_replacement("end_reef"))
+        self.assertIsNone(biomes.native_replacement("glowing_grotto"))
+        self.assertIsNone(biomes.native_replacement("spider_nest"))
         self.assertEqual(biomes.native_replacement("redwood_forest")["dimension"],
                          "minecraft:overworld")
         self.assertEqual(biomes.native_replacement("erupting_inferno")["dimension"],
@@ -113,8 +115,10 @@ class FullBopTests(unittest.TestCase):
         src = ROOT / "mods/19-biomes-o-plenty/upstream/common/src/generated/resources/data/biomesoplenty/worldgen/biome"
         names = [p.stem for p in src.glob("*.json")]
         self.assertEqual(len(names), 68)
-        self.assertTrue(biomes.END.issubset(set(names)))
+        self.assertEqual(len(biomes.NETHER), 5)
         self.assertTrue(biomes.NETHER.issubset(set(names)))
+        self.assertEqual(biomes.CAVE, {"glowing_grotto", "spider_nest"})
+        self.assertTrue(biomes.CAVE.issubset(set(names)))
         for p in src.glob("*.json"):
             data = json.loads(p.read_text())
             out = biomes.convert_biome(p.stem, data)
@@ -124,7 +128,7 @@ class FullBopTests(unittest.TestCase):
                              data["temperature"])
             components = out["biome"]["minecraft:biome"]["components"]
             self.assertEqual("minecraft:replace_biomes" in components,
-                             p.stem not in biomes.END)
+                             p.stem not in biomes.CAVE)
 
     def test_mapped_java_decorations_use_registered_species(self):
         tree, flower = biomes.selected_feature(
