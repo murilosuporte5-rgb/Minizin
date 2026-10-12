@@ -33,3 +33,10 @@ Waystones/Carry On/Origins (sistemas); Mowzie's Mobs (geometrias já próximas d
 - `ENGINEERING_STATUS.md`: resultados efetivamente verificados, limites, riscos e links dos artifacts de CI.
 
 **Proibido declarar 14 mods concluídos com base apenas em arquivos .geo.json:** é preciso converter e validar as animações, sistemas, AI, biomas, dimensões, multiplayer e comportamento no dispositivo. Continue completando o backlog em pequenos commits, preservando os upstream submodules.
+
+## Cataclysm, Xaero, Distant Horizons
+
+1. Use o submódulo Cataclysm oficial em mods/43-cataclysm/upstream, não invente modelos: tools/cataclysm_batch_to_bedrock.py já recupera 41 modelos de entidades com Citadel Java.
+2. Xaero: importar os waypoints a partir do backup existente usando tools/xaero_waypoint_import.py; sem UI de minimapa nativo ainda.
+3. Distant Horizons: auditar o GitLab com tools/distant_horizons_source_audit.py; tools/distant_horizons_lod.py produz apenas dados de altura multirresolução offline.
+4. Manter a coluna de limites e o status factual em ENGINEERING_STATUS.md; não declarar port integral com base em geometria estática.

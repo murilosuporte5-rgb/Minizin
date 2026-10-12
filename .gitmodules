@@ -41,3 +41,7 @@
 [submodule "mods/55-origins/upstream"]
 	path = mods/55-origins/upstream
 	url = https://github.com/apace100/origins-fabric.git
+
+[submodule "mods/43-cataclysm/upstream"]
+	path = mods/43-cataclysm/upstream
+	url = https://github.com/lender544/new1.20.1.git

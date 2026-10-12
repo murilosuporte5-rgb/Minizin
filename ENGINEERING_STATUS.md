@@ -28,13 +28,13 @@ Revisão: 2026-10-12. Este documento distingue **código-fonte estudado**, **geo
 | 34 Carry On | Árvore/código analisados | Pendente | Pendente |
 | 41 The Aether | Sim | 74 modelos de bloco | Pendente |
 | 42 Alex's Caves | Sim | Atlatitan 32 bones / 50 cuboids | Pendente |
-| 43 Cataclysm | Documentação; fonte integral faltando | Pendente | Pendente |
+| 43 Cataclysm | Fonte oficial GitHub confirmada | 41/70 modelos Java convertidos | IA/animações pendentes |
 | 44 Mowzie's Mobs | Sim | Bluff geo + idle | Protótipo parcial |
 | 53 Immersive Portals | Código do renderizador estudado superficialmente | Não convertível via add-on comum | Não suportado integralmente |
 | 54 RFTools | Fontes/OBJ/Blend identificados | Pendente | Pendente |
 | 55 Origins | Fontes de powers/UI identificadas | Pendente | Pendente |
-| 57 Xaero's Minimap | Referência proprietária | Pendente | Render nativo indisponível em add-on comum |
-| 58 Distant Horizons | GitLab de referência | Pendente | Render nativo LOD indisponível em add-on comum |
+| 57 Xaero's Minimap | Gramática de waypoints verificada | Importador somente leitura com testes aprovados | Sem minimapa nativo |
+| 58 Distant Horizons | Árvore GitLab auditada (534 arquivos) | Pirâmide de dados LOD offline | Sem render nativo Bedrock |
 
 ## Recuperar resultados
 
@@ -52,7 +52,7 @@ Os resultados de CI aprovados verificam **estrutura, scripts e geração dos pac
 3. Animar e portar IA/efeitos de Ice and Fire, Alex's Caves e Mowzie; montar BP com entidades de produção.
 4. Expandir os modelos com parent templates faltantes, crossblock, stairs e textures atlas; só modelar manualmente o que não exista na fonte.
 5. Implementar lógica dos outros mods (MCA, Carry On, Origins, RFTools, worldgen, dimensão Aether).
-6. Receber fontes licenciadas verificáveis para Cataclysm e Xaero. Verificar permissões para publicações e redistribuição.
+6. Cataclysm fonte pública vinculada; Xaero exige binário autorizado para análise de assets e render. Confirmar os direitos específicos de redistribuição antes de publicar derivados.
 7. Não prometer port integral de Immersive Portals, Distant Horizons ou minimapa nativo apenas com resource/behavior packs Bedrock.
 8. Benchmark no Android: chunks, FPS, temperatura, memória, multitarefa, salvamento e multiplayer.
 
@@ -75,3 +75,11 @@ Não publicar como mod completo até passar a execução dentro do Minecraft Bed
 ## Pacote experimental combinado
 
 O job [Minizin-Bedrock-Prototypes](https://github.com/murilosuporte5-rgb/Minizin/actions/runs/38202861342) passou e anexou três arquivos `.mcaddon`: `Minizin_waystones.mcaddon`, `Minizin_mowzie.mcaddon` e `Minizin_Combined_Prototype.mcaddon`. O combinado inclui **os dois packs RP/BP existentes**, e **não os 14 mods**. Ainda não testado no Minecraft Android.
+
+## Atualização dos 3 mods faltantes (12/10/2026)
+
+- **Cataclysm:** fonte oficial github.com/lender544/new1.20.1 confirmada; 70 modelos Java, 236 PNG de entidades, 34 arquivos Java de animação, 188 NBT e 232 OGG. CI: https://github.com/murilosuporte5-rgb/Minizin/actions/runs/38234148217 — **41/70 modelos** com geometria recuperada; 29 precisam de parser adicional ou correções. Não é port de IA/animações.
+- **Xaero's Minimap:** CI https://github.com/murilosuporte5-rgb/Minizin/actions/runs/38234333289 — importador somente leitura de waypoints para JSON, com preservação de mundo/dimensão; **não desenha minimapa**.
+- **Distant Horizons:** CI https://github.com/murilosuporte5-rgb/Minizin/actions/runs/38234659523 — **534 caminhos** da árvore GitLab catalogados e protótipo independente de LOD de alturas com 3 níveis validado; **não reproduz renderização distante**.
+
+Os três trabalhos foram executados e aprovados no GitHub Actions. Nenhum desses três mods foi portado integralmente para Minecraft Bedrock Android nem testado no dispositivo.
