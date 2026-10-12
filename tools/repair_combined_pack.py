@@ -97,8 +97,19 @@ def repair(source,output):
         write(path,doc)
     for path in (rp/'entity').rglob('*.json'):
         doc=json.loads(path.read_text());desc=doc['minecraft:client_entity']['description'];ident=desc['identifier']
-        key='entity.'+ident+'.name'
-        for language in languages:languages[language][key]=ident.split(':')[1].replace('_',' ').title()
+        # Bedrock localizes the entity itself and the inventory spawn egg with
+        # separate keys. Some versions/resource packs request the egg key without
+        # the final .name; keep both aliases for the *same* translated entity.
+        namespace,entity_name=ident.split(':',1)
+        source_namespace=namespace.removeprefix('minizin_')
+        original_key='entity.'+source_namespace+'.'+entity_name
+        for language in languages:
+            original=dictionaries.get(source_namespace,{}).get(language,{})
+            title=original.get(original_key,entity_name.replace('_',' ').title())
+            for key in ('entity.'+ident+'.name',
+                        'item.spawn_egg.entity.'+ident+'.name',
+                        'item.spawn_egg.entity.'+ident):
+                languages[language][key]=str(title).replace('\\n',' ')
         tex=rp/(desc['textures']['default']+'.png');im=Image.open(tex).convert('RGBA')
         colors=sorted(im.getcolors(im.width*im.height) or [],reverse=True)
         palette=[c for _,c in colors if c[3]>128 and max(c[:3])>45]
