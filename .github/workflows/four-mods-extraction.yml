@@ -1,0 +1,62 @@
+name: Extract and audit four Java mods original assets
+on:
+  push:
+    paths:
+      - "tools/extract_next_four.py"
+      - "tools/analyze_four_resources.py"
+      - "tests/test_extract_next_four.py"
+      - "tests/test_analyze_four_resources.py"
+      - ".github/workflows/four-mods-extraction.yml"
+  workflow_dispatch:
+jobs:
+  resources:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mod: mca
+            folder: 33-mca-reborn
+          - mod: carryon
+            folder: 34-carry-on
+          - mod: rftools
+            folder: 54-rftools
+          - mod: origins
+            folder: 55-origins
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test parsers
+        run: |
+          python -m unittest discover -s tests -p 'test_extract_next_four.py' -v
+          python -m unittest discover -s tests -p 'test_analyze_four_resources.py' -v
+      - name: Fetch pinned original upstream
+        run: git submodule update --init --depth 1 mods/${{ matrix.folder }}/upstream
+      - name: Extract real original files
+        run: |
+          python tools/extract_next_four.py --mod ${{ matrix.mod }} --output build/extracted/${{ matrix.mod }}
+          python tools/analyze_four_resources.py --mod ${{ matrix.mod }} --stage build/extracted/${{ matrix.mod }}
+      - name: Check extracted data and metadata
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          folder=Path("build/extracted")/"${{ matrix.mod }}"
+          inv=json.loads((folder/"inventory.json").read_text())
+          analysis=json.loads((folder/"format_analysis.json").read_text())
+          thresholds={"mca":1800,"carryon":20,"rftools":600,"origins":150}
+          assert inv["file_count"]>=thresholds["${{ matrix.mod }}"],inv["file_count"]
+          assert (folder/"UPSTREAM_LICENSE.txt").exists()
+          assert analysis["mod"]=="${{ matrix.mod }}"
+          for row in inv["files"]:
+              assert (folder/row["staged"]).is_file(),row["source"]
+          print("Extracted original assets:",inv["file_count"],"for","${{ matrix.mod }}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Minizin-Original-Resources-${{ matrix.mod }}
+          path: build/extracted/${{ matrix.mod }}/
+          retention-days: 30
+          if-no-files-found: error
