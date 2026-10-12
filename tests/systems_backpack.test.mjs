@@ -58,7 +58,7 @@ test("roundtrip preserves item metadata; containers and special items rejected",
 });
 test("each backpack item receives stable identity; v1 data migrates only once",()=>{
   const {api,inv,player,playerProps}=harness();
-  const sword=api.encode(new Stack("minecraft:diamond_sword",1));
+  const sword=JSON.parse(JSON.stringify(api.encode(new Stack("minecraft:diamond_sword",1))));
   playerProps.set("minizin:personal_backpack_v1",JSON.stringify([sword]));
   const id=api.assign(player);
   assert.equal(api.assign(player),id);
@@ -76,9 +76,9 @@ test("each backpack item receives stable identity; v1 data migrates only once",(
 test("migration never discards legacy data when a target already holds other items",()=>{
   const {api,player,playerProps}=harness();
   const id=api.assign(player);
-  const existing={...api.encode(new Stack("minecraft:stone",3))};
+  const existing=JSON.parse(JSON.stringify(api.encode(new Stack("minecraft:stone",3))));
   api.writeState(id,{slots:[existing,...Array(26).fill(null)],revision:3});
-  const old=api.encode(new Stack("minecraft:diamond_sword",1));
+  const old=JSON.parse(JSON.stringify(api.encode(new Stack("minecraft:diamond_sword",1))));
   playerProps.set("minizin:personal_backpack_v1",JSON.stringify([old]));
   assert.throws(()=>api.migrateLegacy(player,id),/Mochila ocupada/);
   assert.deepEqual(JSON.parse(playerProps.get("minizin:personal_backpack_v1")),[old]);
