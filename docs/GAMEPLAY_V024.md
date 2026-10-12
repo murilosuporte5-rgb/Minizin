@@ -61,3 +61,15 @@ packs vazios nem declaramos importadores/dados como esses renderizadores.
 
 Fonte e SHA-256 dos PNGs em `EXPANSION_REPORT.json` no diretório do build.
 Recursos derivados continuam em `build/`, sem publicação pública de assets.
+
+
+## Correções incrementais posteriores à v0.2.4 (12/10/2026)
+
+**Status: VERIFICADO NO CÓDIGO; TESTADO NO BEDROCK = NÃO.**
+Esta seção registra mudanças na branch, não uma nova versão de pacote nem uma execução no Android.
+
+- tools/repair_combined_pack.py: passa a escrever ambas as variantes de chave de spawn egg (com e sem ".name") e a chave de entidade. Consulta os dicionários originais upstream pelo identificador exato; a apresentação in-game segue pendente.
+- bedrock/packs/waystones/BP/scripts/main.js: o protótipo baseado em entidade agora evita diálogos simultâneos por jogador e valida piso sólido, ausência de líquido e dois blocos de espaço no destino antes do teleporte. Regiões não carregadas/bloqueadas recusam o teleporte. O Waystone **continua entidade**, não foi convertido em bloco.
+- Nenhum novo build ou teste dentro do Minecraft foi executado após essas mudanças. Preservar a v0.2.4 anterior como artefato de comparação.
+
+**Pendências importantes:** Waystone ainda é entidade; mochila ainda compartilha armazenamento por jogador; anéis ainda usam a mão secundária; itens invisíveis aguardam validação; bosses, worldgen e dimensão Aether continuam incompletos. Distant Horizons não possui renderizador LOD Bedrock comprovado. Nenhuma destas correções pode ser tratada como conclusão dos mods.
