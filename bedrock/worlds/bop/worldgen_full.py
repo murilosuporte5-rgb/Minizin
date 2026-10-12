@@ -205,4 +205,15 @@ def build_all(source: Path, bp: Path, rp: Path, available: set[str],
     report = {"source_count": len(inputs), "coverage": dict(coverage),
               "original_java_worldgen_equivalence": False, "biomes": rows}
     write_json(bp.parent / "worldgen_conversion_report.json", report)
+    native = {
+        r["bedrock_id"]: {"tree": r["native_tree"],
+                          "flower": r["native_flower"],
+                          "dimension": r["dimension"]}
+        for r in rows if r["replacement"] is not None
+    }
+    script = bp / "scripts/native_biomes.js"
+    script.parent.mkdir(parents=True, exist_ok=True)
+    script.write_text("/* Derived from pinned Java BiomesOPlenty worldgen; engine replacement is Bedrock-native. */\\n".replace("\\\\n", "\\n")
+                      + "export const NATIVE_BOP = " + json.dumps(native, ensure_ascii=False)
+                      + ";\\n".replace("\\\\n", "\\n"), encoding="utf-8")
     return report
