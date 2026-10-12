@@ -1,0 +1,36 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:block": {
+    "description": {
+      "identifier": "minizin:rftools_lamp",
+      "menu_category": {
+        "category": "construction"
+      },
+      "states": {
+        "minizin:lit": [
+          false,
+          true
+        ]
+      }
+    },
+    "components": {
+      "minecraft:geometry": "minecraft:geometry.full_block",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "redstone_lamp",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": true,
+      "minecraft:selection_box": true
+    },
+    "permutations": [
+      {
+        "condition": "query.block_state('minizin:lit') == true",
+        "components": {
+          "minecraft:light_emission": 15
+        }
+      }
+    ]
+  }
+}
