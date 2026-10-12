@@ -324,6 +324,34 @@ function returnOverworld(player) {
   player.teleport({ x: target.x + .5, y: target.y + 1, z: target.z + .5 },
                   { dimension: world.getDimension("minecraft:overworld") });
 }
+// Selected block mechanics, adapted from Aether concepts. These are not
+// one-to-one equivalents to Forge block tick and velocity implementations.
+world.afterEvents.playerPlaceBlock.subscribe((event) => {
+  if (event.block?.typeId !== "minizin_aether:icestone") return;
+  const dim = event.block.dimension;
+  const c = event.block.location;
+  for (let dx = -1; dx <= 1; dx++) {
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dz = -1; dz <= 1; dz++) {
+        const p = { x: c.x + dx, y: c.y + dy, z: c.z + dz };
+        const b = dim.getBlock(p);
+        if (b?.typeId === "minecraft:water" && b.isValid) {
+          b.setType("minecraft:ice");
+        } else if (b?.typeId === "minecraft:lava" && b.isValid) {
+          b.setType("minecraft:obsidian");
+        }
+      }
+    }
+  }
+});
+function quicksoilTick(player) {
+  const p = player.location;
+  const ground = { x: Math.floor(p.x), y: Math.floor(p.y - .25), z: Math.floor(p.z) };
+  if (!isBlock(player.dimension, ground, "minizin_aether:quicksoil")) return;
+  // Short Speed effect is renewed only while on quicksoil; unlike Java's
+  // custom velocity accumulation, the Bedrock movement stays bounded.
+  player.addEffect("minecraft:speed", 28, { amplifier: 1, showParticles: false });
+}
 world.afterEvents.worldLoad.subscribe(() => {
   world.sendMessage("§bMinizin The Aether: portal 4x5 de glowstone + balde de água. Beta APIs necessário.");
   enqueue(0, 0);
@@ -331,6 +359,7 @@ world.afterEvents.worldLoad.subscribe(() => {
 system.runInterval(() => {
   for (const player of world.getAllPlayers()) {
     try {
+      quicksoilTick(player);
       if (player.dimension.id === SKY_ID) {
         if (player.location.y < 10) {
           if (readyToTravel(player)) returnOverworld(player);
