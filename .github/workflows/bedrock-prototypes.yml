@@ -21,11 +21,12 @@ jobs:
       - name: Validate Java model conversion
         run: node --test tests/java_model_to_bedrock.test.mjs
       - name: Check Python syntax
-        run: python -m py_compile tools/build_bedrock_packs.py tools/tabula_inspect.py
+        run: python -m py_compile tools/build_bedrock_packs.py tools/build_minizin_bundle.py tools/tabula_inspect.py
       - name: Build prototype mcaddons
         run: |
           python tools/build_bedrock_packs.py waystones
           python tools/build_bedrock_packs.py mowzie
+          python tools/build_minizin_bundle.py
       - uses: actions/upload-artifact@v4
         with:
           name: Minizin-Bedrock-Prototypes
