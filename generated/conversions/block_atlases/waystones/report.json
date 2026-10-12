@@ -1,0 +1,24 @@
+{
+  "namespace": "waystones",
+  "total": 21,
+  "converted": 17,
+  "failed": 4,
+  "failures": [
+    {
+      "name": "fleeting_memorial",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "warp_plate",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "warp_plate_empty",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "warp_plate_locked",
+      "error": "UV rect non-positive"
+    }
+  ]
+}

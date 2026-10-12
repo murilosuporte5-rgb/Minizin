@@ -1,0 +1,180 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.minizin.cataclysm.coral_spear_model",
+        "texture_width": 32,
+        "texture_height": 32,
+        "visible_bounds_width": 20,
+        "visible_bounds_height": 20,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "coral_spear",
+          "pivot": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -0.5,
+                0.0,
+                -0.5
+              ],
+              "size": [
+                1.0,
+                23.0,
+                1.0
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "coral",
+          "pivot": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": [
+            -0.0,
+            -45.00010522957486,
+            0.0
+          ],
+          "parent": "coral_spear",
+          "cubes": [
+            {
+              "origin": [
+                0.0,
+                8.0,
+                -6.0
+              ],
+              "size": [
+                0.0,
+                5.0,
+                6.0
+              ],
+              "uv": [
+                4,
+                13
+              ]
+            }
+          ]
+        },
+        {
+          "name": "coral2",
+          "pivot": [
+            4.0,
+            5.0,
+            4.0
+          ],
+          "rotation": [
+            -0.0,
+            -45.00010522957486,
+            0.0
+          ],
+          "parent": "coral_spear",
+          "cubes": [
+            {
+              "origin": [
+                4.0,
+                13.0,
+                -2.0
+              ],
+              "size": [
+                0.0,
+                5.0,
+                6.0
+              ],
+              "uv": [
+                4,
+                8
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0.0,
+            29.0,
+            0.0
+          ],
+          "rotation": [
+            -0.0,
+            -45.00010522957486,
+            0.0
+          ],
+          "parent": "coral_spear",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                21.0,
+                0.0
+              ],
+              "size": [
+                6.0,
+                10.0,
+                0.0
+              ],
+              "uv": [
+                16,
+                10
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head2",
+          "pivot": [
+            0.0,
+            29.0,
+            0.0
+          ],
+          "rotation": [
+            -0.0,
+            45.00010522957486,
+            0.0
+          ],
+          "parent": "coral_spear",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                21.0,
+                0.0
+              ],
+              "size": [
+                6.0,
+                10.0,
+                0.0
+              ],
+              "uv": [
+                16,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

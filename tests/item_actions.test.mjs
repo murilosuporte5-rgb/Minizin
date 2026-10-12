@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-const script=readFileSync(new URL('../bedrock/runtime/item_actions.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+const script=readFileSync(new URL('../bedrock/runtime/item_actions.js',import.meta.url),'utf8').replace(/\r\n/g,'\n').replace(/^import .*;\n/gm,'');
 function harness(affinity=50){
   const callbacks={},messages=[];let origins=0;
   const event=key=>({subscribe:fn=>(callbacks[key]??=[]).push(fn)});

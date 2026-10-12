@@ -13,9 +13,11 @@ export function encode(item){
     throw new Error('Este item possui dados internos que esta versão ainda não consegue preservar. Ele fica no inventário.');
   const ench=item.getComponent('minecraft:enchantable'),dur=item.getComponent('minecraft:durability');
   const props={};for(const key of item.getDynamicPropertyIds())props[key]=item.getDynamicProperty(key);
-  return {type:item.typeId,amount:item.amount,name:item.nameTag,lore:item.getLore(),
+  const data={type:item.typeId,amount:item.amount,lore:item.getLore(),
     keep:item.keepOnDeath,lock:item.lockMode,destroy:item.getCanDestroy(),place:item.getCanPlaceOn(),
     damage:dur?.damage,enchantments:ench?.getEnchantments().map(e=>({id:e.type.id,level:e.level}))??[],props};
+  if(item.nameTag!==undefined)data.name=item.nameTag;
+  return data;
 }
 export function decode(data){
   const item=new ItemStack(data.type,data.amount);

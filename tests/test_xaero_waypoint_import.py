@@ -11,7 +11,7 @@ class XaeroTests(unittest.TestCase):
                 "#waypoint:name:initials:x:y:z:color:disabled:type:set:rotate_on_tp:tp_yaw:visibility_type:destination\n"
                 "waypoint:Home§§ Base:H:12:~:-38:14:false:0:gui.xaero_default:true:90:0:false\n"
                 "waypoint:gui.xaero_deathpoint:D:-1:64:99:0:false:1:gui.xaero_default\n"
-                "waypoint:bad:too:few\n")
+                "waypoint:bad:too:few\n", encoding="utf-8")
             rows,summary=read_waypoints(f)
             self.assertEqual(len(rows),2)
             self.assertEqual(summary["skipped"],1)

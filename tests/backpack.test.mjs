@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-const source=readFileSync(new URL('../bedrock/runtime/backpack.js',import.meta.url),'utf8')
+const source=readFileSync(new URL('../bedrock/runtime/backpack.js',import.meta.url),'utf8').replace(/\r\n/g,'\n')
   .replace(/^import .*;\n/gm,'').replace(/^export /gm,'');
 class Stack{
   constructor(type,amount){this.typeId=type;this.amount=amount;this.lore=[];this.props={};this.damage=0;this.enchantments=[];this.destroy=[];this.place=[];this.keepOnDeath=false;this.lockMode='none';}

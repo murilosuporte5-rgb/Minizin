@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
-const source=readFileSync(new URL('../bedrock/runtime/aether_equipment.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+const source=readFileSync(new URL('../bedrock/runtime/aether_equipment.js',import.meta.url),'utf8').replace(/\r\n/g,'\n').replace(/^import .*;\n/gm,'');
 function harness(power){
   const callbacks={};const signal=name=>({subscribe:fn=>callbacks[name]=fn});
   const world={afterEvents:{entityHitEntity:signal('hit'),playerBreakBlock:signal('break'),playerLeave:signal('leave')},

@@ -1,0 +1,82 @@
+{
+  "source": "https://gitlab.com/distant-horizons-team/distant-horizons",
+  "file_count": 534,
+  "categories": {
+    "rendering": {
+      "count": 106,
+      "examples": [
+        "common/src/main/java/com/seibel/distanthorizons/common/commonMixins/MixinImmersivePortalsRenderStatesCommon.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/BlazeDebugWireframeRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/BlazeDhGenericObjectRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/BlazeDhMetaRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/BlazeDhRenderApiDefinition.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/BlazeDhTerrainRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/apply/BlazeDhApplyRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/apply/BlazeDhCopyRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/objects/BlazeGenericObjectVertexContainer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/postProcessing/BlazeDhFarFadeRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/postProcessing/BlazeDhFogRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/postProcessing/BlazeDhSharpenRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/postProcessing/BlazeDhSsaoRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/postProcessing/BlazeDhTaaRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/postProcessing/BlazeVanillaFadeRenderer.java"
+      ]
+    },
+    "lod_data": {
+      "count": 5,
+      "examples": [
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/wrappers/uniform/BlazeLodUniformBufferWrapper.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/openGl/util/vertexFormat/GlLodVertexFormat.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/openGl/util/vertexFormat/GlLodVertexFormatElement.java",
+        "testScripts/wipelod.ps1",
+        "testScripts/wipelod.sh"
+      ]
+    },
+    "persistence": {
+      "count": 41,
+      "examples": [
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/block/ClientBlockStateColorCache.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/block/ClientBlockStateTextureCache.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/worldGeneration/mimicObject/RegionFileStorageExternalCache.java",
+        "forge17/src/main/java/com/seibel/distanthorizons/forge17/mixin/IMixinChunkCache_SideFacingUnloaded.java",
+        "relocate_natives/cache/darwin/aarch64/libzstd-jni_dh-1.5.7-12.dylib",
+        "relocate_natives/cache/darwin/x86_64/libzstd-jni_dh-1.5.7-12.dylib",
+        "relocate_natives/cache/dh_sqlite/native/FreeBSD/aarch64/libsqlitejdbc.so",
+        "relocate_natives/cache/dh_sqlite/native/FreeBSD/x86/libsqlitejdbc.so",
+        "relocate_natives/cache/dh_sqlite/native/FreeBSD/x86_64/libsqlitejdbc.so",
+        "relocate_natives/cache/dh_sqlite/native/Linux-Musl/aarch64/libsqlitejdbc.so",
+        "relocate_natives/cache/dh_sqlite/native/Linux-Musl/x86/libsqlitejdbc.so",
+        "relocate_natives/cache/dh_sqlite/native/Linux-Musl/x86_64/libsqlitejdbc.so",
+        "relocate_natives/cache/dh_sqlite/native/Linux/aarch64/libsqlitejdbc.so",
+        "relocate_natives/cache/dh_sqlite/native/Linux/arm/libsqlitejdbc.so",
+        "relocate_natives/cache/dh_sqlite/native/Linux/armv6/libsqlitejdbc.so"
+      ]
+    },
+    "worldgen": {
+      "count": 51,
+      "examples": [
+        "common/src/main/java/com/seibel/distanthorizons/common/backports/ChunkPos.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/commonMixins/MixinChunkMapCommon.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/blaze/BlazeDhTerrainRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/openGl/GlDhTerrainRenderer.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/openGl/terrain/GlBlockTextureAtlas.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/render/openGl/terrain/GlDhTerrainShaderProgram.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/chunk/ChunkWrapper.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/worldGeneration/ChunkGenEvent.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/worldGeneration/ChunkPosGenStream.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/worldGeneration/DhChunkGenerator.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/worldGeneration/DhInternalServerGenerator.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/worldGeneration/DhRoughSurfaceGenerator.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/worldGeneration/chunkFileHandling/ChunkCompoundTagParser.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/worldGeneration/chunkFileHandling/ChunkFileReader.java",
+        "common/src/main/java/com/seibel/distanthorizons/common/wrappers/worldGeneration/chunkFileHandling/CompoundTagUtil.java"
+      ]
+    },
+    "api": {
+      "count": 0,
+      "examples": []
+    }
+  },
+  "is_bedrock_renderer": false,
+  "warning": "Filename-level reverse engineering. No native renderer or Minecraft Bedrock LOD."
+}

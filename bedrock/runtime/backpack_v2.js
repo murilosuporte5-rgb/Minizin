@@ -27,11 +27,13 @@ export function encode(item){
     throw Error("Os metadados internos deste item não podem ser preservados.");
   const props={};for(const k of item.getDynamicPropertyIds())props[k]=item.getDynamicProperty(k);
   const enchant=item.getComponent("minecraft:enchantable");
-  return {type:item.typeId,amount:item.amount,name:item.nameTag,lore:item.getLore(),
+  const data={type:item.typeId,amount:item.amount,lore:item.getLore(),
     damage:item.getComponent("minecraft:durability")?.damage,
     enchantments:enchant?.getEnchantments().map(x=>({id:x.type.id,level:x.level}))||[],
     keep:item.keepOnDeath,lock:item.lockMode,destroy:item.getCanDestroy(),
     place:item.getCanPlaceOn(),props};
+  if(item.nameTag!==undefined)data.name=item.nameTag;
+  return data;
 }
 export function decode(data){
   const item=new ItemStack(data.type,data.amount);

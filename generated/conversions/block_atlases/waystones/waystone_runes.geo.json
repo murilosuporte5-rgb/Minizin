@@ -1,0 +1,95 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.minizin.waystones.waystone_runes",
+        "texture_width": 84,
+        "texture_height": 19,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "block_part_0",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -5.25,
+                12,
+                -5.25
+              ],
+              "size": [
+                10.5,
+                9.5,
+                10.5
+              ],
+              "uv": {
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    20,
+                    19
+                  ]
+                },
+                "east": {
+                  "uv": [
+                    21,
+                    0
+                  ],
+                  "uv_size": [
+                    20,
+                    19
+                  ]
+                },
+                "south": {
+                  "uv": [
+                    42,
+                    0
+                  ],
+                  "uv_size": [
+                    20,
+                    19
+                  ]
+                },
+                "west": {
+                  "uv": [
+                    63,
+                    0
+                  ],
+                  "uv_size": [
+                    20,
+                    19
+                  ]
+                }
+              },
+              "pivot": [
+                -8,
+                -0.5,
+                -8
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
