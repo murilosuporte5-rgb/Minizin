@@ -28,11 +28,12 @@ jobs:
         run: |
           node --check bedrock/worlds/aether/main.js
           node --check bedrock/worlds/bop/main.js
+      - name: Install conversion dependencies
+        run: python -m pip install --disable-pip-version-check Pillow nbtlib numpy
       - name: Run static tests
         run: python -m unittest discover -s bedrock/worlds/tests -v
       - name: Build packs locally with originals (do not upload copyrighted assets)
         run: |
-          python -m pip install --disable-pip-version-check Pillow nbtlib numpy
           python bedrock/worlds/build_worlds.py --mod both
       - name: Inspect generated Bedrock ZIP layout and resource wiring
         run: |
