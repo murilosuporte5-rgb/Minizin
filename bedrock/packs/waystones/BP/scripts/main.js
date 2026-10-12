@@ -4,6 +4,7 @@ import { ActionFormData } from "@minecraft/server-ui";
 // Minizin Waystones prototype. Server authoritative: no client-selected coordinates.
 // Persisted per world and per player; markers are summonable entities, not blocks.
 const KEY="minizin:waystones_world_v1",KNOWN="minizin:waystones_known_v1",IDENT="minizin:waystone_id";
+const busy=new Set();
 function read(holder,key){try{const x=holder.getDynamicProperty(key);return typeof x==="string"?JSON.parse(x):[]}catch{return[];}}
 function save(holder,key,value){holder.setDynamicProperty(key,JSON.stringify(value));}
 function asDimension(raw){try{return world.getDimension(raw);}catch{return world.getDimension(raw.split(":").pop());}}
@@ -27,6 +28,9 @@ function register(marker){
  return list.find(x=>x.id===id);
 }
 async function interact(player,marker){
+ if(busy.has(player.id))return;
+ busy.add(player.id);
+ try{
  const here=register(marker),known=read(player,KNOWN);
  if(!known.includes(here.id)){
   known.push(here.id);save(player,KNOWN,known);
@@ -46,11 +50,24 @@ async function interact(player,marker){
  if(!serverRecord)return;
  try{
   const dim=asDimension(serverRecord.dimension);
-  player.teleport({x:serverRecord.x+1.5,y:serverRecord.y+0.5,z:serverRecord.z+0.5},{dimension:dim});
+  // Check the destination's floor and two blocks of headroom. A missing block
+  // (for example, an unloaded chunk) is not a safe arrival location.
+  let arrival;
+  for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]){
+   const pos={x:Math.floor(serverRecord.x)+dx,y:Math.floor(serverRecord.y),z:Math.floor(serverRecord.z)+dz};
+   const feet=dim.getBlock(pos),head=dim.getBlock({...pos,y:pos.y+1});
+   const floor=dim.getBlock({...pos,y:pos.y-1});
+   if(feet?.isAir&&head?.isAir&&floor&&!floor.isAir&&!floor.isLiquid){
+    arrival={x:pos.x+0.5,y:pos.y,z:pos.z+0.5};break;
+   }
+  }
+  if(!arrival){player.sendMessage("§eDestino bloqueado ou região não carregada.");return;}
+  player.teleport(arrival,{dimension:dim,checkForBlocks:true});
   player.sendMessage("§bTeleportado para "+serverRecord.name+".");
  }catch(error){player.sendMessage("§cNão foi possível carregar o destino: "+String(error));}
+ }finally{busy.delete(player.id);}
 }
 world.afterEvents.playerInteractWithEntity.subscribe(ev=>{
- if(ev.target.typeId!=="minizin:andesite_waystone")return;
+ if(ev.target.typeId!=="minizin:andesite_waystone"||!ev.target.isValid)return;
  system.run(()=>{interact(ev.player,ev.target).catch(e=>ev.player.sendMessage("§cWaystones: "+e));});
 });
