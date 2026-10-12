@@ -53,6 +53,9 @@ ASSETS = {
         "crystal_leaves": ("natural/crystal_leaves.png", "grass"),
         "crystal_fruit_leaves": ("natural/crystal_fruit_leaves.png", "grass"),
         "skyroot_sapling": ("natural/skyroot_sapling.png", "grass"),
+        "white_flower": ("natural/white_flower.png", "grass"),
+        "purple_flower": ("natural/purple_flower.png", "grass"),
+        "berry_bush": ("natural/berry_bush.png", "grass"),
     },
     "bop": {
         "lavender": ("lavender.png", "grass"),
@@ -99,7 +102,8 @@ FACES = {
         "palm_log": {"up": "palm_log_top.png", "down": "palm_log_top.png"},
     },
 }
-PLANTS = {"bop": {"lavender", "glowflower", "white_lavender", "violet"}}
+PLANTS = {"bop": {"lavender", "glowflower", "white_lavender", "violet"},
+          "aether": {"white_flower", "purple_flower", "berry_bush", "skyroot_sapling"}}
 LEAVES = {
     "aether": {"skyroot_leaves", "golden_oak_leaves",
               "crystal_leaves", "crystal_fruit_leaves"},
@@ -107,6 +111,9 @@ LEAVES = {
             "pine_leaves", "jacaranda_leaves", "maple_leaves", "palm_leaves"},
 }
 BIOME_SOURCE = ROOT / "mods/19-biomes-o-plenty/upstream/common/src/generated/resources/data/biomesoplenty/worldgen/biome"
+AETHER_BIOME_SOURCE = ROOT / "mods/41-the-aether/upstream/src/generated/resources/data/aether/worldgen/biome"
+AETHER_BIOME_DENSITIES = {"skyroot_forest": 9, "skyroot_grove": 6,
+                          "skyroot_meadow": 2, "skyroot_woodland": 4}
 BIOMES = {
     "lavender_field": dict(temp=.75, rain=.42, noise="lowlands", climate="medium",
                           tree=None, flower="lavender", trees=0, flowers=10,
