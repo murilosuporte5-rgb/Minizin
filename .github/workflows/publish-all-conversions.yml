@@ -1,0 +1,89 @@
+name: Publish all prior Bedrock conversions for Codex
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-all-conversions.yml"
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download verified conversion artifacts
+        run: |
+          mkdir -p build/aggregate
+          gh run download 38202331340 -R "murilosuporte5-rgb/Minizin" -n Ice-and-Fire-Tabula-All-Converted-Models -D build/aggregate/ice_and_fire
+          gh run download 38202266122 -R "murilosuporte5-rgb/Minizin" -n Alex-Caves-Atlatitan-Geometry-Prototype -D build/aggregate/alex_caves
+          gh run download 38202663686 -R "murilosuporte5-rgb/Minizin" -n Bedrock-Block-Geometry-Atlas-Batch -D build/aggregate/block_atlases
+          gh run download 38234148217 -R "murilosuporte5-rgb/Minizin" -n Cataclysm-Original-Models-Bedrock-Geometry -D build/aggregate/cataclysm
+          gh run download 38234659523 -R "murilosuporte5-rgb/Minizin" -n Distant-Horizons-Source-Audit-and-LOD-Prototype -D build/aggregate/distant_horizons
+          gh run download 38234333289 -R "murilosuporte5-rgb/Minizin" -n Xaero-Waypoint-Import-Example -D build/aggregate/xaero_waypoints
+          gh run download 38202861342 -R "murilosuporte5-rgb/Minizin" -n Minizin-Bedrock-Prototypes -D build/aggregate/old_prototype_packs
+      - name: Audit all generated geometries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/aggregate")
+          counts={}
+          for directory in root.iterdir():
+              files=list(directory.rglob("*.geo.json"))
+              for file in files:
+                  obj=json.loads(file.read_text(encoding="utf-8"))
+                  assert obj.get("minecraft:geometry"),file
+                  for geo in obj["minecraft:geometry"]:
+                      assert geo["description"]["identifier"]
+              counts[directory.name]=len(files)
+          print("Generated geometry count",counts)
+          assert counts["ice_and_fire"]>=192
+          assert counts["cataclysm"]>=41
+          assert counts["block_atlases"]>=366
+          assert counts["alex_caves"]>=1
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Minizin-All-Prior-Converted-Models
+          path: build/aggregate/
+          retention-days: 30
+      - name: Publish all converted resources to generated-bedrock branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin generated-bedrock:refs/remotes/origin/generated-bedrock
+          git switch -C generated-bedrock origin/generated-bedrock
+          mkdir -p generated/conversions
+          cp -a build/aggregate/. generated/conversions/
+          cat > generated/conversions/README.md <<'EOF'
+          # Minizin — modelos convertidos para Minecraft Bedrock (laboratório)
+
+          Arquivos extraídos e convertidos de modelos originais com documentação de procedência.
+          **Geometrias JSON não são, por si só, mods Bedrock completos ou entidades jogáveis.**
+
+          - ice_and_fire: 192 poses/modelos Tabula exportados em geometry JSON (não animações).
+          - alex_caves: Atlatitan, modelo Java Citadel convertido.
+          - block_atlases: Waystones, Biomes O Plenty e Aether — .geo.json + PNGs de atlas.
+          - cataclysm: 41 modelos Java convertidos; os demais exigem outro parser/revisão.
+          - old_prototype_packs: Waystones/Mowzie, com protótipos .mcaddon.
+          - xaero_waypoints: exemplo JSON de importação, não o minimapa visual.
+          - distant_horizons: análise de fonte e dados LOD offline, não renderização nativa.
+
+          As fontes originais permanecem nos submódulos Git do repositório.
+          Registre e cumpra as licenças/autorizações aplicáveis ao redistribuir assets.
+          Renderização, IA, animações, worldgen e performance ainda devem ser validadas no Android.
+          EOF
+          git add -f generated/
+          if ! git diff --cached --quiet; then
+            git commit -m "build: publish all converted 14-mod resource research outputs for Codex"
+            git push origin generated-bedrock
+          fi
