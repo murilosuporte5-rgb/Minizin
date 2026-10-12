@@ -28,6 +28,8 @@ jobs:
           done
       - name: Test systems in deterministic mocks
         run: node --test tests/systems_*.test.mjs
+      - name: Validate actual geometry, skins, atlases and pack links
+        run: python tests/systems_pack_integrity.py
       - name: JSON validation and package
         run: |
           python - <<'PY'
