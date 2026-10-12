@@ -54,6 +54,10 @@ jobs:
                   assert bp["dependencies"][0]["uuid"] == rp["header"]["uuid"]
                   if mod == "aether":
                       assert "BP/scripts/main.js" in names
+                      assert "BP/scripts/biome_profiles.js" in names
+                      profiles = z.read("BP/scripts/biome_profiles.js").decode("utf-8")
+                      for key in ("skyroot_forest", "skyroot_grove", "skyroot_meadow", "skyroot_woodland"):
+                          assert "aether:" + key in profiles, key
                       assert any(n.startswith("BP/structures/minizin_aether/") and n.endswith(".mcstructure") for n in names)
                       report = json.loads(z.read("BP/structures/minizin_aether/conversion_report.json"))
                       files = [t for t in report["templates"] if t["status"].startswith("converted")]
