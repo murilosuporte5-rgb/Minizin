@@ -137,6 +137,31 @@ function addTree(dim, x, y, z, s, giant = false) {
     }
   }
 }
+function placeOriginalDungeon(dim, x, y, z, cx, cz) {
+  // The .mcstructure files are converted from pinned Java templates, not
+  // invented rooms. No claim of boss AI / generation algorithm equivalence.
+  const family = ["bronze", "silver", "gold"][seed(cx, cz) % 3];
+  const preferred = [
+    "minizin_aether:" + family + "_dungeon/boss_room",
+    "minizin_aether:" + family + "_dungeon/entrance",
+    "minizin_aether:" + family + "_dungeon/skeleton",
+  ];
+  const manager = world.structureManager;
+  if (!manager || !manager.getPackStructureIds) return false;
+  try {
+    const known = new Set(manager.getPackStructureIds());
+    const chosen = preferred.find(id => known.has(id));
+    if (!chosen) return false;
+    // Structure API queues placement across unloaded chunks. Coordinates are
+    // anchored at the cell center; positional parity with Java is unverified.
+    manager.place(chosen, dim, { x: x - 12, y, z: z - 12 });
+    console.warn("[Minizin Aether] Original template placed: " + chosen);
+    return true;
+  } catch (error) {
+    console.warn("[Minizin Aether] Original dungeon placement failed: " + String(error));
+    return false;
+  }
+}
 function addTemple(dim, x, y, z) {
   // Deterministic small dungeon room, not a copy of the Java Bronze/Silver/Gold dungeon.
   for (let dx = -4; dx <= 4; dx++) {
@@ -220,7 +245,10 @@ async function generateCell(cx, cz) {
       addExitFrame(dim, exitHeight);
     } else if (s % 5 === 0) {
       const t = terrain(c.x, c.z, cx, cz);
-      addTemple(dim, c.x, t.surface + 1, c.z);
+      // Prefer a converted original template when available. The simplified
+      // room is retained only as an explicit fallback, never a Java replica.
+      if (!placeOriginalDungeon(dim, c.x, t.surface + 1, c.z, cx, cz))
+        addTemple(dim, c.x, t.surface + 1, c.z);
     }
     // Persist only on complete success; interrupted cells regenerate idempotently.
     world.setDynamicProperty(key, true);
