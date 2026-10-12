@@ -40,6 +40,23 @@ class OriginalAetherEntityTests(unittest.TestCase):
             self.assertTrue(geo["minecraft:geometry"][0]["bones"])
             self.assertTrue(all(b["name"] for b in geo["minecraft:geometry"][0]["bones"]))
 
+    def test_composite_native_quadruped_body_with_original_java_wings(self):
+        self.assertEqual(len(models.MOBS), 16)
+        for mob, body in (("phyg", "geometry.pig.v3"),
+                          ("flying_cow", "geometry.cow.v2")):
+            descriptor = models.client_entity(mob)["minecraft:client_entity"]["description"]
+            self.assertEqual(descriptor["geometry"]["default"], body)
+            self.assertEqual(descriptor["geometry"]["wings"],
+                             f"geometry.minizin_aether.{mob}")
+            self.assertTrue(descriptor["textures"]["wings"].endswith(mob + "_wings"))
+            self.assertIn("controller.render.minizin_aether.wings",
+                          descriptor["render_controllers"])
+            spec = models.MOBS[mob]
+            self.assertTrue((models.ORIGINAL_TEXTURES / spec["wings_texture"]).is_file())
+        source = (models.JAVA_MODELS / "CloudMinionModel.java").read_text()
+        _, audit = models.convert_model(source, "cloud_minion")
+        self.assertEqual(audit["converted_cubes"], 5)
+
     def test_bosses_recover_model_counts_and_health_from_java(self):
         expected = {"slider": (400, 1), "valkyrie_queen": (500, 42),
                     "sun_spirit": (500, 11)}
