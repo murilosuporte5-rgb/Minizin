@@ -12,7 +12,7 @@ import re
 import shutil
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 JAVA_MODELS = ROOT / "mods/41-the-aether/upstream/src/main/java/com/aetherteam/aether/client/renderer/entity/model"
 ORIGINAL_TEXTURES = ROOT / "mods/41-the-aether/upstream/src/main/resources/assets/aether/textures/entity"
 MOD_NAMESPACE = "minizin_aether"
