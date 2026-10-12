@@ -39,6 +39,8 @@ ASSETS = {
         "hellfire_stone": ("dungeon/hellfire_stone.png", "stone"),
         "light_hellfire_stone": ("dungeon/light_hellfire_stone.png", "stone"),
         "sentry_stone": ("dungeon/sentry_stone.png", "stone"),
+        "locked_angelic_stone": ("dungeon/angelic_stone.png", "stone"),
+        "boss_doorway_angelic_stone": ("dungeon/door.png", "stone"),
         "pillar": ("dungeon/pillar_side.png", "stone"),
         "mossy_holystone": ("natural/mossy_holystone.png", "stone"),
         "icestone": ("natural/icestone.png", "stone"),
@@ -192,6 +194,11 @@ def block_def(mod: str, name: str) -> dict:
         components["minecraft:collision_box"] = False
         components["minecraft:selection_box"] = {"origin": [-7, 0, -7], "size": [14, 16, 14]}
         components["minecraft:material_instances"]["*"]["render_method"] = "alpha_test"
+    if mod == "aether" and name in ("locked_angelic_stone", "boss_doorway_angelic_stone"):
+        # Source has dungeon lock semantics. Until original boss progression is
+        # ported these must stay locked rather than granting fake access.
+        components["minecraft:destructible_by_mining"] = False
+        components["minecraft:destructible_by_explosion"] = False
     if name == "aether_portal":
         components["minecraft:geometry"] = "geometry.minizin_worlds.portal"
         components["minecraft:collision_box"] = False
