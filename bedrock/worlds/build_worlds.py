@@ -44,6 +44,13 @@ ASSETS = {
         "icestone": ("natural/icestone.png", "stone"),
         "quicksoil": ("natural/quicksoil.png", "sand"),
         "skyroot_planks": ("construction/skyroot_planks.png", "wood"),
+        "cold_aercloud": ("natural/cold_aercloud.png", "glass"),
+        "blue_aercloud": ("natural/blue_aercloud.png", "glass"),
+        "golden_aercloud": ("natural/golden_aercloud.png", "glass"),
+        "gravitite_ore": ("natural/gravitite_ore.png", "stone"),
+        "crystal_leaves": ("natural/crystal_leaves.png", "grass"),
+        "crystal_fruit_leaves": ("natural/crystal_fruit_leaves.png", "grass"),
+        "skyroot_sapling": ("natural/skyroot_sapling.png", "grass"),
     },
     "bop": {
         "lavender": ("lavender.png", "grass"),
@@ -92,7 +99,8 @@ FACES = {
 }
 PLANTS = {"bop": {"lavender", "glowflower", "white_lavender", "violet"}}
 LEAVES = {
-    "aether": {"skyroot_leaves", "golden_oak_leaves"},
+    "aether": {"skyroot_leaves", "golden_oak_leaves",
+              "crystal_leaves", "crystal_fruit_leaves"},
     "bop": {"magic_leaves", "redwood_leaves", "umbran_leaves", "fir_leaves",
             "pine_leaves", "jacaranda_leaves", "maple_leaves", "palm_leaves"},
 }
