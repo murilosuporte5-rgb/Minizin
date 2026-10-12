@@ -45,6 +45,21 @@ ASSETS = {
         "glowflower": ("glowflower.png", "grass"),
     },
 }
+# Directional texture faces preserve the original top/bottom materials instead of
+# stretching the Java side texture across all six faces in Bedrock.
+FACES = {
+    "aether": {
+        "aether_grass": {"up": "natural/aether_grass_block_top.png",
+                         "down": "natural/aether_dirt.png"},
+        "skyroot_log": {"up": "natural/skyroot_log_top.png",
+                        "down": "natural/skyroot_log_top.png"},
+    },
+    "bop": {
+        "magic_log": {"up": "magic_log_top.png", "down": "magic_log_top.png"},
+        "redwood_log": {"up": "redwood_log_top.png", "down": "redwood_log_top.png"},
+        "umbran_log": {"up": "umbran_log_top.png", "down": "umbran_log_top.png"},
+    },
+}
 PLANTS = {"bop": {"lavender", "glowflower"}}
 LEAVES = {
     "aether": {"skyroot_leaves", "golden_oak_leaves"},
@@ -115,6 +130,9 @@ def block_def(mod: str, name: str) -> dict:
             "seconds_to_destroy": 0.3 if name in PLANTS.get(mod, set()) else 1.2
         },
     }
+    for face in FACES.get(mod, {}).get(name, {}):
+        components["minecraft:material_instances"][face] = {
+            "texture": f"{ns}_{name}_{face}", "render_method": "opaque"}
     if name in PLANTS.get(mod, set()):
         components["minecraft:geometry"] = "geometry.minizin_worlds.cross"
         components["minecraft:collision_box"] = False
@@ -307,6 +325,10 @@ def validate_pack(bp: Path, rp: Path, mod: str) -> None:
         key = f"{ns}_{name}"
         assert key in terrain["texture_data"], key
         assert (rp / f"textures/blocks/{key}.png").is_file(), key
+        for face in FACES.get(mod, {}).get(name, {}):
+            face_key = f"{key}_{face}"
+            assert face_key in terrain["texture_data"]
+            assert (rp / f"textures/blocks/{face_key}.png").is_file()
     if mod == "bop":
         assert len(list((bp / "biomes").glob("*.json"))) == len(BIOMES)
         for name, spec in BIOMES.items():
@@ -341,6 +363,11 @@ def build(mod: str, output: Path) -> Path:
         dst = rp / f"textures/blocks/{key}.png"
         copy_texture(src, dst, mod, name)
         atlas["texture_data"][key] = {"textures": f"textures/blocks/{key}"}
+        for face, side_source in FACES.get(mod, {}).get(name, {}).items():
+            face_key = f"{key}_{face}"
+            face_target = rp / f"textures/blocks/{face_key}.png"
+            copy_texture(SOURCES[mod] / side_source, face_target, mod, name)
+            atlas["texture_data"][face_key] = {"textures": f"textures/blocks/{face_key}"}
         jwrite(bp / "blocks" / f"{name}.json", block_def(mod, name))
         translations.append(f"tile.{ns}:{name}.name={name.replace('_', ' ').title()}")
     jwrite(rp / "textures/terrain_texture.json", atlas)
