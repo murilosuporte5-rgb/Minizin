@@ -1,0 +1,69 @@
+name: Build Bedrock Next Four prototype with original source art
+on:
+  push:
+    paths:
+      - "bedrock/packs/next_four/**"
+      - "tools/build_next_four_pack.py"
+      - "tests/test_build_next_four_pack.py"
+      - ".github/workflows/next-four-bedrock.yml"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install image compositing support
+        run: python -m pip install Pillow
+      - name: Node JS syntax checks for all Bedrock modules
+        run: |
+          for file in bedrock/packs/next_four/BP/scripts/*.js; do node --check "$file"; done
+      - name: Script and pack unit tests
+        run: python -m unittest discover -s tests -p 'test_build_next_four_pack.py' -v
+      - name: Fetch pinned originals from the four mod repositories
+        run: |
+          git submodule update --init --depth 1 mods/33-mca-reborn/upstream \
+            mods/34-carry-on/upstream mods/54-rftools/upstream mods/55-origins/upstream
+      - name: Generate catalog and reuse source skins, texture and mesh
+        run: python tools/build_next_four_pack.py --output build/next_four
+      - name: Validate generated Bedrock structure and original asset provenance
+        run: |
+          python - <<'PY'
+          import io,json,zipfile
+          from pathlib import Path
+          base=Path("build/next_four")
+          r=json.loads((base/"asset_report.json").read_text())
+          assert r["origin_count"]>=10
+          assert r["original_images"]==4
+          assert len(r["source_files"])>=16,len(r["source_files"])
+          bundle=base/"Minizin_Next_Four_Prototype.mcaddon"
+          with zipfile.ZipFile(bundle) as zipfile_obj:
+              names=set(zipfile_obj.namelist())
+              assert names=={"Minizin_Next_Four_RP.mcpack","Minizin_Next_Four_BP.mcpack"}
+              with zipfile.ZipFile(io.BytesIO(zipfile_obj.read("Minizin_Next_Four_RP.mcpack"))) as rp:
+                  assert "manifest.json" in rp.namelist()
+                  assert "textures/minizin/mca/female_armorer_composite.png" in rp.namelist()
+                  assert "textures/minizin/origins/star.png" in rp.namelist()
+                  assert "textures/minizin/rftools/powercell.png" in rp.namelist()
+              with zipfile.ZipFile(io.BytesIO(zipfile_obj.read("Minizin_Next_Four_BP.mcpack"))) as bp:
+                  assert "scripts/catalog.js" in bp.namelist()
+                  assert "scripts/main.js" in bp.namelist()
+                  generated=bp.read("scripts/catalog.js").decode("utf-8")
+                  assert '"id":"merling"' in generated and 'origins:water_breathing' in generated
+          obj=base/"original_meshes/rftools/powercell.obj"
+          assert "mtllib " in obj.read_text(errors="replace")
+          assert (base/"original_meshes/rftools/powercell.blend").read_bytes().startswith(b"BLENDER")
+          print("Verified original skins, power catalog, GUI PNG, RFTools OBJ and prototype ZIP.")
+          print("Bytes:",bundle.stat().st_size)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Minizin-Next-Four-Bedrock-and-Original-Assets
+          path: build/next_four/
+          retention-days: 30
+          if-no-files-found: error
