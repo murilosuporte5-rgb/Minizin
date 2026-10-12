@@ -1,0 +1,44 @@
+name: Convert Ice and Fire fire dragon to Bedrock geometry
+on:
+  push:
+    paths:
+      - "tools/tabula_to_bedrock.py"
+      - "tests/test_tabula_to_bedrock.py"
+      - ".github/workflows/dragon-convert.yml"
+  workflow_dispatch:
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: python -m unittest discover -s tests -p 'test_tabula_to_bedrock.py'
+      - name: Download original Tabula model (sparse checkout)
+        run: |
+          mkdir -p build
+          git clone --depth 1 --filter=blob:none --no-checkout --branch 1.18.2 https://github.com/AlexModGuy/Ice_and_Fire.git build/ice_and_fire
+          git -C build/ice_and_fire sparse-checkout init --cone
+          git -C build/ice_and_fire sparse-checkout set src/main/resources/assets/iceandfire/models/tabula/firedragon
+          git -C build/ice_and_fire checkout 1.18.2
+      - name: Convert real dragon base male
+        run: |
+          python tools/tabula_to_bedrock.py build/ice_and_fire/src/main/resources/assets/iceandfire/models/tabula/firedragon/firedragon_BaseMale.tbl --identifier geometry.minizin.fire_dragon_base_male --output build/fire_dragon_base_male.geo.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("build/fire_dragon_base_male.geo.json").read_text())
+          bones=x["minecraft:geometry"][0]["bones"]
+          cubes=sum(len(b.get("cubes",[])) for b in bones)
+          assert len(bones)>50, len(bones)
+          assert cubes>50,cubes
+          print(f"Verified {len(bones)} hierarchical bones / {cubes} cuboids")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fire-Dragon-Bedrock-Geometry-Prototype
+          path: |
+            build/fire_dragon_base_male.geo.json
+            build/fire_dragon_base_male.geo.conversion.json
