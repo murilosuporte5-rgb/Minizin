@@ -1,0 +1,45 @@
+name: Inspect real Ice and Fire Tabula dragon model
+on:
+  push:
+    paths:
+      - ".github/workflows/dragon-tabula.yml"
+      - "tools/tabula_inspect.py"
+  workflow_dispatch:
+jobs:
+  tabula:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch only original Tabula dragon assets
+        run: |
+          git clone --depth 1 --filter=blob:none --no-checkout --branch 1.18.2 https://github.com/AlexModGuy/Ice_and_Fire.git build/ice_and_fire
+          git -C build/ice_and_fire sparse-checkout init --cone
+          git -C build/ice_and_fire sparse-checkout set src/main/resources/assets/iceandfire/models/tabula/firedragon
+          git -C build/ice_and_fire checkout 1.18.2
+      - name: Unpack a real base dragon pose
+        run: |
+          python tools/tabula_inspect.py build/ice_and_fire/src/main/resources/assets/iceandfire/models/tabula/firedragon/firedragon_BaseMale.tbl --extract-to build/dragon_base
+      - name: Report source schema and fields
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path('build/dragon_base/model.json').read_text())
+          print("ROOT KEYS:",list(j))
+          for k in ('cubeGroups','cubes','textureWidth','textureHeight','modelName','projVersion'):
+              x=j.get(k)
+              print(k, ': type=',type(x).__name__,'value=', (len(x) if isinstance(x,list) else x))
+              if isinstance(x,list) and x:
+                  first=x[0]
+                  print(k,'first keys:',list(first) if isinstance(first,dict) else type(first).__name__)
+                  if isinstance(first,dict):
+                      for key in ['identifier','name','dimensions','position','rotation','offset','txOffset','cubes','children']:
+                          if key in first: print('  ',key, ':', str(first[key])[:180])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Real-Ice-and-Fire-Tabula-Base-Model
+          path: build/dragon_base/
