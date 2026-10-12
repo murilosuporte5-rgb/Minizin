@@ -130,6 +130,19 @@ class FullBopTests(unittest.TestCase):
             self.assertEqual("minecraft:replace_biomes" in components,
                              p.stem not in biomes.CAVE)
 
+    def test_biome_dimensions_are_grounded_in_original_java_registry(self):
+        registry = (ROOT / "mods/19-biomes-o-plenty/upstream/common/src/main/java/biomesoplenty/api/biome/BOPBiomes.java").read_text()
+        nether_source = "\\n".join(
+            (ROOT / ("mods/19-biomes-o-plenty/upstream/common/src/main/java/"
+                     "biomesoplenty/worldgen/" + filename)).read_text()
+            for filename in ("BOPNetherRegionCommon.java", "BOPNetherRegionRare.java")
+        )
+        for name in biomes.NETHER:
+            self.assertIn(f"BOPBiomes.{name.upper()}", nether_source, name)
+        for name in ("end_reef", "end_wilds", "volcano", "volcanic_plains"):
+            self.assertIn(f'registerOverworld("{name}")', registry, name)
+            self.assertEqual(biomes.native_replacement(name)["dimension"], "minecraft:overworld")
+
     def test_mapped_java_decorations_use_registered_species(self):
         tree, flower = biomes.selected_feature(
             "redwood_forest", ["biomesoplenty:redwood_tree"],
