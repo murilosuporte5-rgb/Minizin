@@ -198,7 +198,9 @@ function* unlockArena(dimension, arena, stage) {
   for (let x = Math.floor(arena.x) - size; x <= arena.x + size; x++) {
     for (let z = Math.floor(arena.z) - size; z <= arena.z + size; z++) {
       for (let y = Math.floor(arena.y) - 9; y <= arena.y + 17; y++) {
-        const block = dimension.getBlock({ x, y, z });
+        let block;
+        try { block = dimension.getBlock({ x, y, z }); }
+        catch { continue; } // Nonloaded chunks are retried from pending record.
         const from = block?.typeId?.replace(D, "");
         if (from in UNLOCK) {
           const dest = UNLOCK[from];
