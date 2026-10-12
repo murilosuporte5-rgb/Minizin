@@ -1,0 +1,29 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Minizin Next Four - Resource Pack",
+    "description": "Prototype assets: MCA/Carry On/RFTools/Origins",
+    "uuid": "dcd7a421-7ec3-4c78-aee2-b24703137ac2",
+    "version": [
+      0,
+      1,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "11d9df24-a14a-46a7-a2b0-50f0c058e63d",
+      "version": [
+        0,
+        1,
+        0
+      ]
+    }
+  ]
+}
