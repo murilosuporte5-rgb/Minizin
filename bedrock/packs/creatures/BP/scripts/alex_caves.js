@@ -1,4 +1,5 @@
 import {world,system,get,put,state,rider,playerTarget,nearby,distance,hit,eventSound,item,take} from "./core.js";
+import {onUse} from "./controls.js";
 const TYPE="minizin_creatures:atlatitan";
 function begin(e,move,duration){put(e,"move",move);put(e,"frames",duration);state(e,"attack",move);}
 export function tickAtlatitan(e,tick){
@@ -37,10 +38,10 @@ export function installAtlatitan(){
       } else if(Number(get(e,"rideable_ticks",0))>0)try{e.getComponent("minecraft:rideable")?.addRider(p);}catch{}
     });
   });
-  world.afterEvents.itemUse.subscribe(ev=>{
-    if(ev.itemStack?.typeId!=="minizin_creatures:serene_salad")return;
+  onUse((player,id)=>{
+    if(id!=="minizin_creatures:serene_salad")return;
     system.run(()=>{
-      const e=ev.source.getComponent("minecraft:riding")?.entityRidingOn;
+      const e=player.getComponent("minecraft:riding")?.entityRidingOn;
       if(e?.typeId===TYPE&&Number(get(e,"frames",0))<=0&&Number(get(e,"meter",1))>=1){
         put(e,"meter",0);begin(e,"stomp",40);
       }

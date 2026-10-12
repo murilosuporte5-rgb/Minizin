@@ -165,7 +165,8 @@ def build(out,has_permission):
           "components":{"minecraft:icon":"minizin_creatures_"+id,
              "minecraft:display_name":{"value":id.replace("_"," ").title()},
              "minecraft:max_stack_size":64,
-             "minecraft:use_modifiers":{"use_duration":0.2,"movement_modifier":1.0}}}})
+             "minecraft:use_modifiers":{"use_duration":0.2,"movement_modifier":1.0},
+             **({"minizin_creatures:activate":{}} if id.startswith("dragon_egg_") or id in ("dragon_flute","serene_salad") else {})}}})
     write_json(rp/"textures/item_texture.json",{"resource_pack_name":"minizin_creatures","texture_name":"atlas.items","texture_data":atlas})
     sound_defs={}
     for key,(mod,namespace,path) in AUDIO.items():

@@ -12,7 +12,7 @@
     "min_engine_version": [
       1,
       21,
-      0
+      90
     ]
   },
   "modules": [
@@ -41,6 +41,14 @@
     {
       "module_name": "@minecraft/server",
       "version": "2.0.0"
+    },
+    {
+      "uuid": "5d1ad275-1803-4128-88c3-8f60d0f96a0a",
+      "version": [
+        0,
+        1,
+        0
+      ]
     }
   ]
 }

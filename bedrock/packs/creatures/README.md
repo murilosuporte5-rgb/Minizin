@@ -28,3 +28,7 @@ Ice and Fire: `02b2922003cbce3c67dad55dfea79acf1721e0db` (EntityDragonBase.java)
 
 ## Gates pendentes
 Correspondência exata do bloco 'egg in ice', renderização e variações dos 12 ovos, escala/collision box dinâmica, sela/overlay de armadura, inventário, ataques/partículas 1:1, bosses adicionais, fases completas, drops/loot, IA de grupo, biblioteca de áudio total e eventos de áudio adicionais, caverns/worldgen, persistência/streaming multiplayer e benchmark real Android. Bedrock Script API não executa Citadel/GeckoLib/LLibrary/Forge; interpolar poses não substitui motores Java.
+
+## Correções de API para controles mobile
+
+Versão mínima da variante de criaturas: **Bedrock 1.21.90**, por requerer `minecraft:input_air_controlled` na montaria em voo. O BP usa `minecraft:input_ground_controlled` em montarias terrestres. Itens de controle são registrados via `system.beforeEvents.startup` + `minizin_creatures:activate` e despachados com deduplicação entre `onUse`, `onUseOn` e `itemUse`; builds anteriores não garantiam callbacks de uso. A escala visual/colisão dos cinco estágios é experimental, configurada por eventos de componente Bedrock, e ainda não equivale precisamente às caixas Java.

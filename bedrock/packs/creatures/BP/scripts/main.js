@@ -4,6 +4,8 @@ import {tickAtlatitan,installAtlatitan} from "./alex_caves.js";
 import {tickIgnis} from "./cataclysm.js";
 import {installMowzie} from "./mowzie.js";
 import {installEggs,tickEgg} from "./eggs.js";
+import {installControls} from "./controls.js";
+installControls();
 installDragons();
 installAtlatitan();
 installMowzie();

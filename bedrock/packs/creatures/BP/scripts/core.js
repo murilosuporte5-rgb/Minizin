@@ -9,10 +9,10 @@ export function hp(entity) {const c=entity.getComponent("minecraft:health");retu
 export function nearby(entity,radius) {
   const owner=get(entity,"owner","");
   const mounted=new Set((entity.getComponent("minecraft:rideable")?.getRiders()??[]).map(x=>x.id));
-  return entity.dimension.getEntities({location:entity.location,maxDistance:radius}).filter(x=>x.id!==entity.id&&x.id!==owner&&!mounted.has(x.id)&&x.hasComponent("minecraft:health"));
+  return entity.dimension.getEntities({location:entity.location,maxDistance:radius}).filter(x=>x.id!==entity.id&&x.id!==owner&&!mounted.has(x.id)&&x.hasComponent("minecraft:health")&&!(x.typeId.startsWith("minizin_creatures:")&&x.typeId.endsWith("_dragon")));
 }
 export function playerTarget(entity,radius,ownerId) {
-  const ps=entity.dimension.getPlayers({location:entity.location,maxDistance:radius}).filter(p=>p.id!==ownerId);
+  const ps=entity.dimension.getPlayers({location:entity.location,maxDistance:radius}).filter(p=>p.id!==ownerId&&p.getGameMode?.()!=="Creative"&&p.getGameMode?.()!=="Spectator");
   ps.sort((a,b)=>distance(a.location,entity.location)-distance(b.location,entity.location));
   return ps[0];
 }
@@ -21,7 +21,7 @@ export function hit(entity,target,amount,push=0) {
   target.applyDamage(amount);
   if(push>0) {
     const v=direction(entity.location,target.location);
-    try {target.applyKnockback({x:v.x*push,z:v.z*push},push*0.25);} catch {}
+    try {target.applyKnockback({x:v.x,z:v.z},push,push*0.25);} catch {}
   }
 }
 export function cone(entity,target,radius,range,amount,knock=0) {

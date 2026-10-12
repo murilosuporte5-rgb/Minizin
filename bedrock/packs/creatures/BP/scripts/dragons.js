@@ -1,5 +1,6 @@
 import {world,system,get,put,state,rider,item,take,playerTarget,nearby,distance,direction,hit,cone,eventSound} from "./core.js";
 import {dragonStage} from "./math.js";
+import {onUse} from "./controls.js";
 const IDS=["fire_dragon","ice_dragon","lightning_dragon"];
 const TYPES=IDS.map(x=>"minizin_creatures:"+x);
 const DAY_TICKS=24000;
@@ -35,6 +36,10 @@ export function tickDragons(e,tick){
   if(age>=DAY_TICKS){put(e,"days",Number(get(e,"days",0))+1);put(e,"age_ticks",age-DAY_TICKS);}
   else put(e,"age_ticks",age);
   const level=stage(e);state(e,"stage",level);
+  if(Number(get(e,"stage_applied",0))!==level){
+    e.triggerEvent("minizin_creatures:stage_"+level);
+    put(e,"stage_applied",level);
+  }
   const armor=Number(get(e,"armor",0));
   if(armor>0&&get(e,"armor_applied",0)!==armor){
     try{e.triggerEvent("minizin_creatures:armor_"+armor);put(e,"armor_applied",armor);}catch{}
@@ -73,9 +78,8 @@ export function installDragons(){
       }
     });
   });
-  world.afterEvents.itemUse.subscribe(ev=>{
-    const p=ev.source,id=ev.itemStack?.typeId;
-    if(!["minizin_creatures:dragon_flute"].includes(id))return;
+  onUse((p,id)=>{
+    if(id!=="minizin_creatures:dragon_flute")return;
     system.run(()=>{
       const e=p.getComponent("minecraft:riding")?.entityRidingOn;
       if(!e||!TYPES.includes(e.typeId)||!own(e,p))return;

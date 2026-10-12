@@ -73,7 +73,8 @@
             ]
           }
         ]
-      }
+      },
+      "minecraft:input_ground_controlled": {}
     }
   }
 }

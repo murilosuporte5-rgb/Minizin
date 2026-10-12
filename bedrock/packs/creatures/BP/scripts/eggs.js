@@ -1,5 +1,6 @@
 import {ItemStack} from "@minecraft/server";
 import {world,system,get,put,item,take,eventSound,hp} from "./core.js";
+import {onUse} from "./controls.js";
 // Ported environmental gates from DragonType.updateEggCondition (Java).
 // Ice's frozen tile is represented by an egg entity state, not the Java block entity.
 const KINDS=["fire","ice","lightning"];
@@ -47,12 +48,11 @@ export function tickEgg(e) {
   if(next>HATCH_TICKS)hatch(e,kind);
 }
 export function installEggs(){
-  world.afterEvents.itemUse.subscribe(ev=>{
-    const name=ev.itemStack?.typeId??"";
+  onUse((p,name)=>{
     const kind=name.match(/^minizin_creatures:dragon_egg_(fire|ice|lightning)$/)?.[1];
     if(!kind)return;
     system.run(()=>{
-      const p=ev.source;if(!p.isValid)return;
+      if(!p.isValid)return;
       const facing=p.getViewDirection(),pos=p.location;
       const egg=p.dimension.spawnEntity("minizin_creatures:"+kind+"_dragon_egg",{
         x:Math.floor(pos.x+facing.x*2)+0.5,y:Math.floor(pos.y),z:Math.floor(pos.z+facing.z*2)+0.5

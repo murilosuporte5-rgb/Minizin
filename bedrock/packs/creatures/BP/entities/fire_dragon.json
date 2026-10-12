@@ -1,5 +1,5 @@
 {
-  "format_version": "1.21.0",
+  "format_version": "1.21.90",
   "minecraft:entity": {
     "description": {
       "identifier": "minizin_creatures:fire_dragon",
@@ -82,6 +82,10 @@
             ]
           }
         ]
+      },
+      "minecraft:input_ground_controlled": {},
+      "minecraft:scale": {
+        "value": 0.45
       }
     },
     "component_groups": {
@@ -92,6 +96,10 @@
         "minecraft:movement.fly": {},
         "minecraft:navigation.fly": {
           "can_path_over_water": true
+        },
+        "minecraft:input_air_controlled": {
+          "strafe_speed_modifier": 0.5,
+          "backwards_movement_modifier": 0.45
         }
       },
       "minizin_creatures:armor_1": {
@@ -112,6 +120,51 @@
       "minizin_creatures:armor_4": {
         "minecraft:armor": {
           "value": 8
+        }
+      },
+      "minizin_creatures:stage_1": {
+        "minecraft:scale": {
+          "value": 0.45
+        },
+        "minecraft:collision_box": {
+          "width": 0.9,
+          "height": 1.2
+        }
+      },
+      "minizin_creatures:stage_2": {
+        "minecraft:scale": {
+          "value": 0.7
+        },
+        "minecraft:collision_box": {
+          "width": 1.2,
+          "height": 1.5
+        }
+      },
+      "minizin_creatures:stage_3": {
+        "minecraft:scale": {
+          "value": 0.92
+        },
+        "minecraft:collision_box": {
+          "width": 1.65,
+          "height": 2.1
+        }
+      },
+      "minizin_creatures:stage_4": {
+        "minecraft:scale": {
+          "value": 1.15
+        },
+        "minecraft:collision_box": {
+          "width": 2.05,
+          "height": 2.6
+        }
+      },
+      "minizin_creatures:stage_5": {
+        "minecraft:scale": {
+          "value": 1.4
+        },
+        "minecraft:collision_box": {
+          "width": 2.5,
+          "height": 3.2
         }
       }
     },
@@ -183,6 +236,81 @@
         "add": {
           "component_groups": [
             "minizin_creatures:armor_4"
+          ]
+        }
+      },
+      "minizin_creatures:stage_1": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_2",
+            "minizin_creatures:stage_3",
+            "minizin_creatures:stage_4",
+            "minizin_creatures:stage_5"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_1"
+          ]
+        }
+      },
+      "minizin_creatures:stage_2": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_1",
+            "minizin_creatures:stage_3",
+            "minizin_creatures:stage_4",
+            "minizin_creatures:stage_5"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_2"
+          ]
+        }
+      },
+      "minizin_creatures:stage_3": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_1",
+            "minizin_creatures:stage_2",
+            "minizin_creatures:stage_4",
+            "minizin_creatures:stage_5"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_3"
+          ]
+        }
+      },
+      "minizin_creatures:stage_4": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_1",
+            "minizin_creatures:stage_2",
+            "minizin_creatures:stage_3",
+            "minizin_creatures:stage_5"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_4"
+          ]
+        }
+      },
+      "minizin_creatures:stage_5": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_1",
+            "minizin_creatures:stage_2",
+            "minizin_creatures:stage_3",
+            "minizin_creatures:stage_4"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_5"
           ]
         }
       }
