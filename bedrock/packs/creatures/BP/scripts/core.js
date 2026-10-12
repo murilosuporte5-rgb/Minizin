@@ -7,7 +7,9 @@ export function put(entity,key,value) { entity.setDynamicProperty(PREFIX+key,val
 export function state(entity,key,value) { try {entity.setProperty(PREFIX+key,value);} catch {} }
 export function hp(entity) {const c=entity.getComponent("minecraft:health");return {now:c?.currentValue??0,max:c?.effectiveMax??c?.defaultValue??1};}
 export function nearby(entity,radius) {
-  return entity.dimension.getEntities({location:entity.location,maxDistance:radius}).filter(x=>x.id!==entity.id&&x.hasComponent("minecraft:health"));
+  const owner=get(entity,"owner","");
+  const mounted=new Set((entity.getComponent("minecraft:rideable")?.getRiders()??[]).map(x=>x.id));
+  return entity.dimension.getEntities({location:entity.location,maxDistance:radius}).filter(x=>x.id!==entity.id&&x.id!==owner&&!mounted.has(x.id)&&x.hasComponent("minecraft:health"));
 }
 export function playerTarget(entity,radius,ownerId) {
   const ps=entity.dimension.getPlayers({location:entity.location,maxDistance:radius}).filter(p=>p.id!==ownerId);

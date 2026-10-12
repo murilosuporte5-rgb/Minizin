@@ -5,6 +5,7 @@ Never checks third-party PNG/OGG back into Git. Explicit permission required.
 Exit nonzero if any original model or texture is missing: no invisible mobs.
 """
 import argparse
+import io
 import json
 import shutil
 import sys
@@ -85,7 +86,9 @@ def render_controller(id,count):
             "textures":["Array.original_skins["+index+"]"]}
 def build(out,has_permission):
     if not has_permission:raise RuntimeError("Use --authorized-assets apenas quando tiver autorização para adaptar e redistribuir os recursos dos quatro mods.")
-    out=Path(out)
+    out=Path(out).resolve()
+    allowed=(ROOT/"build").resolve()
+    if allowed not in out.parents:raise ValueError("Output must be a directory inside build/: "+str(out))
     if out.exists():shutil.rmtree(out)
     bp=out/"Minizin_Creatures_BP";rp=out/"Minizin_Creatures_RP"
     shutil.copytree(FOLDER/"BP",bp)
@@ -160,9 +163,20 @@ def build(out,has_permission):
         shutil.copytree(source_mowzie/part,out/("Minizin_Mowzie_"+part))
     archive=out.parent/"Minizin_Creatures_Research.mcaddon"
     if archive.exists():archive.unlink()
-    with zipfile.ZipFile(archive,"w",compression=zipfile.ZIP_DEFLATED) as z:
-        for path in out.rglob("*"):
-            if path.is_file():z.write(path,path.relative_to(out))
+    with zipfile.ZipFile(archive,"w",compression=zipfile.ZIP_STORED) as z:
+        for pack in sorted(out.iterdir()):
+            if not pack.is_dir():continue
+            contents=io.BytesIO()
+            with zipfile.ZipFile(contents,"w",compression=zipfile.ZIP_DEFLATED,compresslevel=8) as inner:
+                for path in sorted(pack.rglob("*")):
+                    if path.is_file():inner.write(path,path.relative_to(pack).as_posix())
+            z.writestr(pack.name+".mcpack",contents.getvalue())
+    with zipfile.ZipFile(archive) as z:
+        names=z.namelist()
+        if len(names)!=4 or not all(n.endswith(".mcpack") for n in names):raise ValueError("Pack count/format invalid")
+        for name in names:
+            with zipfile.ZipFile(io.BytesIO(z.read(name))) as package:
+                if "manifest.json" not in package.namelist():raise ValueError("Manifest missing: "+name)
     return archive
 def main():
     parser=argparse.ArgumentParser(description=__doc__)

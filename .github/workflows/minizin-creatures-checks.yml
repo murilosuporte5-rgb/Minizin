@@ -28,6 +28,8 @@ jobs:
           assert not list(pathlib.Path('bedrock/packs/creatures').rglob('*.png'))
           print('PASS: eight entity definitions, JSON schemas parse, no substituted PNG')
           PY
+      - name: Compile Python builder
+        run: python -m py_compile bedrock/packs/creatures/build_creatures.py
       - name: Refuse pack without original assets
         run: |
           if python bedrock/packs/creatures/build_creatures.py; then

@@ -35,7 +35,7 @@ export function tickEgg(e) {
   if(kind==="ice"){
     if(!frozen){
       const block=dim.getBlock({x:Math.floor(pos.x),y:Math.floor(pos.y),z:Math.floor(pos.z)});
-      if(block?.typeId==="minecraft:water"&&Math.random()<0.002){
+      if(block?.typeId==="minecraft:water"&&Math.random()<1-Math.pow(499/500,20)){
         put(e,"frozen",true);frozen=true;eventSound(e,"random.glass");
       }
     }
