@@ -209,6 +209,8 @@ async function depositAll(p,id,revision){
   for(let i=0;i<inv.size;i++){
     const item=inv.getItem(i);
     if(!item||item.typeId===ID)continue;
+    if(state.filterInstalled&&Array.isArray(state.filters)&&state.filters.length
+      &&!state.filters.includes(item.typeId)){skipped++;continue;}
     let payload;
     try{payload=encode(item);validate(payload);}catch{skipped++;continue;}
     const trial=clone(slots);
@@ -245,6 +247,48 @@ async function sortBag(p,id,revision){
     slots:[...ordered,...Array(CAPACITY-ordered.length).fill(null)]});
   tell(p,"Itens reordenados sem alterar seus metadados.");
 }
+async function configureFilter(p,id,revision){
+  const inv=invOf(p),state=assertSession(p,id,revision);
+  if(!state.filterInstalled){
+    let slot=-1;
+    for(let i=0;i<inv.size;i++)
+      if(inv.getItem(i)?.typeId==="minizin:backpack_filter_upgrade"){slot=i;break;}
+    if(slot<0){
+      tell(p,"É necessária uma Melhoria de Filtro fabricada na bancada.");return;
+    }
+    const backup=snapshot(inv),stack=inv.getItem(slot);
+    const next={...state,filterInstalled:true,filters:[],revision:state.revision+1};
+    try{
+      if(stack.amount===1)inv.setItem(slot,undefined);
+      else{stack.amount--;inv.setItem(slot,stack);}
+      writeState(id,next);
+    }catch(error){restore(inv,backup);throw error;}
+    tell(p,"Melhoria de Filtro instalada nesta mochila específica.");return;
+  }
+  const configured=Array.isArray(state.filters)?state.filters:[];
+  const ids=[...new Set([
+    ...configured,
+    ...Array.from({length:inv.size},(_,slot)=>inv.getItem(slot)?.typeId).filter(
+      type=>type&&type!==ID&&type!=="minizin:backpack_filter_upgrade")
+  ])].slice(0,30);
+  const form=new ActionFormData().title("Filtro • mochila")
+    .body("Lista de tipos permitidos no Guardar Tudo. Lista vazia permite todos. "+
+      configured.length+"/12 tipo(s) selecionados.")
+    .button("Limpar filtro (permitir todos)");
+  for(const type of ids)form.button((configured.includes(type)?"[OK] ":"[ ] ")+type);
+  const answer=await form.show(p);
+  if(answer.canceled||answer.selection===undefined||!p.isValid)return;
+  const latest=assertSession(p,id,revision);
+  let filters=[...(Array.isArray(latest.filters)?latest.filters:[])];
+  if(answer.selection===0)filters=[];
+  else{
+    const chosen=ids[answer.selection-1];if(!chosen)return;
+    if(filters.includes(chosen))filters=filters.filter(x=>x!==chosen);
+    else{if(filters.length>=12)throw Error("Máximo de 12 tipos no filtro.");filters.push(chosen);}
+  }
+  writeState(id,{...latest,filters,revision:latest.revision+1});
+  tell(p,"Filtro atualizado: "+(filters.length?filters.join(", "):"sem restrição")+".");
+}
 async function open(p){
   if(busyPlayers.has(p.id))return;
   busyPlayers.add(p.id);
@@ -263,11 +307,13 @@ async function open(p){
     }
     form.button("Guardar todas as pilhas compatíveis");
     form.button("Organizar por tipo");
+    form.button("Configurar melhoria de filtro");
     const result=await form.show(p);
     if(result.canceled||result.selection===undefined||!p.isValid)return;
     const slot=result.selection;
     if(slot===CAPACITY){await depositAll(p,id,state.revision);return;}
     if(slot===CAPACITY+1){await sortBag(p,id,state.revision);return;}
+    if(slot===CAPACITY+2){await configureFilter(p,id,state.revision);return;}
     if(slot<0||slot>=CAPACITY)return;
     const current=assertSession(p,id,state.revision).slots[slot];
     if(current){
