@@ -98,8 +98,14 @@ jobs:
                       assert "BP/biomes/lavender_field.json" in names
                       lavender = json.loads(z.read("BP/biomes/lavender_field.json"))
                       assert "minecraft:replace_biomes" in lavender["minecraft:biome"]["components"]
-                      end_biome = json.loads(z.read("BP/biomes/end_reef.json"))
-                      assert "minecraft:replace_biomes" not in end_biome["minecraft:biome"]["components"]
+                      themed = json.loads(z.read("BP/biomes/end_reef.json"))
+                      assert themed["minecraft:biome"]["components"]["minecraft:replace_biomes"]["replacements"][0]["dimension"] == "minecraft:overworld"
+                      cave = json.loads(z.read("BP/biomes/glowing_grotto.json"))
+                      assert "minecraft:replace_biomes" not in cave["minecraft:biome"]["components"]
+                      nether = json.loads(z.read("BP/biomes/erupting_inferno.json"))
+                      repl = nether["minecraft:biome"]["components"]["minecraft:replace_biomes"]["replacements"][0]
+                      assert repl["dimension"] == "minecraft:nether"
+                      assert "hell" in repl["targets"]
                       assert bp["header"]["min_engine_version"] == [1, 21, 120]
                       assert "BP/scripts/native_biomes.js" in names
                       import re
