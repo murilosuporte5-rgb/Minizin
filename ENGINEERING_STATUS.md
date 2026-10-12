@@ -71,3 +71,7 @@ python tools/tabula_batch_to_bedrock.py mods/16-ice-and-fire/upstream/src/main/r
 ```
 
 Não publicar como mod completo até passar a execução dentro do Minecraft Bedrock em dispositivo real.
+
+## Pacote experimental combinado
+
+O job [Minizin-Bedrock-Prototypes](https://github.com/murilosuporte5-rgb/Minizin/actions/runs/38202861342) passou e anexou três arquivos `.mcaddon`: `Minizin_waystones.mcaddon`, `Minizin_mowzie.mcaddon` e `Minizin_Combined_Prototype.mcaddon`. O combinado inclui **os dois packs RP/BP existentes**, e **não os 14 mods**. Ainda não testado no Minecraft Android.
