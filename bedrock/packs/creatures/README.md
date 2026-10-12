@@ -52,3 +52,7 @@ O builder passa a gerar **clipes por ataque**, usando apenas os nomes de bones e
 ## Bluff — animações originais de combate
 
 A montagem `--validate-only` importa também `animations/bluff.animation.json` original do Mowzie e adiciona os clipes `attack_start`/`attack_end` à cópia temporária do RP. No BP temporário, `minizin_creatures:bluff_action` sincroniza `startup`, `fall` e `recovery` com os clipes. O rig/PNG do protótipo permanecem intactos no repositório. A fissura e o comportamento ainda precisam ser comparados ao original no dispositivo.
+
+## Aproximação de navegação e aliados
+
+Bosses e seguidores agora usam `minecraft:behavior.nearest_attackable_target` e `minecraft:behavior.move_towards_target` apenas para aproximação. O dano continua exclusivamente nos scripts dos golpes individuais, sem `minecraft:behavior.melee_attack` genérico. A seleção de alvos ignora criativo/espectador e exclui aliados invocados de áreas de dano. Pathfinding e multidões ainda precisam de teste em cenário Android/multiplayer.

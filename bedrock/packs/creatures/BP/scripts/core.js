@@ -9,7 +9,9 @@ export function hp(entity) {const c=entity.getComponent("minecraft:health");retu
 export function nearby(entity,radius) {
   const owner=get(entity,"owner","");
   const mounted=new Set((entity.getComponent("minecraft:rideable")?.getRiders()??[]).map(x=>x.id));
-  return entity.dimension.getEntities({location:entity.location,maxDistance:radius}).filter(x=>x.id!==entity.id&&x.id!==owner&&!mounted.has(x.id)&&x.hasComponent("minecraft:health")&&!(x.typeId.startsWith("minizin_creatures:")&&x.typeId.endsWith("_dragon")));
+  const leader=get(entity,"summoner","");
+  return entity.dimension.getEntities({location:entity.location,maxDistance:radius}).filter(x=>x.id!==entity.id&&x.id!==owner&&!mounted.has(x.id)&&x.hasComponent("minecraft:health")&&!(x.typeId.startsWith("minizin_creatures:")&&x.typeId.endsWith("_dragon"))
+    &&get(x,"summoner","")!==entity.id&&(!leader||x.id!==leader)&&(!leader||get(x,"summoner","")!==leader));
 }
 export function playerTarget(entity,radius,ownerId) {
   const ps=entity.dimension.getPlayers({location:entity.location,maxDistance:radius}).filter(p=>p.id!==ownerId&&p.getGameMode?.()!=="Creative"&&p.getGameMode?.()!=="Spectator");

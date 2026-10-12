@@ -72,6 +72,25 @@
         "name": "Ignis",
         "hud_range": 32,
         "should_darken_sky": false
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 2,
+        "reselect_targets": true,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "player"
+            },
+            "max_dist": 30
+          }
+        ]
+      },
+      "minecraft:behavior.move_towards_target": {
+        "priority": 3,
+        "speed_multiplier": 0.8,
+        "within_radius": 7
       }
     }
   }
