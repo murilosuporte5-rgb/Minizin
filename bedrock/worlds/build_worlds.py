@@ -33,6 +33,17 @@ ASSETS = {
         "golden_oak_leaves": ("natural/golden_oak_leaves.png", "grass"),
         "holystone_bricks": ("construction/holystone_bricks.png", "stone"),
         "aether_portal": ("miscellaneous/aether_portal.png", "glass"),
+        "carved_stone": ("dungeon/carved_stone.png", "stone"),
+        "angelic_stone": ("dungeon/angelic_stone.png", "stone"),
+        "light_angelic_stone": ("dungeon/light_angelic_stone.png", "stone"),
+        "hellfire_stone": ("dungeon/hellfire_stone.png", "stone"),
+        "light_hellfire_stone": ("dungeon/light_hellfire_stone.png", "stone"),
+        "sentry_stone": ("dungeon/sentry_stone.png", "stone"),
+        "pillar": ("dungeon/pillar_side.png", "stone"),
+        "mossy_holystone": ("natural/mossy_holystone.png", "stone"),
+        "icestone": ("natural/icestone.png", "stone"),
+        "quicksoil": ("natural/quicksoil.png", "sand"),
+        "skyroot_planks": ("construction/skyroot_planks.png", "wood"),
     },
     "bop": {
         "lavender": ("lavender.png", "grass"),
@@ -43,6 +54,18 @@ ASSETS = {
         "umbran_log": ("umbran_log.png", "wood"),
         "umbran_leaves": ("umbran_leaves.png", "grass"),
         "glowflower": ("glowflower.png", "grass"),
+        "fir_log": ("fir_log.png", "wood"),
+        "fir_leaves": ("fir_leaves.png", "grass"),
+        "pine_log": ("pine_log.png", "wood"),
+        "pine_leaves": ("pine_leaves.png", "grass"),
+        "jacaranda_log": ("jacaranda_log.png", "wood"),
+        "jacaranda_leaves": ("jacaranda_leaves.png", "grass"),
+        "maple_log": ("maple_log.png", "wood"),
+        "maple_leaves": ("pink_maple_leaves.png", "grass"),
+        "palm_log": ("palm_log.png", "wood"),
+        "palm_leaves": ("palm_leaves.png", "grass"),
+        "white_lavender": ("white_lavender.png", "grass"),
+        "violet": ("violet.png", "grass"),
     },
 }
 # Directional texture faces preserve the original top/bottom materials instead of
@@ -53,17 +76,25 @@ FACES = {
                          "down": "natural/aether_dirt.png"},
         "skyroot_log": {"up": "natural/skyroot_log_top.png",
                         "down": "natural/skyroot_log_top.png"},
+        "pillar": {"up": "dungeon/pillar_top.png",
+                   "down": "dungeon/pillar_top.png"},
     },
     "bop": {
         "magic_log": {"up": "magic_log_top.png", "down": "magic_log_top.png"},
         "redwood_log": {"up": "redwood_log_top.png", "down": "redwood_log_top.png"},
         "umbran_log": {"up": "umbran_log_top.png", "down": "umbran_log_top.png"},
+        "fir_log": {"up": "fir_log_top.png", "down": "fir_log_top.png"},
+        "pine_log": {"up": "pine_log_top.png", "down": "pine_log_top.png"},
+        "jacaranda_log": {"up": "jacaranda_log_top.png", "down": "jacaranda_log_top.png"},
+        "maple_log": {"up": "maple_log_top.png", "down": "maple_log_top.png"},
+        "palm_log": {"up": "palm_log_top.png", "down": "palm_log_top.png"},
     },
 }
-PLANTS = {"bop": {"lavender", "glowflower"}}
+PLANTS = {"bop": {"lavender", "glowflower", "white_lavender", "violet"}}
 LEAVES = {
     "aether": {"skyroot_leaves", "golden_oak_leaves"},
-    "bop": {"magic_leaves", "redwood_leaves", "umbran_leaves"},
+    "bop": {"magic_leaves", "redwood_leaves", "umbran_leaves", "fir_leaves",
+            "pine_leaves", "jacaranda_leaves", "maple_leaves", "palm_leaves"},
 }
 BIOME_SOURCE = ROOT / "mods/19-biomes-o-plenty/upstream/common/src/generated/resources/data/biomesoplenty/worldgen/biome"
 BIOMES = {
@@ -79,6 +110,21 @@ BIOMES = {
     "ominous_woods": dict(temp=.7, rain=.8, noise="default", climate="medium",
                           tree="umbran", flower=None, trees=4, flowers=0,
                           water="#3b3b59", fog="#55516b"),
+    "coniferous_forest": dict(temp=.5, rain=.75, noise="default", climate="medium",
+                             tree="fir", flower=None, trees=5, flowers=0,
+                             water="#3f76e4", fog="#aaaaaa"),
+    "maple_woods": dict(temp=.65, rain=.55, noise="default", climate="medium",
+                        tree="maple", flower=None, trees=5, flowers=0,
+                        water="#3f76e4", fog="#aaaaaa"),
+    "jade_cliffs": dict(temp=.7, rain=.7, noise="highlands", climate="medium",
+                        tree="jacaranda", flower=None, trees=3, flowers=0,
+                        water="#3f76e4", fog="#aaaaaa"),
+    "tropics": dict(temp=.85, rain=.85, noise="default", climate="warm",
+                    tree="palm", flower=None, trees=4, flowers=0,
+                    water="#3f76e4", fog="#aaaaaa"),
+    "highland": dict(temp=.5, rain=.5, noise="highlands", climate="medium",
+                     tree="pine", flower=None, trees=3, flowers=0,
+                     water="#3f76e4", fog="#aaaaaa"),
 }
 # Stable UUIDv5 avoids pack identity churn between builds and device upgrades.
 def uid(part: str) -> str:
@@ -306,9 +352,9 @@ def add_biomes(bp: Path, rp: Path) -> None:
         if spec["flower"]:
             jwrite(bp / "feature_rules" / f"{name}_flower_rule.json",
                    rule(name, spec["flower"], spec["flowers"]))
-    for tree in ("magic", "redwood", "umbran"):
+    for tree in ("magic", "redwood", "umbran", "fir", "maple", "jacaranda", "palm", "pine"):
         jwrite(bp / "features" / f"{tree}_feature.json", tree_feature(tree))
-    for flower in ("lavender", "glowflower"):
+    for flower in ("lavender", "glowflower", "white_lavender", "violet"):
         jwrite(bp / "features" / f"{flower}_feature.json", flower_feature(flower))
 
 def validate_pack(bp: Path, rp: Path, mod: str) -> None:
@@ -379,6 +425,11 @@ def build(mod: str, output: Path) -> Path:
     shutil.copyfile(HERE / mod / "main.js", bp / "scripts/main.js")
     if mod == "aether":
         jwrite(rp / "models/blocks/portal.geo.json", geometry("portal"))
+        from aether.convert_structures import convert_all
+        destination = bp / "structures" / "minizin_aether"
+        results = convert_all(destination,
+            {f"minizin_aether:{name}" for name in ASSETS["aether"]})
+        print(f"Aether Java structures: {sum(x['status'].startswith('converted') for x in results)}/{len(results)} converted (audit in build/)")
     else:
         jwrite(rp / "models/blocks/cross.geo.json", geometry("cross"))
         add_biomes(bp, rp)
