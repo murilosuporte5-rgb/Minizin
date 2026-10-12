@@ -63,6 +63,7 @@ def upgrade(folder: Path):
             "texture": "minizin_waystone_original", "render_method": "alpha_test"
         }},
         "minecraft:destructible_by_mining": {"seconds_to_destroy": 2.5},
+        "minecraft:loot": "loot_tables/blocks/andesite_waystone_block.json",
         "minecraft:collision_box": {"origin": [-8, 0, -8], "size": [16, 16, 16]},
         "minecraft:selection_box": {"origin": [-8, 0, -8], "size": [16, 16, 16]},
         "minecraft:display_name": name,
