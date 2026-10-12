@@ -61,6 +61,14 @@ FLOAT = re.compile(r"[-+]?(?:\d*\.\d+|\d+)(?:[FfDd])?$")
 
 def floatv(value: str) -> float:
     value = value.strip()
+    # These are literal constants of the pinned Minecraft Java Mth class,
+    # not arbitrary Java expression execution.
+    constants = {"Mth.HALF_PI": math.pi / 2,
+                 "Mth.PI": math.pi,
+                 "Mth.TWO_PI": math.tau,
+                 "Mth.DEG_TO_RAD": math.pi / 180}
+    if value in constants:
+        return constants[value]
     if not FLOAT.fullmatch(value):
         raise ValueError(f"Non-literal Java geometry argument: {value}")
     return float(value.rstrip("FfDd"))
