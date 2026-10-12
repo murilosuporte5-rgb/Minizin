@@ -1,0 +1,133 @@
+name: Minizin Worlds - isolated validation
+on:
+  push:
+    branches: ["feature/minizin-worlds"]
+    paths: ["bedrock/worlds/**", ".github/workflows/minizin-worlds-validation.yml"]
+  pull_request:
+    paths: ["bedrock/worlds/**", ".github/workflows/minizin-worlds-validation.yml"]
+  workflow_dispatch:
+jobs:
+  build-worlds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Initialize only authorized source submodules
+        run: |
+          git submodule update --init --depth 1 mods/19-biomes-o-plenty/upstream
+          git submodule update --init --depth 1 mods/41-the-aether/upstream
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate runtime syntax
+        run: |
+          node --check bedrock/worlds/aether/main.js
+          node --check bedrock/worlds/bop/main.js
+          node --check bedrock/worlds/aether/bosses.js
+          node --check bedrock/worlds/aether/wildlife.js
+      - name: Install conversion dependencies
+        run: python -m pip install --disable-pip-version-check Pillow nbtlib numpy
+      - name: Run static tests
+        run: python -m unittest discover -s bedrock/worlds/tests -v
+      - name: Build packs locally with originals (do not upload copyrighted assets)
+        run: |
+          python bedrock/worlds/build_worlds.py --mod both
+      - name: Validate generated modules
+        run: |
+          node --check build/worlds/aether/BP/scripts/main.js
+          node --check build/worlds/aether/BP/scripts/bosses.js
+          node --check build/worlds/aether/BP/scripts/wildlife.js
+          node --check build/worlds/aether/BP/scripts/dungeon_loot.js
+          node --check build/worlds/bop/BP/scripts/main.js
+          node --check build/worlds/bop/BP/scripts/native_biomes.js
+      - name: Inspect generated Bedrock ZIP layout and resource wiring
+        run: |
+          python - <<'PY'
+          import json, pathlib, zipfile
+          root = pathlib.Path("build/worlds")
+          for mod in ("aether", "bop"):
+              p = root / f"Minizin_Worlds_{mod}_v0.2.8.mcaddon"
+              assert p.exists(), p
+              with zipfile.ZipFile(p) as z:
+                  names = set(z.namelist())
+                  assert "BP/manifest.json" in names
+                  assert "RP/manifest.json" in names
+                  assert "RP/textures/terrain_texture.json" in names
+                  assert any(n.startswith("RP/textures/blocks/") for n in names)
+                  bp = json.loads(z.read("BP/manifest.json"))
+                  rp = json.loads(z.read("RP/manifest.json"))
+                  assert bp["dependencies"][0]["uuid"] == rp["header"]["uuid"]
+                  if mod == "aether":
+                      assert "BP/scripts/main.js" in names
+                      assert "BP/scripts/biome_profiles.js" in names
+                      assert "BP/scripts/bosses.js" in names
+                      assert "BP/scripts/wildlife.js" in names
+                      assert "BP/scripts/dungeon_loot.js" in names
+                      for mob in ("slider", "valkyrie_queen", "sun_spirit",
+                                  "zephyr", "aechor_plant", "fire_minion",
+                                  "aerbunny", "cockatrice", "sheepuff",
+                                  "valkyrie", "aerwhale", "mimic", "phyg",
+                                  "flying_cow", "moa", "cloud_minion"):
+                          assert f"BP/entities/{mob}.json" in names, mob
+                          assert f"RP/models/entity/{mob}.geo.json" in names, mob
+                          assert f"RP/entity/{mob}.entity.json" in names, mob
+                          assert f"RP/textures/entity/minizin_aether/{mob}.png" in names, mob
+                      for mob, body in (("phyg", "geometry.pig.v3"), ("flying_cow", "geometry.cow.v2")):
+                          assert f"RP/textures/entity/minizin_aether/{mob}_wings.png" in names
+                          desc = json.loads(z.read(f"RP/entity/{mob}.entity.json"))["minecraft:client_entity"]["description"]
+                          assert desc["geometry"]["default"] == body
+                          assert desc["geometry"]["wings"] == f"geometry.minizin_aether.{mob}"
+                      for key in ("bronze_dungeon_key", "silver_dungeon_key", "gold_dungeon_key"):
+                          assert f"BP/items/{key}.json" in names
+                      for boss in ("slider", "valkyrie_queen", "sun_spirit"):
+                          assert f"BP/loot_tables/minizin_aether/entities/{boss}.json" in names
+                      profiles = z.read("BP/scripts/biome_profiles.js").decode("utf-8")
+                      for key in ("skyroot_forest", "skyroot_grove", "skyroot_meadow", "skyroot_woodland"):
+                          assert "aether:" + key in profiles, key
+                      assert any(n.startswith("BP/structures/minizin_aether/") and n.endswith(".mcstructure") for n in names)
+                      report = json.loads(z.read("BP/structures/minizin_aether/conversion_report.json"))
+                      files = [t for t in report["templates"] if t["status"].startswith("converted")]
+                      skipped = [t for t in report["templates"] if t["status"] == "skipped"]
+                      assert len(files) == len(report["templates"]) == 21, ("Original NBT templates missing", len(files), skipped)
+                      for family in ("bronze_dungeon", "silver_dungeon", "gold_dungeon"):
+                          assert any(t["source"].startswith(family + "/") for t in files), family
+                      for t in skipped:
+                          print("Skipped Java template:", t["source"], t.get("reason"), t.get("omitted"))
+                      print("Aether converted template count:", len(files), "of", len(report["templates"]))
+                      print("Original template conversion is NOT in-game fidelity.")
+                  else:
+                      count = sum(n.startswith("BP/biomes/") and n.endswith(".json") for n in names)
+                      assert count == 68, count
+                      assert "BP/worldgen_conversion_report.json" not in names
+                      assert "worldgen_conversion_report.json" not in names
+                      assert "BP/biomes/lavender_field.json" in names
+                      lavender = json.loads(z.read("BP/biomes/lavender_field.json"))
+                      assert "minecraft:replace_biomes" in lavender["minecraft:biome"]["components"]
+                      themed = json.loads(z.read("BP/biomes/end_reef.json"))
+                      assert themed["minecraft:biome"]["components"]["minecraft:replace_biomes"]["replacements"][0]["dimension"] == "minecraft:overworld"
+                      cave = json.loads(z.read("BP/biomes/glowing_grotto.json"))
+                      assert "minecraft:replace_biomes" not in cave["minecraft:biome"]["components"]
+                      nether = json.loads(z.read("BP/biomes/erupting_inferno.json"))
+                      repl = nether["minecraft:biome"]["components"]["minecraft:replace_biomes"]["replacements"][0]
+                      assert repl["dimension"] == "minecraft:nether"
+                      assert "hell" in repl["targets"]
+                      assert bp["header"]["min_engine_version"] == [1, 21, 120]
+                      assert "BP/scripts/native_biomes.js" in names
+                      import re
+                      native = z.read("BP/scripts/native_biomes.js").decode("utf-8")
+                      assert "minizin_bop:redwood_forest" in native
+                      assert "minizin_bop:erupting_inferno" in native
+                      assert sum(n.startswith("BP/features/") and n.endswith("_feature.json") for n in names) >= 10
+          print("Static ZIP and pack manifests passed; in-game behavior NOT validated.")
+          PY
+      - name: Enforce repository asset separation
+        run: |
+          git diff --exit-code
+          if git ls-files bedrock/worlds | grep -E '\.(png|ogg|nbt|mcstructure|mcaddon)$'; then
+            echo "Forbidden redistributed assets committed in worlds folder"; exit 1
+          fi
