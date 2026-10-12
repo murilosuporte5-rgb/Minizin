@@ -44,6 +44,35 @@ class WorldBuilderTests(unittest.TestCase):
                                  worlds.NAMESPACE[mod] + ":" + name)
                 self.assertIn("minecraft:material_instances", b["components"])
 
+    def test_directional_original_textures_for_logs_and_grass(self):
+        self.assertEqual(worlds.FACES["aether"]["aether_grass"]["up"],
+                         "natural/aether_grass_block_top.png")
+        for mod, materials in worlds.FACES.items():
+            for name, faces in materials.items():
+                item = worlds.block_def(mod, name)["minecraft:block"]
+                for face, source in faces.items():
+                    self.assertTrue(source.endswith(".png"))
+                    self.assertEqual(
+                        item["components"]["minecraft:material_instances"][face]["texture"],
+                        f"{worlds.NAMESPACE[mod]}_{name}_{face}")
+
+    def test_pin_java_biome_climate_and_water(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            original = Path(tmp) / "lavender_field.json"
+            original.write_text(json.dumps({
+                "temperature": 0.8, "downfall": 0.7,
+                "effects": {"water_color": "#3f76e4", "grass_color": "#a1c36d"}
+            }), encoding="utf-8")
+            with patch.object(worlds, "BIOME_SOURCE", Path(tmp)):
+                spec = worlds.java_biome_spec("lavender_field", worlds.BIOMES["lavender_field"])
+                self.assertEqual(spec["temp"], .8)
+                self.assertEqual(spec["rain"], .7)
+                self.assertEqual(spec["water"], "#3f76e4")
+                self.assertEqual(spec["grass_color"], "#a1c36d")
+                with self.assertRaises(FileNotFoundError):
+                    worlds.java_biome_spec("mystic_grove", worlds.BIOMES["mystic_grove"])
+
     def test_portal_collision_is_disabled_and_axis_is_recorded(self):
         b = worlds.block_def("aether", "aether_portal")["minecraft:block"]
         self.assertEqual(b["description"]["states"]["minizin_aether:axis"], ["x", "z"])
@@ -91,6 +120,10 @@ class WorldBuilderTests(unittest.TestCase):
         self.assertIn("removeTickingArea", src)
         self.assertIn("BLOCKS_PER_TICK", src)
         self.assertNotIn("eval(", src)
+        bop = (SCRIPT.parent / "bop/main.js").read_text(encoding="utf-8")
+        self.assertIn("world.setDynamicProperty(key, true)", bop)
+        self.assertIn("PLACEMENTS_PER_TICK", bop)
+        self.assertIn("minecraft:overworld", bop)
 
 
 if __name__ == "__main__":
