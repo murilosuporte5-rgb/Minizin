@@ -39,6 +39,11 @@ export function tickEnderGuardian(e,tick){
       for(const x of nearby(e,18))hit(e,x,23,2);
       eventSound(e,"minizin_creatures.ender.stomp");
     }
+    if(move==="air_strike"&&target&&left>=45&&next<45){
+      const pos=target.location;
+      try{e.teleport({x:pos.x,y:pos.y+2,z:pos.z},{facingLocation:pos});}catch{}
+      for(const x of nearby(e,6))hit(e,x,18,1.4);
+    }
     if(move==="rocket_punch"&&target&&left>=20&&next<20){
       for(const x of nearby(e,14))if(distance(x.location,target.location)<=3)hit(e,x,15,1.5);
     }

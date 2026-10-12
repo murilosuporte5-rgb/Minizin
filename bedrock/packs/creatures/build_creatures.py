@@ -66,6 +66,40 @@ POSE_SETS={"bite":["Bite1","Bite2","Bite3"],
            "stream":["AttackStreamCharge1","AttackStreamCharge3","AttackStreamBreath"],
            "charge":["AttackBlastCharge1","AttackBlastCharge3","AttackBlastBreath"],
            "flight":["Flight1","Flight2","Flight3","Flight4","Flight5","Flight6"]}
+BOSS_MOTIONS={
+  "ignis":{
+    "phase2":(68,{"upperbody":[-18,0,0],"right_arm":[20,0,0],"left_arm":[20,0,0],"head":[-12,0,0]}),
+    "phase3":(120,{"upperbody":[-28,0,0],"right_arm":[40,0,0],"left_arm":[35,0,0],"head":[-20,0,0]}),
+    "shield_smash":(70,{"left_arm":[-70,0,-24],"upperbody":[22,0,0],"shield_root":[-25,0,0]}),
+    "soul_sweep":(58,{"right_arm":[-50,0,65],"upperbody":[0,-30,0],"sword":[0,0,45]}),
+    "ultimate":(114,{"right_arm":[-120,0,0],"left_arm":[-100,0,0],"upperbody":[-30,0,0],"sword":[-40,0,0]})
+  },
+  "ender_guardian":{
+    "stomp":(48,{"right_leg":[-50,0,0],"lowerbody":[-12,0,0],"upperbody":[15,0,0]}),
+    "rage_stomp":(83,{"left_leg":[-70,0,0],"lowerbody":[-20,0,0],"upperbody":[18,0,0]}),
+    "uppercut":(100,{"right_arm":[-110,0,0],"right_arm2":[-40,0,0],"upperbody":[-20,0,0]}),
+    "burst":(53,{"right_arm":[-70,0,-20],"left_arm":[-70,0,20],"upperbody":[-18,0,0]}),
+    "blackhole":(62,{"right_arm":[-50,0,0],"left_arm":[-50,0,0],"voidstone":[0,180,0]}),
+    "mass_destruction":(75,{"upperbody":[-30,0,0],"right_arm":[-100,0,30],"left_arm":[-100,0,-30]}),
+    "rocket_punch":(58,{"right_arm":[-100,0,0],"right_arm2":[-70,0,0],"right_fist":[-40,0,0]}),
+    "air_strike":(123,{"upperbody":[20,0,0],"left_arm":[-65,0,0],"right_arm":[-65,0,0]})
+  }
+}
+def boss_clips(id,geometry_data):
+    bones={bone["name"] for bone in geometry_data["minecraft:geometry"][0]["bones"]}
+    clips={}
+    for action,(duration,poses) in BOSS_MOTIONS[id].items():
+        t=duration/20
+        skeleton={}
+        for name,rotation in poses.items():
+            if name not in bones:raise ValueError("Bone não encontrado: "+id+"/"+name)
+            skeleton[name]={"rotation":{"0.0":[0,0,0],
+                str(round(t*0.38,2)):rotation,
+                str(round(t*0.72,2)):rotation,
+                str(round(t,2)):[0,0,0]}}
+        anim_id="animation.minizin_creatures."+id+"."+action
+        clips[anim_id]={"loop":False,"animation_length":t,"bones":skeleton}
+    return clips
 def write_json(path,data):
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
@@ -187,6 +221,11 @@ def build(out,has_permission,validate_only=False):
                 output[native]=sources[key]
                 animations[key]=native
             write_json(rp/"animations"/(id+".animation.json"),{"format_version":"1.8.0","animations":output})
+        if id in ("ignis","ender_guardian"):
+            clips=boss_clips(id,converted)
+            for key in BOSS_MOTIONS[id]:
+                animations[key]="animation.minizin_creatures."+id+"."+key
+            write_json(rp/"animations"/(id+".animation.json"),{"format_version":"1.8.0","animations":clips})
         desc={"identifier":"minizin_creatures:"+id,"materials":{"default":"entity_alphatest"},
               "textures":textures,"geometry":{"default":geo_id},
               "render_controllers":["controller.render.minizin_creatures."+id]}

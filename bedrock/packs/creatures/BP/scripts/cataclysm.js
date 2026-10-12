@@ -16,7 +16,7 @@ export function tickIgnis(e,tick){
     if(left===0)state(e,"attack","idle");
     return;
   }
-  if(desired>phase){begin(e,desired===1?"phase2":"phase3",desired===1?68:120);return;}
+  if(desired>phase){begin(e,phase===0?"phase2":"phase3",phase===0?68:120);return;}
   if(tick%40!==0)return;
   const target=playerTarget(e,20);if(!target)return;
   const d=distance(e.location,target.location);

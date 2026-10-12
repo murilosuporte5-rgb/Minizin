@@ -44,3 +44,7 @@ Origem: Mowzie `EntityUmvuthi.java` 150 HP, poderes `Sunstrike`, `Solar Flare`, 
 ## Cataclysm — Ender Guardian
 
 Novo boss com geometria original `Ender_Guardian_Model.geo.json`, PNG original, escudo/helmetless em 50% HP e seleção de cinco habilidades diferenciadas do Java: Stomp (48/83 ticks), Black Hole (62), Mass Destruction (75), Uppercut (100/120), Burst (53) e Rocket Punch (58). `ender_guardian.js` implementa ataques e cooldowns. **A modelagem de frames Java de renderização não foi convertida; animações visuais ainda não são equivalentes**. Fonte: `Ender_Guardian_Entity.java` no commit Cataclysm fixado no README.
+
+## Animações visíveis de Ignis/Ender Guardian
+
+O builder passa a gerar **clipes por ataque**, usando apenas os nomes de bones e rigs convertidos do Java. Timings são retirados dos códigos fonte `Ignis_Entity.java`/`Ender_Guardian_Entity.java`. Rotacionam partes originais diferentes por golpe e mapeiam a propriedade de estado de combate para o RP. **As curvas são adaptações**, não transcrições comprovadas da animação Java original. A ordem de transição de Ignis foi corrigida para preservar fases 1→2→3 mesmo sob dano muito alto.
