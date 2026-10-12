@@ -1,0 +1,41 @@
+name: Batch convert Ice and Fire Tabula model poses
+on:
+  push:
+    paths:
+      - "tools/tabula_to_bedrock.py"
+      - "tools/tabula_batch_to_bedrock.py"
+      - ".github/workflows/dragon-tabula-batch.yml"
+  workflow_dispatch:
+jobs:
+  batch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Fetch original Tabula assets
+        run: |
+          mkdir -p build
+          git clone --depth 1 --filter=blob:none --no-checkout --branch 1.18.2 https://github.com/AlexModGuy/Ice_and_Fire.git build/ice_and_fire
+          git -C build/ice_and_fire sparse-checkout init --cone
+          git -C build/ice_and_fire sparse-checkout set src/main/resources/assets/iceandfire/models/tabula
+          git -C build/ice_and_fire checkout 1.18.2
+      - name: Convert every Tabula source pose
+        run: |
+          python tools/tabula_batch_to_bedrock.py \
+             build/ice_and_fire/src/main/resources/assets/iceandfire/models/tabula \
+             --output build/tabula_bedrock --min-success 100
+      - name: Report converted/failed count
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('build/tabula_bedrock/batch_report.json').read_text())
+          assert p["converted"]>=100
+          print(f"Tabula models converted: {p['converted']}/{p['total']}; failures: {p['failed']}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Ice-and-Fire-Tabula-All-Converted-Models
+          path: build/tabula_bedrock/
+          retention-days: 30
