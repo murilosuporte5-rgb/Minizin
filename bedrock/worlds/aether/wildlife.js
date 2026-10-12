@@ -14,10 +14,10 @@ const RESPAWN_INTERVAL = 180;
 const attacks = new Map();
 
 const SOURCE_WILDLIFE = {
-  skyroot_forest: ["aerbunny", "moa", "phyg", "flying_cow", "sheepuff", "zephyr", "aerwhale", "cockatrice"],
-  skyroot_grove: ["aerbunny", "moa", "sheepuff", "aechor_plant", "phyg", "cockatrice"],
-  skyroot_meadow: ["sheepuff", "phyg", "flying_cow", "aerbunny", "moa", "zephyr"],
-  skyroot_woodland: ["aerbunny", "moa", "valkyrie", "aechor_plant", "cockatrice", "sheepuff"],
+  skyroot_forest: ["aerbunny", "moa", "phyg", "flying_cow", "sheepuff", "zephyr", "aerwhale", "cockatrice", "blue_swet", "whirlwind"],
+  skyroot_grove: ["aerbunny", "moa", "sheepuff", "aechor_plant", "phyg", "cockatrice", "golden_swet"],
+  skyroot_meadow: ["sheepuff", "phyg", "flying_cow", "aerbunny", "moa", "zephyr", "whirlwind"],
+  skyroot_woodland: ["aerbunny", "moa", "valkyrie", "aechor_plant", "cockatrice", "sheepuff", "evil_whirlwind"],
 };
 function seed(x, z) {
   let n = (Math.imul(x, 374761393) ^ Math.imul(z, 668265263)) >>> 0;
