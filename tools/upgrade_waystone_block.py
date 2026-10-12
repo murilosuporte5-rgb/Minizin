@@ -191,7 +191,7 @@ def upgrade(folder: Path):
         new_main = 'import "./waystones_block.js";\n'
     main.write_text(new_main)
     if 'import "./warp_stone.js";' not in new_main:
-        new_main += 'import "./warp_stone.js";\\n'
+        new_main += 'import "./warp_stone.js";\n'
         main.write_text(new_main)
     shutil.copy2(ROOT / "bedrock/runtime/warp_stone.js", scripts / "warp_stone.js")
     report = {
