@@ -1,0 +1,58 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Minizin • Sophisticated Backpacks BP",
+    "description": "Independent persistent item-bound backpacks (27 slots)",
+    "uuid": "e0cb4540-341c-4e8f-bb15-8fd3a009f974",
+    "version": [
+      0,
+      2,
+      8
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      90
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "2ca728f5-738f-40f7-9c53-c264a6773fdc",
+      "version": [
+        0,
+        2,
+        8
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "entry": "scripts/main.js",
+      "uuid": "74df01f5-188e-48b9-ac64-425ebc69e13a",
+      "version": [
+        0,
+        2,
+        8
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.0.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "2.0.0"
+    },
+    {
+      "uuid": "92295709-3c70-4d34-b553-41299b40e337",
+      "version": [
+        0,
+        2,
+        8
+      ]
+    }
+  ]
+}
