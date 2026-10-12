@@ -30,8 +30,13 @@ class OriginalAetherEntityTests(unittest.TestCase):
         for name in ("slider", "valkyrie_queen", "sun_spirit"):
             self.assertIn(name, models.MOBS)
             self.assertIn(name, models.BOSSES)
-        self.assertEqual(len(models.MOBS), 19)
+        self.assertEqual(len(models.MOBS), 21)
         for name, cfg in models.MOBS.items():
+            if cfg.get("particle_only"):
+                self.assertIsNone(cfg["model"])
+                self.assertIsNone(cfg["texture"])
+                self.assertFalse(cfg["hostile"] and name == "whirlwind")
+                continue
             self.assertTrue((models.ORIGINAL_TEXTURES / cfg["texture"]).is_file())
             if cfg["model"] is None:
                 self.assertEqual(cfg["vanilla_base"], "geometry.slime")
@@ -73,6 +78,19 @@ class OriginalAetherEntityTests(unittest.TestCase):
             self.assertIn("pre_animation", desc["scripts"])
             self.assertTrue((models.ORIGINAL_TEXTURES /
                              models.MOBS[mob]["texture"]).is_file())
+
+    def test_whirlwinds_are_real_particle_effects_with_force_not_fake_models(self):
+        js = (ROOT / "bedrock/worlds/aether/whirlwinds.js").read_text()
+        self.assertIn("spawnParticle(", js)
+        self.assertIn("applyImpulse(", js)
+        self.assertIn("applyDamage(", js)
+        self.assertIn("entity.remove()", js)
+        self.assertNotIn("geometry.", js)
+        for mob in ("whirlwind", "evil_whirlwind"):
+            self.assertTrue(models.MOBS[mob]["particle_only"])
+            bp = models.entity_bp(mob, models.MOBS[mob])
+            self.assertEqual(bp["minecraft:entity"]["description"]["identifier"],
+                             f"minizin_aether:{mob}")
 
     def test_bosses_recover_model_counts_and_health_from_java(self):
         expected = {"slider": (400, 1), "valkyrie_queen": (500, 42),
