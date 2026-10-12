@@ -55,8 +55,19 @@ jobs:
                   if mod == "aether":
                       assert "BP/scripts/main.js" in names
                       assert any(n.startswith("BP/structures/minizin_aether/") and n.endswith(".mcstructure") for n in names)
+                      report = json.loads(z.read("BP/structures/minizin_aether/conversion_report.json"))
+                      files = [t for t in report["templates"] if t["status"].startswith("converted")]
+                      skipped = [t for t in report["templates"] if t["status"] == "skipped"]
+                      assert len(files) >= 10, ("Original NBT loss", len(files))
+                      for family in ("bronze_dungeon", "silver_dungeon", "gold_dungeon"):
+                          assert any(t["source"].startswith(family + "/") for t in files), family
+                      for t in skipped:
+                          print("Skipped Java template:", t["source"], t.get("reason"))
+                      print("Aether converted template count:", len(files), "of", len(report["templates"]))
+                      print("Original template conversion is NOT in-game fidelity.")
                   else:
                       assert sum(n.startswith("BP/biomes/") for n in names) == 9
+                      assert sum(n.startswith("BP/features/") and n.endswith("_feature.json") for n in names) >= 10
           print("Static ZIP and pack manifests passed; in-game behavior NOT validated.")
           PY
       - name: Enforce repository asset separation
