@@ -16,8 +16,13 @@ async function travel(player){
     if(!chosen||!read(player,KNOWN).includes(chosen.id))return;
     const current=read(world,KEY).find(row=>row.id===chosen.id);if(!current)return;
     const dimension=world.getDimension(current.dimension);
+    const anchor={x:Math.floor(current.x),y:Math.floor(current.y),z:Math.floor(current.z)};
+    // A persistent coordinate without a surviving block is not a valid destination.
+    if(dimension.getBlock(anchor)?.typeId!=='minizin:andesite_waystone_block'){
+      player.sendMessage('§eO marco não está carregado ou foi removido.');return;
+    }
     for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]){
-      const at={x:Math.floor(current.x)+dx+0.5,y:Math.floor(current.y),z:Math.floor(current.z)+dz+0.5};
+      const at={x:anchor.x+dx+0.5,y:anchor.y,z:anchor.z+dz+0.5};
       try{
         if(!dimension.getBlock(at)?.isAir||!dimension.getBlock({...at,y:at.y+1})?.isAir)continue;
         const floor=dimension.getBlock({...at,y:at.y-1});if(!floor||floor.isAir||floor.isLiquid)continue;
