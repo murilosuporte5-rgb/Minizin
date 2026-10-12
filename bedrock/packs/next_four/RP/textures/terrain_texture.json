@@ -1,0 +1,18 @@
+{
+  "resource_pack_name": "minizin_next_four",
+  "texture_name": "atlas.terrain",
+  "texture_data": {
+    "minizin_rftools_generator": {
+      "textures": "textures/entity/minizin/rftools_coalgenerator"
+    },
+    "minizin_rftools_cell": {
+      "textures": "textures/entity/minizin/rftools_powercell"
+    },
+    "minizin_rftools_cable": {
+      "textures": "textures/entity/minizin/rftools_wire_block"
+    },
+    "minizin_rftools_lamp": {
+      "textures": "textures/entity/minizin/rftools_relayon"
+    }
+  }
+}

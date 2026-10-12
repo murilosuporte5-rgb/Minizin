@@ -8,10 +8,10 @@
       }
     },
     "components": {
-      "minecraft:geometry": "minecraft:geometry.full_block",
+      "minecraft:geometry": "geometry.minizin.rftools.coalgenerator",
       "minecraft:material_instances": {
         "*": {
-          "texture": "iron_block",
+          "texture": "minizin_rftools_generator",
           "render_method": "opaque"
         }
       },

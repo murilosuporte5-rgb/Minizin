@@ -14,10 +14,10 @@
       }
     },
     "components": {
-      "minecraft:geometry": "minecraft:geometry.full_block",
+      "minecraft:geometry": "geometry.minizin.rftools.relayon",
       "minecraft:material_instances": {
         "*": {
-          "texture": "redstone_lamp",
+          "texture": "minizin_rftools_lamp",
           "render_method": "opaque"
         }
       },

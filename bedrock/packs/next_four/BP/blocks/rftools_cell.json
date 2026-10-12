@@ -8,10 +8,10 @@
       }
     },
     "components": {
-      "minecraft:geometry": "minecraft:geometry.full_block",
+      "minecraft:geometry": "geometry.minizin.rftools.powercell",
       "minecraft:material_instances": {
         "*": {
-          "texture": "copper_block",
+          "texture": "minizin_rftools_cell",
           "render_method": "opaque"
         }
       },
