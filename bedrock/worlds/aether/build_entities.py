@@ -36,7 +36,7 @@ MOBS = {
     "aerbunny": {"model": "AerbunnyModel.java", "texture": "mobs/aerbunny/aerbunny.png",
                   "health": 10, "attack": 0, "collision": [0.5, 0.5], "movement": .28,
                   "hostile": False},
-    "cockatrice": {"model": "CockatriceModel.java", "texture": "mobs/cockatrice/cockatrice.png",
+    "cockatrice": {"model": "BipedBirdModel.java", "texture": "mobs/cockatrice/cockatrice.png",
                     "health": 25, "attack": 5, "collision": [0.8, 1.2], "movement": .32,
                     "hostile": True},
     "sheepuff": {"model": "SheepuffModel.java", "texture": "mobs/sheepuff/sheepuff.png",
