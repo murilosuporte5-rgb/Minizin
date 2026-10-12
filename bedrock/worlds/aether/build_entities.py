@@ -160,19 +160,26 @@ def parse_cubes(builder: str) -> list[dict]:
     for match in re.finditer(r"\.addBox\(", builder):
         args, _ = matched_parentheses(builder, match.end() - 1)
         fields = split_arguments(args)
-        if len(fields) < 6:
+        named = bool(fields and re.fullmatch(r'"[^"]+"', fields[0]))
+        start = 1 if named else 0
+        if len(fields) < start + 6:
             raise ValueError(f"Malformed Java box: {args}")
-        x, y, z, w, h, d = [floatv(v) for v in fields[:6]]
+        x, y, z, w, h, d = [floatv(v) for v in fields[start:start+6]]
         if min(w, h, d) < 0:
             raise ValueError(f"Negative size in cube: {args}")
         prev = builder[:match.start()]
         uv_matches = list(re.finditer(r"\.texOffs\((\d+),\s*(\d+)\)", prev))
-        if not uv_matches:
-            raise ValueError("Java box missing UV")
-        u, v = [int(k) for k in uv_matches[-1].groups()]
+        if named and len(fields) >= start + 9:
+            # Named Java cubes specify UV at the end of each addBox call.
+            u, v = [int(floatv(k)) for k in fields[-2:]]
+        elif uv_matches:
+            u, v = [int(k) for k in uv_matches[-1].groups()]
+        else:
+            raise ValueError("Java box missing explicit UV")
         inflate = 0.
-        if len(fields) > 6 and "CubeDeformation(" in fields[6]:
-            m = re.search(r"CubeDeformation\(([^()]+)\)", fields[6])
+        deformation = fields[start + 6] if len(fields) > start + 6 else ""
+        if "CubeDeformation(" in deformation:
+            m = re.search(r"CubeDeformation\(([^()]+)\)", deformation)
             inflate = floatv(m.group(1)) if m else 0.
         cubes.append({"x": x - inflate, "y": y - inflate,
                       "z": z - inflate, "w": w + 2 * inflate,
