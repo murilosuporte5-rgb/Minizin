@@ -4,6 +4,7 @@ import argparse,json,re,shutil,zipfile,hashlib
 from pathlib import Path
 from validate_gameplay_packs import check
 from build_bedrock_packs import zipped
+from upgrade_waystone_block import upgrade as upgrade_waystone
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -80,19 +81,22 @@ def expand(source,output):
     (bp/'scripts/aether_equipment_catalog.js').write_text('export const EQUIPMENT = '+json.dumps(catalog)+';\n')
     with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./waystones/main.js";\nimport "./warp_stone.js";\nimport "./aether_equipment.js";\n')
     for role in ['RP','BP']:
-        path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['version']=[0,2,4]
+        path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['version']=[0,2,5]
         doc['header']['name']='Minizin Gameplay + Waystones '+role
-        for m in doc['modules']:m['version']=[0,2,4]
+        for m in doc['modules']:m['version']=[0,2,5]
         for d in doc.get('dependencies',[]):
-            if 'uuid' in d:d['version']=[0,2,4]
+            if 'uuid' in d:d['version']=[0,2,5]
         write(path,doc)
+    # Convert the old summonable prototype into a placeable block while keeping
+    # the entity definition solely for existing-world migration.
+    waystone_report=upgrade_waystone(output)
     counts=check([output]);write(output/'EXPANSION_REPORT.json',{'items_added':len(names)+1,'structural':counts,'provenance':provenance,
-      'new_mod':'Waystones adapted activation and teleport','android_retest_pending':True,
+      'new_mod':'Waystones custom block with migration path','waystone_block':waystone_report,'android_retest_pending':True,
       'limits':['Zanite bonus, Gravitite block lifting and Valkyrie reach pending','Golden/iron rings are ornamental accessories in source',
         'Tool harvesting tier and all special drops require Android QA','Weapons/tools currently creative acquisition; Java recipes pending',
         'Immersive Portals renderer, Xaero minimap renderer and Distant Horizons LOD remain unavailable through current BP/RP',
         'Other original mod systems remain incomplete']})
-    addon=output/'Minizin_Gameplay_Waystones_Aether_v0.2.4.mcaddon'
+    addon=output/'Minizin_Gameplay_Waystones_Aether_v0.2.5_EXPERIMENTAL.mcaddon'
     with zipfile.ZipFile(addon,'w',zipfile.ZIP_STORED) as archive:
         for role in ['RP','BP']:archive.writestr('Minizin_Gameplay_'+role+'.mcpack',zipped(output/role))
     assert zipfile.ZipFile(addon).testzip() is None
