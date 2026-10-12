@@ -73,6 +73,13 @@ class WorldBuilderTests(unittest.TestCase):
                 with self.assertRaises(FileNotFoundError):
                     worlds.java_biome_spec("mystic_grove", worlds.BIOMES["mystic_grove"])
 
+    def test_silver_dungeon_blocks_are_not_fake_breakable_ornaments(self):
+        for name in ("locked_angelic_stone", "boss_doorway_angelic_stone"):
+            self.assertIn(name, worlds.ASSETS["aether"])
+            components = worlds.block_def("aether", name)["minecraft:block"]["components"]
+            self.assertIs(components["minecraft:destructible_by_mining"], False)
+            self.assertIs(components["minecraft:destructible_by_explosion"], False)
+
     def test_portal_collision_is_disabled_and_axis_is_recorded(self):
         b = worlds.block_def("aether", "aether_portal")["minecraft:block"]
         self.assertEqual(b["description"]["states"]["minizin_aether:axis"], ["x", "z"])
