@@ -1,0 +1,61 @@
+name: Minizin Systems QA
+on:
+  push:
+    branches: [feature/minizin-systems]
+  pull_request:
+    paths:
+      - 'bedrock/packs/next_four/BP/scripts/carryon.js'
+      - 'bedrock/packs/next_four/BP/scripts/mca.js'
+      - 'bedrock/packs/next_four/BP/scripts/origins.js'
+      - 'bedrock/packs/next_four/BP/scripts/rftools.js'
+      - 'bedrock/packs/next_four/BP/blocks/rftools_*.json'
+      - 'bedrock/packs/waystones/**'
+      - 'bedrock/packs/sophisticated_backpacks/**'
+      - 'tests/systems_*.test.mjs'
+      - '.github/workflows/minizin-systems.yml'
+  workflow_dispatch:
+jobs:
+  test-and-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: |
+          node --check bedrock/packs/waystones/BP/scripts/main.js
+          node --check bedrock/packs/sophisticated_backpacks/BP/scripts/main.js
+          for f in carryon mca origins rftools; do
+            node --check "bedrock/packs/next_four/BP/scripts/$f.js"
+          done
+      - name: Test systems in deterministic mocks
+        run: node --test tests/systems_*.test.mjs
+      - name: JSON validation and package
+        run: |
+          python - <<'PY'
+          import json, zipfile
+          from pathlib import Path
+          packs={
+            "Waystones_BP":"bedrock/packs/waystones/BP",
+            "Waystones_RP":"bedrock/packs/waystones/RP",
+            "NextFour_BP":"bedrock/packs/next_four/BP",
+            "NextFour_RP":"bedrock/packs/next_four/RP",
+            "SophisticatedBackpacks_BP":"bedrock/packs/sophisticated_backpacks/BP",
+            "SophisticatedBackpacks_RP":"bedrock/packs/sophisticated_backpacks/RP",
+          }
+          for name,folder in packs.items():
+            assert Path(folder,"manifest.json").is_file(),name
+            files=list(Path(folder).rglob("*.json"))
+            for f in files: json.loads(f.read_text(encoding="utf-8"))
+            print(name,len(files),"valid JSON files")
+          out=Path("Minizin_Systems_Experimental.mcaddon")
+          with zipfile.ZipFile(out,"w",zipfile.ZIP_DEFLATED) as z:
+            for name,folder in packs.items():
+              for f in Path(folder).rglob("*"):
+                if f.is_file():z.write(f,Path(name)/f.relative_to(folder))
+          with zipfile.ZipFile(out) as z: assert z.testzip() is None
+          print(out,out.stat().st_size)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Minizin-Systems-Experimental
+          path: Minizin_Systems_Experimental.mcaddon
+          retention-days: 14
