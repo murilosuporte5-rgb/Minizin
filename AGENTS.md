@@ -22,3 +22,14 @@ O usuário informa autorização para estudar os mods. Antes de publicar modelos
 
 ## Prioridade de implementação
 Waystones/Carry On/Origins (sistemas); Mowzie's Mobs (geometrias já próximas de Bedrock); RFTools (OBJ/Blend); Ice and Fire/Alex's Caves (modelos Java); Aether/Biomes O' Plenty/MCA (mundo e NPCs); Cataclysm (inventário do .jar); Xaero/Immersive Portals/Distant Horizons (avaliar renderizador, sem falsas promessas).
+
+## Pipeline de conversão já disponível — usar ANTES da criação de modelos
+
+- `tools/tabula_to_bedrock.py` e `tools/tabula_batch_to_bedrock.py`: 192/192 poses Tabula do Ice and Fire geradas no GitHub Actions.
+- `tools/citadel_java_to_bedrock.py`: modelos Citadel Java, incluindo modelos herdados (`SauropodBaseModel.java` + `AtlatitanModel.java`).
+- `tools/block_atlas_to_bedrock.py`: converte blocos e compõe atlases reais de múltiplas texturas; 366 modelos convertidos.
+- `tools/java_model_to_bedrock.mjs`: parser de modelos Java JSON com herança, adequado para validar peças.
+- `tools/build_bedrock_packs.py`: gera os dois packs experimentais no diretório `build/`.
+- `ENGINEERING_STATUS.md`: resultados efetivamente verificados, limites, riscos e links dos artifacts de CI.
+
+**Proibido declarar 14 mods concluídos com base apenas em arquivos .geo.json:** é preciso converter e validar as animações, sistemas, AI, biomas, dimensões, multiplayer e comportamento no dispositivo. Continue completando o backlog em pequenos commits, preservando os upstream submodules.

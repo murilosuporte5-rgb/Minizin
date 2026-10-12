@@ -64,3 +64,7 @@ git submodule update --init --recursive
 **Atenção:** clonagem recursiva de todos os mods Java pode consumir muito espaço; não é recomendada diretamente em celulares com pouco armazenamento. Os submódulos não rodam no Minecraft Bedrock. A licença e os créditos do upstream permanecem aplicáveis.
 
 **Referências sem submódulo:** Cataclysm (fonte original não confirmada), Xaero's Minimap (All Rights Reserved) e Distant Horizons (fonte principal no GitLab; conferir commit e licença antes de vincular).
+
+## Conversores e resultados — 12/10/2026
+
+[Relatório técnico verificado](ENGINEERING_STATUS.md). Conversores, builds experimentais e jobs do GitHub Actions foram publicados. Os testes de geração foram aprovados, mas **a engenharia reversa completa e os 14 ports jogáveis ainda não foram concluídos**. Não criar modelos novos antes de tentar reaproveitar `.bbmodel`, `.geo.json`, Tabula `.tbl`, `AdvancedModelBox`, `.obj`, `.blend`, JSON de blocos e PNG/OGG originais.
