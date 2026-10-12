@@ -30,18 +30,24 @@ class OriginalAetherEntityTests(unittest.TestCase):
         for name in ("slider", "valkyrie_queen", "sun_spirit"):
             self.assertIn(name, models.MOBS)
             self.assertIn(name, models.BOSSES)
-        self.assertGreaterEqual(len(models.MOBS), 9)
+        self.assertEqual(len(models.MOBS), 19)
         for name, cfg in models.MOBS.items():
+            self.assertTrue((models.ORIGINAL_TEXTURES / cfg["texture"]).is_file())
+            if cfg["model"] is None:
+                self.assertEqual(cfg["vanilla_base"], "geometry.slime")
+                self.assertEqual(models.entity_bp(name, cfg)["minecraft:entity"]
+                                 ["components"]["minecraft:variant"]["value"], 2)
+                continue
             path = models.JAVA_MODELS / cfg["model"]
             self.assertTrue(path.is_file(), str(path))
-            self.assertTrue((models.ORIGINAL_TEXTURES / cfg["texture"]).is_file())
-            geo, report = models.convert_model(path.read_text(), name)
+            geo, report = models.convert_model(path.read_text(), name,
+                                                cfg.get("wing_offset", 0.))
             self.assertGreaterEqual(report["converted_cubes"], 1)
             self.assertTrue(geo["minecraft:geometry"][0]["bones"])
             self.assertTrue(all(b["name"] for b in geo["minecraft:geometry"][0]["bones"]))
 
     def test_composite_native_quadruped_body_with_original_java_wings(self):
-        self.assertEqual(len(models.MOBS), 16)
+        self.assertEqual(len(models.MOBS), 19)
         for mob, body in (("phyg", "geometry.pig.v3"),
                           ("flying_cow", "geometry.cow.v2")):
             descriptor = models.client_entity(mob)["minecraft:client_entity"]["description"]
@@ -56,6 +62,17 @@ class OriginalAetherEntityTests(unittest.TestCase):
         source = (models.JAVA_MODELS / "CloudMinionModel.java").read_text()
         _, audit = models.convert_model(source, "cloud_minion")
         self.assertEqual(audit["converted_cubes"], 5)
+
+    def test_swet_and_sentry_use_source_slime_rig_and_original_skins(self):
+        for mob in ("blue_swet", "golden_swet", "sentry"):
+            desc = models.client_entity(mob)["minecraft:client_entity"]["description"]
+            self.assertEqual(desc["geometry"]["default"], "geometry.slime")
+            self.assertEqual(desc["geometry"]["outer"], "geometry.slime.armor")
+            self.assertIn("controller.render.minizin_aether.slime_outer",
+                          desc["render_controllers"])
+            self.assertIn("pre_animation", desc["scripts"])
+            self.assertTrue((models.ORIGINAL_TEXTURES /
+                             models.MOBS[mob]["texture"]).is_file())
 
     def test_bosses_recover_model_counts_and_health_from_java(self):
         expected = {"slider": (400, 1), "valkyrie_queen": (500, 42),
