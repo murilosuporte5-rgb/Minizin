@@ -215,11 +215,36 @@ async function generateCell(cx, cz) {
         if (!t) continue;
         for (let h = t.surface - t.depth; h <= t.surface; h++) {
           const ore = (seed(x * 17 + h, z * 19) % 37) === 0;
-          const id = h === t.surface ? "minizin_aether:aether_grass" :
+          const id = h === t.surface && t.distance > .82 && seed(x, z) % 3 === 0
+            ? "minizin_aether:quicksoil"
+            : h === t.surface ? "minizin_aether:aether_grass" :
             h > t.surface - 3 ? "minizin_aether:aether_dirt" :
-            ore ? (seed(x, z + h) % 3 ? "minizin_aether:ambrosium_ore" : "minizin_aether:zanite_ore") :
+            ore ? (seed(x, z + h) % 17 === 0 ? "minizin_aether:gravitite_ore" :
+                   seed(x, z + h) % 3 ? "minizin_aether:ambrosium_ore" : "minizin_aether:zanite_ore") :
             "minizin_aether:holystone";
           set(dim, x, h, z, id);
+          await yieldBudget(++writes);
+        }
+      }
+    }
+    // Source-textured Aercloud strata. Shapes and altitude distributions are
+    // deterministic Bedrock adaptations, not Java's density functions.
+    const cloudTypes = [
+      "minizin_aether:cold_aercloud",
+      "minizin_aether:blue_aercloud",
+      "minizin_aether:golden_aercloud",
+    ];
+    for (let cloud = 0; cloud < 3; cloud++) {
+      const salt = seed(cx * 37 + cloud, cz * 113 - cloud);
+      const ax = c.x + ((salt & 31) - 16);
+      const az = c.z + (((salt >>> 5) & 31) - 16);
+      const h = 139 + (salt % 15);
+      const radiusCloud = 3 + (salt % 4);
+      const material = cloudTypes[cloud];
+      for (let ox = -radiusCloud; ox <= radiusCloud; ox++) {
+        for (let oz = -radiusCloud; oz <= radiusCloud; oz++) {
+          if (ox * ox + oz * oz > radiusCloud * radiusCloud) continue;
+          set(dim, ax + ox, h + ((ox + oz) % 3 === 0 ? 1 : 0), az + oz, material);
           await yieldBudget(++writes);
         }
       }
@@ -344,6 +369,21 @@ world.afterEvents.playerPlaceBlock.subscribe((event) => {
     }
   }
 });
+function aercloudTick(player) {
+  const p = player.location;
+  const at = { x: Math.floor(p.x), y: Math.floor(p.y - .18), z: Math.floor(p.z) };
+  if (isBlock(player.dimension, at, "minizin_aether:blue_aercloud")) {
+    // Vertical boost without overriding player controls.
+    const cooldown = "minizin_aether:cloud_cooldown";
+    const last = Number(player.getDynamicProperty(cooldown) || -9999);
+    if (system.currentTick - last > 20) {
+      player.setDynamicProperty(cooldown, system.currentTick);
+      player.applyImpulse({ x: 0, y: .65, z: 0 });
+    }
+  } else if (isBlock(player.dimension, at, "minizin_aether:cold_aercloud")) {
+    player.addEffect("minecraft:slow_falling", 24, { amplifier: 0, showParticles: false });
+  }
+}
 function quicksoilTick(player) {
   const p = player.location;
   const ground = { x: Math.floor(p.x), y: Math.floor(p.y - .25), z: Math.floor(p.z) };
@@ -360,6 +400,7 @@ system.runInterval(() => {
   for (const player of world.getAllPlayers()) {
     try {
       quicksoilTick(player);
+      aercloudTick(player);
       if (player.dimension.id === SKY_ID) {
         if (player.location.y < 10) {
           if (readyToTravel(player)) returnOverworld(player);
