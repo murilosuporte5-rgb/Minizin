@@ -24,9 +24,9 @@ jobs:
           p=pathlib.Path('bedrock/packs/creatures/BP')
           for f in p.rglob('*.json'):
               json.loads(f.read_text())
-          assert len(list((p/'entities').glob('*.json')))==10
+          assert len(list((p/'entities').glob('*.json')))==11
           assert not list(pathlib.Path('bedrock/packs/creatures').rglob('*.png'))
-          print('PASS: ten entity definitions, JSON schemas parse, no substituted PNG')
+          print('PASS: eleven entity definitions, JSON schemas parse, no substituted PNG')
           PY
       - name: Compile Python builder
         run: python -m py_compile bedrock/packs/creatures/build_creatures.py

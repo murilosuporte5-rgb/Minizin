@@ -23,14 +23,16 @@ TEXTURES={
  "atlatitan":("42-alexs-caves","alexscaves","entity",["atlatitan.png"]),
  "ignis":("43-cataclysm","cataclysm","entity/ignis",["ignis_idle_0.png","ignis_soul_idle_0.png"]),
  "umvuthi":("44-mowzies-mobs","mowziesmobs","entity",["umvuthi.png"]),
- "umvuthana":("44-mowzies-mobs","mowziesmobs","entity",["umvuthana.png"])
+ "umvuthana":("44-mowzies-mobs","mowziesmobs","entity",["umvuthana.png"]),
+ "ender_guardian":("43-cataclysm","cataclysm","entity",["ender_guardian.png"])
 }
 GEO={
  "fire_dragon":"ice_and_fire/firedragon/firedragon_BaseMale.geo.json",
  "ice_dragon":"ice_and_fire/icedragon/icedragon_BaseMale.geo.json",
  "lightning_dragon":"ice_and_fire/lightningdragon/lightningdragon_BaseMale.geo.json",
  "atlatitan":"alex_caves/atlatitan.geo.json",
- "ignis":"cataclysm/Ignis_Model.geo.json"
+ "ignis":"cataclysm/Ignis_Model.geo.json",
+ "ender_guardian":"cataclysm/Ender_Guardian_Model.geo.json"
 }
 ITEMS={
  "dragon_meal":("16-ice-and-fire","iceandfire","dragon_meal.png"),
@@ -55,7 +57,8 @@ AUDIO={
  "bluff_attack":("44-mowzies-mobs","mowziesmobs","entity/bluff/attack.ogg"),
  "bluff_spike":("44-mowzies-mobs","mowziesmobs","entity/bluff/spike_explode.ogg"),
  "umvuthi_supernova":("44-mowzies-mobs","mowziesmobs","entity/umvuthi/supernova_end.ogg"),
- "umvuthi_supernova_start":("44-mowzies-mobs","mowziesmobs","entity/umvuthi/supernova_start.ogg")
+ "umvuthi_supernova_start":("44-mowzies-mobs","mowziesmobs","entity/umvuthi/supernova_start.ogg"),
+ "ender_stomp":("43-cataclysm","cataclysm","entity/ender_guardian_stomp.ogg")
 }
 POSE_SETS={"bite":["Bite1","Bite2","Bite3"],
            "tail":["Tail1","Tail2","Tail3"],
@@ -124,8 +127,8 @@ def check_staged(rp,bp):
             if not (rp/(path+".png")).is_file():raise ValueError("No texture "+id+":"+path)
         for anim in c.get("animations",{}).values():
             if anim not in anims:raise ValueError("No animation "+id+":"+anim)
-    if len(server)!=10:raise ValueError("Wrong total entity count "+str(len(server)))
-    print("PASS: 10 server/client definitions, models, PNG textures, animation names, archive manifests")
+    if len(server)!=11:raise ValueError("Wrong total entity count "+str(len(server)))
+    print("PASS: 11 server/client definitions, models, PNG textures, animation names, archive manifests")
 
 def build(out,has_permission,validate_only=False):
     if not (has_permission or validate_only):

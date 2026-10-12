@@ -40,3 +40,7 @@ Origem: Mowzie `EntityUmvuthi.java` 150 HP, poderes `Sunstrike`, `Solar Flare`, 
 ## Validação estrutural ampliada
 
 `python bedrock/packs/creatures/build_creatures.py --validate-only` monta **temporariamente** os quatro `.mcpack`, verifica que os 10 IDs BP possuem client_entity, modelos e PNG reais, confere referências de animação e manifestos e apaga os arquivos. Não publica pacotes. Teste em Bedrock Android continua necessário.
+
+## Cataclysm — Ender Guardian
+
+Novo boss com geometria original `Ender_Guardian_Model.geo.json`, PNG original, escudo/helmetless em 50% HP e seleção de cinco habilidades diferenciadas do Java: Stomp (48/83 ticks), Black Hole (62), Mass Destruction (75), Uppercut (100/120), Burst (53) e Rocket Punch (58). `ender_guardian.js` implementa ataques e cooldowns. **A modelagem de frames Java de renderização não foi convertida; animações visuais ainda não são equivalentes**. Fonte: `Ender_Guardian_Entity.java` no commit Cataclysm fixado no README.
