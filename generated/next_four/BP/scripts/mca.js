@@ -28,7 +28,10 @@ async function showVillager(player,villager){
 }
 export function installMCA(){
   world.afterEvents.playerInteractWithEntity.subscribe(event=>{
-    if(event.target.typeId!=="minecraft:villager"||!event.player.isSneaking)return;
+    if(!event.player.isSneaking)return;
+    // Also support the ten experimental MCA NPCs generated from original skin layers.
+    const id=event.target.typeId;
+    if(id!=="minecraft:villager"&&!/^minizin:mca_(female|male)_[0-4]$/.test(id))return;
     const hand=event.beforeItemStack??event.itemStack??held(event.player);
     if(hand?.typeId!=="minecraft:paper")return;
     system.run(()=>showVillager(event.player,event.target));
