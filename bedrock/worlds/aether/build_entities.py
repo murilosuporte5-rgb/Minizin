@@ -345,18 +345,28 @@ def animations(mob: str) -> dict:
 
 
 def client_entity(mob: str) -> dict:
+    spec = MOBS[mob]
+    wings = bool(spec.get("vanilla_base"))
+    # Phyg/FlyingCow Java has a stock quadruped torso PLUS authored wing mesh.
+    # Reuse Bedrock vanilla body geometry without fabricating pig/cow cuboids.
+    desc = {
+        "identifier": MOD_NAMESPACE + ":" + mob,
+        "materials": {"default": "entity_alphatest"},
+        "textures": {"default": f"textures/entity/minizin_aether/{mob}"},
+        "geometry": {"default": spec["vanilla_base"] if wings
+                     else f"geometry.minizin_aether.{mob}"},
+        "render_controllers": ["controller.render.minizin_aether.mob"],
+        "animations": {
+            "idle": f"animation.minizin_aether.{mob}.idle",
+            "attack": f"animation.minizin_aether.{mob}.attack"},
+        "scripts": {"animate": ["idle"]},
+    }
+    if wings:
+        desc["geometry"]["wings"] = f"geometry.minizin_aether.{mob}"
+        desc["textures"]["wings"] = f"textures/entity/minizin_aether/{mob}_wings"
+        desc["render_controllers"].append("controller.render.minizin_aether.wings")
     return {"format_version": "1.10.0", "minecraft:client_entity": {
-        "description": {
-            "identifier": MOD_NAMESPACE + ":" + mob,
-            "materials": {"default": "entity_alphatest"},
-            "textures": {"default": f"textures/entity/minizin_aether/{mob}"},
-            "geometry": {"default": f"geometry.minizin_aether.{mob}"},
-            "render_controllers": ["controller.render.minizin_aether.mob"],
-            "animations": {
-                "idle": f"animation.minizin_aether.{mob}.idle",
-                "attack": f"animation.minizin_aether.{mob}.attack"},
-            "scripts": {"animate": ["idle"]},
-        }}}
+        "description": desc}}
 
 
 def write(path: Path, obj: dict) -> None:
@@ -395,5 +405,9 @@ def build_all(bp: Path, rp: Path) -> dict:
             "controller.render.minizin_aether.mob": {
                 "geometry": "Geometry.default",
                 "materials": [{"*": "Material.default"}],
-                "textures": ["Texture.default"]}}})
+                "textures": ["Texture.default"]},
+            "controller.render.minizin_aether.wings": {
+                "geometry": "Geometry.wings",
+                "materials": [{"*": "Material.default"}],
+                "textures": ["Texture.wings"]}}})
     return results
