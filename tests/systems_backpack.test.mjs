@@ -40,8 +40,8 @@ function harness() {
     setDynamicProperty:(k,v)=>playerProps.set(k,v)};
   const api=new Function("world","system","ItemStack","EnchantmentTypes",
     "ActionFormData","ModalFormData",source+
-    "\nreturn {assign,encode,decode,getState,writeState,migrateLegacy,validate,compatible,depositAll,sortBag};")(
-      world,{},Stack,{get:id=>({id})},class {},class {}
+    "\nreturn {assign,encode,decode,getState,writeState,migrateLegacy,validate,compatible,depositAll,sortBag,configureFilter};")(
+      world,{},Stack,{get:id=>({id})},class {title(){return this;}body(){return this;}button(){return this;}async show(){return {canceled:false,selection:1};}},class {}
     );
   return {api,worldProps,playerProps,inv,player};
 }
@@ -101,4 +101,22 @@ test("bulk deposit moves real item stacks, keeps individual bag state and sortin
   assert.equal(api.getState(id).revision,2);
   assert.equal(api.getState(id).slots[0].name,"Named gear");
   assert.equal(api.getState(id).slots[1].amount,32);
+});
+
+test("a consumed filter upgrade belongs to one bag and restricts bulk deposit",async()=>{
+  const {api,inv,player}=harness();
+  inv.items[1]=new Stack("minizin:backpack_filter_upgrade",1);
+  inv.items[2]=new Stack("minecraft:stone",11);
+  inv.items[3]=new Stack("minecraft:dirt",7);
+  const id=api.assign(player);
+  await api.configureFilter(player,id,0);
+  assert.equal(inv.getItem(1),undefined);
+  assert.equal(api.getState(id).filterInstalled,true);
+  await api.configureFilter(player,id,1);
+  assert.deepEqual(api.getState(id).filters,["minecraft:stone"]);
+  await api.depositAll(player,id,2);
+  assert.equal(inv.getItem(2),undefined);
+  assert.equal(inv.getItem(3).amount,7);
+  assert.equal(api.getState(id).slots[0].type,"minecraft:stone");
+  assert.equal(api.getState(id).revision,3);
 });
