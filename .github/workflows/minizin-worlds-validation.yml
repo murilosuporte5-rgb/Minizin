@@ -30,6 +30,7 @@ jobs:
           node --check bedrock/worlds/bop/main.js
           node --check bedrock/worlds/aether/bosses.js
           node --check bedrock/worlds/aether/wildlife.js
+          node --check bedrock/worlds/aether/whirlwinds.js
       - name: Install conversion dependencies
         run: python -m pip install --disable-pip-version-check Pillow nbtlib numpy
       - name: Run static tests
@@ -42,6 +43,7 @@ jobs:
           node --check build/worlds/aether/BP/scripts/main.js
           node --check build/worlds/aether/BP/scripts/bosses.js
           node --check build/worlds/aether/BP/scripts/wildlife.js
+          node --check build/worlds/aether/BP/scripts/whirlwinds.js
           node --check build/worlds/aether/BP/scripts/dungeon_loot.js
           node --check build/worlds/bop/BP/scripts/main.js
           node --check build/worlds/bop/BP/scripts/native_biomes.js
@@ -67,6 +69,7 @@ jobs:
                       assert "BP/scripts/biome_profiles.js" in names
                       assert "BP/scripts/bosses.js" in names
                       assert "BP/scripts/wildlife.js" in names
+                      assert "BP/scripts/whirlwinds.js" in names
                       assert "BP/scripts/dungeon_loot.js" in names
                       for mob in ("slider", "valkyrie_queen", "sun_spirit",
                                   "zephyr", "aechor_plant", "fire_minion",
@@ -77,6 +80,9 @@ jobs:
                           assert f"RP/models/entity/{mob}.geo.json" in names, mob
                           assert f"RP/entity/{mob}.entity.json" in names, mob
                           assert f"RP/textures/entity/minizin_aether/{mob}.png" in names, mob
+                      for mob in ("whirlwind", "evil_whirlwind"):
+                          assert f"BP/entities/{mob}.json" in names
+                          assert f"RP/models/entity/{mob}.geo.json" not in names
                       for mob in ("blue_swet", "golden_swet", "sentry"):
                           assert f"BP/entities/{mob}.json" in names
                           assert f"RP/entity/{mob}.entity.json" in names
