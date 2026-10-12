@@ -8,8 +8,8 @@ Este diretório tem código e testes próprios. Não modifica os módulos de out
 
 | Módulo | Fonte Java como submódulo no Minizin | Classes / dados relevantes | Recursos locais aproveitados |
 | --- | --- | --- | --- |
-| The Aether | `mods/41-the-aether/upstream` gitlink `e07d30e16fbd0f09cc067b39594035e395dcf996` | `src/generated/resources/data/aether/worldgen/`, `src/main/resources/data/aether/structure/`; lógica original não executável no Android | 11 PNG originais (holystone, skyroot, golden oak, minerais, portal); texturas copiadas **somente em build/** |
-| Biomes O' Plenty | `mods/19-biomes-o-plenty/upstream` gitlink `ef7f13e117faef0b97591f569175e53ea4fe664b` | `common/src/generated/resources/data/biomesoplenty/worldgen/biome/*.json` | 8 PNG originais; para quatro biomas **temperatura, chuva, água, cor da folhagem e grama lidas do JSON Java fixado**, quando disponíveis |
+| The Aether | `mods/41-the-aether/upstream` gitlink `e07d30e16fbd0f09cc067b39594035e395dcf996` | `src/generated/resources/data/aether/worldgen/`, `src/main/resources/data/aether/structure/`; lógica original não executável no Android | 11 definições de bloco, com 13 texturas de origem distintas (holystone, skyroot, golden oak, minerais, portal e faces); texturas copiadas **somente em build/** |
+| Biomes O' Plenty | `mods/19-biomes-o-plenty/upstream` gitlink `ef7f13e117faef0b97591f569175e53ea4fe664b` | `common/src/generated/resources/data/biomesoplenty/worldgen/biome/*.json` | 8 definições de bloco, com 11 texturas de origem distintas (incluindo faces superiores de troncos); para quatro biomas **temperatura, chuva, água, cor da folhagem e grama lidas do JSON Java fixado**, quando disponíveis |
 
 **Licenças:** Aether `LICENSE-ASSETS.txt` e Biomes O' Plenty `LICENSE` indicam **ALL RIGHTS RESERVED** para recursos. Código disponível publicamente ou autorização de estudar **não autoriza automaticamente redistribuir os PNGs**. O Git armazena somente código que consome os arquivos originais; todos os PNG, pacotes finais e derivados permanecem em `build/` (gitignored) até registrar autorização expressa de adaptação/redistribuição. **Não publique os .mcaddon gerados na CI nem em releases públicas sem tal autorização.**
 
@@ -59,7 +59,7 @@ Criar **cópia de um mundo** antes de instalar. Importar cada pack individualmen
 2. `minecraft:overworld_generation_rules` é **legado e não atribui naturalmente novos biomas personalizados** no roteador atual (Caves & Cliffs); os quatro JSONs de bioma são dados para testes/integrações futuras, enquanto o gerador de regiões do BoP implementa apenas decoração no Overworld. No Java, temperatura/chuva, vegetal, clima, vegetação e noise router envolvem registros distintos; conversão do JSON não reproduz biomas reais.
 3. Os modelos de `generated/conversions/block_atlases` estão em branch separada e não foram mesclados para evitar conflitos e redistribuição indevida. O builder usa **PNGs originais**, mas a geometria de portal/plantas é **adaptação** Bedrock, não modelo idêntico ao Java.
 4. Sem equipamento Android conectado, a adequação dos componentes dos JSONs e APIs Beta é **hipótese técnica** até teste do jogo. Erros no content log devem ser reportados e corrigidos com a versão exata do Minecraft.
-5. Texturas de madeira de log usam atualmente apenas a textura lateral nas seis faces; tops e bottom corretos exigem materiais de face específicos. Portal animado Java é atualmente um único frame, sem animação. Estrutura simples de templo não equivale às masmorras Bronze/Silver/Gold.
+5. Troncos e aether grass têm texturas superiores/inferiores originais com materiais direcionais; resta verificar orientação e UV dentro do Minecraft. O portal animado Java é atualmente um único frame, sem animação. Estrutura simples de templo não equivale às masmorras Bronze/Silver/Gold.
 
 ## Referências
 
