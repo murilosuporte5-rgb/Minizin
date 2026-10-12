@@ -9,14 +9,14 @@ export function tickBluff(e,tick){
     if(tick%50!==0)return;
     const p=playerTarget(e,12);
     if(!p||distance(e.location,p.location)<6)return;
-    put(e,"bluff_phase","startup");put(e,"bluff_timer",11);
+    put(e,"bluff_phase","startup");state(e,"bluff_action","startup");put(e,"bluff_timer",11);
     put(e,"bluff_target_x",p.location.x);put(e,"bluff_target_z",p.location.z);
     eventSound(e,"minizin_creatures.bluff.attack");
     return;
   }
   if(timer>1){put(e,"bluff_timer",timer-1);return;}
   if(phase==="startup"){
-    put(e,"bluff_phase","fall");put(e,"bluff_timer",18);
+    put(e,"bluff_phase","fall");state(e,"bluff_action","fall");put(e,"bluff_timer",18);
     e.applyImpulse({x:0,y:-0.8,z:0});return;
   }
   if(phase==="fall"){
@@ -25,10 +25,10 @@ export function tickBluff(e,tick){
     for(const x of nearby(e,15)){
       if(nearSegment(x.location,from,to,1.1))hit(e,x,18,0.8);
     }
-    put(e,"bluff_phase","recovery");put(e,"bluff_timer",34);
+    put(e,"bluff_phase","recovery");state(e,"bluff_action","recovery");put(e,"bluff_timer",34);
     eventSound(e,"minizin_creatures.bluff.spike");return;
   }
-  put(e,"bluff_phase","idle");put(e,"bluff_timer",0);
+  put(e,"bluff_phase","idle");state(e,"bluff_action","idle");put(e,"bluff_timer",0);
 }
 export function installMowzie(){
   // Original entity is maintained by the separate mowzie pack. No duplicate models or scripts.

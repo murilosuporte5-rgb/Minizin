@@ -48,3 +48,7 @@ Novo boss com geometria original `Ender_Guardian_Model.geo.json`, PNG original, 
 ## Animações visíveis de Ignis/Ender Guardian
 
 O builder passa a gerar **clipes por ataque**, usando apenas os nomes de bones e rigs convertidos do Java. Timings são retirados dos códigos fonte `Ignis_Entity.java`/`Ender_Guardian_Entity.java`. Rotacionam partes originais diferentes por golpe e mapeiam a propriedade de estado de combate para o RP. **As curvas são adaptações**, não transcrições comprovadas da animação Java original. A ordem de transição de Ignis foi corrigida para preservar fases 1→2→3 mesmo sob dano muito alto.
+
+## Bluff — animações originais de combate
+
+A montagem `--validate-only` importa também `animations/bluff.animation.json` original do Mowzie e adiciona os clipes `attack_start`/`attack_end` à cópia temporária do RP. No BP temporário, `minizin_creatures:bluff_action` sincroniza `startup`, `fall` e `recovery` com os clipes. O rig/PNG do protótipo permanecem intactos no repositório. A fissura e o comportamento ainda precisam ser comparados ao original no dispositivo.

@@ -270,10 +270,38 @@ def build(out,has_permission,validate_only=False):
         sound_defs["minizin_creatures."+key.replace("_",".",1)]={"category":"hostile",
           "sounds":[{"name":"sounds/creatures/"+key}]}
     write_json(rp/"sounds/sound_definitions.json",{"format_version":"1.14.0","sound_definitions":sound_defs})
-    # Existing original Bluff texture/rig is packed unchanged in its own source RP/BP.
+    # Stage the original Bluff RP/BP separately, retaining the original rig and
+    # texture. Enrich only the private staged copy with actual upstream animations.
     source_mowzie=ROOT/"bedrock/packs/mowzie"
     for part in ("BP","RP"):
         shutil.copytree(source_mowzie/part,out/("Minizin_Mowzie_"+part))
+    mbp=out/"Minizin_Mowzie_BP/entities/bluff.json"
+    mrp=out/"Minizin_Mowzie_RP"
+    entity=json.loads(mbp.read_text(encoding="utf-8"))
+    entity["minecraft:entity"]["description"].setdefault("properties",{})["minizin_creatures:bluff_action"]={
+        "type":"enum","values":["idle","startup","fall","recovery"],"default":"idle","client_sync":True
+    }
+    write_json(mbp,entity)
+    source_anim=MOD/"44-mowzies-mobs/upstream/src/main/resources/assets/mowziesmobs/animations/bluff.animation.json"
+    if not source_anim.is_file():raise FileNotFoundError("Missing original Bluff animations: "+str(source_anim))
+    original_anim=json.loads(source_anim.read_text(encoding="utf-8"))["animations"]
+    existing_anim=mrp/"animations/bluff.animation.json"
+    available=json.loads(existing_anim.read_text(encoding="utf-8"))
+    for key in ("attack_start","attack_end"):
+        if key not in original_anim:raise ValueError("Missing original Bluff animation "+key)
+        available["animations"]["animation.minizin_creatures.bluff."+key]=original_anim[key]
+    write_json(existing_anim,available)
+    client_path=mrp/"entity/bluff.entity.json"
+    client=json.loads(client_path.read_text(encoding="utf-8"))
+    desc=client["minecraft:client_entity"]["description"]
+    desc["animations"]["attack_start"]="animation.minizin_creatures.bluff.attack_start"
+    desc["animations"]["attack_end"]="animation.minizin_creatures.bluff.attack_end"
+    desc["scripts"]["animate"]=[
+        {"idle":"query.property('minizin_creatures:bluff_action') == 'idle'"},
+        {"attack_start":"query.property('minizin_creatures:bluff_action') == 'startup' || query.property('minizin_creatures:bluff_action') == 'fall'"},
+        {"attack_end":"query.property('minizin_creatures:bluff_action') == 'recovery'"}
+    ]
+    write_json(client_path,client)
     archive=out.parent/"Minizin_Creatures_Research.mcaddon"
     if archive.exists():archive.unlink()
     with zipfile.ZipFile(archive,"w",compression=zipfile.ZIP_STORED) as z:
