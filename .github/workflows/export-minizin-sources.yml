@@ -1,0 +1,38 @@
+name: Stage isolated Minizin source for private integration
+on:
+  push:
+    branches:
+      - integration/minizin-full-test-20261012
+    paths:
+      - .github/workflows/export-minizin-sources.yml
+  workflow_dispatch:
+jobs:
+  stage-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Retrieve isolated workstreams, export only text sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            +refs/heads/feature/minizin-worlds:refs/remotes/origin/feature/minizin-worlds \
+            +refs/heads/feature/minizin-creatures:refs/remotes/origin/feature/minizin-creatures
+          mkdir -p stage
+          git archive origin/feature/minizin-worlds bedrock/worlds | tar -xf - -C stage
+          git archive origin/feature/minizin-creatures bedrock/packs/creatures tests/creatures_logic.test.mjs | tar -xf - -C stage
+          find stage -type f \( -iname '*.png' -o -iname '*.ogg' -o -iname '*.nbt' -o -iname '*.mcstructure' -o -iname '*.mcaddon' \) -delete
+          git rev-parse origin/feature/minizin-worlds > stage/WORLDS_HEAD.txt
+          git rev-parse origin/feature/minizin-creatures > stage/CREATURES_HEAD.txt
+          echo 'Source stage complete; no third-party texture, sound or structure binaries are included.'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: minizin-worlds-creatures-source-only
+          path: stage/
+          if-no-files-found: error
+          retention-days: 2
