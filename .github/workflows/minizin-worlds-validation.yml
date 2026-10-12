@@ -62,7 +62,7 @@ jobs:
                       for family in ("bronze_dungeon", "silver_dungeon", "gold_dungeon"):
                           assert any(t["source"].startswith(family + "/") for t in files), family
                       for t in skipped:
-                          print("Skipped Java template:", t["source"], t.get("reason"))
+                          print("Skipped Java template:", t["source"], t.get("reason"), t.get("omitted"))
                       print("Aether converted template count:", len(files), "of", len(report["templates"]))
                       print("Original template conversion is NOT in-game fidelity.")
                   else:
