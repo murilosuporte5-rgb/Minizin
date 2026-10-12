@@ -68,6 +68,18 @@ MOBS = {
                      "texture": "miscellaneous/cloud_minion/cloud_minion.png",
                      "health": 12, "attack": 2, "collision": [.75, .75], "movement": .25,
                      "hostile": True, "flying": True},
+    "blue_swet": {"model": None, "texture": "mobs/swet/swet_blue.png",
+                  "vanilla_base": "geometry.slime", "slime_outer": True,
+                  "health": 18, "attack": 4, "collision": [0.8, 0.8], "movement": .25,
+                  "hostile": True},
+    "golden_swet": {"model": None, "texture": "mobs/swet/swet_golden.png",
+                    "vanilla_base": "geometry.slime", "slime_outer": True,
+                    "health": 22, "attack": 5, "collision": [0.8, 0.8], "movement": .25,
+                    "hostile": True},
+    "sentry": {"model": None, "texture": "mobs/sentry/sentry.png",
+               "vanilla_base": "geometry.slime", "slime_outer": True,
+               "health": 26, "attack": 5, "collision": [1, 1], "movement": .27,
+               "hostile": True},
 }
 # Original boss drops are converted by convert_loot.py.
 BOSSES = ("slider", "valkyrie_queen", "sun_spirit")
@@ -346,14 +358,15 @@ def animations(mob: str) -> dict:
 
 def client_entity(mob: str) -> dict:
     spec = MOBS[mob]
-    wings = bool(spec.get("vanilla_base"))
+    wings = bool(spec.get("wings_texture"))
+    vanilla_body = bool(spec.get("vanilla_base"))
     # Phyg/FlyingCow Java has a stock quadruped torso PLUS authored wing mesh.
     # Reuse Bedrock vanilla body geometry without fabricating pig/cow cuboids.
     desc = {
         "identifier": MOD_NAMESPACE + ":" + mob,
         "materials": {"default": "entity_alphatest"},
         "textures": {"default": f"textures/entity/minizin_aether/{mob}"},
-        "geometry": {"default": spec["vanilla_base"] if wings
+        "geometry": {"default": spec["vanilla_base"] if vanilla_body
                      else f"geometry.minizin_aether.{mob}"},
         "render_controllers": ["controller.render.minizin_aether.mob"],
         "animations": {
@@ -365,6 +378,11 @@ def client_entity(mob: str) -> dict:
         desc["geometry"]["wings"] = f"geometry.minizin_aether.{mob}"
         desc["textures"]["wings"] = f"textures/entity/minizin_aether/{mob}_wings"
         desc["render_controllers"].append("controller.render.minizin_aether.wings")
+    if spec.get("slime_outer"):
+        desc["materials"]["default"] = "slime"
+        desc["materials"]["outer"] = "slime_outer"
+        desc["geometry"]["outer"] = "geometry.slime.armor"
+        desc["render_controllers"].append("controller.render.minizin_aether.slime_outer")
     return {"format_version": "1.10.0", "minecraft:client_entity": {
         "description": desc}}
 
@@ -377,16 +395,24 @@ def write(path: Path, obj: dict) -> None:
 def build_all(bp: Path, rp: Path) -> dict:
     results = {}
     for mob, spec in MOBS.items():
-        modelpath = JAVA_MODELS / spec["model"]
+        modelpath = JAVA_MODELS / spec["model"] if spec.get("model") else None
         texture = ORIGINAL_TEXTURES / spec["texture"]
-        if not modelpath.is_file():
+        if modelpath is not None and not modelpath.is_file():
             raise FileNotFoundError(f"Original Java source missing: {modelpath}")
         if not texture.is_file():
             raise FileNotFoundError(f"Original texture missing: {texture}")
-        geo, stats = convert_model(modelpath.read_text(encoding="utf-8"), mob,
-                                   spec.get("wing_offset", 0.0))
+        if modelpath:
+            geo, stats = convert_model(modelpath.read_text(encoding="utf-8"), mob,
+                                       spec.get("wing_offset", 0.0))
+        else:
+            # Original Aether uses Java SlimeModel, which is also a vanilla
+            # Bedrock rig. Reuse its real geometry and original skin.
+            stats = {"java_model_parts": 0, "converted_bones": 0,
+                     "converted_cubes": 0, "reuse_bedrock_vanilla":
+                     spec["vanilla_base"]}
         write(bp / "entities" / f"{mob}.json", entity_bp(mob, spec))
-        write(rp / "models/entity" / f"{mob}.geo.json", geo)
+        if modelpath:
+            write(rp / "models/entity" / f"{mob}.geo.json", geo)
         write(rp / "entity" / f"{mob}.entity.json", client_entity(mob))
         write(rp / "animations" / f"{mob}.animation.json", animations(mob))
         dest = rp / "textures/entity/minizin_aether" / f"{mob}.png"
@@ -397,7 +423,7 @@ def build_all(bp: Path, rp: Path) -> dict:
             if not wing_src.is_file():
                 raise FileNotFoundError(f"Original wings missing: {wing_src}")
             shutil.copyfile(wing_src, rp / "textures/entity/minizin_aether" / f"{mob}_wings.png")
-        results[mob] = {**stats, "original_java_model": str(modelpath.relative_to(ROOT)),
+        results[mob] = {**stats, "original_java_model": str(modelpath.relative_to(ROOT)) if modelpath else "net.minecraft.client.model.SlimeModel",
                         "original_texture": str(texture.relative_to(ROOT)),
                         "animations_exact_java": False, "behavior_exact_java": False}
     write(rp / "render_controllers/minizin_aether.render_controllers.json", {
@@ -409,5 +435,9 @@ def build_all(bp: Path, rp: Path) -> dict:
             "controller.render.minizin_aether.wings": {
                 "geometry": "Geometry.wings",
                 "materials": [{"*": "Material.default"}],
-                "textures": ["Texture.wings"]}}})
+                "textures": ["Texture.wings"]},
+            "controller.render.minizin_aether.slime_outer": {
+                "geometry": "Geometry.outer",
+                "materials": [{"*": "Material.outer"}],
+                "textures": ["Texture.default"]}}})
     return results
