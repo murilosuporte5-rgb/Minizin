@@ -12,7 +12,7 @@ Este diretório tem código e testes próprios. Não modifica os módulos de out
 | Área | Estado em código / evidência | O que permanece sem comprovação |
 | --- | --- | --- |
 | The Aether | 46 blocos definidos com PNGs extraídos dos sources pinados; 4 perfis Skyroot, portais e ilhas | render, dimensão Beta e geração em Android |
-| Criaturas | 16 entidades definidas a partir de arquivos Java `ModelPart` ou rigs herdados, com cubos, hierarquia e UV convertidos; Phyg/Flying Cow combinam corpo vanilla e asas Java originais, com texturas separadas | animação idêntica, IA exata, materiais/UV/collision corretos no cliente |
+| Criaturas | 21 registros Bedrock: **16** rigs Java `ModelPart`/herdados convertidos, **3** skins Swet/Sentry sobre a geometria slime vanilla real e **2** Whirlwinds sem geometria estática (colunas de partículas com impulso físico). Phyg/Flying Cow combinam corpo vanilla e asas Java originais | animação original integral, IA/partículas e materiais/UV/collision testados no Android |
 | Bosses | Slider (400 HP), Valkyrie Queen (500 HP) e Sun Spirit (500 HP), rotinas distintas de ataque, vulnerabilidade por ferramenta/gelo, lunge/cristal/fogo, spawn e recompensa de progressão vinculados às estruturas | sequências/timing exatos do Java, multiplayer, reentradas e crash-safety |
 | Estruturas/loot | 21/21 templates Java NBT exportados, 40 tabelas Java transformadas para JSON Bedrock, com 7/7/9 candidatos representáveis nos pools Bronze/Silver/Gold | loot integral, muitas armas/acessórios ausentes, contents NBT e jigsaw/AI original |
 | Biomes O' Plenty | 68 JSON Java representados como bioma Bedrock, **61 substituições parciais no Overworld, 5 no Nether, 2 cavernas sem substituição nativa equivalente**; 20 blocos e catálogo de vegetação baseado nos biomas efetivamente consultados por `getBiome` | biome noise/router Java, all terrain/placed features, geração de cavernas equivalente e validação in-game |
@@ -35,6 +35,28 @@ dos scripts, estruturas NBT e identidade dos assets; **não executa Minecraft
 Android**. A PR continua Draft. Sem permissão explícita dos detentores dos
 recursos com reserva de direitos, **não publique** os pacotes gerados com
 texturas e modelos originais.
+
+### Entidades adicionais sem geometria artificial
+
+No código Java, **Blue Swet, Golden Swet e Sentry** herdam um modelo de slime.
+São convertidos como entidades independentes que reutilizam as geometrias
+`geometry.slime` e `geometry.slime.armor` do Bedrock, com PNGs originais
+e animação de compressão. **Passive Whirlwind** e **Evil Whirlwind** usam
+`WhirlwindRenderer`, que não possui cubos: a adaptação Bedrock conserva a
+representação por partículas e acrescenta sustentação/rotação e, no Evil,
+dano com cooldown. Não há port direto do gerador de partículas e
+movimentação Java. As 21 entidades são definições BP; nenhuma teve seu
+comportamento e suas texturas atestados no cliente Android.
+
+### Recuperação de progresso de masmorras
+
+O runtime registra o estado `dungeon_pending` assim que o chefe morre,
+antes de conceder o prêmio, e tenta recuperar a entrega ao reabrir o mundo
+próximo da masmorra. `dungeon_rewarded` limita a distribuição e
+`dungeon_cleared` marca a conclusão; blocos trancados são alterados em
+lotes cooperativos. Essa recuperação é **implementação de código, não
+teste de integridade transacional** sob crash, relog ou multiplayer;
+estruturas Java ainda têm perdas de NBT, propriedades e loot.
 
 ## Proveniência auditada
 
