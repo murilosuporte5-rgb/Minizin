@@ -14,6 +14,8 @@ MODS = ["15-waystones", "16-ice-and-fire", "19-biomes-o-plenty", "33-mca-reborn"
 
 def category(name: str):
     p = name.lower().replace("\\", "/")
+    if p.endswith(".tbl"): return "tabula_model_pose"
+    if p.endswith(".class") and "/client/model/" in p: return "java_compiled_model"
     if p.endswith(".bbmodel"): return "blockbench_source"
     if p.endswith(".geo.json"): return "bedrock_geometry"
     if p.endswith(".animation.json"): return "animation_json"
