@@ -22,13 +22,13 @@ def check(folders):
         expected=json.loads((rp/'manifest.json').read_text())['header']['uuid']
         if not any(d.get('uuid')==expected for d in json.loads((bp/'manifest.json').read_text()).get('dependencies',[])):
             raise ValueError('Broken RP dependency')
-        for path in (bp/'scripts').glob('*'):
+        for path in (bp/'scripts').rglob('*'):
             if path.suffix not in ['.js','.mjs']:continue
             subprocess.run(['node','--input-type=module','--check'],input=path.read_text(),text=True,check=True,capture_output=True)
             counts['scripts']+=1
             for ref in re.findall(r'(?:from\s*|import\s*)["\'](\.[^"\']+)["\']',path.read_text()):
                 if not (path.parent/ref).is_file():raise ValueError(f'{path}: missing import {ref}')
-        for path in (bp/'blocks').glob('*.json'):
+        for path in (bp/'blocks').rglob('*.json'):
             block=json.loads(path.read_text())['minecraft:block'];ident=block['description']['identifier']
             if ident in identifiers:raise ValueError('Block identifier conflict: '+ident)
             identifiers.add(ident);counts['blocks']+=1
@@ -40,11 +40,11 @@ def check(folders):
                 registry=json.loads((rp/'textures/terrain_texture.json').read_text())['texture_data']
                 ref=registry[material['texture']]['textures']
                 if not (rp/(ref+'.png')).is_file():raise ValueError('Missing block atlas '+ref)
-        for path in (bp/'entities').glob('*.json'):
+        for path in (bp/'entities').rglob('*.json'):
             ident=json.loads(path.read_text())['minecraft:entity']['description']['identifier']
             if ident in identifiers:raise ValueError('Entity identifier conflict: '+ident)
             identifiers.add(ident)
-        for path in (rp/'animations').glob('*.json'):
+        for path in (rp/'animations').rglob('*.json'):
             for name,animation in json.loads(path.read_text())['animations'].items():
                 if not name.startswith('animation.'):raise ValueError('Invalid animation identifier: '+name)
                 if '"vector"' in json.dumps(animation) or '"easing"' in json.dumps(animation):raise ValueError('Unconverted GeckoLib channel')
