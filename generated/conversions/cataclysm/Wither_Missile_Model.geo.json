@@ -1,0 +1,182 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.minizin.cataclysm.wither_missile_model",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 20,
+        "visible_bounds_height": 20,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0.0,
+            29.0,
+            0.0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                25.0,
+                0.0
+              ],
+              "size": [
+                6.0,
+                6.0,
+                3.0
+              ],
+              "uv": [
+                22,
+                24
+              ]
+            },
+            {
+              "origin": [
+                -3.0,
+                25.0,
+                2.0
+              ],
+              "size": [
+                6.0,
+                6.0,
+                2.0
+              ],
+              "uv": [
+                24,
+                0
+              ],
+              "inflate": 0.3
+            },
+            {
+              "origin": [
+                -4.0,
+                24.0,
+                4.0
+              ],
+              "size": [
+                8.0,
+                8.0,
+                3.0
+              ],
+              "uv": [
+                0,
+                24
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0.0,
+            29.25,
+            -6.25
+          ],
+          "rotation": [
+            12.501939089754563,
+            -0.0,
+            0.0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                0.0,
+                28.0,
+                -13.25
+              ],
+              "size": [
+                0.0,
+                12.0,
+                14.0
+              ],
+              "uv": [
+                36,
+                30
+              ]
+            },
+            {
+              "origin": [
+                -4.0,
+                26.5,
+                -7.25
+              ],
+              "size": [
+                8.0,
+                7.0,
+                8.0
+              ],
+              "uv": [
+                0,
+                49
+              ],
+              "inflate": 0.25
+            },
+            {
+              "origin": [
+                -4.0,
+                28.0,
+                -7.25
+              ],
+              "size": [
+                8.0,
+                6.0,
+                8.0
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "jaw",
+          "pivot": [
+            0.0,
+            25.25,
+            -5.25
+          ],
+          "rotation": [
+            -30.0000701530499,
+            -0.0,
+            0.0
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -4.0,
+                23.0,
+                -6.25
+              ],
+              "size": [
+                8.0,
+                2.0,
+                8.0
+              ],
+              "uv": [
+                0,
+                14
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

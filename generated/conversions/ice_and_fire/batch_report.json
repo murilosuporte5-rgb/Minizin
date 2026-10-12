@@ -1,0 +1,3464 @@
+{
+  "source": "build/ice_and_fire/src/main/resources/assets/iceandfire/models/tabula",
+  "total": 192,
+  "converted": 192,
+  "failed": 0,
+  "results": [
+    {
+      "original": "firedragon/firedragon_AttackBlastBreath.tbl",
+      "output": "firedragon/firedragon_AttackBlastBreath.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Attack_Blast_Breath",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_AttackBlastCharge1.tbl",
+      "output": "firedragon/firedragon_AttackBlastCharge1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Attack_Blast_Charge_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_AttackBlastCharge2.tbl",
+      "output": "firedragon/firedragon_AttackBlastCharge2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Attack_Blast_Charge_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_AttackBlastCharge3.tbl",
+      "output": "firedragon/firedragon_AttackBlastCharge3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Attack_Blast_Charge_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_AttackStreamBreath.tbl",
+      "output": "firedragon/firedragon_AttackStreamBreath.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Attack_Stream_Breath",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_AttackStreamCharge1.tbl",
+      "output": "firedragon/firedragon_AttackStreamCharge1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Attack_Stream_Charge_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_AttackStreamCharge2.tbl",
+      "output": "firedragon/firedragon_AttackStreamCharge2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Attack_Stream_Charge_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_AttackStreamCharge3.tbl",
+      "output": "firedragon/firedragon_AttackStreamCharge3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Attack_Stream_Charge_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_AttackTackle.tbl",
+      "output": "firedragon/firedragon_AttackTackle.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Attack_Tackle",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_BaseFemale.tbl",
+      "output": "firedragon/firedragon_BaseFemale.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Base_Female",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_BaseMale.tbl",
+      "output": "firedragon/firedragon_BaseMale.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Base_Male",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Bite1.tbl",
+      "output": "firedragon/firedragon_Bite1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Bite_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Bite2.tbl",
+      "output": "firedragon/firedragon_Bite2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Bite_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Bite3.tbl",
+      "output": "firedragon/firedragon_Bite3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Bite_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Dead.tbl",
+      "output": "firedragon/firedragon_Dead.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Dead",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Diving.tbl",
+      "output": "firedragon/firedragon_Diving.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Diving",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_EpicRoar1.tbl",
+      "output": "firedragon/firedragon_EpicRoar1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_EpicRoar_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_EpicRoar2.tbl",
+      "output": "firedragon/firedragon_EpicRoar2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_EpicRoar_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_EpicRoar3.tbl",
+      "output": "firedragon/firedragon_EpicRoar3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_EpicRoar_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Flight1.tbl",
+      "output": "firedragon/firedragon_Flight1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Flight_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Flight2.tbl",
+      "output": "firedragon/firedragon_Flight2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Flight_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Flight3.tbl",
+      "output": "firedragon/firedragon_Flight3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Flight_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Flight4.tbl",
+      "output": "firedragon/firedragon_Flight4.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Flight_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Flight5.tbl",
+      "output": "firedragon/firedragon_Flight5.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Flight_5",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Flight6.tbl",
+      "output": "firedragon/firedragon_Flight6.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Flight_6",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Flying.tbl",
+      "output": "firedragon/firedragon_Flying.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Flying",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Grab1.tbl",
+      "output": "firedragon/firedragon_Grab1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Grab_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Grab2.tbl",
+      "output": "firedragon/firedragon_Grab2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Grab_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_GrabShake1.tbl",
+      "output": "firedragon/firedragon_GrabShake1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Grab_Shake_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_GrabShake2.tbl",
+      "output": "firedragon/firedragon_GrabShake2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Grab_Shake_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_GrabShake3.tbl",
+      "output": "firedragon/firedragon_GrabShake3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Grab_Shake_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Ground.tbl",
+      "output": "firedragon/firedragon_Ground.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Ground",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Hovering.tbl",
+      "output": "firedragon/firedragon_Hovering.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Hovering",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Roar1.tbl",
+      "output": "firedragon/firedragon_Roar1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Roar_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Roar2.tbl",
+      "output": "firedragon/firedragon_Roar2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Roar_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Roar3.tbl",
+      "output": "firedragon/firedragon_Roar3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Roar_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Sitting.tbl",
+      "output": "firedragon/firedragon_Sitting.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Sitting",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_SittingShoulder.tbl",
+      "output": "firedragon/firedragon_SittingShoulder.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Sitting_Shoulder",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Sleeping.tbl",
+      "output": "firedragon/firedragon_Sleeping.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Sleeping",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Swim1.tbl",
+      "output": "firedragon/firedragon_Swim1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Swim_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Swim2.tbl",
+      "output": "firedragon/firedragon_Swim2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Swim_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Swim3.tbl",
+      "output": "firedragon/firedragon_Swim3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Swim_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Swim4.tbl",
+      "output": "firedragon/firedragon_Swim4.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Swim_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Tail1.tbl",
+      "output": "firedragon/firedragon_Tail1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Tail_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Tail2.tbl",
+      "output": "firedragon/firedragon_Tail2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Tail_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Tail3.tbl",
+      "output": "firedragon/firedragon_Tail3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Tail_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Walk1.tbl",
+      "output": "firedragon/firedragon_Walk1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Walk_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Walk2.tbl",
+      "output": "firedragon/firedragon_Walk2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Walk_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Walk3.tbl",
+      "output": "firedragon/firedragon_Walk3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Walk_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_Walk4.tbl",
+      "output": "firedragon/firedragon_Walk4.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_Walk_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_WingBlast1.tbl",
+      "output": "firedragon/firedragon_WingBlast1.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_WingBlast_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_WingBlast2.tbl",
+      "output": "firedragon/firedragon_WingBlast2.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_WingBlast_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_WingBlast3.tbl",
+      "output": "firedragon/firedragon_WingBlast3.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_WingBlast_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_WingBlast4.tbl",
+      "output": "firedragon/firedragon_WingBlast4.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_WingBlast_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_WingBlast5.tbl",
+      "output": "firedragon/firedragon_WingBlast5.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_WingBlast_5",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_WingBlast6.tbl",
+      "output": "firedragon/firedragon_WingBlast6.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_WingBlast_6",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "firedragon/firedragon_WingBlast7.tbl",
+      "output": "firedragon/firedragon_WingBlast7.geo.json",
+      "status": "ok",
+      "bones": 104,
+      "cubes": 92,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Fire_Dragon_WingBlast_7",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_AttackBlastBreath.tbl",
+      "output": "icedragon/icedragon_AttackBlastBreath.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Attack_Blast_Breath",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_AttackBlastCharge1.tbl",
+      "output": "icedragon/icedragon_AttackBlastCharge1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Attack_Blast_Charge_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_AttackBlastCharge2.tbl",
+      "output": "icedragon/icedragon_AttackBlastCharge2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Attack_Blast_Charge_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_AttackBlastCharge3.tbl",
+      "output": "icedragon/icedragon_AttackBlastCharge3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Attack_Blast_Charge_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_AttackStreamBreath.tbl",
+      "output": "icedragon/icedragon_AttackStreamBreath.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Attack_Stream_Breath",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_AttackStreamCharge1.tbl",
+      "output": "icedragon/icedragon_AttackStreamCharge1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Attac_Stream_Charge_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_AttackStreamCharge2.tbl",
+      "output": "icedragon/icedragon_AttackStreamCharge2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Attac_Stream_Charge_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_AttackStreamCharge3.tbl",
+      "output": "icedragon/icedragon_AttackStreamCharge3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Attac_Stream_Charge_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_AttackTackle.tbl",
+      "output": "icedragon/icedragon_AttackTackle.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Attack_Tackle",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_BaseFemale.tbl",
+      "output": "icedragon/icedragon_BaseFemale.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Base_Female",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_BaseMale.tbl",
+      "output": "icedragon/icedragon_BaseMale.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Base_Male",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_BaseMaleAlt.tbl",
+      "output": "icedragon/icedragon_BaseMaleAlt.geo.json",
+      "status": "ok",
+      "bones": 105,
+      "cubes": 102,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Base_MaleAlt",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Bite1.tbl",
+      "output": "icedragon/icedragon_Bite1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Bite_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Bite2.tbl",
+      "output": "icedragon/icedragon_Bite2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Bite_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Bite3.tbl",
+      "output": "icedragon/icedragon_Bite3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Bite_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Dead.tbl",
+      "output": "icedragon/icedragon_Dead.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Dead",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Diving.tbl",
+      "output": "icedragon/icedragon_Diving.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Diving",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_EpicRoar1.tbl",
+      "output": "icedragon/icedragon_EpicRoar1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_EpicRoar_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_EpicRoar2.tbl",
+      "output": "icedragon/icedragon_EpicRoar2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_EpicRoar_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_EpicRoar3.tbl",
+      "output": "icedragon/icedragon_EpicRoar3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_EpicRoar_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Flight1.tbl",
+      "output": "icedragon/icedragon_Flight1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Flight_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Flight2.tbl",
+      "output": "icedragon/icedragon_Flight2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Flight_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Flight3.tbl",
+      "output": "icedragon/icedragon_Flight3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Flight_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Flight4.tbl",
+      "output": "icedragon/icedragon_Flight4.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Flight_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Flight5.tbl",
+      "output": "icedragon/icedragon_Flight5.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Flight_5",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Flight6.tbl",
+      "output": "icedragon/icedragon_Flight6.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Flight_6",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Flying.tbl",
+      "output": "icedragon/icedragon_Flying.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Flying",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Grab1.tbl",
+      "output": "icedragon/icedragon_Grab1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Grab_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Grab2.tbl",
+      "output": "icedragon/icedragon_Grab2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Grab_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_GrabShake1.tbl",
+      "output": "icedragon/icedragon_GrabShake1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Grab_Shake_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_GrabShake2.tbl",
+      "output": "icedragon/icedragon_GrabShake2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Grab_Shake_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_GrabShake3.tbl",
+      "output": "icedragon/icedragon_GrabShake3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Grab_Shake_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Ground.tbl",
+      "output": "icedragon/icedragon_Ground.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Ground",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Hovering.tbl",
+      "output": "icedragon/icedragon_Hovering.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Hovering",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Roar1.tbl",
+      "output": "icedragon/icedragon_Roar1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Roar_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Roar2.tbl",
+      "output": "icedragon/icedragon_Roar2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Roar_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Roar3.tbl",
+      "output": "icedragon/icedragon_Roar3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Roar_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Sitting.tbl",
+      "output": "icedragon/icedragon_Sitting.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Sitting",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_SittingShoulder.tbl",
+      "output": "icedragon/icedragon_SittingShoulder.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Sitting_Shoulder",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Sleeping.tbl",
+      "output": "icedragon/icedragon_Sleeping.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Sleeping",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Swim1.tbl",
+      "output": "icedragon/icedragon_Swim1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Swim_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Swim2.tbl",
+      "output": "icedragon/icedragon_Swim2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Swim_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Swim3.tbl",
+      "output": "icedragon/icedragon_Swim3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Swim_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Swim4.tbl",
+      "output": "icedragon/icedragon_Swim4.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Swim_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Swim5.tbl",
+      "output": "icedragon/icedragon_Swim5.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Swim_5",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Swimming.tbl",
+      "output": "icedragon/icedragon_Swimming.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Swimming",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Tail1.tbl",
+      "output": "icedragon/icedragon_Tail1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Tail_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Tail2.tbl",
+      "output": "icedragon/icedragon_Tail2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Tail_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Tail3.tbl",
+      "output": "icedragon/icedragon_Tail3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Tail_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Walk1.tbl",
+      "output": "icedragon/icedragon_Walk1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Walk_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Walk2.tbl",
+      "output": "icedragon/icedragon_Walk2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Walk_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Walk3.tbl",
+      "output": "icedragon/icedragon_Walk3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Walk_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_Walk4.tbl",
+      "output": "icedragon/icedragon_Walk4.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_Walk_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_WingBlast1.tbl",
+      "output": "icedragon/icedragon_WingBlast1.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_WingBlast_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_WingBlast2.tbl",
+      "output": "icedragon/icedragon_WingBlast2.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_WingBlast_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_WingBlast3.tbl",
+      "output": "icedragon/icedragon_WingBlast3.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_WingBlast_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_WingBlast4.tbl",
+      "output": "icedragon/icedragon_WingBlast4.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_WingBlast_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_WingBlast5.tbl",
+      "output": "icedragon/icedragon_WingBlast5.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_WingBlast_5",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_WingBlast6.tbl",
+      "output": "icedragon/icedragon_WingBlast6.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_WingBlast_6",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "icedragon/icedragon_WingBlast7.tbl",
+      "output": "icedragon/icedragon_WingBlast7.geo.json",
+      "status": "ok",
+      "bones": 110,
+      "cubes": 96,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Ice_Dragon_WingBlast_5",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_AttackBlastBreath.tbl",
+      "output": "lightningdragon/lightningdragon_AttackBlastBreath.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Attack_Blast_Breath",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_AttackBlastCharge1.tbl",
+      "output": "lightningdragon/lightningdragon_AttackBlastCharge1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Attack_Blast_Charge_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_AttackBlastCharge2.tbl",
+      "output": "lightningdragon/lightningdragon_AttackBlastCharge2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Attack_Blast_Charge_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_AttackBlastCharge3.tbl",
+      "output": "lightningdragon/lightningdragon_AttackBlastCharge3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Attack_Blast_Charge_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_AttackStreamBreath.tbl",
+      "output": "lightningdragon/lightningdragon_AttackStreamBreath.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Attack_Stream_Breath",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_AttackStreamCharge1.tbl",
+      "output": "lightningdragon/lightningdragon_AttackStreamCharge1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Attack_Stream_Charge_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_AttackStreamCharge2.tbl",
+      "output": "lightningdragon/lightningdragon_AttackStreamCharge2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Attack_Stream_Charge_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_AttackStreamCharge3.tbl",
+      "output": "lightningdragon/lightningdragon_AttackStreamCharge3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Attack_Stream_Charge_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_AttackTackle.tbl",
+      "output": "lightningdragon/lightningdragon_AttackTackle.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Attack_Tackle",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_BaseFemale.tbl",
+      "output": "lightningdragon/lightningdragon_BaseFemale.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 113,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Base_Female",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_BaseMale.tbl",
+      "output": "lightningdragon/lightningdragon_BaseMale.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 113,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Base_Male",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Bite1.tbl",
+      "output": "lightningdragon/lightningdragon_Bite1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Bite_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Bite2.tbl",
+      "output": "lightningdragon/lightningdragon_Bite2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Bite_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Bite3.tbl",
+      "output": "lightningdragon/lightningdragon_Bite3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Bite_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Dead.tbl",
+      "output": "lightningdragon/lightningdragon_Dead.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Dead",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Diving.tbl",
+      "output": "lightningdragon/lightningdragon_Diving.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Diving",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_EpicRoar1.tbl",
+      "output": "lightningdragon/lightningdragon_EpicRoar1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_EpicRoar_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_EpicRoar2.tbl",
+      "output": "lightningdragon/lightningdragon_EpicRoar2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_EpicRoar_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_EpicRoar3.tbl",
+      "output": "lightningdragon/lightningdragon_EpicRoar3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_EpicRoar_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Flight1.tbl",
+      "output": "lightningdragon/lightningdragon_Flight1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Flight_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Flight2.tbl",
+      "output": "lightningdragon/lightningdragon_Flight2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Flight_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Flight3.tbl",
+      "output": "lightningdragon/lightningdragon_Flight3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Flight_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Flight4.tbl",
+      "output": "lightningdragon/lightningdragon_Flight4.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Flight_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Flight5.tbl",
+      "output": "lightningdragon/lightningdragon_Flight5.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Flight_5",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Flight6.tbl",
+      "output": "lightningdragon/lightningdragon_Flight6.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Flight_6",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Flying.tbl",
+      "output": "lightningdragon/lightningdragon_Flying.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Flying",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Grab1.tbl",
+      "output": "lightningdragon/lightningdragon_Grab1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Grab_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Grab2.tbl",
+      "output": "lightningdragon/lightningdragon_Grab2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Grab_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_GrabShake1.tbl",
+      "output": "lightningdragon/lightningdragon_GrabShake1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Grab_Shake_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_GrabShake2.tbl",
+      "output": "lightningdragon/lightningdragon_GrabShake2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Grab_Shake_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_GrabShake3.tbl",
+      "output": "lightningdragon/lightningdragon_GrabShake3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Grab_Shake_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Ground.tbl",
+      "output": "lightningdragon/lightningdragon_Ground.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Ground",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Hovering.tbl",
+      "output": "lightningdragon/lightningdragon_Hovering.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Hovering",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Roar1.tbl",
+      "output": "lightningdragon/lightningdragon_Roar1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Roar_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Roar2.tbl",
+      "output": "lightningdragon/lightningdragon_Roar2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Roar_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Roar3.tbl",
+      "output": "lightningdragon/lightningdragon_Roar3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Roar_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Sitting.tbl",
+      "output": "lightningdragon/lightningdragon_Sitting.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Sitting",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_SittingShoulder.tbl",
+      "output": "lightningdragon/lightningdragon_SittingShoulder.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Sitting_Shoulder",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Sleeping.tbl",
+      "output": "lightningdragon/lightningdragon_Sleeping.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Sleeping",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Swim1.tbl",
+      "output": "lightningdragon/lightningdragon_Swim1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Swim_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Swim2.tbl",
+      "output": "lightningdragon/lightningdragon_Swim2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Swim_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Swim3.tbl",
+      "output": "lightningdragon/lightningdragon_Swim3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Swim_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Swim4.tbl",
+      "output": "lightningdragon/lightningdragon_Swim4.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Swim_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Swim5.tbl",
+      "output": "lightningdragon/lightningdragon_Swim5.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Swim_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Swimming.tbl",
+      "output": "lightningdragon/lightningdragon_Swimming.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Swimming",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Tail1.tbl",
+      "output": "lightningdragon/lightningdragon_Tail1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Tail_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Tail2.tbl",
+      "output": "lightningdragon/lightningdragon_Tail2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Tail_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Tail3.tbl",
+      "output": "lightningdragon/lightningdragon_Tail3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Tail_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Walk1.tbl",
+      "output": "lightningdragon/lightningdragon_Walk1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Walk_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Walk2.tbl",
+      "output": "lightningdragon/lightningdragon_Walk2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Walk_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Walk3.tbl",
+      "output": "lightningdragon/lightningdragon_Walk3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Walk_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_Walk4.tbl",
+      "output": "lightningdragon/lightningdragon_Walk4.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_Walk_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_WingBlast1.tbl",
+      "output": "lightningdragon/lightningdragon_WingBlast1.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_WingBlast_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_WingBlast2.tbl",
+      "output": "lightningdragon/lightningdragon_WingBlast2.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_WingBlast_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_WingBlast3.tbl",
+      "output": "lightningdragon/lightningdragon_WingBlast3.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_WingBlast_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_WingBlast4.tbl",
+      "output": "lightningdragon/lightningdragon_WingBlast4.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_WingBlast_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_WingBlast5.tbl",
+      "output": "lightningdragon/lightningdragon_WingBlast5.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_WingBlast_5",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_WingBlast6.tbl",
+      "output": "lightningdragon/lightningdragon_WingBlast6.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_WingBlast_6",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "lightningdragon/lightningdragon_WingBlast7.tbl",
+      "output": "lightningdragon/lightningdragon_WingBlast7.geo.json",
+      "status": "ok",
+      "bones": 113,
+      "cubes": 101,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "Lighting_Dragon_WingBlast_7",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpent.tbl",
+      "output": "seaserpent/seaserpent.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentBite1.tbl",
+      "output": "seaserpent/seaserpentBite1.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Bite_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentBite2.tbl",
+      "output": "seaserpent/seaserpentBite2.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Bite_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentBite3.tbl",
+      "output": "seaserpent/seaserpentBite3.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Bite_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentDead.tbl",
+      "output": "seaserpent/seaserpentDead.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_dead",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentJumping1.tbl",
+      "output": "seaserpent/seaserpentJumping1.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Jumping_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentJumping2.tbl",
+      "output": "seaserpent/seaserpentJumping2.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_jumping_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentRoar1.tbl",
+      "output": "seaserpent/seaserpentRoar1.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Roar_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentRoar2.tbl",
+      "output": "seaserpent/seaserpentRoar2.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Roar_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentRoar3.tbl",
+      "output": "seaserpent/seaserpentRoar3.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Roar_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentSwim1.tbl",
+      "output": "seaserpent/seaserpentSwim1.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Swim_1",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentSwim2.tbl",
+      "output": "seaserpent/seaserpentSwim2.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Swim_2",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentSwim3.tbl",
+      "output": "seaserpent/seaserpentSwim3.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Swim_3",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentSwim4.tbl",
+      "output": "seaserpent/seaserpentSwim4.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Swim_4",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentSwim5.tbl",
+      "output": "seaserpent/seaserpentSwim5.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Swim_5",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    },
+    {
+      "original": "seaserpent/seaserpentSwim6.tbl",
+      "output": "seaserpent/seaserpentSwim6.geo.json",
+      "status": "ok",
+      "bones": 36,
+      "cubes": 36,
+      "atlas": [
+        256,
+        128
+      ],
+      "modelName": "sea_Serpent_2_Swim_6",
+      "issues": [
+        "No animation or AI converted; base geometry only.",
+        "Requires review of axis signs, yaw/pitch/roll, mirror UV and Tabula inherited pivots.",
+        "Animations and large entity visible bounds must be tested in Minecraft Bedrock.",
+        "Source license and redistribution permissions require confirmation."
+      ]
+    }
+  ]
+}

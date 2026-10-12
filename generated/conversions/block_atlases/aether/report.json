@@ -1,0 +1,520 @@
+{
+  "namespace": "aether",
+  "total": 202,
+  "converted": 74,
+  "failed": 128,
+  "failures": [
+    {
+      "name": "aerogel_stairs",
+      "error": "unhandled parent nitrogen_internals:block/stairs_translucent"
+    },
+    {
+      "name": "aerogel_stairs_inner",
+      "error": "unhandled parent nitrogen_internals:block/inner_stairs_translucent"
+    },
+    {
+      "name": "aerogel_stairs_outer",
+      "error": "unhandled parent nitrogen_internals:block/outer_stairs_translucent"
+    },
+    {
+      "name": "aerogel_wall_corner",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_corner"
+    },
+    {
+      "name": "aerogel_wall_corner_tall",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_corner_tall"
+    },
+    {
+      "name": "aerogel_wall_plus",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_plus"
+    },
+    {
+      "name": "aerogel_wall_plus_tall",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_plus_tall"
+    },
+    {
+      "name": "aerogel_wall_post",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_post"
+    },
+    {
+      "name": "aerogel_wall_post_nosides",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_post_nosides"
+    },
+    {
+      "name": "aerogel_wall_post_side",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_post_side"
+    },
+    {
+      "name": "aerogel_wall_side",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_side"
+    },
+    {
+      "name": "aerogel_wall_side_tall",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_side_tall"
+    },
+    {
+      "name": "aerogel_wall_side_tall_with_post",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_side_tall_with_post"
+    },
+    {
+      "name": "aerogel_wall_side_with_post",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_side_with_post"
+    },
+    {
+      "name": "aerogel_wall_t",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_t"
+    },
+    {
+      "name": "aerogel_wall_t_tall",
+      "error": "unhandled parent nitrogen_internals:block/template_translucent_wall_t_tall"
+    },
+    {
+      "name": "aether_dirt_path",
+      "error": "unhandled parent minecraft:block/dirt_path"
+    },
+    {
+      "name": "aether_farmland",
+      "error": "unhandled parent minecraft:block/template_farmland"
+    },
+    {
+      "name": "aether_farmland_moist",
+      "error": "unhandled parent minecraft:block/template_farmland"
+    },
+    {
+      "name": "aether_portal_ew",
+      "error": "unhandled parent minecraft:block/nether_portal_ew"
+    },
+    {
+      "name": "aether_portal_ns",
+      "error": "unhandled parent minecraft:block/nether_portal_ns"
+    },
+    {
+      "name": "ambrosium_torch",
+      "error": "unhandled parent minecraft:block/template_torch"
+    },
+    {
+      "name": "ambrosium_wall_torch",
+      "error": "unhandled parent minecraft:block/template_torch_wall"
+    },
+    {
+      "name": "angelic_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "angelic_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "angelic_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "angelic_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "angelic_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "angelic_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "berry_bush",
+      "error": "can't multiply sequence by non-int of type 'float'"
+    },
+    {
+      "name": "blue_aercloud",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "boss_doorway_angelic_stone",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "boss_doorway_carved_stone",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "boss_doorway_hellfire_stone",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "boss_doorway_light_angelic_stone",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "boss_doorway_light_hellfire_stone",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "boss_doorway_sentry_stone",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "carved_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "carved_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "carved_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "carved_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "carved_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "carved_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "chest_mimic",
+      "error": "texture not found minecraft:block/oak_planks"
+    },
+    {
+      "name": "cold_aercloud",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "frosted_ice_0",
+      "error": "texture not found minecraft:block/frosted_ice_0"
+    },
+    {
+      "name": "frosted_ice_1",
+      "error": "texture not found minecraft:block/frosted_ice_1"
+    },
+    {
+      "name": "frosted_ice_2",
+      "error": "texture not found minecraft:block/frosted_ice_2"
+    },
+    {
+      "name": "frosted_ice_3",
+      "error": "texture not found minecraft:block/frosted_ice_3"
+    },
+    {
+      "name": "golden_aercloud",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "golden_oak_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "golden_oak_wood_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "hellfire_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "hellfire_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "hellfire_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "hellfire_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "hellfire_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "hellfire_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "holystone_brick_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "holystone_brick_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "holystone_brick_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "holystone_brick_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "holystone_brick_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "holystone_brick_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "holystone_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "holystone_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "holystone_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "holystone_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "holystone_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "holystone_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "holystone_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "holystone_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "holystone_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "holystone_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "icestone_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "icestone_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "icestone_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "icestone_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "icestone_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "icestone_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "mossy_holystone_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "mossy_holystone_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "mossy_holystone_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "mossy_holystone_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "mossy_holystone_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "mossy_holystone_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "pillar_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "pillar_top_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "potted_berry_bush",
+      "error": "texture not found minecraft:block/flower_pot"
+    },
+    {
+      "name": "potted_berry_bush_stem",
+      "error": "texture not found minecraft:block/flower_pot"
+    },
+    {
+      "name": "potted_golden_oak_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_purple_flower",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_skyroot_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_white_flower",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "quicksoil_glass_pane_noside",
+      "error": "unhandled parent minecraft:block/template_glass_pane_noside"
+    },
+    {
+      "name": "quicksoil_glass_pane_noside_alt",
+      "error": "unhandled parent minecraft:block/template_glass_pane_noside_alt"
+    },
+    {
+      "name": "quicksoil_glass_pane_post",
+      "error": "unhandled parent minecraft:block/template_glass_pane_post"
+    },
+    {
+      "name": "quicksoil_glass_pane_side",
+      "error": "unhandled parent minecraft:block/template_glass_pane_side"
+    },
+    {
+      "name": "quicksoil_glass_pane_side_alt",
+      "error": "unhandled parent minecraft:block/template_glass_pane_side_alt"
+    },
+    {
+      "name": "skyroot_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "skyroot_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "skyroot_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "skyroot_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "skyroot_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "skyroot_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "skyroot_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "skyroot_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "skyroot_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "skyroot_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "skyroot_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "skyroot_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "skyroot_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "skyroot_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "skyroot_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "skyroot_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "skyroot_hanging_sign",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "skyroot_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "skyroot_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "skyroot_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "skyroot_sign",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "skyroot_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "skyroot_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "skyroot_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "skyroot_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_trapdoor_bottom"
+    },
+    {
+      "name": "skyroot_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_trapdoor_open"
+    },
+    {
+      "name": "skyroot_wood_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_skyroot_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_skyroot_wood_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    }
+  ]
+}

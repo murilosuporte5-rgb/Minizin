@@ -1,0 +1,33 @@
+{
+  "schema": "minizin:xaero_waypoints_v1",
+  "metadata": {
+    "files": 1,
+    "parsed": 1,
+    "skipped": 0,
+    "errors": []
+  },
+  "waypoints": [
+    {
+      "name": "Base",
+      "initials": "B",
+      "x": 100,
+      "y": 70,
+      "z": -50,
+      "color": "#FFAA00",
+      "color_index": 6,
+      "disabled": false,
+      "type": 0,
+      "set": "Default",
+      "rotate_on_tp": false,
+      "yaw": 0,
+      "visibility_type": 0,
+      "destination": false,
+      "source_line": 1,
+      "world": "ExampleWorld",
+      "dimension": "minecraft:overworld",
+      "multiworld": null,
+      "source_file": "build/xaero_sample/xaero/minimap/ExampleWorld/dim%0/waypoints.txt"
+    }
+  ],
+  "notice": "For importing/display only. No automatic teleport. Bedrock dimension and world identifiers must be validated."
+}

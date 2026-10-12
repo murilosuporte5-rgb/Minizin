@@ -1,0 +1,114 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.minizin.cataclysm.phantom_halberd_model",
+        "texture_width": 256,
+        "texture_height": 256,
+        "visible_bounds_width": 20,
+        "visible_bounds_height": 20,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "cube_r1",
+          "pivot": [
+            0.0099,
+            24.2083,
+            -64.4583
+          ],
+          "rotation": [
+            -0.0,
+            -0.0,
+            -90.00021045914971
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0.0099,
+                21.7083,
+                -72.9583
+              ],
+              "size": [
+                0.0,
+                5.0,
+                17.0
+              ],
+              "uv": [
+                26,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cube_r2",
+          "pivot": [
+            0.0238,
+            19.0,
+            0.0
+          ],
+          "rotation": [
+            -0.0,
+            -0.0,
+            -90.00021045914971
+          ],
+          "cubes": [
+            {
+              "origin": [
+                1.5238,
+                18.5,
+                0.0
+              ],
+              "size": [
+                2.0,
+                1.0,
+                0.0
+              ],
+              "uv": [
+                0,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cube_r3",
+          "pivot": [
+            0.0238,
+            24.0,
+            0.0
+          ],
+          "rotation": [
+            -0.0,
+            -0.0,
+            -90.00021045914971
+          ],
+          "cubes": [
+            {
+              "origin": [
+                1.5238,
+                23.5,
+                0.0
+              ],
+              "size": [
+                2.0,
+                1.0,
+                0.0
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

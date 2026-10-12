@@ -1,0 +1,148 @@
+{
+  "schema": "minizin:heightfield_lod_pyramid_v1",
+  "original_size": [
+    4,
+    3
+  ],
+  "levels": [
+    {
+      "level": 0,
+      "cell_size": 1,
+      "height": 3,
+      "width": 4,
+      "cells": [
+        [
+          {
+            "min": 12.0,
+            "max": 12.0,
+            "mean": 12.0,
+            "samples": 1
+          },
+          {
+            "min": 24.0,
+            "max": 24.0,
+            "mean": 24.0,
+            "samples": 1
+          },
+          {
+            "min": 42.0,
+            "max": 42.0,
+            "mean": 42.0,
+            "samples": 1
+          },
+          {
+            "min": 80.0,
+            "max": 80.0,
+            "mean": 80.0,
+            "samples": 1
+          }
+        ],
+        [
+          {
+            "min": 13.0,
+            "max": 13.0,
+            "mean": 13.0,
+            "samples": 1
+          },
+          {
+            "min": 25.0,
+            "max": 25.0,
+            "mean": 25.0,
+            "samples": 1
+          },
+          {
+            "min": 35.0,
+            "max": 35.0,
+            "mean": 35.0,
+            "samples": 1
+          },
+          {
+            "min": 81.0,
+            "max": 81.0,
+            "mean": 81.0,
+            "samples": 1
+          }
+        ],
+        [
+          {
+            "min": 14.0,
+            "max": 14.0,
+            "mean": 14.0,
+            "samples": 1
+          },
+          {
+            "min": 19.0,
+            "max": 19.0,
+            "mean": 19.0,
+            "samples": 1
+          },
+          {
+            "min": 30.0,
+            "max": 30.0,
+            "mean": 30.0,
+            "samples": 1
+          },
+          {
+            "min": 79.0,
+            "max": 79.0,
+            "mean": 79.0,
+            "samples": 1
+          }
+        ]
+      ]
+    },
+    {
+      "level": 1,
+      "cell_size": 2,
+      "height": 2,
+      "width": 2,
+      "cells": [
+        [
+          {
+            "min": 12.0,
+            "max": 25.0,
+            "mean": 18.5,
+            "samples": 4
+          },
+          {
+            "min": 35.0,
+            "max": 81.0,
+            "mean": 59.5,
+            "samples": 4
+          }
+        ],
+        [
+          {
+            "min": 14.0,
+            "max": 19.0,
+            "mean": 16.5,
+            "samples": 2
+          },
+          {
+            "min": 30.0,
+            "max": 79.0,
+            "mean": 54.5,
+            "samples": 2
+          }
+        ]
+      ]
+    },
+    {
+      "level": 2,
+      "cell_size": 4,
+      "height": 1,
+      "width": 1,
+      "cells": [
+        [
+          {
+            "min": 12.0,
+            "max": 81.0,
+            "mean": 37.833333333333336,
+            "samples": 12
+          }
+        ]
+      ]
+    }
+  ],
+  "notice": "Data prototype only; no Distant Horizons file import or rendering"
+}
