@@ -42,6 +42,28 @@ MOBS = {
     "sheepuff": {"model": "SheepuffModel.java", "texture": "mobs/sheepuff/sheepuff.png",
                   "health": 12, "attack": 0, "collision": [1.0, 1.0], "movement": .2,
                   "hostile": False},
+    "valkyrie": {"model": "ValkyrieModel.java", "texture": "mobs/valkyrie/valkyrie.png",
+                  "health": 45, "attack": 8, "collision": [0.8, 2.0], "movement": .33,
+                  "hostile": True},
+    "aerwhale": {"model": "AerwhaleModel.java", "texture": "mobs/aerwhale/aerwhale.png",
+                  "health": 35, "attack": 0, "collision": [3.2, 2.2], "movement": .22,
+                  "hostile": False, "flying": True},
+    "mimic": {"model": "MimicModel.java", "texture": "mobs/mimic/normal.png",
+              "health": 30, "attack": 7, "collision": [1.0, 1.0], "movement": .25,
+              "hostile": True},
+    "phyg": {"model": "QuadrupedWingsModel.java", "texture": "mobs/phyg/phyg.png",
+             "health": 12, "attack": 0, "collision": [1.0, 1.1], "movement": .26,
+             "hostile": False, "flying": True},
+    "flying_cow": {"model": "QuadrupedWingsModel.java", "texture": "mobs/flying_cow/flying_cow.png",
+                   "health": 14, "attack": 0, "collision": [1.0, 1.3], "movement": .23,
+                   "hostile": False, "flying": True},
+    "moa": {"model": "BipedBirdModel.java", "texture": "mobs/moa/black_moa.png",
+            "health": 18, "attack": 0, "collision": [0.85, 1.5], "movement": .3,
+            "hostile": False},
+    "cloud_minion": {"model": "CloudMinionModel.java",
+                     "texture": "miscellaneous/cloud_minion/cloud_minion.png",
+                     "health": 12, "attack": 2, "collision": [.75, .75], "movement": .25,
+                     "hostile": True, "flying": True},
 }
 # Original boss drops are converted by convert_loot.py.
 BOSSES = ("slider", "valkyrie_queen", "sun_spirit")
@@ -55,6 +77,13 @@ KNOWN_ANIMATION_BONES = {
     "aerbunny": {"head": [10, 0, 0]},
     "cockatrice": {"head": [18, 0, 0]},
     "sheepuff": {"head": [8, 0, 0]},
+    "valkyrie": {"right_arm": [35, 0, -12]},
+    "aerwhale": {"body": [0, 7, 0]},
+    "mimic": {"lid": [25, 0, 0]},
+    "phyg": {"body": [4, 0, 0]},
+    "flying_cow": {"body": [4, 0, 0]},
+    "moa": {"head": [10, 0, 0]},
+    "cloud_minion": {"cloudMinion": [0, 15, 0]},
 }
 FLOAT = re.compile(r"[-+]?(?:\d*\.\d+|\d+)(?:[FfDd])?$")
 
