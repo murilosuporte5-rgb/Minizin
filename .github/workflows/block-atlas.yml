@@ -1,0 +1,40 @@
+name: Atlas-based block model conversion (original textures)
+on:
+  push:
+    paths:
+      - "tools/block_atlas_to_bedrock.py"
+      - ".github/workflows/block-atlas.yml"
+  workflow_dispatch:
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install image codec
+        run: python -m pip install Pillow
+      - name: Obtain original mod model and textures
+        run: git submodule update --init --depth 1 mods/15-waystones/upstream mods/19-biomes-o-plenty/upstream mods/41-the-aether/upstream
+      - name: Bake original face textures into geometries and atlases
+        run: |
+          python tools/block_atlas_to_bedrock.py --root mods/15-waystones/upstream --namespace waystones --output build/atlas/waystones
+          python tools/block_atlas_to_bedrock.py --root mods/19-biomes-o-plenty/upstream --namespace biomesoplenty --output build/atlas/biomesoplenty
+          python tools/block_atlas_to_bedrock.py --root mods/41-the-aether/upstream --namespace aether --output build/atlas/aether
+      - name: Report conversion coverage
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          total=0
+          for ns in ('waystones','biomesoplenty','aether'):
+              r=json.loads((Path('build/atlas')/ns/'report.json').read_text())
+              total+=r['converted']
+              print(ns,r['converted'],'/',r['total'])
+          assert total>=90,total
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Bedrock-Block-Geometry-Atlas-Batch
+          path: build/atlas/
+          retention-days: 30
