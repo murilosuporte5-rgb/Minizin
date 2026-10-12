@@ -213,7 +213,8 @@ def build_all(source: Path, bp: Path, rp: Path, available: set[str],
     }
     script = bp / "scripts/native_biomes.js"
     script.parent.mkdir(parents=True, exist_ok=True)
-    script.write_text("/* Derived from pinned Java BiomesOPlenty worldgen; engine replacement is Bedrock-native. */\\n".replace("\\\\n", "\\n")
-                      + "export const NATIVE_BOP = " + json.dumps(native, ensure_ascii=False)
-                      + ";\\n".replace("\\\\n", "\\n"), encoding="utf-8")
+    script.write_text(
+        "/* Derived from pinned Java BiomesOPlenty; runtime decorations adapted. */\n"
+        + "export const NATIVE_BOP = " + json.dumps(native, ensure_ascii=False)
+        + ";\n", encoding="utf-8")
     return report
