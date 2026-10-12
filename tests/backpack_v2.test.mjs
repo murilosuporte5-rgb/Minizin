@@ -72,3 +72,15 @@ test("each backpack item receives stable identity; v1 data migrates only once",(
   assert.equal(api.getState(second).slots[0],null);
   assert.deepEqual(api.getState(id).slots[0],sword);
 });
+
+test("migration never discards legacy data when a target already holds other items",()=>{
+  const {api,player,playerProps}=harness();
+  const id=api.assign(player);
+  const existing={...api.encode(new Stack("minecraft:stone",3))};
+  api.writeState(id,{slots:[existing,...Array(26).fill(null)],revision:3});
+  const old=api.encode(new Stack("minecraft:diamond_sword",1));
+  playerProps.set("minizin:personal_backpack_v1",JSON.stringify([old]));
+  assert.throws(()=>api.migrateLegacy(player,id),/Mochila ocupada/);
+  assert.deepEqual(JSON.parse(playerProps.get("minizin:personal_backpack_v1")),[old]);
+  assert.deepEqual(api.getState(id).slots[0],existing);
+});
