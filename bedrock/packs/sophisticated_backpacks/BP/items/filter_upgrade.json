@@ -1,0 +1,18 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:item": {
+    "description": {
+      "identifier": "minizin:backpack_filter_upgrade",
+      "menu_category": {
+        "category": "equipment"
+      }
+    },
+    "components": {
+      "minecraft:icon": "hopper",
+      "minecraft:max_stack_size": 16,
+      "minecraft:display_name": {
+        "value": "Melhoria de Filtro para Mochila"
+      }
+    }
+  }
+}
