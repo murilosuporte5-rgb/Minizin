@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+"""Build a fresh Android retest candidate using original textures and rigs."""
+import argparse,json,shutil,zipfile
+from pathlib import Path
+from PIL import Image
+from build_bedrock_packs import zipped
+from validate_gameplay_packs import check
+
+ROOT=Path(__file__).resolve().parents[1]
+
+
+def write(path,doc):
+    path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(doc,indent=2)+'\n')
+
+
+def repair(source,output):
+    if output.exists():raise ValueError('Fresh output required')
+    shutil.copytree(source,output)
+    for addon in output.glob('*.mcaddon'):addon.unlink()
+    rp,bp=output/'RP',output/'BP'
+    # Preserve all existing models and move entity meshes to the canonical loader root.
+    for path in list((rp/'models').rglob('*.geo.json')):
+        rel=path.relative_to(rp/'models')
+        if rel.parts[0] in ['entity','blocks']:continue
+        if len(rel.parts)>2 and rel.parts[1] in ['entity','blocks']:
+            dest=rp/'models'/rel.parts[1]/rel.parts[0]/Path(*rel.parts[2:]);dest.parent.mkdir(parents=True,exist_ok=True)
+            path.rename(dest)
+    languages={'en_US':{},'pt_BR':{}}
+    upstream={ 'mca':'33-mca-reborn','rftools':'54-rftools','origins':'55-origins','aether':'41-the-aether',
+      'biomesoplenty':'19-biomes-o-plenty','iceandfire':'16-ice-and-fire','cataclysm':'43-cataclysm','alexscaves':'42-alexs-caves','mowziesmobs':'44-mowzies-mobs'}
+    dictionaries={};language_warnings=[]
+    for namespace,mod in upstream.items():
+        dictionaries[namespace]={}
+        for language in languages:
+            files=list((ROOT/'mods'/mod/'upstream').glob('**/assets/'+namespace+'/lang/'+language.lower()+'.json'))
+            dictionaries[namespace][language]={}
+            for file in files:
+                try:dictionaries[namespace][language].update(json.loads(file.read_text(),strict=False))
+                except ValueError as error:language_warnings.append({'source':str(file.relative_to(ROOT)),'error':str(error)})
+    def translated(kind,ident):
+        ns,name=ident.split(':',1)
+        if ns=='minizin':
+            namespace,name=name.split('_',1)
+            if name.startswith('item_'):name=name[5:]
+        else:namespace=ns.removeprefix('minizin_')
+        key=('tile.' if kind=='block' else 'item.')+ident+'.name'
+        for language in languages:
+            originals=dictionaries.get(namespace,{}).get(language,{})
+            title=originals.get(kind+'.'+namespace+'.'+name,name.replace('_',' ').title())
+            languages[language][key]=str(title).replace('\n',' ')
+        return key
+    registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text())
+    terrain=json.loads((rp/'textures/terrain_texture.json').read_text())['texture_data']
+    geometries={}
+    for path in (rp/'models').rglob('*.geo.json'):
+        for geo in json.loads(path.read_text()).get('minecraft:geometry',[]):geometries[geo['description']['identifier']]=geo
+    block_items=0
+    for path in (bp/'blocks').rglob('*.json'):
+        doc=json.loads(path.read_text());block=doc['minecraft:block'];ident=block['description']['identifier']
+        comp=block['components'];display=translated('block',ident);comp['minecraft:display_name']=display
+        material=comp['minecraft:material_instances']['*'];atlas_ref=terrain[material['texture']]['textures']
+        atlas=Image.open(rp/(atlas_ref+'.png')).convert('RGBA')
+        geo=geometries[comp['minecraft:geometry']['identifier']]
+        candidates=[]
+        for bone in geo.get('bones',[]):
+            for cube in bone.get('cubes',[]):
+                faces=cube.get('uv',{})
+                if not isinstance(faces,dict):continue
+                for face in faces.values():
+                    uv=face.get('uv',[0,0]);size=face.get('uv_size',[0,0])
+                    x0,y0=uv;x1,y1=x0+size[0],y0+size[1]
+                    box=(round(min(x0,x1)),round(min(y0,y1)),round(max(x0,x1)),round(max(y0,y1)))
+                    if box[2]<=box[0] or box[3]<=box[1]:continue
+                    image=atlas.crop(box)
+                    if x1<x0:image=image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+                    if y1<y0:image=image.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+                    alpha=image.getchannel('A');score=sum(alpha.getdata())
+                    if score>0:candidates.append((score,image))
+        image=max(candidates,key=lambda x:x[0])[1] if candidates else atlas
+        if image.getchannel('A').getbbox() is None:raise ValueError('Original atlas fully transparent '+ident)
+        icon='minizin_block_icon_'+ident.replace(':','_');texture='textures/items/block_icons/'+icon
+        (rp/'textures/items/block_icons').mkdir(parents=True,exist_ok=True);image.save(rp/(texture+'.png'))
+        registry['texture_data'][icon]={'textures':texture}
+        # A real block-placer item with an explicit original-pixel icon overrides
+        # the invisible autogenerated inventory representation, preserving world geometry.
+        write(bp/'items/block_icons'/f'{icon}.json',{'format_version':'1.21.90','minecraft:item':{
+          'description':{'identifier':ident,'menu_category':{'category':'construction'}},
+          'components':{'minecraft:icon':{'textures':{'default':icon}},'minecraft:display_name':{'value':display},
+            'minecraft:block_placer':{'block':ident},'minecraft:max_stack_size':64}}})
+        write(path,doc);block_items+=1
+    for path in (bp/'items').rglob('*.json'):
+        doc=json.loads(path.read_text());item=doc['minecraft:item'];ident=item['description']['identifier'];comp=item['components']
+        if ident.startswith('minizin_') and 'minecraft:block_placer' in comp:continue
+        comp['minecraft:display_name']={'value':translated('item',ident)}
+        if isinstance(comp.get('minecraft:icon'),str):comp['minecraft:icon']={'textures':{'default':comp['minecraft:icon']}}
+        if 'ring' in ident:comp['minecraft:max_stack_size']=1
+        write(path,doc)
+    for path in (rp/'entity').rglob('*.json'):
+        doc=json.loads(path.read_text());desc=doc['minecraft:client_entity']['description'];ident=desc['identifier']
+        key='entity.'+ident+'.name'
+        for language in languages:languages[language][key]=ident.split(':')[1].replace('_',' ').title()
+        tex=rp/(desc['textures']['default']+'.png');im=Image.open(tex).convert('RGBA')
+        colors=sorted(im.getcolors(im.width*im.height) or [],reverse=True)
+        palette=[c for _,c in colors if c[3]>128 and max(c[:3])>45]
+        if not palette:raise ValueError('Entity original texture fully transparent '+ident)
+        color=lambda c:'#'+''.join(f'{v:02x}' for v in c[:3])
+        desc['spawn_egg']={'base_color':color(palette[0]),'overlay_color':color(palette[min(3,len(palette)-1)])}
+        write(path,doc)
+    write(registry_path,registry)
+    for language,entries in languages.items():
+        target=rp/'texts'/f'{language}.lang';target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_text('\n'.join(k+'='+v for k,v in sorted(entries.items()))+'\n')
+    write(rp/'texts/languages.json',list(languages))
+    shutil.copy2(ROOT/'bedrock/runtime/item_actions.js',bp/'scripts/item_actions.js')
+    main=bp/'scripts/main.js';main.write_text(main.read_text()+'\nimport "./item_actions.js";\n')
+    for role in ['RP','BP']:
+        path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['name']='Minizin Correção Mobile '+role
+        doc['header']['version']=[0,2,2]
+        for module in doc['modules']:module['version']=[0,2,2]
+        for dependency in doc.get('dependencies',[]):
+            if 'uuid' in dependency:dependency['version']=[0,2,2]
+        write(path,doc)
+    counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
+      'fixes':['Preserved models/entity and models/blocks loader paths','Original-pixel explicit block placer icons',
+        'Names from upstream language files where available','Individual spawn egg colors from original textures',
+        'MCA rings: 50 affinity engagement, 100 marriage','Origins orb opens original selection menu'],
+      'language_warnings':language_warnings,'android_retest_pending':True,'remaining':['Unimplemented catalog items','Full animation/AI ports','World generation and dimensions']})
+    addon=output/'Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon'
+    with zipfile.ZipFile(addon,'w',zipfile.ZIP_STORED) as archive:
+        for role in ['RP','BP']:archive.writestr('Minizin_Mobile_'+role+'.mcpack',zipped(output/role))
+    assert zipfile.ZipFile(addon).testzip() is None
+    print(json.dumps({'file':str(addon),'validation':counts,'block_icons':block_items}))
+
+
+if __name__=='__main__':
+    ap=argparse.ArgumentParser();ap.add_argument('source',type=Path);ap.add_argument('--output',type=Path,required=True)
+    args=ap.parse_args();repair(args.source,args.output)

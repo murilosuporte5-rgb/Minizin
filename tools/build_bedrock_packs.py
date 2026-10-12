@@ -25,6 +25,7 @@ def validate(root):
     geos=set()
     animations=set()
     for file,doc in data["RP"].items():
+        if not isinstance(doc,dict): continue  # texts/languages.json is an array
         if "minecraft:client_entity" in doc:
             c=doc["minecraft:client_entity"]["description"]
             clients[c["identifier"]]=c

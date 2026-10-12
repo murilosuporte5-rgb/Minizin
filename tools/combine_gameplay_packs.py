@@ -30,6 +30,9 @@ def combine(folders,output):
                 if rel.as_posix()=='manifest.json':continue
                 if rel.parts[0]=='scripts':continue
                 target=output/role/rel.parts[0]/mod/Path(*rel.parts[1:])
+                # Models have a loader-specific second directory. Preserve it.
+                if role=='RP' and rel.parts[0]=='models':
+                    target=output/role/'models'/rel.parts[1]/mod/Path(*rel.parts[2:])
                 target.parent.mkdir(parents=True,exist_ok=True)
                 if path.suffix!='.json':shutil.copy2(path,target);continue
                 doc=rewrite(json.loads(path.read_text()))

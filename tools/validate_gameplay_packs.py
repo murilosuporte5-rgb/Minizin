@@ -11,8 +11,21 @@ def check(folders):
         rp,bp,n=validate(folder);counts['packs']+=1;counts['entities']+=n
         geometries={}
         for path in rp.rglob('*.geo.json'):
+            rel=path.relative_to(rp).parts
+            if len(rel)<3 or rel[0]!='models' or rel[1] not in ['entity','blocks']:
+                raise ValueError('Geometry outside loader directory: '+str(path))
             for geo in json.loads(path.read_text()).get('minecraft:geometry',[]):
                 geometries[geo['description']['identifier']]=geo
+        item_registry=rp/'textures/item_texture.json'
+        if item_registry.exists():
+            icons=json.loads(item_registry.read_text())['texture_data']
+            for item_path in (bp/'items').rglob('*.json'):
+                item=json.loads(item_path.read_text())['minecraft:item']
+                icon=item.get('components',{}).get('minecraft:icon')
+                ref=icon if isinstance(icon,str) else icon.get('textures',{}).get('default') if icon else None
+                if ref not in icons:raise ValueError('Item icon missing from registry: '+str(ref))
+                path=icons[ref]['textures']
+                if not isinstance(path,str) or not (rp/(path+'.png')).exists():raise ValueError('Item PNG missing: '+str(path))
         for role in ['RP','BP']:
             manifest=json.loads((folder/role/'manifest.json').read_text())
             for key in [manifest['header']['uuid'],*[m['uuid'] for m in manifest['modules']]]:
