@@ -79,7 +79,8 @@ class WorldBuilderTests(unittest.TestCase):
         self.assertIs(b["components"]["minecraft:collision_box"], False)
         self.assertEqual(len(b["permutations"]), 1)
 
-    def test_four_biomes_are_independent_and_linked(self):
+    def test_nine_biomes_are_independent_and_linked(self):
+        self.assertEqual(len(worlds.BIOMES), 9)
         for name, entry in worlds.BIOMES.items():
             obj = worlds.biome_def(name, entry)["minecraft:biome"]
             self.assertEqual(obj["description"]["identifier"], f"minizin_bop:{name}")
@@ -119,6 +120,9 @@ class WorldBuilderTests(unittest.TestCase):
         self.assertIn("world.setDynamicProperty(key, true)", src)
         self.assertIn("removeTickingArea", src)
         self.assertIn("BLOCKS_PER_TICK", src)
+        self.assertIn("placeOriginalDungeon", src)
+        self.assertIn("quicksoilTick", src)
+        self.assertIn("aercloudTick", src)
         self.assertNotIn("eval(", src)
         bop = (SCRIPT.parent / "bop/main.js").read_text(encoding="utf-8")
         self.assertIn("world.setDynamicProperty(key, true)", bop)
