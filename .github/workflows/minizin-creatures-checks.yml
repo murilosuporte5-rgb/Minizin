@@ -24,9 +24,9 @@ jobs:
           p=pathlib.Path('bedrock/packs/creatures/BP')
           for f in p.rglob('*.json'):
               json.loads(f.read_text())
-          assert len(list((p/'entities').glob('*.json')))==5
+          assert len(list((p/'entities').glob('*.json')))==8
           assert not list(pathlib.Path('bedrock/packs/creatures').rglob('*.png'))
-          print('PASS: five entity definitions, JSON schemas parse, no substituted PNG')
+          print('PASS: eight entity definitions, JSON schemas parse, no substituted PNG')
           PY
       - name: Refuse pack without original assets
         run: |

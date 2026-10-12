@@ -34,7 +34,13 @@ ITEMS={
  "creative_dragon_meal":("16-ice-and-fire","iceandfire","creative_dragon_meal.png"),
  "dragon_flute":("16-ice-and-fire","iceandfire","dragon_flute.png"),
  "dragon_armor_iron":("16-ice-and-fire","iceandfire","dragonarmor_iron_head.png"),
- "serene_salad":("42-alexs-caves","alexscaves","serene_salad.png")
+ "serene_salad":("42-alexs-caves","alexscaves","serene_salad.png"),
+ "dragon_egg_fire":("16-ice-and-fire","iceandfire","egg_red.png"),
+ "dragon_egg_ice":("16-ice-and-fire","iceandfire","egg_blue.png"),
+ "dragon_egg_lightning":("16-ice-and-fire","iceandfire","egg_black.png"),
+ "dragon_scale_fire":("16-ice-and-fire","iceandfire","scales_red.png"),
+ "dragon_scale_ice":("16-ice-and-fire","iceandfire","scales_blue.png"),
+ "dragon_scale_lightning":("16-ice-and-fire","iceandfire","scales_black.png")
 }
 POSE_SETS={"bite":["Bite1","Bite2","Bite3"],
            "tail":["Tail1","Tail2","Tail3"],
@@ -122,10 +128,22 @@ def build(out,has_permission):
             desc["scripts"]={"animate":[{key:"query.property('minizin_creatures:attack') == '"+key+"'"} for key in animations if key!="flight"]}
         write_json(rp/"entity"/(id+".entity.json"),{"format_version":"1.10.0","minecraft:client_entity":{"description":desc}})
         controllers["controller.render.minizin_creatures."+id]=render_controller(id,len(skins))
+    for kind,col in (("fire","red"),("ice","blue"),("lightning","black")):
+        shutil.copy2(FOLDER/"egg.geo.json",rp/"models/entity"/(kind+"_dragon_egg.geo.json"))
+        egg_src=original("16-ice-and-fire","iceandfire","models/"+{"fire":"firedragon","ice":"icedragon","lightning":"lightningdragon"}[kind],"egg_"+col+".png")
+        if not egg_src.is_file():raise FileNotFoundError("Modelo original de ovo sem textura: "+str(egg_src))
+        dst=rp/"textures/entity"/(kind+"_dragon_egg.png");shutil.copy2(egg_src,dst)
+        write_json(rp/"entity"/(kind+"_dragon_egg.entity.json"),{"format_version":"1.10.0","minecraft:client_entity":{"description":{
+          "identifier":"minizin_creatures:"+kind+"_dragon_egg",
+          "materials":{"default":"entity_alphatest"},"textures":{"default":"textures/entity/"+kind+"_dragon_egg"},
+          "geometry":{"default":"geometry.minizin_creatures.dragon_egg_java"},
+          "render_controllers":["controller.render.minizin_creatures."+kind+"_egg"]}}})
+        controllers["controller.render.minizin_creatures."+kind+"_egg"]={"geometry":"Geometry.default",
+          "materials":[{"*":"Material.default"}],"textures":["Texture.default"]}
     write_json(rp/"render_controllers/creatures.json",{"format_version":"1.8.0","render_controllers":controllers})
     atlas={}
     for id,(mod,namespace,file) in ITEMS.items():
-        src=original(mod,namespace,"item",file)
+        src=original(mod,namespace,("models/"+{"fire":"firedragon","ice":"icedragon","lightning":"lightningdragon"}[id.split("_")[-1]]) if id.startswith("dragon_egg_") else "item",file)
         if not src.is_file():raise FileNotFoundError("Ícone original ausente: "+str(src))
         dst=rp/"textures/items"/(id+".png");dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,dst)
         atlas["minizin_creatures_"+id]={"textures":"textures/items/"+id}
