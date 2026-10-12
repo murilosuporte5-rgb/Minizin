@@ -4,6 +4,7 @@
  * engine/worldgen internals. Uses Bedrock experimental void dimension.
  */
 import { world, system, BlockPermutation } from "@minecraft/server";
+import { AETHER_BIOMES } from "./biome_profiles.js";
 
 const SKY_ID = "minizin_aether:sky";
 const PORTAL = "minizin_aether:aether_portal";
@@ -250,14 +251,30 @@ async function generateCell(cx, cz) {
         }
       }
     }
-    // Reproducible placement based on cell coordinates, never overwrite the spawn pad.
-    const places = [[-9, -2], [10, 9], [-4, 10], [12, -8]];
-    for (let i = 0; i < places.length; i++) {
-      const [dx, dz] = places[i];
+    // Original Java biome IDs and feature references come from the pinned
+    // biome_profiles.js. Only *densities* are adapted for Bedrock Script API.
+    const profile = AETHER_BIOMES[s % AETHER_BIOMES.length];
+    for (let i = 0; i < profile.tree_attempts; i++) {
+      const choice = seed(cx * 11 + i, cz * 29 - i);
+      const dx = ((choice & 31) - 16), dz = (((choice >>> 8) & 31) - 16);
+      if (Math.abs(dx) <= 3 && Math.abs(dz) <= 3) continue;
       const t = terrain(c.x + dx, c.z + dz, cx, cz);
       if (!t || t.distance > .65) continue;
-      addTree(dim, c.x + dx, t.surface + 1, c.z + dz,
-              seed(cx * 11 + i, cz * 29), i === 0 && s % 4 === 0);
+      addTree(dim, c.x + dx, t.surface + 1, c.z + dz, choice,
+              i === 0 && s % 4 === 0);
+      await yieldBudget(++writes);
+    }
+    const plants = ["minizin_aether:white_flower",
+                    "minizin_aether:purple_flower",
+                    "minizin_aether:berry_bush"];
+    for (let i = 0; i < 12; i++) {
+      const n = seed(cx * 67 + i, cz * 71 - i);
+      const dx = (n % 33) - 16;
+      const dz = ((n >>> 7) % 33) - 16;
+      const t = terrain(c.x + dx, c.z + dz, cx, cz);
+      if (!t || t.distance > .72) continue;
+      const p = { x: c.x + dx, y: t.surface + 1, z: c.z + dz };
+      if (isBlock(dim, p, "minecraft:air")) set(dim, p.x, p.y, p.z, plants[n % plants.length]);
       await yieldBudget(++writes);
     }
     if (cx !== 0 || cz !== 0) {
