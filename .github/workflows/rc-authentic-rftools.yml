@@ -1,0 +1,65 @@
+name: Recover authentic RFTools Storage Terminal visuals
+on:
+  push:
+    branches: [qa/reinos-circuitos-v240]
+    paths:
+      - "tools/rc_build_rftools_storage_terminal.py"
+      - ".github/workflows/rc-authentic-rftools.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Python dependencies
+        run: python -m pip install Pillow
+      - name: Retrieve exact upstream model and textures
+        run: git submodule update --init --depth 1 mods/54-rftools/upstream
+      - name: Recover geometry and UV from original RFTools textures
+        run: python tools/rc_build_rftools_storage_terminal.py
+      - name: Validate artifact and original texture atlas
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,io,zipfile
+          out=Path("build/rftools_storage_terminal")
+          report=json.loads((out/"VERIFIED_SOURCE_AND_LIMITATIONS.json").read_text())
+          assert report["geometry_cubes"]>=1
+          assert not report["warnings"][:0]
+          pack=out/"RFTools_StorageTerminal_Original_Visual_QA.mcaddon"
+          with zipfile.ZipFile(pack) as z:
+              assert len(z.namelist())==2
+              for p in z.namelist():
+                  with zipfile.ZipFile(io.BytesIO(z.read(p))) as inside:
+                      assert "manifest.json" in inside.namelist()
+              with zipfile.ZipFile(io.BytesIO(z.read("RFToolsRecovered_RP.mcpack"))) as rp:
+                  assert "textures/blocks/storage_terminal_atlas.png" in rp.namelist()
+                  assert "models/blocks/storage_terminal.geo.json" in rp.namelist()
+          print("Validated source model and packed files; device QA is still required.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RFTools-Authentic-StorageTerminal-Bedrock-QA
+          path: build/rftools_storage_terminal/
+          retention-days: 30
+      - name: Commit assets to dedicated QA branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p qa/reinos-circuitos-v240/verified/rftools/storage_terminal
+          cp -R build/rftools_storage_terminal/RP build/rftools_storage_terminal/BP qa/reinos-circuitos-v240/verified/rftools/storage_terminal/
+          cp build/rftools_storage_terminal/*.json qa/reinos-circuitos-v240/verified/rftools/storage_terminal/
+          cp build/rftools_storage_terminal/*.mcaddon qa/reinos-circuitos-v240/verified/rftools/storage_terminal/
+          cp build/rftools_storage_terminal/RFTools_UPSTREAM_LICENSE.md qa/reinos-circuitos-v240/verified/rftools/storage_terminal/
+          git add -f qa/reinos-circuitos-v240/verified/rftools/storage_terminal
+          if ! git diff --cached --quiet; then
+            git commit -m "build: recover genuine RFTools storage terminal block visuals"
+            git push origin HEAD:qa/reinos-circuitos-v240
+          fi
