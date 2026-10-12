@@ -325,6 +325,10 @@ def entity_bp(mob: str, spec: dict) -> dict:
                                                "value": "player"}, "max_dist": 22}]}
             components["minecraft:behavior.melee_attack"] = {
                 "priority": 3, "speed_multiplier": 1.1, "track_target": True}
+    if spec.get("slime_outer"):
+        # Vanilla squish scaling queries variant. Without it the rendered
+        # slime geometry could collapse to zero size in Bedrock.
+        components["minecraft:variant"] = {"value": 2}
     if mob in BOSSES:
         components["minecraft:boss"] = {
             "should_darken_sky": mob == "sun_spirit",
