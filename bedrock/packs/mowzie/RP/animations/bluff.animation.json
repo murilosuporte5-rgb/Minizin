@@ -1,0 +1,79 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.minizin.bluff.idle": {
+      "loop": true,
+      "animation_length": 4,
+      "bones": {
+        "root": {
+          "rotation": {
+            "vector": [
+              0,
+              0,
+              0
+            ],
+            "easing": "linear"
+          }
+        },
+        "head": {
+          "rotation": {
+            "vector": [
+              "math.sin((query.anim_time - 0.2) * 180) * -2",
+              0,
+              0
+            ],
+            "easing": "linear"
+          },
+          "position": {
+            "vector": [
+              0,
+              "math.sin((query.anim_time - 0.5) * 180) * 0.5",
+              "math.cos((query.anim_time - 0.3) * 180) * 0.2"
+            ],
+            "easing": "linear"
+          }
+        },
+        "core": {
+          "position": {
+            "vector": [
+              0,
+              "-1 + math.sin((query.anim_time - 0.0) * 180) * 1",
+              0
+            ],
+            "easing": "linear"
+          }
+        },
+        "rods1": {
+          "position": {
+            "vector": [
+              0,
+              0,
+              "math.sin((query.anim_time - 0.66) * 720) * 0.5"
+            ],
+            "easing": "linear"
+          }
+        },
+        "rods3": {
+          "position": {
+            "vector": [
+              0,
+              0,
+              "math.sin((query.anim_time - 0.33) * 720) * 0.5"
+            ],
+            "easing": "linear"
+          }
+        },
+        "rods2": {
+          "position": {
+            "vector": [
+              0,
+              0,
+              "math.sin((query.anim_time - 0.0) * 720) * 0.5"
+            ],
+            "easing": "linear"
+          }
+        }
+      }
+    }
+  }
+}

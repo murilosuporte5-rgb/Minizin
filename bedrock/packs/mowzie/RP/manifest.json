@@ -1,0 +1,30 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Minizin mz Resources",
+    "description": "Research prototype, asset reuse; not device-tested",
+    "uuid": "cfddad57-5098-5cd6-9bee-fb7579f62dfa",
+    "version": [
+      0,
+      1,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "cda2587f-8873-5742-b0a1-1fb894735221",
+      "version": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "dependencies": []
+}

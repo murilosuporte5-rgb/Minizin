@@ -1,0 +1,20 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minizin:andesite_waystone",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/andesite_waystone"
+      },
+      "geometry": {
+        "default": "geometry.minizin.andesite_waystone"
+      },
+      "render_controllers": [
+        "controller.render.minizin.waystone"
+      ]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Minizin mz Behavior",
+    "description": "Research prototype, asset reuse; not device-tested",
+    "uuid": "f5ab615a-682e-541a-822a-c563777375f8",
+    "version": [
+      0,
+      1,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "180bb1f5-89dc-5fad-9a9a-0fd1dcb50303",
+      "version": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "cfddad57-5098-5cd6-9bee-fb7579f62dfa",
+      "version": [
+        0,
+        1,
+        0
+      ]
+    }
+  ]
+}

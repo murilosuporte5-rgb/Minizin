@@ -1,0 +1,28 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minizin:bluff",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bluff"
+      },
+      "geometry": {
+        "default": "geometry.bluff"
+      },
+      "render_controllers": [
+        "controller.render.minizin.bluff"
+      ],
+      "animations": {
+        "idle": "animation.minizin.bluff.idle"
+      },
+      "scripts": {
+        "animate": [
+          "idle"
+        ]
+      }
+    }
+  }
+}
