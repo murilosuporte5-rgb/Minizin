@@ -1,0 +1,7 @@
+build/
+dist/
+*.mcaddon
+*.mcpack
+*.jar
+__pycache__/
+*.pyc
