@@ -95,8 +95,10 @@ def expand(source,output):
     if not (bp/'scripts/backpack.js').is_file():
         raise ValueError('Missing original backpack runtime: migration cannot be checked')
     shutil.copy2(ROOT/'bedrock/runtime/backpack_v2.js',bp/'scripts/backpack.js')
+    # Accessory slots are virtual but no longer hijack the native offhand.
+    shutil.copy2(ROOT/'bedrock/runtime/aether_equipment_v2.js',bp/'scripts/aether_equipment.js')
     counts=check([output]);write(output/'EXPANSION_REPORT.json',{'items_added':len(names)+1,'structural':counts,'provenance':provenance,
-      'new_mod':'Waystones custom block with migration path','waystone_block':waystone_report,'backpack_storage':'item-bound v2; legacy migrated once; native container UI not supported', 'android_retest_pending':True,
+      'new_mod':'Waystones custom block with migration path','waystone_block':waystone_report,'backpack_storage':'item-bound v2; legacy migrated once; native container UI not supported','aether_rings':'two persistent virtual slots; not native equipment slots', 'android_retest_pending':True,
       'limits':['Zanite bonus, Gravitite block lifting and Valkyrie reach pending','Golden/iron rings are ornamental accessories in source',
         'Tool harvesting tier and all special drops require Android QA','Weapons/tools currently creative acquisition; Java recipes pending',
         'Immersive Portals renderer, Xaero minimap renderer and Distant Horizons LOD remain unavailable through current BP/RP',
