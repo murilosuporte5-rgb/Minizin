@@ -34,6 +34,15 @@ jobs:
           test -d generated/next_four
           test -d generated/conversions
 
+      - name: Fetch Sophisticated Backpacks original source
+        run: |
+          # This source is intentionally not a submodule in .gitmodules.
+          mkdir -p mods/56-sophisticated-backpacks
+          git clone --depth 1 --branch 1.21.x \
+            https://github.com/P3pp3rF1y/SophisticatedBackpacks.git \
+            mods/56-sophisticated-backpacks/upstream
+          git -C mods/56-sophisticated-backpacks/upstream rev-parse HEAD > build_backpack_revision.txt
+
       - name: Unit tests and syntax gates
         run: |
           node --test tests/backpack_v2.test.mjs tests/waystones_block.test.mjs
