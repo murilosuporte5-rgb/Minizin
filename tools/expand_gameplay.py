@@ -90,8 +90,13 @@ def expand(source,output):
     # Convert the old summonable prototype into a placeable block while keeping
     # the entity definition solely for existing-world migration.
     waystone_report=upgrade_waystone(output)
+    # The v0.2.4 input is still backed by per-player shared storage. Preserve
+    # that source, but install the v2 item-bound runtime in the new candidate.
+    if not (bp/'scripts/backpack.js').is_file():
+        raise ValueError('Missing original backpack runtime: migration cannot be checked')
+    shutil.copy2(ROOT/'bedrock/runtime/backpack_v2.js',bp/'scripts/backpack.js')
     counts=check([output]);write(output/'EXPANSION_REPORT.json',{'items_added':len(names)+1,'structural':counts,'provenance':provenance,
-      'new_mod':'Waystones custom block with migration path','waystone_block':waystone_report,'android_retest_pending':True,
+      'new_mod':'Waystones custom block with migration path','waystone_block':waystone_report,'backpack_storage':'item-bound v2; legacy migrated once; native container UI not supported', 'android_retest_pending':True,
       'limits':['Zanite bonus, Gravitite block lifting and Valkyrie reach pending','Golden/iron rings are ornamental accessories in source',
         'Tool harvesting tier and all special drops require Android QA','Weapons/tools currently creative acquisition; Java recipes pending',
         'Immersive Portals renderer, Xaero minimap renderer and Distant Horizons LOD remain unavailable through current BP/RP',
