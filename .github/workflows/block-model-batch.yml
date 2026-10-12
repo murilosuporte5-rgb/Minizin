@@ -1,0 +1,41 @@
+name: Batch convert Waystones Aether Biomes block models
+on:
+  push:
+    paths:
+      - "tools/java_block_batch_to_bedrock.mjs"
+      - "tools/java_model_to_bedrock.mjs"
+      - ".github/workflows/block-model-batch.yml"
+  workflow_dispatch:
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Checkout original Java block models
+        run: |
+          git submodule update --init --depth 1 mods/15-waystones/upstream mods/19-biomes-o-plenty/upstream mods/41-the-aether/upstream
+      - name: Convert original block models
+        run: |
+          node tools/java_block_batch_to_bedrock.mjs --root mods/15-waystones/upstream --namespace waystones --output build/converted/waystones
+          node tools/java_block_batch_to_bedrock.mjs --root mods/19-biomes-o-plenty/upstream --namespace biomesoplenty --output build/converted/biomesoplenty
+          node tools/java_block_batch_to_bedrock.mjs --root mods/41-the-aether/upstream --namespace aether --output build/converted/aether
+      - name: Validate totals
+        run: |
+          node - <<'NODE'
+          const fs=require("fs");
+          let total=0;
+          for(const ns of ["waystones","biomesoplenty","aether"]){
+            const data=JSON.parse(fs.readFileSync("build/converted/"+ns+"/conversion_index.json","utf8"));
+            console.log(ns,data.converted+"/"+data.total+" converted, "+data.failed+" unsupported");
+            total+=data.converted;
+          }
+          if(total<15)throw Error("Fewer than 15 converted block models");
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Converted-Waystones-Biomes-Aether-Block-Models
+          path: build/converted/
+          retention-days: 30
