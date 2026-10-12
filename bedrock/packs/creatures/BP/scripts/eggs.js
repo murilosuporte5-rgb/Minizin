@@ -23,7 +23,7 @@ function hatch(e,kind){
   const baby=e.dimension.spawnEntity("minizin_creatures:"+kind+"_dragon",{...e.location,y:e.location.y+1});
   if(owner)put(baby,"owner",owner);
   put(baby,"days",0);put(baby,"age_ticks",0);
-  eventSound(e,"random.levelup");
+  eventSound(e,"minizin_creatures.dragon.egg_hatch");
   e.remove();
 }
 export function tickEgg(e) {

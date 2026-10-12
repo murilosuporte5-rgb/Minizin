@@ -43,6 +43,16 @@ ITEMS={
  "dragon_scale_ice":("16-ice-and-fire","iceandfire","scales_blue.png"),
  "dragon_scale_lightning":("16-ice-and-fire","iceandfire","scales_black.png")
 }
+AUDIO={
+ "fire_dragon_breath":("16-ice-and-fire","iceandfire","mobs/dragon/fire/breath.ogg"),
+ "ice_dragon_breath":("16-ice-and-fire","iceandfire","mobs/dragon/ice/breath.ogg"),
+ "lightning_dragon_breath":("16-ice-and-fire","iceandfire","mobs/dragon/lightning/breath.ogg"),
+ "dragon_egg_hatch":("16-ice-and-fire","iceandfire","effects/egg_hatch.ogg"),
+ "atlatitan_stomp":("42-alexs-caves","alexscaves","mob/atlatitan/atlatitan_stomp_0.ogg"),
+ "ignis_impact":("43-cataclysm","cataclysm","entity/ignis_impact.ogg"),
+ "bluff_attack":("44-mowzies-mobs","mowziesmobs","entity/bluff/attack.ogg"),
+ "bluff_spike":("44-mowzies-mobs","mowziesmobs","entity/bluff/spike_explode.ogg")
+}
 POSE_SETS={"bite":["Bite1","Bite2","Bite3"],
            "tail":["Tail1","Tail2","Tail3"],
            "wing":["WingBlast1","WingBlast3","WingBlast5","WingBlast7"],
@@ -157,6 +167,15 @@ def build(out,has_permission):
              "minecraft:max_stack_size":64,
              "minecraft:use_modifiers":{"use_duration":0.2,"movement_modifier":1.0}}}})
     write_json(rp/"textures/item_texture.json",{"resource_pack_name":"minizin_creatures","texture_name":"atlas.items","texture_data":atlas})
+    sound_defs={}
+    for key,(mod,namespace,path) in AUDIO.items():
+        audio=MOD/mod/"upstream/src/main/resources/assets"/namespace/"sounds"/path
+        if not audio.is_file():raise FileNotFoundError("Áudio original ausente: "+str(audio))
+        target=rp/"sounds/creatures"/(key+".ogg");target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(audio,target)
+        sound_defs["minizin_creatures."+key.replace("_",".",1)]={"category":"hostile",
+          "sounds":[{"name":"sounds/creatures/"+key}]}
+    write_json(rp/"sounds/sound_definitions.json",{"format_version":"1.14.0","sound_definitions":sound_defs})
     # Existing original Bluff texture/rig is packed unchanged in its own source RP/BP.
     source_mowzie=ROOT/"bedrock/packs/mowzie"
     for part in ("BP","RP"):

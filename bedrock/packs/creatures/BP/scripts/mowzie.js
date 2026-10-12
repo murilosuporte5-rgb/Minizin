@@ -11,7 +11,7 @@ export function tickBluff(e,tick){
     if(!p||distance(e.location,p.location)<6)return;
     put(e,"bluff_phase","startup");put(e,"bluff_timer",11);
     put(e,"bluff_target_x",p.location.x);put(e,"bluff_target_z",p.location.z);
-    eventSound(e,"mob.irongolem.throw");
+    eventSound(e,"minizin_creatures.bluff.attack");
     return;
   }
   if(timer>1){put(e,"bluff_timer",timer-1);return;}
@@ -26,7 +26,7 @@ export function tickBluff(e,tick){
       if(nearSegment(x.location,from,to,1.1))hit(e,x,18,0.8);
     }
     put(e,"bluff_phase","recovery");put(e,"bluff_timer",34);
-    eventSound(e,"mob.irongolem.walk");return;
+    eventSound(e,"minizin_creatures.bluff.spike");return;
   }
   put(e,"bluff_phase","idle");put(e,"bluff_timer",0);
 }

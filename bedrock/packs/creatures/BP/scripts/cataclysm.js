@@ -10,7 +10,7 @@ export function tickIgnis(e,tick){
     const left=Math.max(0,time-10);put(e,"ignis_time",left);
     if(move==="phase2"&&time>=40&&left<40){put(e,"ignis_phase",1);state(e,"phase",1);}
     if(move==="phase3"&&time>=70&&left<70){put(e,"ignis_phase",2);state(e,"phase",2);}
-    if(move==="shield_smash"&&time>=30&&left<30){for(const x of nearby(e,8))hit(e,x,12,1.2);eventSound(e,"mob.irongolem.walk");}
+    if(move==="shield_smash"&&time>=30&&left<30){for(const x of nearby(e,8))hit(e,x,12,1.2);eventSound(e,"minizin_creatures.ignis.impact");}
     if(move==="soul_sweep"&&time>=30&&left<30){const target=playerTarget(e,12);if(target)cone(e,target,80,12,15,1);}
     if(move==="ultimate"&&time>=40&&left<40){for(const x of nearby(e,14)){hit(e,x,20,2);try{x.setOnFire(6);}catch{}}}
     if(left===0)state(e,"attack","idle");

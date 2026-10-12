@@ -8,7 +8,7 @@ export function tickAtlatitan(e,tick){
     const remaining=frames-10;put(e,"frames",remaining);
     if(move==="stomp"&&frames>=30&&remaining<30){
       for(const x of nearby(e,15))if(distance(x.location,e.location)>=4)hit(e,x,12,1.2);
-      eventSound(e,"mob.irongolem.walk");
+      eventSound(e,"minizin_creatures.atlatitan.stomp");
     }
     if(move==="whip"&&frames>=30&&remaining<30){
       for(const x of nearby(e,12))hit(e,x,8,1);

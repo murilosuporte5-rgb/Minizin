@@ -26,7 +26,7 @@ function combat(e,target,tick){
     if(mode==="ice_dragon")try{x.addEffect("minecraft:slowness",70,{amplifier:2});}catch{}
     if(mode==="lightning_dragon")try{x.addEffect("minecraft:weakness",80,{amplifier:1});}catch{}
   }
-  eventSound(e,mode==="lightning_dragon"?"mob.enderdragon.growl":"mob.enderdragon.growl");
+  eventSound(e,"minizin_creatures."+mode.replace("_","." )+"_breath");
   put(e,"cooldown",mode==="lightning_dragon"?100:50);
 }
 export function tickDragons(e,tick){
