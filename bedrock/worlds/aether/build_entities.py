@@ -80,6 +80,12 @@ MOBS = {
                "vanilla_base": "geometry.slime", "slime_outer": True,
                "health": 26, "attack": 5, "collision": [1, 1], "movement": .27,
                "hostile": True},
+    "whirlwind": {"model": None, "texture": None, "particle_only": True,
+                   "health": 10, "attack": 0, "collision": [1.0, 1.6],
+                   "movement": .025, "hostile": False, "flying": True},
+    "evil_whirlwind": {"model": None, "texture": None, "particle_only": True,
+                        "health": 10, "attack": 2, "collision": [1.0, 1.6],
+                        "movement": .025, "hostile": True, "flying": True},
 }
 # Original boss drops are converted by convert_loot.py.
 BOSSES = ("slider", "valkyrie_queen", "sun_spirit")
@@ -414,35 +420,39 @@ def build_all(bp: Path, rp: Path) -> dict:
     results = {}
     for mob, spec in MOBS.items():
         modelpath = JAVA_MODELS / spec["model"] if spec.get("model") else None
-        texture = ORIGINAL_TEXTURES / spec["texture"]
+        texture = ORIGINAL_TEXTURES / spec["texture"] if spec.get("texture") else None
         if modelpath is not None and not modelpath.is_file():
             raise FileNotFoundError(f"Original Java source missing: {modelpath}")
-        if not texture.is_file():
+        if texture is not None and not texture.is_file():
             raise FileNotFoundError(f"Original texture missing: {texture}")
         if modelpath:
             geo, stats = convert_model(modelpath.read_text(encoding="utf-8"), mob,
                                        spec.get("wing_offset", 0.0))
         else:
-            # Original Aether uses Java SlimeModel, which is also a vanilla
-            # Bedrock rig. Reuse its real geometry and original skin.
+            # Original Swet/Sentry use Java SlimeModel. Whirlwind uses NO
+            # static renderer: Java uses procedural particles instead.
             stats = {"java_model_parts": 0, "converted_bones": 0,
-                     "converted_cubes": 0, "reuse_bedrock_vanilla":
-                     spec["vanilla_base"]}
+                     "converted_cubes": 0,
+                     "particle_only": bool(spec.get("particle_only")),
+                     "reuse_bedrock_vanilla": spec.get("vanilla_base")}
         write(bp / "entities" / f"{mob}.json", entity_bp(mob, spec))
         if modelpath:
             write(rp / "models/entity" / f"{mob}.geo.json", geo)
-        write(rp / "entity" / f"{mob}.entity.json", client_entity(mob))
-        write(rp / "animations" / f"{mob}.animation.json", animations(mob))
-        dest = rp / "textures/entity/minizin_aether" / f"{mob}.png"
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(texture, dest)
+        if not spec.get("particle_only"):
+            write(rp / "entity" / f"{mob}.entity.json", client_entity(mob))
+            write(rp / "animations" / f"{mob}.animation.json", animations(mob))
+            dest = rp / "textures/entity/minizin_aether" / f"{mob}.png"
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(texture, dest)
         if spec.get("wings_texture"):
             wing_src = ORIGINAL_TEXTURES / spec["wings_texture"]
             if not wing_src.is_file():
                 raise FileNotFoundError(f"Original wings missing: {wing_src}")
             shutil.copyfile(wing_src, rp / "textures/entity/minizin_aether" / f"{mob}_wings.png")
-        results[mob] = {**stats, "original_java_model": str(modelpath.relative_to(ROOT)) if modelpath else "net.minecraft.client.model.SlimeModel",
-                        "original_texture": str(texture.relative_to(ROOT)),
+        results[mob] = {**stats, "original_java_model": str(modelpath.relative_to(ROOT)) if modelpath else
+                        "AbstractWhirlwind particle renderer" if spec.get("particle_only")
+                        else "net.minecraft.client.model.SlimeModel",
+                        "original_texture": str(texture.relative_to(ROOT)) if texture else None,
                         "animations_exact_java": False, "behavior_exact_java": False}
     write(rp / "render_controllers/minizin_aether.render_controllers.json", {
         "format_version": "1.8.0", "render_controllers": {
