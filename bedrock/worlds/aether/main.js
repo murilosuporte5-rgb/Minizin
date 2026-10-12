@@ -180,8 +180,9 @@ function addTemple(dim, x, y, z) {
   set(dim, x, y + 1, z + 2, "minecraft:chest");
   set(dim, x, y + 2, z + 2, "minecraft:glowstone");
 }
-function addExitFrame(dim, y) {
-  const base = { x: 7, y: y + 1, z: -7 };
+function addExitFrame(dim, y, cx, cz) {
+  const c = center(cx, cz);
+  const base = { x: c.x + 7, y: y + 1, z: c.z - 7 };
   const tile = (h, v) => ({ x: base.x + h, y: base.y + v, z: base.z });
   for (let h = 0; h < 4; h++) {
     for (let v = 0; v < 5; v++) {
@@ -259,22 +260,24 @@ async function generateCell(cx, cz) {
               seed(cx * 11 + i, cz * 29), i === 0 && s % 4 === 0);
       await yieldBudget(++writes);
     }
-    if (cx === 0 && cz === 0) {
-      // Landing is clear even in survival; the exit portal stands nearby.
-      const pad = terrain(0, 0, 0, 0).surface;
-      for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++)
-        set(dim, x, pad, z, "minizin_aether:aether_grass");
-      for (let y = pad + 1; y <= pad + 4; y++) for (let x = -2; x <= 2; x++)
-        for (let z = -2; z <= 2; z++) set(dim, x, y, z, "minecraft:air");
-      const exitHeight = terrain(7, -7, 0, 0)?.surface ?? pad;
-      addExitFrame(dim, exitHeight);
-    } else if (s % 5 === 0) {
-      const t = terrain(c.x, c.z, cx, cz);
-      // Prefer a converted original template when available. The simplified
-      // room is retained only as an explicit fallback, never a Java replica.
-      if (!placeOriginalDungeon(dim, c.x, t.surface + 1, c.z, cx, cz))
-        addTemple(dim, c.x, t.surface + 1, c.z);
+    if (cx !== 0 || cz !== 0) {
+      if (s % 5 === 0) {
+        const t = terrain(c.x, c.z, cx, cz);
+        if (!placeOriginalDungeon(dim, c.x, t.surface + 1, c.z, cx, cz))
+          addTemple(dim, c.x, t.surface + 1, c.z);
+      }
     }
+    // Every linked island needs a deterministic clear arrival pad and
+    // a return frame, independent of the Overworld coordinates of entry.
+    const pad = terrain(c.x, c.z, cx, cz).surface;
+    for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++)
+      set(dim, c.x + x, pad, c.z + z, "minizin_aether:aether_grass");
+    for (let y = pad + 1; y <= pad + 5; y++)
+      for (let x = -2; x <= 2; x++)
+        for (let z = -2; z <= 2; z++)
+          set(dim, c.x + x, y, c.z + z, "minecraft:air");
+    const exitHeight = terrain(c.x + 7, c.z - 7, cx, cz)?.surface ?? pad;
+    addExitFrame(dim, exitHeight, cx, cz);
     // Persist only on complete success; interrupted cells regenerate idempotently.
     world.setDynamicProperty(key, true);
   } finally {
@@ -325,17 +328,21 @@ async function visitAether(player) {
   player.setDynamicProperty(RETURN_KEY, JSON.stringify({
     x: Math.floor(p.x), y: Math.floor(p.y), z: Math.floor(p.z),
   }));
-  player.sendMessage("§bGerando ilha inicial do Aether...");
-  // Even if initial island is already stored, preload arrival before teleport.
-  await generateCell(0, 0);
+  // Keep distant portals independent: nearest 80-block island cell.
+  // The stored return coordinate remains scoped to this player.
+  const cx = Math.round(p.x / CELL_SIZE), cz = Math.round(p.z / CELL_SIZE);
+  const at = center(cx, cz);
+  player.sendMessage("§bPreparando ilha do Aether [" + cx + "," + cz + "]...");
+  await generateCell(cx, cz);
   const dim = world.getDimension(SKY_ID);
-  const y = terrain(0, 0, 0, 0).surface + 2;
-  const a = "minizin_aether_arrival";
+  const y = terrain(at.x, at.z, cx, cz).surface + 2;
+  const a = "minizin_aether_arrival_" + player.id.replace(/[^a-zA-Z0-9_]/g, "_").slice(0, 24);
   await world.tickingAreaManager.createTickingArea(a, {
-    dimension: dim, from: { x: -4, y: y - 6, z: -4 },
-    to: { x: 4, y: y + 8, z: 4 },
+    dimension: dim,
+    from: { x: at.x - 4, y: y - 6, z: at.z - 4 },
+    to: { x: at.x + 4, y: y + 8, z: at.z + 4 },
   });
-  try { player.teleport({ x: .5, y, z: .5 }, { dimension: dim }); }
+  try { player.teleport({ x: at.x + .5, y, z: at.z + .5 }, { dimension: dim }); }
   finally { world.tickingAreaManager.removeTickingArea(a); }
 }
 function returnOverworld(player) {
