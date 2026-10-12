@@ -73,6 +73,21 @@ class WorldBuilderTests(unittest.TestCase):
                 with self.assertRaises(FileNotFoundError):
                     worlds.java_biome_spec("mystic_grove", worlds.BIOMES["mystic_grove"])
 
+    def test_original_aether_skyroot_biome_references(self):
+        import unittest.mock as mock
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for name in worlds.AETHER_BIOME_DENSITIES:
+                (root / f"{name}.json").write_text(json.dumps({
+                    "temperature": 0.8, "downfall": 0,
+                    "features": [[f"aether:{name}_trees"], ["aether:cold_aercloud"]]
+                }), encoding="utf-8")
+            with mock.patch.object(worlds, "AETHER_BIOME_SOURCE", root):
+                profiles = worlds.aether_biome_profiles()
+            self.assertEqual(len(profiles), 4)
+            self.assertTrue(all(p["java_tree_feature"] in p["java_feature_refs"] for p in profiles))
+            self.assertGreater(profiles[0]["tree_attempts"], profiles[2]["tree_attempts"])
+
     def test_silver_dungeon_blocks_are_not_fake_breakable_ornaments(self):
         for name in ("locked_angelic_stone", "boss_doorway_angelic_stone"):
             self.assertIn(name, worlds.ASSETS["aether"])
@@ -128,6 +143,7 @@ class WorldBuilderTests(unittest.TestCase):
         self.assertIn("removeTickingArea", src)
         self.assertIn("BLOCKS_PER_TICK", src)
         self.assertIn("placeOriginalDungeon", src)
+        self.assertIn('from "./biome_profiles.js"', src)
         self.assertIn("quicksoilTick", src)
         self.assertIn("aercloudTick", src)
         self.assertIn("await generateCell(cx, cz)", src)
