@@ -1,28 +1,81 @@
-# Minizin systems — verified and unverified status
+# Minizin — Systems workstream (2026-10-12)
 
-Date: 2026-10-12. Branch: feature/minizin-systems, created from repository main.
+Branch: `feature/minizin-systems` • PR: https://github.com/murilosuporte5-rgb/Minizin/pull/5
 
-## Baseline
-The checked main branch contains prototype BP/RP manifests at version 0.1.0. An actual v0.2.8 source snapshot is NOT established by these repository files; merging into a separate v0.2.8 addon still requires integration. Reused existing runtime work from feature/original-models-gameplay only for the requested systems, without merging the branch or modifying shared loaders.
+## Source and baseline
 
-## Modules added or changed
-- Waystones: placeable stone with original existing geometry/texture, persistent activation/name/ownership and destinations, legacy-entity migration, real dimension teleport with an unloaded-chunk fallback and post-arrival safety check. Cross-dimension/distant chunk-loading reliability is UNTESTED on Android.
-- Sophisticated Backpacks: dedicated BP/RP, unique item-bound 27-slot storage, slot UI, metadata roundtrip validation, concurrent-session lock and old player-storage migration. Container and special NBT formats are rejected when fidelity cannot be guaranteed. Not a native Java inventory-screen clone.
-- MCA Reborn: persisted player NPC identity, per-player affinities and social cooldowns, marriage and attempted real baby-villager birth (rejects if ageable component does not confirm baby). Java social AI, schedules and deep genealogy remain missing.
-- Carry On: actual entity transport and placeable blocks via StructureManager world-save/world-place (including block entity data for supported single blocks). Rejects multiblocks/double chests. Full chest NBT, lag, relog and anti-duplication require on-device testing.
-- RFTools: custom generator/cell/cable/lamp blocks; consumption of coal/charcoal, physical cable network (bounded BFS), persistent energy and real lamp lighting. Old lodestone energy model remains reachable. Native energy units are not Forge FE; most original Java machines are absent. Models/skins are temporary vanilla references.
-- Origins: ten catalogued choices, original passive effects plus active Enderian teleport, Elytrian impulse, additional water/shulk modifiers and cooldown. Remaining Apoli 61-power parity including true phasing is not implemented.
+The current `main` repository has independently versioned experimental packs
+(manifest 0.1.0); it does **not** contain a source snapshot independently
+identified as the user's Minizin v0.2.8. This PR therefore does **not**
+claim integration or testing against that unprovided composite package.
+The work only changes owned pack paths, tests, CI and this document;
+it does not modify other workstream branches, shared script loaders or assets.
 
-## Verification and limitations
-Six JS sources compiled using JavaScript parser checks. Mocked unit tests and structure/package JSON checks are committed under tests/systems_*.test.mjs and .github/workflows/minizin-systems.yml, but passing CI must be confirmed separately. Minecraft Bedrock Android import, Content Log, performance, multiplayer, v0.2.8 merge, original Java mechanics and source licensing/asset QA have NOT been confirmed. Do not advertise full Java parity.
+## Functional implementation
 
-## Android test checklist
-1. Activate/rename two waystone blocks. Test within loaded range, distant 1000+ blocks, cross-dimension, blocked arrival and reopening after relog.
-2. Give two backpacks (/give @s minizin:backpack), deposit in each, relog and share between two real players. Try metadata-rich enchanted tools; unsupported item classes must be refused.
-3. Carry and place a single chest/barrel with contents by crouching + stick; compare item metadata and inventory across relog. Verify double chests are refused, dropped entities are not cloned.
-4. MCA: interact with villager crouch+paper, gift emerald, verify relationships and marriage after relog; check real baby age via component/visual and genealogy.
-5. RFTools: place generator, cable, cell and lamp; feed coal, observe changing energy and actual light, disconnect cable and confirm off state.
-6. Origins: select via !minizin origins; crouch+feather for Enderian/Elytrian active, verify cooldown, effects, water interactions and any deviations from Java.
+| System | Implemented in Bedrock | Known gap versus Java |
+| --- | --- | --- |
+| Waystones | Custom placeable block with reused original-source converted geometry/UV atlas; server-authoritative activation and persistent discoveries, rename, legacy marker migration, teleport between dimensions, unloaded-chunk exception handling, post-arrival check and rollback | Distant travel still depends on the engine loading destination chunks; neither source-correct costs nor all Waystone variants or Java teleport reliability proven |
+| MCA Reborn | Ten actual summonable NPC types with original layered skins, simplified humanoid geometry and new Molang walk animation; per-player affinity, social cooldown, marriage, divorce, persistent family identities, attempted baby villager spawn with positive ageable verification | Not the full Java NPC AI, occupations, family tree UI or schedules; Bedrock birth event/render state requires Android QA |
+| Carry On | Move original entities without despawn/copy, pickup/place actual supported blocks with saved World-mode structures, carry persistent between world loads, refuse adjacent chests, block duplication after uncertain writes | Limited whitelist and no held-block animated 3D rendering. On ambiguous placement the cargo deliberately locks to prevent duplication; it must be inspected/recovered manually, not blindly replayed |
+| RFTools | Real custom generator, cell, cable and light-emitting block with persistent energy, coal fuel and BFS limited network transfer. Original-asset converted coalgenerator/powercell/wire/relay geometries/textures now included | Internal Minizin energy units are not Forge FE; the indicator-based lamp is a custom consumer, not an exact original Java device; other factories/dimensions absent |
+| Origins | All ten origin selectors persisted, original-passive approximations, active Elytrian boost and Enderian teleport, Arachnid actual 10-second cobweb placement, Phantom invisibility, Feline fall damage cancellation, Shulk resistance, water effects | 61 Java/Apoli powers are NOT completely ported. Phantom does not phase through blocks, Shulk native extra inventory unavailable. Effects are incomplete |
+| Sophisticated Backpacks | Independent 27-slot item-identity storage, checked metadata transfer, per-item persistence and per-session locks, legacy migration, atomic whole-stack bulk deposit, sorting and a real craftable filtering upgrade | No larger tiers, original Java 2D inventory/container screen, worn 3D backpack or all Sophisticated upgrades. Unsupported metadata-bearing items are rejected. Duplicated item identity/security requires multiplayer testing |
 
-## Packaging and redistribution
-CI builds Minizin_Systems_Experimental.mcaddon from the three corresponding pack pairs (six embedded packs). This is an EXPERIMENTAL addon and does not contain the larger original assets from the generated-bedrock branch. Confirm redistribution rights before release.
+## Survival crafting
+
+The Waystone block, four RFTools power blocks and base backpack are craftable
+from vanilla ingredients. The backpack-filter upgrade is craftable and can be
+installed in one physical bag; it restricts the bag's bulk-deposit operation
+to chosen item identifiers. These recipes use original gameplay intent, not
+verified 1:1 Java crafting grids.
+
+## Art and rights
+
+- MCA and RFTools geometry / PNG were reused from the repository's
+  `generated-bedrock` branch, not reconstructed from scratch.
+- MCA model is a simplified Bedrock humanoid. The Molang animation here is
+  an adaptation, not a Java animation binary.
+- RFTools lamp uses the original converted power-relay visual; it is not
+  represented as the original Java lamp model.
+- No modern Sophisticated Backpacks art/source was copied: the current
+  project lists **All Rights Reserved**, as shown at
+  https://github.com/P3pp3rF1y/SophisticatedBackpacks .
+- Audit redistribution compliance and preserve required license/credit
+  materials for MCA (GPL-3.0) and RFTools (MIT) before any public release.
+
+## Automated checks
+
+`Minizin Systems QA` workflow:
+1. `node --check` for all six relevant script modules.
+2. `node --test tests/systems_*.test.mjs`: mocked unit and regression tests.
+3. `python tests/systems_pack_integrity.py`: BP/RP dependency UUIDs, resolved geometry IDs, PNG atlases, all ten NPC client/server skins and animations.
+4. JSON parsing and archive integrity; upload a standalone
+   `Minizin_Systems_Experimental.mcaddon` as a GitHub Actions artifact.
+
+CI passing confirms structural integrity **only**. No actual Bedrock engine
+has been run in GitHub Actions; FPS/RAM, Script API runtime behavior and
+Android touch controls cannot be certified by these tests.
+
+## Android acceptance steps (in a backed-up test world)
+
+1. Minecraft Bedrock supporting Script API 2.0.0; import experimental addon,
+   activate all six BP/RP packs and inspect the Content Log.
+2. Craft two Waystones, activate, rename, verify persistence, run distant
+   1000+ block and cross-dimension teleport tests, including obstructed
+   landing and unloaded chunks.
+3. Craft two backpacks and one filter upgrade. Transfer enchanted/damaged
+   items, install filter, bulk deposit, sort, share each bag across players,
+   then relog and reopen. Different backpack IDs must remain isolated.
+4. Pick up a full chest, place it, relog and verify every slot is identical.
+   Reproduce interrupted placement under test, refuse adjacent double chests.
+   An uncertain cargo must not be silently recreated.
+5. Craft generator, cable, cell and lamp. Feed coal, check transfers and light
+   state, break a cable, relog and verify stored energy remains.
+6. Use crouch + paper with generated MCA NPCs, test personal affinity,
+   wedding/divorce, family identity and a real baby that grows up.
+7. Use the Origins UI, test cooldowns, cobweb cleanup, fall damage
+   cancellation, Phantom visibility and explicit absence of native phasing.
+
+**Release gate:** do not mark Java parity or v0.2.8 integration complete
+until those in-game tests, source-rights review and integration are proven.
