@@ -1,0 +1,35 @@
+name: Minizin creatures scoped checks
+on:
+  push:
+    branches: [feature/minizin-creatures]
+    paths: ['bedrock/packs/creatures/**', 'tests/creatures_logic.test.mjs', '.github/workflows/minizin-creatures-checks.yml']
+  pull_request:
+    paths: ['bedrock/packs/creatures/**', 'tests/creatures_logic.test.mjs', '.github/workflows/minizin-creatures-checks.yml']
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Parse JS
+        run: |
+          for f in bedrock/packs/creatures/BP/scripts/*.js; do node --input-type=module --check < "$f"; done
+      - name: Behavioral boundaries
+        run: node --test tests/creatures_logic.test.mjs
+      - name: Validate JSON definitions and forbidden texture fallback
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('bedrock/packs/creatures/BP')
+          for f in p.rglob('*.json'):
+              json.loads(f.read_text())
+          assert len(list((p/'entities').glob('*.json')))==5
+          assert not list(pathlib.Path('bedrock/packs/creatures').rglob('*.png'))
+          print('PASS: five entity definitions, JSON schemas parse, no substituted PNG')
+          PY
+      - name: Refuse pack without original assets
+        run: |
+          if python bedrock/packs/creatures/build_creatures.py; then
+            echo "ERROR: build must refuse missing authorization"; exit 1
+          fi

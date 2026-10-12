@@ -38,7 +38,7 @@ export function installAtlatitan(){
     });
   });
   world.afterEvents.itemUse.subscribe(ev=>{
-    if(ev.itemStack?.typeId!=="minizin_creatures:atlatitan_signal")return;
+    if(ev.itemStack?.typeId!=="minizin_creatures:serene_salad")return;
     system.run(()=>{
       const e=ev.source.getComponent("minecraft:riding")?.entityRidingOn;
       if(e?.typeId===TYPE&&Number(get(e,"frames",0))<=0&&Number(get(e,"meter",1))>=1){

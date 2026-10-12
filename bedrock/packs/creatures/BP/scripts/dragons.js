@@ -71,11 +71,11 @@ export function installDragons(){
   });
   world.afterEvents.itemUse.subscribe(ev=>{
     const p=ev.source,id=ev.itemStack?.typeId;
-    if(!["minizin_creatures:dragon_staff","minizin_creatures:dragon_flute"].includes(id))return;
+    if(!["minizin_creatures:dragon_flute"].includes(id))return;
     system.run(()=>{
       const e=p.getComponent("minecraft:riding")?.entityRidingOn;
       if(!e||!TYPES.includes(e.typeId)||!own(e,p))return;
-      if(id==="minizin_creatures:dragon_staff"){
+      if(p.isSneaking){
         const fly=!get(e,"flight",false);put(e,"flight",fly);
         try{e.triggerEvent(fly?"minizin_creatures:fly":"minizin_creatures:land");}catch{}
         p.sendMessage(fly?"Voo habilitado. Direcione a câmera para subir/descer.":"Pouso ativado.");
