@@ -5,6 +5,7 @@
  */
 import { world, system, BlockPermutation } from "@minecraft/server";
 import { AETHER_BIOMES } from "./biome_profiles.js";
+import { spawnDungeonBoss } from "./bosses.js";
 
 const SKY_ID = "minizin_aether:sky";
 const PORTAL = "minizin_aether:aether_portal";
@@ -156,6 +157,7 @@ function placeOriginalDungeon(dim, x, y, z, cx, cz) {
     // Structure API queues placement across unloaded chunks. Coordinates are
     // anchored at the cell center; positional parity with Java is unverified.
     manager.place(chosen, dim, { x: x - 12, y, z: z - 12 });
+    spawnDungeonBoss(dim, family, { x, y, z }, cx, cz);
     console.warn("[Minizin Aether] Original template placed: " + chosen);
     return true;
   } catch (error) {
@@ -280,8 +282,11 @@ async function generateCell(cx, cz) {
     if (cx !== 0 || cz !== 0) {
       if (s % 5 === 0) {
         const t = terrain(c.x, c.z, cx, cz);
-        if (!placeOriginalDungeon(dim, c.x, t.surface + 1, c.z, cx, cz))
+        if (!placeOriginalDungeon(dim, c.x, t.surface + 1, c.z, cx, cz)) {
           addTemple(dim, c.x, t.surface + 1, c.z);
+          // Do not pass off the fallback room as an original Java dungeon.
+          // It has no registered Java boss spawns.
+        }
       }
     }
     // Every linked island needs a deterministic clear arrival pad and
