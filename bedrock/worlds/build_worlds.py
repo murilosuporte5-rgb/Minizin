@@ -486,6 +486,8 @@ def build(mod: str, output: Path) -> Path:
     (bp / "scripts").mkdir(parents=True, exist_ok=True)
     shutil.copyfile(HERE / mod / "main.js", bp / "scripts/main.js")
     if mod == "aether":
+        shutil.copyfile(HERE / "aether/bosses.js", bp / "scripts/bosses.js")
+    if mod == "aether":
         jwrite(rp / "models/blocks/portal.geo.json", geometry("portal"))
         jwrite(rp / "models/blocks/cross.geo.json", geometry("cross"))
         profiles = aether_biome_profiles()
