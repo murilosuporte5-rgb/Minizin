@@ -32,7 +32,7 @@ jobs:
         run: python -m unittest discover -s bedrock/worlds/tests -v
       - name: Build packs locally with originals (do not upload copyrighted assets)
         run: |
-          python -m pip install --disable-pip-version-check Pillow
+          python -m pip install --disable-pip-version-check Pillow nbtlib numpy
           python bedrock/worlds/build_worlds.py --mod both
       - name: Inspect generated Bedrock ZIP layout and resource wiring
         run: |
@@ -53,8 +53,9 @@ jobs:
                   assert bp["dependencies"][0]["uuid"] == rp["header"]["uuid"]
                   if mod == "aether":
                       assert "BP/scripts/main.js" in names
+                      assert any(n.startswith("BP/structures/minizin_aether/") and n.endswith(".mcstructure") for n in names)
                   else:
-                      assert sum(n.startswith("BP/biomes/") for n in names) == 4
+                      assert sum(n.startswith("BP/biomes/") for n in names) == 9
           print("Static ZIP and pack manifests passed; in-game behavior NOT validated.")
           PY
       - name: Enforce repository asset separation
