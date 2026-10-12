@@ -1,0 +1,50 @@
+name: Convert Alex Caves Atlatitan Java models
+on:
+  push:
+    paths:
+      - "tools/citadel_java_to_bedrock.py"
+      - "tests/test_citadel_java_to_bedrock.py"
+      - ".github/workflows/alex-caves-convert.yml"
+  workflow_dispatch:
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Converter unit tests
+        run: python -m unittest discover -s tests -p 'test_citadel_java_to_bedrock.py'
+      - name: Checkout source models only
+        run: |
+          mkdir -p build
+          git clone --depth 1 --filter=blob:none --no-checkout https://github.com/AlexModGuy/AlexsCaves.git build/alex_caves
+          git -C build/alex_caves sparse-checkout init --cone
+          git -C build/alex_caves sparse-checkout set src/main/java/com/github/alexmodguy/alexscaves/client/model
+          git -C build/alex_caves checkout
+      - name: Recover original Atlatitan cuboids and rig
+        run: |
+          BASE=build/alex_caves/src/main/java/com/github/alexmodguy/alexscaves/client/model
+          python tools/citadel_java_to_bedrock.py \
+            --source "$BASE/SauropodBaseModel.java" \
+            --source "$BASE/AtlatitanModel.java" \
+            --identifier geometry.minizin.atlatitan \
+            --output build/atlatitan.geo.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path("build/atlatitan.geo.json").read_text())["minecraft:geometry"][0]
+          bones=data["bones"]
+          cubes=sum(len(b["cubes"]) for b in bones)
+          print("Atlatitan Bedrock bones",len(bones),"cubes",cubes)
+          assert len(bones)>=25,(len(bones),cubes)
+          assert cubes>=30,(len(bones),cubes)
+          assert data["description"]["texture_width"]==512
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Alex-Caves-Atlatitan-Geometry-Prototype
+          path: |
+            build/atlatitan.geo.json
+            build/atlatitan.geo.conversion.json
