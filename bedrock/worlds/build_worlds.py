@@ -260,6 +260,29 @@ def copy_texture(source: Path, target: Path, mod: str, name: str) -> None:
     else:
         shutil.copyfile(source, target)
 
+def aether_biome_profiles() -> list[dict]:
+    """Extract real Java biome IDs and feature references from pinned sources.
+
+    Tree density is explicitly a Bedrock runtime adjustment, not Java parity.
+    """
+    profiles = []
+    for name, attempts in AETHER_BIOME_DENSITIES.items():
+        src = AETHER_BIOME_SOURCE / f"{name}.json"
+        if not src.is_file():
+            raise FileNotFoundError(f"Original Aether biome JSON missing: {src}")
+        data = json.loads(src.read_text(encoding="utf-8"))
+        features = [x for group in data.get("features", []) for x in group]
+        if f"aether:{name}_trees" not in features:
+            raise ValueError(f"Original Aether tree feature not present: {name}")
+        profiles.append({"java_id": f"aether:{name}",
+                         "temperature": data["temperature"],
+                         "downfall": data["downfall"],
+                         "tree_attempts": attempts,
+                         "java_tree_feature": f"aether:{name}_trees",
+                         "java_feature_refs": features})
+    return profiles
+
+
 def java_biome_spec(name: str, proposal: dict) -> dict:
     """Read climatic values and water palette from the pinned original Java data.
 
@@ -397,6 +420,8 @@ def validate_pack(bp: Path, rp: Path, mod: str) -> None:
             face_key = f"{key}_{face}"
             assert face_key in terrain["texture_data"]
             assert (rp / f"textures/blocks/{face_key}.png").is_file()
+    if mod == "aether":
+        assert (bp / "scripts/biome_profiles.js").is_file()
     if mod == "bop":
         assert len(list((bp / "biomes").glob("*.json"))) == len(BIOMES)
         for name, spec in BIOMES.items():
@@ -447,6 +472,12 @@ def build(mod: str, output: Path) -> Path:
     shutil.copyfile(HERE / mod / "main.js", bp / "scripts/main.js")
     if mod == "aether":
         jwrite(rp / "models/blocks/portal.geo.json", geometry("portal"))
+        jwrite(rp / "models/blocks/cross.geo.json", geometry("cross"))
+        profiles = aether_biome_profiles()
+        (bp / "scripts" / "biome_profiles.js").write_text(
+            "/* Data from pinned Java Aether biome JSON; densities are adaptations. */\n"
+            + "export const AETHER_BIOMES = " + json.dumps(profiles, ensure_ascii=False)
+            + ";\n", encoding="utf-8")
         from aether.convert_structures import convert_all
         destination = bp / "structures" / "minizin_aether"
         results = convert_all(destination,
