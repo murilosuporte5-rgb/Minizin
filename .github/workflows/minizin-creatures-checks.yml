@@ -35,3 +35,33 @@ jobs:
           if python bedrock/packs/creatures/build_creatures.py; then
             echo "ERROR: build must refuse missing authorization"; exit 1
           fi
+  stage-original-assets:
+    # Build/inspect inside ephemeral runner; never upload copyrighted assets.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+      - name: Check out pinned Java source modules
+        run: |
+          git submodule update --init --depth 1 --recommend-shallow \
+            mods/16-ice-and-fire/upstream \
+            mods/42-alexs-caves/upstream \
+            mods/43-cataclysm/upstream \
+            mods/44-mowzies-mobs/upstream
+      - name: Recover previously converted original geometry
+        run: |
+          git fetch --depth=1 origin generated-bedrock:refs/remotes/origin/generated-bedrock
+          git restore --source=origin/generated-bedrock --worktree -- \
+            generated/conversions/ice_and_fire \
+            generated/conversions/alex_caves \
+            generated/conversions/cataclysm
+      - name: Stage, inspect, then discard Bedrock visual packs
+        run: python bedrock/packs/creatures/build_creatures.py --validate-only
+      - name: Assert no publishable asset files remain
+        run: |
+          test ! -e build/Minizin_Creatures_Research.mcaddon
+          test ! -e build/creatures_staged
+          echo "PASS: built and validated privately; no packaged third-party data retained"
