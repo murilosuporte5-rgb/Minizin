@@ -1,0 +1,95 @@
+name: Minizin v0.2.5 Bedrock candidate
+on:
+  push:
+    branches:
+      - feature/original-models-gameplay
+    paths:
+      - "bedrock/**"
+      - "tools/**"
+      - "tests/**"
+      - ".github/workflows/verify-minizin-v025.yml"
+  workflow_dispatch:
+
+jobs:
+  structural-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout pinned source and converters
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: true
+
+      - name: Install build requirements
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install Pillow
+
+      - name: Recover previous converted assets; no regeneration from scratch
+        run: |
+          git fetch origin generated-bedrock
+          git checkout origin/generated-bedrock -- generated/
+          test -d generated/next_four
+          test -d generated/conversions
+
+      - name: Unit tests and syntax gates
+        run: |
+          node --test tests/backpack_v2.test.mjs tests/waystones_block.test.mjs
+          node --test tests/backpack.test.mjs tests/aether_equipment.test.mjs tests/combat.test.mjs tests/item_actions.test.mjs
+          python -m unittest discover -s tests
+
+      - name: Build independent base packs
+        run: |
+          python tools/build_creature_world_packs.py --output build/stages23
+          python tools/build_gameplay_four.py --output build/four_gameplay
+          python tools/upgrade_waystone_block.py --output build/waystones_v025
+
+      - name: Combine original pack families without overwriting old builds
+        run: |
+          python tools/combine_gameplay_packs.py --output build/combined_v021 \
+            build/stages23/iceandfire build/stages23/cataclysm \
+            build/stages23/alexscaves build/stages23/mowzies \
+            build/stages23/aether build/stages23/biomesoplenty \
+            build/four_gameplay/mca build/four_gameplay/carryon \
+            build/four_gameplay/origins build/four_gameplay/rftools
+
+      - name: Apply existing mobile repairs and backpack; keep versions
+        run: |
+          python tools/repair_combined_pack.py build/combined_v021 --output build/mobile_v022
+          python tools/add_backpack_to_pack.py build/mobile_v022 \
+            mods/56-sophisticated-backpacks/upstream --output build/mobile_v023
+          python tools/expand_gameplay.py build/mobile_v023 --output build/mobile_v025
+
+      - name: Verify ZIP nested MC packs and original-preservation logs
+        run: |
+          python tools/validate_gameplay_packs.py build/mobile_v025 build/waystones_v025
+          python - <<'PY'
+          import io,zipfile
+          from pathlib import Path
+          paths=list(Path("build").rglob("*.mcaddon"))
+          assert paths, "No add-on artifacts"
+          for path in paths:
+              with zipfile.ZipFile(path) as bundle:
+                  assert bundle.testzip() is None
+                  for name in bundle.namelist():
+                      with zipfile.ZipFile(io.BytesIO(bundle.read(name))) as pack:
+                          assert "manifest.json" in pack.namelist()
+              print(path, path.stat().st_size)
+          PY
+
+      - name: Upload experimentals and diagnostics for Android testing
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: Minizin-v025-UNTESTED-Android
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            build/mobile_v025/*.mcaddon
+            build/mobile_v025/*REPORT.json
+            build/waystones_v025/*.mcaddon
+            build/waystones_v025/*REPORT.json
+            build/stages23/*.mcaddon
+            build/four_gameplay/*/*.mcaddon
