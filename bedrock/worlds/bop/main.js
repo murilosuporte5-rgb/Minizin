@@ -5,6 +5,7 @@
  * vanilla terrain without claiming native biome replacement.
  */
 import { BlockPermutation, system, world } from "@minecraft/server";
+import { NATIVE_BOP } from "./native_biomes.js";
 
 const NS = "minizin_bop";
 const CELL = 48;                 // small enough to operate on loaded ground
@@ -102,8 +103,24 @@ function flowerClear(dim, x, y, z) {
 async function generate(cx, cz, referenceY, dim) {
   const key = zoneId(cx, cz);
   if (world.getDynamicProperty(key) === true) return;
-  const spec = pick(cx, cz);
   const ox = cx * CELL, oz = cz * CELL;
+  // Use the actual native biome ID, NOT a fictional cell-index biome.
+  let native;
+  try {
+    const biome = dim.getBiome({ x: ox + Math.floor(CELL / 2),
+                                 y: referenceY, z: oz + Math.floor(CELL / 2) });
+    native = NATIVE_BOP[biome.id];
+  } catch { return; }
+  if (!native || native.dimension !== "minecraft:overworld") return;
+  const spec = {
+    biome: "native_" + (native.tree || native.flower || "unported"),
+    log: native.tree ? native.tree + "_log" : null,
+    leaves: native.tree ? native.tree + "_leaves" : null,
+    flower: native.flower,
+    trees: native.tree ? 4 : 0,
+    plants: native.flower ? 10 : 0,
+  };
+  if (spec.trees === 0 && spec.plants === 0) return;
   let attempts = 0, writes = 0, observed = 0;
   const total = spec.trees + spec.plants;
   for (let n = 0; n < total; n++) {
@@ -162,6 +179,10 @@ async function drain() {
 system.runInterval(() => {
   for (const p of world.getAllPlayers()) {
     if (p.dimension.id !== "minecraft:overworld") continue;
+    try {
+      const biome = p.dimension.getBiome(p.location);
+      if (!NATIVE_BOP[biome.id]) continue;
+    } catch { continue; }
     const cx = Math.floor(p.location.x / CELL), cz = Math.floor(p.location.z / CELL);
     schedule(p.dimension, cx, cz, p.location.y);
   }
