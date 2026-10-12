@@ -1,0 +1,89 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minizin_creatures:ender_guardian",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false,
+      "properties": {
+        "minizin_creatures:attack": {
+          "type": "enum",
+          "values": [
+            "idle",
+            "stomp",
+            "rage_stomp",
+            "uppercut",
+            "burst",
+            "blackhole",
+            "mass_destruction",
+            "rocket_punch",
+            "air_strike"
+          ],
+          "default": "idle",
+          "client_sync": true
+        },
+        "minizin_creatures:helmetless": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "minizin_creatures",
+          "cataclysm",
+          "boss"
+        ]
+      },
+      "minecraft:health": {
+        "value": 300,
+        "max": 300
+      },
+      "minecraft:collision_box": {
+        "width": 2.8,
+        "height": 4.5
+      },
+      "minecraft:physics": {},
+      "minecraft:movement": {
+        "value": 0.27
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:navigation.walk": {},
+      "minecraft:behavior.random_stroll": {
+        "priority": 5,
+        "speed_multiplier": 0.7
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 6,
+        "look_distance": 16
+      },
+      "minecraft:boss": {
+        "name": "Ender Guardian",
+        "hud_range": 36,
+        "should_darken_sky": false
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 2,
+        "reselect_targets": true,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "player"
+            },
+            "max_dist": 30
+          }
+        ]
+      },
+      "minecraft:behavior.move_towards_target": {
+        "priority": 3,
+        "speed_multiplier": 0.8,
+        "within_radius": 7
+      }
+    }
+  }
+}

@@ -1,0 +1,319 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minizin_creatures:lightning_dragon",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false,
+      "properties": {
+        "minizin_creatures:attack": {
+          "type": "enum",
+          "values": [
+            "idle",
+            "bite",
+            "tail",
+            "wing",
+            "stream",
+            "charge",
+            "kick",
+            "whip",
+            "stomp",
+            "shield_smash",
+            "soul_sweep",
+            "ultimate",
+            "phase2",
+            "phase3"
+          ],
+          "default": "idle",
+          "client_sync": true
+        },
+        "minizin_creatures:stage": {
+          "type": "int",
+          "range": [
+            1,
+            5
+          ],
+          "default": 1,
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "minizin_creatures",
+          "mob"
+        ]
+      },
+      "minecraft:health": {
+        "value": 250,
+        "max": 250
+      },
+      "minecraft:collision_box": {
+        "width": 2,
+        "height": 2.5
+      },
+      "minecraft:physics": {},
+      "minecraft:movement": {
+        "value": 0.23
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:navigation.walk": {},
+      "minecraft:behavior.random_stroll": {
+        "priority": 5,
+        "speed_multiplier": 0.7
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 6,
+        "look_distance": 16
+      },
+      "minecraft:rideable": {
+        "seat_count": 1,
+        "family_types": [
+          "player"
+        ],
+        "seats": [
+          {
+            "position": [
+              0,
+              1.7,
+              0
+            ]
+          }
+        ]
+      },
+      "minecraft:input_ground_controlled": {},
+      "minecraft:scale": {
+        "value": 0.45
+      }
+    },
+    "component_groups": {
+      "minizin_creatures:in_flight": {
+        "minecraft:physics": {
+          "has_gravity": false
+        },
+        "minecraft:movement.fly": {},
+        "minecraft:navigation.fly": {
+          "can_path_over_water": true
+        },
+        "minecraft:input_air_controlled": {
+          "strafe_speed_modifier": 0.5,
+          "backwards_movement_modifier": 0.45
+        }
+      },
+      "minizin_creatures:armor_1": {
+        "minecraft:armor": {
+          "value": 2
+        }
+      },
+      "minizin_creatures:armor_2": {
+        "minecraft:armor": {
+          "value": 4
+        }
+      },
+      "minizin_creatures:armor_3": {
+        "minecraft:armor": {
+          "value": 6
+        }
+      },
+      "minizin_creatures:armor_4": {
+        "minecraft:armor": {
+          "value": 8
+        }
+      },
+      "minizin_creatures:stage_1": {
+        "minecraft:scale": {
+          "value": 0.45
+        },
+        "minecraft:collision_box": {
+          "width": 0.9,
+          "height": 1.2
+        }
+      },
+      "minizin_creatures:stage_2": {
+        "minecraft:scale": {
+          "value": 0.7
+        },
+        "minecraft:collision_box": {
+          "width": 1.2,
+          "height": 1.5
+        }
+      },
+      "minizin_creatures:stage_3": {
+        "minecraft:scale": {
+          "value": 0.92
+        },
+        "minecraft:collision_box": {
+          "width": 1.65,
+          "height": 2.1
+        }
+      },
+      "minizin_creatures:stage_4": {
+        "minecraft:scale": {
+          "value": 1.15
+        },
+        "minecraft:collision_box": {
+          "width": 2.05,
+          "height": 2.6
+        }
+      },
+      "minizin_creatures:stage_5": {
+        "minecraft:scale": {
+          "value": 1.4
+        },
+        "minecraft:collision_box": {
+          "width": 2.5,
+          "height": 3.2
+        }
+      }
+    },
+    "events": {
+      "minizin_creatures:fly": {
+        "add": {
+          "component_groups": [
+            "minizin_creatures:in_flight"
+          ]
+        }
+      },
+      "minizin_creatures:land": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:in_flight"
+          ]
+        }
+      },
+      "minizin_creatures:armor_1": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:armor_2",
+            "minizin_creatures:armor_3",
+            "minizin_creatures:armor_4"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:armor_1"
+          ]
+        }
+      },
+      "minizin_creatures:armor_2": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:armor_1",
+            "minizin_creatures:armor_3",
+            "minizin_creatures:armor_4"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:armor_2"
+          ]
+        }
+      },
+      "minizin_creatures:armor_3": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:armor_1",
+            "minizin_creatures:armor_2",
+            "minizin_creatures:armor_4"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:armor_3"
+          ]
+        }
+      },
+      "minizin_creatures:armor_4": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:armor_1",
+            "minizin_creatures:armor_2",
+            "minizin_creatures:armor_3"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:armor_4"
+          ]
+        }
+      },
+      "minizin_creatures:stage_1": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_2",
+            "minizin_creatures:stage_3",
+            "minizin_creatures:stage_4",
+            "minizin_creatures:stage_5"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_1"
+          ]
+        }
+      },
+      "minizin_creatures:stage_2": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_1",
+            "minizin_creatures:stage_3",
+            "minizin_creatures:stage_4",
+            "minizin_creatures:stage_5"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_2"
+          ]
+        }
+      },
+      "minizin_creatures:stage_3": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_1",
+            "minizin_creatures:stage_2",
+            "minizin_creatures:stage_4",
+            "minizin_creatures:stage_5"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_3"
+          ]
+        }
+      },
+      "minizin_creatures:stage_4": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_1",
+            "minizin_creatures:stage_2",
+            "minizin_creatures:stage_3",
+            "minizin_creatures:stage_5"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_4"
+          ]
+        }
+      },
+      "minizin_creatures:stage_5": {
+        "remove": {
+          "component_groups": [
+            "minizin_creatures:stage_1",
+            "minizin_creatures:stage_2",
+            "minizin_creatures:stage_3",
+            "minizin_creatures:stage_4"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minizin_creatures:stage_5"
+          ]
+        }
+      }
+    }
+  }
+}
