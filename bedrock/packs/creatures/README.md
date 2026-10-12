@@ -32,3 +32,7 @@ Correspondência exata do bloco 'egg in ice', renderização e variações dos 1
 ## Correções de API para controles mobile
 
 Versão mínima da variante de criaturas: **Bedrock 1.21.90**, por requerer `minecraft:input_air_controlled` na montaria em voo. O BP usa `minecraft:input_ground_controlled` em montarias terrestres. Itens de controle são registrados via `system.beforeEvents.startup` + `minizin_creatures:activate` e despachados com deduplicação entre `onUse`, `onUseOn` e `itemUse`; builds anteriores não garantiam callbacks de uso. A escala visual/colisão dos cinco estágios é experimental, configurada por eventos de componente Bedrock, e ainda não equivale precisamente às caixas Java.
+
+## Umvuthi/Umvuthana — expansão em desenvolvimento
+
+Origem: Mowzie `EntityUmvuthi.java` 150 HP, poderes `Sunstrike`, `Solar Flare`, `Solar Beam`, `Supernova` (abaixo de 60% HP) e invocação de Umvuthana; arquivos reais `geo/*.geo.json` (118/70 bones), `animations/*.animation.json` e `textures/entity/*.png` são importados pelo builder. AI escrita em Script API e timers têm adaptações; **não é reprodução 1:1 do Java**.

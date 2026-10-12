@@ -21,7 +21,9 @@ TEXTURES={
  "ice_dragon":("16-ice-and-fire","iceandfire","models/icedragon",[f"blue_{i}.png" for i in range(1,6)]),
  "lightning_dragon":("16-ice-and-fire","iceandfire","models/lightningdragon",[f"black_{i}.png" for i in range(1,6)]),
  "atlatitan":("42-alexs-caves","alexscaves","entity",["atlatitan.png"]),
- "ignis":("43-cataclysm","cataclysm","entity/ignis",["ignis_idle_0.png","ignis_soul_idle_0.png"])
+ "ignis":("43-cataclysm","cataclysm","entity/ignis",["ignis_idle_0.png","ignis_soul_idle_0.png"]),
+ "umvuthi":("44-mowzies-mobs","mowziesmobs","entity",["umvuthi.png"]),
+ "umvuthana":("44-mowzies-mobs","mowziesmobs","entity",["umvuthana.png"])
 }
 GEO={
  "fire_dragon":"ice_and_fire/firedragon/firedragon_BaseMale.geo.json",
@@ -51,7 +53,9 @@ AUDIO={
  "atlatitan_stomp":("42-alexs-caves","alexscaves","mob/atlatitan/atlatitan_stomp_0.ogg"),
  "ignis_impact":("43-cataclysm","cataclysm","entity/ignis_impact.ogg"),
  "bluff_attack":("44-mowzies-mobs","mowziesmobs","entity/bluff/attack.ogg"),
- "bluff_spike":("44-mowzies-mobs","mowziesmobs","entity/bluff/spike_explode.ogg")
+ "bluff_spike":("44-mowzies-mobs","mowziesmobs","entity/bluff/spike_explode.ogg"),
+ "umvuthi_supernova":("44-mowzies-mobs","mowziesmobs","entity/umvuthi/supernova_end.ogg"),
+ "umvuthi_supernova_start":("44-mowzies-mobs","mowziesmobs","entity/umvuthi/supernova_start.ogg")
 }
 POSE_SETS={"bite":["Bite1","Bite2","Bite3"],
            "tail":["Tail1","Tail2","Tail3"],
@@ -105,15 +109,19 @@ def build(out,has_permission):
     write_json(rp/"manifest.json",{"format_version":2,
       "header":{"name":"Minizin Creatures RP (original resources, private stage)",
       "description":"Unverified experimental textures and Java geometry converted for Bedrock",
-      "uuid":"5d1ad275-1803-4128-88c3-8f60d0f96a0a","version":[0,1,0],"min_engine_version":[1,21,0]},
+      "uuid":"5d1ad275-1803-4128-88c3-8f60d0f96a0a","version":[0,1,0],"min_engine_version":[1,21,90]},
       "modules":[{"type":"resources","uuid":"1511b358-9d4b-42d1-a432-6fe89107d72c","version":[0,1,0]}]})
     controllers={}
     for id,(mod,namespace,subdir,skins) in TEXTURES.items():
-        source=SRC/GEO[id]
+        if id in ("umvuthi","umvuthana"):
+            source=MOD/"44-mowzies-mobs"/"upstream/src/main/resources/assets/mowziesmobs/geo"/(id+".geo.json")
+        else:
+            source=SRC/GEO[id]
         converted=geometry(source)
-        geo_id=converted["minecraft:geometry"][0]["description"]["identifier"]
-        target=rp/"models/entity"/(id+".geo.json");target.parent.mkdir(parents=True,exist_ok=True)
-        shutil.copy2(source,target)
+        geo_id="geometry.minizin_creatures."+id
+        converted["minecraft:geometry"][0]["description"]["identifier"]=geo_id
+        target=rp/"models/entity"/(id+".geo.json")
+        write_json(target,converted)
         textures={}
         for i,skin in enumerate(skins):
             texture_source=original(mod,namespace,subdir,skin)
@@ -133,12 +141,25 @@ def build(out,has_permission):
                 clips["animation.minizin_creatures."+id+"."+key]=clip
                 animations[key]="animation.minizin_creatures."+id+"."+key
             write_json(rp/"animations"/(id+".animation.json"),{"format_version":"1.8.0","animations":clips})
+        if id in ("umvuthi","umvuthana"):
+            original_anim=MOD/"44-mowzies-mobs"/"upstream/src/main/resources/assets/mowziesmobs/animations"/(id+".animation.json")
+            if not original_anim.is_file():raise FileNotFoundError("Animação original ausente: "+str(original_anim))
+            sources=json.loads(original_anim.read_text(encoding="utf-8")).get("animations",{})
+            selected=(("idle","solar_beam","sun_strike","flare","supernova","spawn_strix","roar") if id=="umvuthi"
+                      else ("idle_neutral","attack_slash_left","attack_slash_right","heal_loop"))
+            output={}
+            for key in selected:
+                if key not in sources:raise ValueError("Animação ausente: "+id+" "+key)
+                native="animation.minizin_creatures."+id+"."+key
+                output[native]=sources[key]
+                animations[key]=native
+            write_json(rp/"animations"/(id+".animation.json"),{"format_version":"1.8.0","animations":output})
         desc={"identifier":"minizin_creatures:"+id,"materials":{"default":"entity_alphatest"},
               "textures":textures,"geometry":{"default":geo_id},
               "render_controllers":["controller.render.minizin_creatures."+id]}
         if animations:
             desc["animations"]=animations
-            desc["scripts"]={"animate":[{key:"query.property('minizin_creatures:attack') == '"+key+"'"} for key in animations if key!="flight"]}
+            desc["scripts"]={"animate":[{key:("query.property('minizin_creatures:attack') == '"+key+"'") if key not in ("idle","idle_neutral") else ("query.property('minizin_creatures:attack') == 'idle'")} for key in animations if key!="flight"]}
         write_json(rp/"entity"/(id+".entity.json"),{"format_version":"1.10.0","minecraft:client_entity":{"description":desc}})
         controllers["controller.render.minizin_creatures."+id]=render_controller(id,len(skins))
     for kind,col in (("fire","red"),("ice","blue"),("lightning","black")):
@@ -160,7 +181,7 @@ def build(out,has_permission):
         if not src.is_file():raise FileNotFoundError("Ícone original ausente: "+str(src))
         dst=rp/"textures/items"/(id+".png");dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,dst)
         atlas["minizin_creatures_"+id]={"textures":"textures/items/"+id}
-        write_json(bp/"items"/(id+".json"),{"format_version":"1.21.0","minecraft:item":{
+        write_json(bp/"items"/(id+".json"),{"format_version":"1.21.90","minecraft:item":{
           "description":{"identifier":"minizin_creatures:"+id,"menu_category":{"category":"items"}},
           "components":{"minecraft:icon":"minizin_creatures_"+id,
              "minecraft:display_name":{"value":id.replace("_"," ").title()},
