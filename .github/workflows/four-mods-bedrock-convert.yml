@@ -1,0 +1,104 @@
+name: Convert four mods into Bedrock-ready files
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/convert_four_visual_assets.py"
+      - "tools/build_next_four_pack.py"
+      - "bedrock/packs/next_four/**"
+      - ".github/workflows/four-mods-bedrock-convert.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: python -m pip install Pillow
+      - name: Fetch pinned originals for all four mods
+        run: |
+          git submodule update --init --depth 1 mods/33-mca-reborn/upstream \
+            mods/34-carry-on/upstream mods/54-rftools/upstream mods/55-origins/upstream
+      - name: Build original resource reference and script baseline
+        run: python tools/build_next_four_pack.py --output build/next_four
+      - name: Convert original icons, item model layers, skins and 3D model JSON
+        run: python tools/convert_four_visual_assets.py --staged build/next_four
+      - name: Validate Bedrock BP/RP entities, texture and registered items
+        run: |
+          for f in bedrock/packs/next_four/BP/scripts/*.js; do node --check "$f"; done
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools.build_bedrock_packs import validate
+          folder=Path("build/next_four")
+          rp,bp,n=validate(folder)
+          report=json.loads((folder/"converted_resources_report.json").read_text())
+          textures=json.loads((rp/"textures/item_texture.json").read_text())
+          atlas=textures["texture_data"]
+          assert len(atlas)>140,len(atlas)
+          assert report["generated_bedrock_items"]==len(atlas)
+          assert report["skin_presets"]==10 and n==10
+          assert len(list((bp/"items").glob("*.json")))==len(atlas)
+          assert report["icons_by_mod"]["mca"]>=80
+          assert report["icons_by_mod"]["rftools"]>=95
+          assert report["composited_mca_items"]>=120
+          print("Bedrock item icons:",len(atlas),"MCA NPCs:",n)
+          print("Converted block models:",{
+            k:v["converted"] for k,v in report["java_block_conversion"].items()
+          })
+          PY
+      - name: Repack Bedrock MCADDON with all converted assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from tools.build_next_four_pack import pack
+          import zipfile
+          root=Path("build/next_four")
+          bundle=root/"Minizin_Next_Four_Prototype.mcaddon"
+          with zipfile.ZipFile(bundle,"w",zipfile.ZIP_STORED) as dst:
+              for kind in ("RP","BP"):
+                  dst.writestr("Minizin_Next_Four_"+kind+".mcpack",pack(root/kind))
+          print(bundle, bundle.stat().st_size)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Minizin-Four-Mods-Converted-Bedrock
+          path: build/next_four/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Publish generated Bedrock resources to persistent GitHub branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin generated-bedrock >/dev/null 2>&1; then
+            git fetch origin generated-bedrock:refs/remotes/origin/generated-bedrock
+            git switch -C generated-bedrock origin/generated-bedrock
+          else
+            git switch -C generated-bedrock
+          fi
+          mkdir -p generated/next_four
+          cp -a build/next_four/BP generated/next_four/
+          cp -a build/next_four/RP generated/next_four/
+          cp -a build/next_four/original_meshes generated/next_four/
+          cp -a build/next_four/original_rules generated/next_four/
+          cp -a build/next_four/licenses generated/next_four/
+          cp build/next_four/asset_report.json generated/next_four/
+          cp build/next_four/converted_resources_report.json generated/next_four/
+          cp build/next_four/Minizin_Next_Four_Prototype.mcaddon generated/next_four/
+          printf 'Source branch: main\nGenerator: tools/convert_four_visual_assets.py\nContent: Bedrock items/icons, MCA skin-based NPCs, Java block geometry, original OBJ/Blend for Codex\nStatus: static build only; device test pending.\n' > generated/README.md
+          git add -f generated/
+          if ! git diff --cached --quiet; then
+            git commit -m "build: generate Next Four Bedrock RP/BP and source meshes for Codex"
+            git push origin generated-bedrock
+          else
+            echo "Generated resources unchanged"
+          fi
