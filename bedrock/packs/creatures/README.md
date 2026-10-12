@@ -36,3 +36,7 @@ Versão mínima da variante de criaturas: **Bedrock 1.21.90**, por requerer `min
 ## Umvuthi/Umvuthana — expansão em desenvolvimento
 
 Origem: Mowzie `EntityUmvuthi.java` 150 HP, poderes `Sunstrike`, `Solar Flare`, `Solar Beam`, `Supernova` (abaixo de 60% HP) e invocação de Umvuthana; arquivos reais `geo/*.geo.json` (118/70 bones), `animations/*.animation.json` e `textures/entity/*.png` são importados pelo builder. AI escrita em Script API e timers têm adaptações; **não é reprodução 1:1 do Java**.
+
+## Validação estrutural ampliada
+
+`python bedrock/packs/creatures/build_creatures.py --validate-only` monta **temporariamente** os quatro `.mcpack`, verifica que os 10 IDs BP possuem client_entity, modelos e PNG reais, confere referências de animação e manifestos e apaga os arquivos. Não publica pacotes. Teste em Bedrock Android continua necessário.

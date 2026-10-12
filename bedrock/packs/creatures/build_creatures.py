@@ -98,8 +98,38 @@ def render_controller(id,count):
     return {"arrays":{"textures":{"Array.original_skins":texture_names}},
             "geometry":"Geometry.default","materials":[{"*":"Material.default"}],
             "textures":["Array.original_skins["+index+"]"]}
-def build(out,has_permission):
-    if not has_permission:raise RuntimeError("Use --authorized-assets apenas quando tiver autorização para adaptar e redistribuir os recursos dos quatro mods.")
+def check_staged(rp,bp):
+    clients={}
+    geos={}
+    anims=set()
+    for file in (rp/"entity").glob("*.json"):
+        c=json.loads(file.read_text())["minecraft:client_entity"]["description"]
+        if c["identifier"] in clients:raise ValueError("Duplicate client "+c["identifier"])
+        clients[c["identifier"]]=c
+    for file in (rp/"models/entity").glob("*.geo.json"):
+        g=geometry(file)["minecraft:geometry"][0]
+        geos[g["description"]["identifier"]]=g
+    for file in (rp/"animations").glob("*.json"):
+        anims.update(json.loads(file.read_text())["animations"])
+    server=set()
+    for file in (bp/"entities").glob("*.json"):
+        j=json.loads(file.read_text())["minecraft:entity"]["description"]["identifier"]
+        if j in server:raise ValueError("Duplicate server ID "+j)
+        server.add(j)
+    if set(clients)!=server:raise ValueError("Missing visual/server entity: "+str(server^set(clients)))
+    for id,c in clients.items():
+        for geo in c.get("geometry",{}).values():
+            if geo not in geos:raise ValueError("No geometry "+id+":"+geo)
+        for path in c.get("textures",{}).values():
+            if not (rp/(path+".png")).is_file():raise ValueError("No texture "+id+":"+path)
+        for anim in c.get("animations",{}).values():
+            if anim not in anims:raise ValueError("No animation "+id+":"+anim)
+    if len(server)!=10:raise ValueError("Wrong total entity count "+str(len(server)))
+    print("PASS: 10 server/client definitions, models, PNG textures, animation names, archive manifests")
+
+def build(out,has_permission,validate_only=False):
+    if not (has_permission or validate_only):
+        raise RuntimeError("Use --authorized-assets para redistribuição autorizada; --validate-only apenas valida localmente, sem criar pacote final.")
     out=Path(out).resolve()
     allowed=(ROOT/"build").resolve()
     if allowed not in out.parents:raise ValueError("Output must be a directory inside build/: "+str(out))
@@ -214,17 +244,25 @@ def build(out,has_permission):
             z.writestr(pack.name+".mcpack",contents.getvalue())
     with zipfile.ZipFile(archive) as z:
         names=z.namelist()
-        if len(names)!=4 or not all(n.endswith(".mcpack") for n in names):raise ValueError("Pack count/format invalid")
+        if len(names)!=4 or not all(n.endswith(".mcpack") for n in names):
+            raise ValueError("Pack count/format invalid")
         for name in names:
             with zipfile.ZipFile(io.BytesIO(z.read(name))) as package:
-                if "manifest.json" not in package.namelist():raise ValueError("Manifest missing: "+name)
+                if "manifest.json" not in package.namelist():
+                    raise ValueError("Manifest missing: "+name)
+    check_staged(rp,bp)
+    if validate_only:
+        archive.unlink()
+        shutil.rmtree(out)
+        return "VALIDATED (temporary assets destroyed, no redistributable output)"
     return archive
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--authorized-assets",action="store_true")
+    parser.add_argument("--validate-only",action="store_true")
     parser.add_argument("--output",default=str(ROOT/"build/creatures_staged"))
     args=parser.parse_args()
-    try:print(build(Path(args.output),args.authorized_assets))
+    try:print(build(Path(args.output),args.authorized_assets,args.validate_only))
     except (RuntimeError,FileNotFoundError,KeyError,ValueError) as err:
         print("CREATURES BUILD FAILED: "+str(err),file=sys.stderr);return 2
     return 0
