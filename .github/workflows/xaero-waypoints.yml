@@ -1,0 +1,32 @@
+name: Xaero Minimap waypoint import verification
+on:
+  push:
+    paths:
+      - "tools/xaero_waypoint_import.py"
+      - "tests/test_xaero_waypoint_import.py"
+      - ".github/workflows/xaero-waypoints.yml"
+  workflow_dispatch:
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Validate reference waypoint import grammar
+        run: python -m unittest discover -s tests -p 'test_xaero_waypoint_import.py' -v
+      - name: Parse a fixture and export portable JSON
+        run: |
+          mkdir -p build/xaero_sample/xaero/minimap/ExampleWorld/dim%0
+          printf 'waypoint:Base:B:100:70:-50:6:false:0:gui.xaero_default:false:0:0:false\n' > build/xaero_sample/xaero/minimap/ExampleWorld/dim%0/waypoints.txt
+          python tools/xaero_waypoint_import.py build/xaero_sample --output build/xaero_waypoints.json
+          python - <<'PY'
+          import json
+          with open("build/xaero_waypoints.json") as f:d=json.load(f)
+          assert len(d["waypoints"])==1
+          assert d["waypoints"][0]["dimension"]=="minecraft:overworld"
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Xaero-Waypoint-Import-Example
+          path: build/xaero_waypoints.json
