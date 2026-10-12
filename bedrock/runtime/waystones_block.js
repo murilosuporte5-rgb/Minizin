@@ -113,7 +113,7 @@ async function rename(player,block,row) {
   if(row.owner && row.owner!==player.name) {
     player.sendMessage("§eApenas quem colocou o marco pode renomeá-lo.");return;
   }
-  const form=new ModalFormData().title("Renomear Waystone").textField("Nome do destino","Novo nome",row.name);
+  const form=new ModalFormData().title("Renomear Waystone").textField("Nome do destino","Novo nome",{defaultValue:row.name});
   const result=await form.show(player);
   if(result.canceled||!player.isValid)return;
   const title=String(result.formValues?.[0]??"").trim().replace(/[\r\n§]/g,"").slice(0,40);
