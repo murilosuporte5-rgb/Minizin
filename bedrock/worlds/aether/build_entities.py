@@ -52,9 +52,13 @@ MOBS = {
               "health": 30, "attack": 7, "collision": [1.0, 1.0], "movement": .25,
               "hostile": True},
     "phyg": {"model": "QuadrupedWingsModel.java", "texture": "mobs/phyg/phyg.png",
+             "wings_texture": "mobs/phyg/phyg_wings.png",
+             "vanilla_base": "geometry.pig.v3", "wing_offset": 10.0,
              "health": 12, "attack": 0, "collision": [1.0, 1.1], "movement": .26,
              "hostile": False, "flying": True},
     "flying_cow": {"model": "QuadrupedWingsModel.java", "texture": "mobs/flying_cow/flying_cow.png",
+                   "wings_texture": "mobs/flying_cow/flying_cow_wings.png",
+                   "vanilla_base": "geometry.cow.v2", "wing_offset": 0.0,
                    "health": 14, "attack": 0, "collision": [1.0, 1.3], "movement": .23,
                    "hostile": False, "flying": True},
     "moa": {"model": "BipedBirdModel.java", "texture": "mobs/moa/black_moa.png",
@@ -131,14 +135,19 @@ def matched_parentheses(src: str, left: int) -> tuple[str, int]:
     raise ValueError("Unterminated Java call")
 
 
-def parse_pose(src: str) -> tuple[list[float], list[float]]:
+def parse_pose(src: str, offset: float = 0.) -> tuple[list[float], list[float]]:
     if src == "PartPose.ZERO":
         return [0.0] * 3, [0.0] * 3
     m = re.match(r"PartPose\.(offset|offsetAndRotation)\(", src)
     if not m:
         raise ValueError(f"Unsupported pose {src[:120]}")
     args, _ = matched_parentheses(src, m.end() - 1)
-    n = [floatv(x) for x in split_arguments(args)]
+    n = []
+    for x in split_arguments(args):
+        if x.endswith("+ offset"):
+            n.append(floatv(x.split("+", 1)[0]) + offset)
+        else:
+            n.append(floatv(x))
     if m.group(1) == "offset" and len(n) == 3:
         return n, [0., 0., 0.]
     if m.group(1) == "offsetAndRotation" and len(n) == 6:
@@ -172,7 +181,7 @@ def parse_cubes(builder: str) -> list[dict]:
     return cubes
 
 
-def extract_parts(source: str) -> list[dict]:
+def extract_parts(source: str, offset: float = 0.) -> list[dict]:
     parts = []
     # Each Java declaration is terminated by ';'; intermediate chained
     # calls use nested parentheses. This also catches the complex Valkyrie rig.
@@ -188,7 +197,7 @@ def extract_parts(source: str) -> list[dict]:
         if not nm or not terms[1].startswith("CubeListBuilder.create()"):
             continue
         try:
-            pose, rotation = parse_pose(terms[2])
+            pose, rotation = parse_pose(terms[2], offset)
             cubes = parse_cubes(terms[1])
         except ValueError:
             continue
@@ -198,12 +207,12 @@ def extract_parts(source: str) -> list[dict]:
     return parts
 
 
-def convert_model(source: str, mob: str) -> tuple[dict, dict]:
+def convert_model(source: str, mob: str, offset: float = 0.) -> tuple[dict, dict]:
     size = re.search(r"LayerDefinition\.create\(\s*\w+,\s*(\d+),\s*(\d+)\s*\)", source)
     if size is None:
         raise ValueError(f"No Java texture size for {mob}")
     width, height = map(int, size.groups())
-    parts = extract_parts(source)
+    parts = extract_parts(source, offset)
     if not parts:
         raise ValueError(f"No directly recoverable Java model parts for {mob}")
     parents = {"partDefinition": ("__root__", (0., 0., 0.))}
@@ -357,7 +366,8 @@ def build_all(bp: Path, rp: Path) -> dict:
             raise FileNotFoundError(f"Original Java source missing: {modelpath}")
         if not texture.is_file():
             raise FileNotFoundError(f"Original texture missing: {texture}")
-        geo, stats = convert_model(modelpath.read_text(encoding="utf-8"), mob)
+        geo, stats = convert_model(modelpath.read_text(encoding="utf-8"), mob,
+                                   spec.get("wing_offset", 0.0))
         write(bp / "entities" / f"{mob}.json", entity_bp(mob, spec))
         write(rp / "models/entity" / f"{mob}.geo.json", geo)
         write(rp / "entity" / f"{mob}.entity.json", client_entity(mob))
@@ -365,6 +375,11 @@ def build_all(bp: Path, rp: Path) -> dict:
         dest = rp / "textures/entity/minizin_aether" / f"{mob}.png"
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(texture, dest)
+        if spec.get("wings_texture"):
+            wing_src = ORIGINAL_TEXTURES / spec["wings_texture"]
+            if not wing_src.is_file():
+                raise FileNotFoundError(f"Original wings missing: {wing_src}")
+            shutil.copyfile(wing_src, rp / "textures/entity/minizin_aether" / f"{mob}_wings.png")
         results[mob] = {**stats, "original_java_model": str(modelpath.relative_to(ROOT)),
                         "original_texture": str(texture.relative_to(ROOT)),
                         "animations_exact_java": False, "behavior_exact_java": False}
