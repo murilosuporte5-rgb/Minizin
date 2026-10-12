@@ -30,6 +30,18 @@ MOBS = {
     "aechor_plant": {"model": "AechorPlantModel.java", "texture": "mobs/aechor_plant/aechor_plant.png",
                      "health": 25, "attack": 4, "collision": [0.9, 1.7], "movement": 0,
                      "hostile": True},
+    "fire_minion": {"model": "SunSpiritModel.java", "texture": "mobs/sun_spirit/sun_spirit.png",
+                     "health": 30, "attack": 6, "collision": [0.7, 1.1], "movement": .26,
+                     "hostile": True, "flying": True},
+    "aerbunny": {"model": "AerbunnyModel.java", "texture": "mobs/aerbunny/aerbunny.png",
+                  "health": 10, "attack": 0, "collision": [0.5, 0.5], "movement": .28,
+                  "hostile": False},
+    "cockatrice": {"model": "CockatriceModel.java", "texture": "mobs/cockatrice/cockatrice.png",
+                    "health": 25, "attack": 5, "collision": [0.8, 1.2], "movement": .32,
+                    "hostile": True},
+    "sheepuff": {"model": "SheepuffModel.java", "texture": "mobs/sheepuff/sheepuff.png",
+                  "health": 12, "attack": 0, "collision": [1.0, 1.0], "movement": .2,
+                  "hostile": False},
 }
 # Original boss drops are converted by convert_loot.py.
 BOSSES = ("slider", "valkyrie_queen", "sun_spirit")
@@ -39,6 +51,10 @@ KNOWN_ANIMATION_BONES = {
     "sun_spirit": {"left_arm": [-38, 0, 10], "right_arm": [-38, 0, -10]},
     "zephyr": {"body": [0, 15, 0]},
     "aechor_plant": {"head": [12, 0, 10]},
+    "fire_minion": {"left_arm": [-38, 0, 10], "right_arm": [-38, 0, -10]},
+    "aerbunny": {"head": [10, 0, 0]},
+    "cockatrice": {"head": [18, 0, 0]},
+    "sheepuff": {"head": [8, 0, 0]},
 }
 FLOAT = re.compile(r"[-+]?(?:\d*\.\d+|\d+)(?:[FfDd])?$")
 
@@ -224,18 +240,23 @@ def entity_bp(mob: str, spec: dict) -> dict:
                                                "probability": .8},
     }
     if mob not in BOSSES and mob != "aechor_plant":
-        components.update({
-            "minecraft:navigation.walk": {"can_path_over_water": True,
-                                           "avoid_damage_blocks": True},
-            "minecraft:movement.basic": {},
-            "minecraft:behavior.random_stroll": {"priority": 7, "speed_multiplier": .7},
-            "minecraft:behavior.nearest_attackable_target": {
+        if spec.get("flying", False):
+            components["minecraft:navigation.fly"] = {"can_path_over_water": True,
+                                                        "can_open_doors": False}
+            components["minecraft:movement.fly"] = {}
+        else:
+            components["minecraft:navigation.walk"] = {"can_path_over_water": True,
+                                                        "avoid_damage_blocks": True}
+            components["minecraft:movement.basic"] = {}
+        components["minecraft:behavior.random_stroll"] = {
+            "priority": 7, "speed_multiplier": .7}
+        if hostile:
+            components["minecraft:behavior.nearest_attackable_target"] = {
                 "priority": 1, "within_radius": 22,
                 "entity_types": [{"filters": {"test": "is_family", "subject": "other",
-                                               "value": "player"}, "max_dist": 22}]},
-            "minecraft:behavior.melee_attack": {"priority": 3, "speed_multiplier": 1.1,
-                                                 "track_target": True},
-        })
+                                               "value": "player"}, "max_dist": 22}]}
+            components["minecraft:behavior.melee_attack"] = {
+                "priority": 3, "speed_multiplier": 1.1, "track_target": True}
     if mob in BOSSES:
         components["minecraft:boss"] = {
             "should_darken_sky": mob == "sun_spirit",
