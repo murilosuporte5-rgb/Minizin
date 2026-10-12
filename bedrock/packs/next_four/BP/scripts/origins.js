@@ -31,6 +31,30 @@ export function activateOrigin(player){
     }
     tell(player,"Nenhum destino livre com chão seguro nessa direção.");return;
   }
+  if(id==="arachnid"){
+    try {
+      const hit=player.getBlockFromViewDirection({maxDistance:8});
+      if(!hit){tell(player,"Mire em um bloco próximo para produzir a teia.");return;}
+      const base=hit.block.location;
+      const pos={x:base.x,y:base.y+1,z:base.z};
+      const target=player.dimension.getBlock(pos);
+      if(!target?.isAir){tell(player,"Não há espaço livre acima do bloco.");return;}
+      target.setType("minecraft:web");
+      cooldown.set(player.id,now);
+      const dim=player.dimension;
+      system.runTimeout(()=>{
+        try{const current=dim.getBlock(pos);if(current?.typeId==="minecraft:web")current.setType("minecraft:air");}
+        catch(error){console.warn("[Minizin Origins] web cleanup "+String(error));}
+      },200);
+      tell(player,"Teia real criada por 10 segundos.");return;
+    }catch(error){tell(player,"Falha ao criar teia: "+String(error));return;}
+  }
+  if(id==="phantom"){
+    player.addEffect("invisibility",200,{amplifier:0,showParticles:false});
+    cooldown.set(player.id,now);
+    tell(player,"Invisibilidade por 10 segundos (não permite atravessar blocos).");
+    return;
+  }
   tell(player,"Esta origem ainda não possui poder ativo implementado.");
 }
 export async function chooseOrigin(player){
@@ -39,7 +63,7 @@ export async function chooseOrigin(player){
   try{
     const prev=player.getDynamicProperty(KEY);
     const form=new ActionFormData().title("Minizin • Origins")
-      .body("Escolha uma das 10 origens do mod original. Somente quatro possuem um poder passivo de teste; as demais ficam catalogadas.\nAtual: "+(prev??"nenhuma"));
+      .body("Escolha sua origem. Os poderes Java ainda estão em conversão; este pacote implementa apenas os efeitos listados.\nAtual: "+(prev??"nenhuma"));
     for(const item of ORIGINS_CATALOG){
       const flag=IMPLEMENTED_PASSIVES[item.id]?"[passivo]":"[catálogo]";
       form.button(item.label+" "+flag);
@@ -55,6 +79,12 @@ export async function chooseOrigin(player){
 }
 export function installOrigins(){
   world.afterEvents.playerLeave.subscribe(({playerId})=>cooldown.delete(playerId));
+  world.beforeEvents.entityHurt.subscribe(e=>{
+    try{
+      if(e.damageSource.cause==="fall"&&e.hurtEntity.typeId==="minecraft:player"
+        &&e.hurtEntity.getDynamicProperty(KEY)==="feline")e.cancel=true;
+    }catch(error){console.warn("[Minizin Origins] fall immunity: "+String(error));}
+  });
   world.afterEvents.itemUse.subscribe(({source,itemStack})=>{
     if(itemStack.typeId==="minecraft:feather"&&source.isSneaking)system.run(()=>activateOrigin(source));
   });
