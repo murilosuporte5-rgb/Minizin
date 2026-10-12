@@ -64,11 +64,17 @@ function grab(player,position,dimensionId){
   const type=block.typeId,p=block.location;
   const id="minizin:carry_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,12);
   try{
-    manager().createFromWorld(id,block.dimension,p,p,{includeBlocks:true,includeEntities:false});
+    manager().createFromWorld(id,block.dimension,p,p,{includeBlocks:true,includeEntities:false,saveMode:"World"});
     // The structure remains durable in the world until a confirmed placement.
     save(player,{id,type,origin:{...p},originDimension:dimensionId,stage:"held"});
     try{block.setType("minecraft:air");}
-    catch(error){save(player,null);manager().delete(id);throw error;}
+    catch(error){
+      // Preserve the structure if the engine may have modified the world before throwing.
+      if(block.typeId==="minecraft:air")
+        save(player,{id,type,origin:{...p},originDimension:dimensionId,stage:"uncertain"});
+      else{save(player,null);manager().delete(id);}
+      throw error;
+    }
     tell(player,"Transportando "+type+". Agache e toque com graveto no local de destino.");
   }catch(error){tell(player,"Captura recusada: "+String(error));}
 }
@@ -80,16 +86,15 @@ function finalize(player,carried){
 }
 function put(player,base,face){
   const cargo=state(player);if(!cargo)return;
-  if(cargo.stage==="placing") {
-    tell(player,"Colocação em andamento; o estado será reconciliado.");return;
+  if(cargo.stage!=="held") {
+    tell(player,"Carga pendente ou incerta; não será recriada sem verificação.");return;
   }
   const off=FACE[face];
   if(!off){tell(player,"Face do bloco desconhecida.");return;}
   // Crash recovery: if the original block remains, do not create a duplicate.
   if(sameBlock(cargo.originDimension,cargo.origin,cargo.type)){
-    save(player,null);
-    try{manager().delete(cargo.id);}catch{}
-    tell(player,"Captura não concluída: o bloco original ainda existe.");return;
+    save(player,{...cargo,stage:"uncertain"});
+    tell(player,"Bloco no local original: carga bloqueada para evitar duplicação.");return;
   }
   const dest={x:base.x+off[0],y:base.y+off[1],z:base.z+off[2]};
   let target;
@@ -109,14 +114,14 @@ function put(player,base,face){
         if(sameBlock(player.dimension.id,dest,cargo.type)){
           finalize(player,cargo);tell(player,"Bloco real colocado; conteúdo preservado na estrutura.");
         }else {
-          save(player,{...cargo,stage:"held"});
-          tell(player,"Colocação não confirmada. A carga continua disponível.");
+          save(player,{...pending,stage:"uncertain"});
+          tell(player,"Colocação inconclusiva: carga preservada mas bloqueada contra duplicação.");
         }
       } catch(error){tell(player,"Erro na verificação: "+String(error));}
     },2);
   }catch(error){
-    save(player,{...cargo,stage:"held"});
-    tell(player,"Não foi possível colocar: "+String(error));
+    save(player,{...pending,stage:"uncertain"});
+    tell(player,"Colocação incerta: carga bloqueada. "+String(error));
   }
 }
 export function installCarryOn(){
@@ -170,7 +175,7 @@ export function installCarryOn(){
       if(!e.player.isValid)return;
       if(sameBlock(cargo.targetDimension,cargo.target,cargo.type))
         finalize(e.player,cargo);
-      else save(e.player,{...cargo,stage:"held"});
+      else save(e.player,{...cargo,stage:"uncertain"});
     },30);
   });
   world.afterEvents.playerLeave.subscribe(e=>{carrying.delete(e.playerId);locks.delete(e.playerId);});
