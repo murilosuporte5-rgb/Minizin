@@ -7,6 +7,7 @@ import { world, system, BlockPermutation } from "@minecraft/server";
 import { AETHER_BIOMES } from "./biome_profiles.js";
 import { spawnDungeonBoss } from "./bosses.js";
 import "./wildlife.js";
+import "./whirlwinds.js";
 
 const SKY_ID = "minizin_aether:sky";
 const PORTAL = "minizin_aether:aether_portal";
