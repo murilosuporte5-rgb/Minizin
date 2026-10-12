@@ -70,7 +70,16 @@ jobs:
                       print("Aether converted template count:", len(files), "of", len(report["templates"]))
                       print("Original template conversion is NOT in-game fidelity.")
                   else:
-                      assert sum(n.startswith("BP/biomes/") for n in names) == 9
+                      count = sum(n.startswith("BP/biomes/") and n.endswith(".json") for n in names)
+                      assert count == 68, count
+                      assert "BP/worldgen_conversion_report.json" not in names
+                      assert "worldgen_conversion_report.json" not in names
+                      assert "BP/biomes/lavender_field.json" in names
+                      lavender = json.loads(z.read("BP/biomes/lavender_field.json"))
+                      assert "minecraft:replace_biomes" in lavender["minecraft:biome"]["components"]
+                      end_biome = json.loads(z.read("BP/biomes/end_reef.json"))
+                      assert "minecraft:replace_biomes" not in end_biome["minecraft:biome"]["components"]
+                      assert bp["header"]["min_engine_version"] == [1, 21, 110]
                       assert sum(n.startswith("BP/features/") and n.endswith("_feature.json") for n in names) >= 10
           print("Static ZIP and pack manifests passed; in-game behavior NOT validated.")
           PY
