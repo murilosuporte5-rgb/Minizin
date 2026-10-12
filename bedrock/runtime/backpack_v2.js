@@ -107,10 +107,16 @@ function migrateLegacy(p,id){
   }
   if(destination!==id)return; // Never duplicate old data to a second bag.
   const state=getState(id);
+  if(old.length>CAPACITY)throw Error("Armazenamento legado excedeu 27 espaços.");
+  for(const payload of old)validate(payload);
+  const migrated=[...clone(old),...Array(CAPACITY-old.length).fill(null)];
   if(state.revision===0&&state.slots.every(x=>x===null)){
-    if(old.length>CAPACITY)throw Error("Armazenamento legado excedeu 27 espaços.");
-    for(const payload of old)validate(payload);
-    writeState(id,{slots:[...clone(old),...Array(CAPACITY-old.length).fill(null)],revision:1});
+    writeState(id,{slots:migrated,revision:1});
+  }else if(JSON.stringify(canonical(state.slots))!==JSON.stringify(canonical(migrated))){
+    // Never clear old personal storage unless the destination is already an
+    // identical migrated copy, which can happen after an interrupted session.
+    p.setDynamicProperty(MIGRATION,undefined);
+    throw Error("Mochila ocupada: migração cancelada; dados antigos preservados.");
   }
   // Retain original player data until the new storage is durable.
   p.setDynamicProperty(LEGACY,undefined);
