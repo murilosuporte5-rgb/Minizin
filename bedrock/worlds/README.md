@@ -34,7 +34,7 @@ Este diretório tem código e testes próprios. Não modifica os módulos de out
 ```sh
 git switch feature/minizin-worlds
 git submodule update --init mods/19-biomes-o-plenty/upstream mods/41-the-aether/upstream
-python -m pip install Pillow
+python -m pip install Pillow nbtlib numpy
 node --check bedrock/worlds/aether/main.js
 node --check bedrock/worlds/bop/main.js
 python -m unittest discover -s bedrock/worlds/tests -v
@@ -42,7 +42,7 @@ python bedrock/worlds/build_worlds.py --mod both
 ```
 
 Saídas locais:
-- `build/worlds/Minizin_Worlds_aether_v0.2.8.mcaddon`
+- `build/worlds/Minizin_Worlds_aether_v0.2.8.mcaddon` (inclui templates NBT convertidos localmente e relatório de perdas)
 - `build/worlds/Minizin_Worlds_bop_v0.2.8.mcaddon`
 
 A workflow isolada `.github/workflows/minizin-worlds-validation.yml` testa sintaxe, construção, manifests, dados vinculados e estrutura ZIP. **Passar CI não equivale a testar em Minecraft Android.** Os testes do Python cobrem funções puras e validação estática.
@@ -60,6 +60,16 @@ Criar **cópia de um mundo** antes de instalar. Importar cada pack individualmen
 3. Os modelos de `generated/conversions/block_atlases` estão em branch separada e não foram mesclados para evitar conflitos e redistribuição indevida. O builder usa **PNGs originais**, mas a geometria de portal/plantas é **adaptação** Bedrock, não modelo idêntico ao Java.
 4. Sem equipamento Android conectado, a adequação dos componentes dos JSONs e APIs Beta é **hipótese técnica** até teste do jogo. Erros no content log devem ser reportados e corrigidos com a versão exata do Minecraft.
 5. Troncos e aether grass têm texturas superiores/inferiores originais com materiais direcionais; resta verificar orientação e UV dentro do Minecraft. O portal animado Java é atualmente um único frame, sem animação. Estrutura simples de templo não equivale às masmorras Bronze/Silver/Gold.
+
+## Segunda etapa implementada na mesma branch (12/10/2026)
+
+- **The Aether:** 29 definições de bloco no builder, incluindo os arquivos originais de Aercloud, Quicksoil, Icestone, Gravitite, Carved Stone, Angelic/Hellfire Stone, Pillar e Sentry Stone. Faces superiores originais continuam preservadas. No runtime, Quicksoil concede aceleração temporária, Icestone congela blocos líquidos adjacentes na colocação, Cold Aercloud concede Slow Falling breve e Blue Aercloud aplica impulso vertical com cooldown. São adaptações de comportamento, não reprodução byte-a-byte da física Java.
+- **Ilhas:** costa ocasional de Quicksoil; minérios com Gravitite raro; nuvens Aercloud em estratos de altura determinística. Não usa as density functions originais e não há implementação do céu/som/fog nativo do Java.
+- **Estruturas:** `aether/convert_structures.py` lê os NBT Java de Bronze/Silver/Gold, reconstrói a paleta registrável e gera arquivos `.mcstructure` little-endian do Bedrock em `build/`, com um `conversion_report.json` registrando perda de estados, tile entities, entidades, omissões e templates grandes demais. Na CI foram exportados **18/21 templates**; **3 não convertidos**. O runtime chama `world.structureManager.place` para um template original de boss room ou entrada quando o pack está disponível e utiliza a sala simplificada apenas como fallback. A localização, a montagem modular (jigsaw) e os processadores Java não são reproduzidos.
+- **Biomes O' Plenty:** 20 tipos de bloco, 9 definições de bioma Bedrock derivadas das configurações climáticas originais (`coniferous_forest`, `maple_woods`, `jade_cliffs`, `tropics` e `highland` adicionados) e geração em regiões determinísticas de 9 perfis com os respectivos troncos e folhas. Locais de chunks descarregados deixam de ser marcados permanentemente. Não é o roteamento real dos nove biomas Java.
+- **Testes:** `test_structure_converter.py` verifica paleta e ordem ZYX, leitura de NBT Java big-endian/comprimido, serialização de estruturas Bedrock little-endian, identidade do bloco ausente como void e limite de volume; CI valida também a existência de estruturas dos três tiers, manifests, JS e os packs separados. Nenhum teste executa o cliente Android.
+
+**Desvios constatados:** NBT de estrutura contém estados Java e block entities incompatíveis; o conversor intencionalmente descarta propriedades de bloco Java sem mapeamento comprovado, não transporta conteúdos de baús/boss/entidades, e omite nomes não registrados no Bedrock. Mesmo os templates gerados **não são reconstruções perfeitas**. A taxa de 18/21 refere-se apenas à exportação estrutural, não a aparência verificada ou boss combat. O maior template Gold é condicionado ao volume máximo de segurança móvel.
 
 ## Referências
 
