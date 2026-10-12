@@ -1,0 +1,64 @@
+name: Build four independent Bedrock addons
+on:
+  push:
+    paths:
+      - "tools/split_next_four_packs.py"
+      - "tests/test_split_next_four_packs.py"
+      - "bedrock/packs/next_four/**"
+      - ".github/workflows/independent-four-mods.yml"
+  pull_request:
+    paths:
+      - "tools/split_next_four_packs.py"
+      - "tests/test_split_next_four_packs.py"
+      - "bedrock/packs/next_four/**"
+      - ".github/workflows/independent-four-mods.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run standalone packaging tests
+        run: python -m unittest discover -s tests -p 'test_split_next_four_packs.py' -v
+      - name: Install image converter dependency
+        run: python -m pip install Pillow
+      - name: Fetch upstream sources for the four mods
+        run: |
+          git submodule update --init --depth 1 mods/33-mca-reborn/upstream \
+            mods/34-carry-on/upstream mods/54-rftools/upstream mods/55-origins/upstream
+      - name: Stage original resources and existing scripts
+        run: python tools/build_next_four_pack.py --output build/next_four
+      - name: Reuse original textures, MCA skins and models
+        run: python tools/convert_four_visual_assets.py --staged build/next_four
+      - name: Build four strictly separate BP and RP pairs
+        run: python tools/split_next_four_packs.py --staged build/next_four --output build/independent
+      - name: Check JS parseability and bundle integrity
+        run: |
+          for f in build/independent/*/BP/scripts/*.js; do node --check "$f"; done
+          python - <<'PY'
+          from pathlib import Path
+          from tools.split_next_four_packs import MODS,validate_bundle
+          base=Path("build/independent")
+          for mod in MODS:
+              addon=base/mod/f"Minizin_{mod}_Standalone_Prototype.mcaddon"
+              assert addon.is_file(), addon
+              validate_bundle(addon, mod)
+              print(mod, addon.stat().st_size, "bytes")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Minizin-Four-Standalone-Bedrock-Addons
+          path: |
+            build/independent/*/*.mcaddon
+            build/independent/*/PROVENANCE.json
+            build/independent/*/LICENSE_UPSTREAM.txt
+          retention-days: 30
+          if-no-files-found: error
