@@ -1,0 +1,22 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:block": {
+    "description": {
+      "identifier": "minizin:rftools_cell",
+      "menu_category": {
+        "category": "construction"
+      }
+    },
+    "components": {
+      "minecraft:geometry": "geometry.minizin.rftools.powercell",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "minizin_rftools_cell",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": true,
+      "minecraft:selection_box": true
+    }
+  }
+}

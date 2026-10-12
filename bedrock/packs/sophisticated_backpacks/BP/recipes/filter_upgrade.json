@@ -1,0 +1,31 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "minizin:backpack_filter_upgrade_recipe"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "ISI",
+      "SHS",
+      "ISI"
+    ],
+    "key": {
+      "I": {
+        "item": "minecraft:iron_ingot"
+      },
+      "S": {
+        "item": "minecraft:string"
+      },
+      "H": {
+        "item": "minecraft:hopper"
+      }
+    },
+    "result": {
+      "item": "minizin:backpack_filter_upgrade",
+      "count": 1
+    }
+  }
+}
