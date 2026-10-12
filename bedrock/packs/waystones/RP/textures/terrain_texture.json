@@ -1,0 +1,9 @@
+{
+  "resource_pack_name": "minizin_waystones",
+  "texture_name": "atlas.terrain",
+  "texture_data": {
+    "minizin_waystone_original": {
+      "textures": "textures/entity/andesite_waystone"
+    }
+  }
+}
