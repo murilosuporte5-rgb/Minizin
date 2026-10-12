@@ -31,9 +31,13 @@ TARGETS = {
     "badlands": ("badlands", "eroded_badlands"),
 }
 # Do not represent unsupported End placements as generated Overworld biomes.
-END = {"auroral_garden", "crystalline_chasm", "end_corruption", "end_flats",
-       "end_reef", "end_wilds", "withered_abyss", "visceral_heap"}
-NETHER = {"erupting_inferno", "volcanic_plains", "volcano", "glowing_grotto"}
+# Dimension attribution cross-checked against pinned BOPBiomes.java and
+# BOPNetherRegionCommon/Rare.java. The End-themed IDs (end_wilds etc.)
+# ARE registered as Overworld in this original Java commit.
+NETHER = {"crystalline_chasm", "erupting_inferno", "undergrowth",
+          "visceral_heap", "withered_abyss"}
+CAVE = {"glowing_grotto", "spider_nest"}
+END = set()
 # Source features include custom trees not all converted. Use only species
 # whose original textures and Bedrock features the pack actually defines.
 SPECIES = ("redwood", "fir", "magic", "jacaranda", "maple",
@@ -67,11 +71,11 @@ def group_for(name: str) -> str:
 
 
 def native_replacement(name: str) -> dict | None:
-    if name in END:
-        return None
+    if name in CAVE:
+        return None  # Cannot honestly replace full underground cave climate.
     if name in NETHER:
         return {"dimension": "minecraft:nether",
-                "targets": ["nether_wastes", "basalt_deltas"],
+                "targets": ["hell", "basalt_deltas"],
                 "amount": 0.11, "noise_frequency_scale": 15.0}
     group = group_for(name)
     targets = list(TARGETS[group])
@@ -117,7 +121,7 @@ def convert_biome(name: str, src: dict) -> dict:
         "minecraft:tags": {
             "tags": ["minizin_bop", name, "no_legacy_worldgen",
                      "nether" if name in NETHER else
-                     "the_end" if name in END else "overworld"]},
+                     "cave" if name in CAVE else "overworld"]},
     }
     if rule:
         components["minecraft:replace_biomes"] = {"replacements": [rule]}
@@ -178,7 +182,7 @@ def build_all(source: Path, bp: Path, rp: Path, available: set[str],
         write_json(rp / "biomes_client" / f"{name}.biome_client.json", converted["client"])
         species, flower = selected_feature(name, converted["source_feature_refs"], available)
         rule = converted["placement"]
-        dimension = rule["dimension"] if rule else "not_supported_end"
+        dimension = rule["dimension"] if rule else "unsupported_cave"
         coverage[dimension] += 1
         # An unsupported End replacement must not accidentally cause vegetation
         # in vanilla Overworld biomes.
