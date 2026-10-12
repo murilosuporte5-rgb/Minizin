@@ -115,6 +115,27 @@ def upgrade(folder: Path):
         "resource_pack_name": "Minizin Waystones", "texture_name": "atlas.items", "texture_data": {}
     }
     icons["texture_data"][icon_key] = {"textures": icon_path}
+    # The standalone pack must ship its own portable Warp Stone item.
+    # In the combined pack it already exists, so preserve the earlier item.
+    warp_item = bp / "items/warp_stone.json"
+    if not warp_item.exists():
+        original_warp = ROOT / "mods/15-waystones/upstream/common/src/main/resources/assets/waystones/textures/item/warp_stone.png"
+        if not original_warp.is_file():
+            raise FileNotFoundError("Original Warp Stone texture not found")
+        warp_path = rp / "textures/items/warp_stone.png"
+        warp_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(original_warp, warp_path)
+        icons["texture_data"]["minizin_warp_stone"] = {"textures": "textures/items/warp_stone"}
+        write(warp_item, {"format_version": "1.21.90", "minecraft:item": {
+            "description": {"identifier": "minizin:warp_stone", "menu_category": {"category": "items"}},
+            "components": {"minecraft:icon": {"textures": {"default": "minizin_warp_stone"}},
+                "minecraft:display_name": {"value": "item.minizin:warp_stone.name"},
+                "minecraft:max_stack_size": 1}
+        }})
+        for language, translation in (("pt_BR", "Pedra de Teleporte"), ("en_US", "Warp Stone")):
+            append_locale(rp / "texts" / (language + ".lang"), {
+                "item.minizin:warp_stone.name": translation
+            })
     write(items, icons)
     write(bp / "items/andesite_waystone_block.json", {
         "format_version": "1.21.90",
@@ -169,8 +190,10 @@ def upgrade(folder: Path):
     else:
         new_main = 'import "./waystones_block.js";\n'
     main.write_text(new_main)
-    if 'import "./warp_stone.js";' in new_main:
-        shutil.copy2(ROOT / "bedrock/runtime/warp_stone.js", scripts / "warp_stone.js")
+    if 'import "./warp_stone.js";' not in new_main:
+        new_main += 'import "./warp_stone.js";\\n'
+        main.write_text(new_main)
+    shutil.copy2(ROOT / "bedrock/runtime/warp_stone.js", scripts / "warp_stone.js")
     report = {
         "mod": "Waystones",
         "original_geometry": str(entity_geo.relative_to(folder)),
