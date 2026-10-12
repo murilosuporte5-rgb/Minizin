@@ -1,0 +1,47 @@
+name: Distant Horizons GitLab audit and offline LOD data
+on:
+  push:
+    paths:
+      - "tools/distant_horizons_lod.py"
+      - "tools/distant_horizons_source_audit.py"
+      - "tests/test_distant_horizons_lod.py"
+      - ".github/workflows/distant-horizons-audit.yml"
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Unit tests
+        run: python -m unittest discover -s tests -p 'test_distant_horizons_lod.py' -v
+      - name: Audit actual GitLab repository tree
+        run: |
+          mkdir -p build
+          git clone --depth 1 --filter=blob:none --no-checkout https://gitlab.com/distant-horizons-team/distant-horizons.git build/dh_src
+          git -C build/dh_src rev-parse HEAD > build/dh_commit.txt
+          git -C build/dh_src ls-tree -r --name-only HEAD > build/dh_tree.txt
+          python tools/distant_horizons_source_audit.py build/dh_tree.txt --output build/dh_audit.json
+      - name: Generate sample LOD tiles
+        run: |
+          printf '{"heightmap":[[12,24,42,80],[13,25,35,81],[14,19,30,79]]}\n' > build/sample_heightmap.json
+          python tools/distant_horizons_lod.py build/sample_heightmap.json --output build/heightmap_lod.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('build/dh_audit.json').read_text())
+          b=json.loads(Path('build/heightmap_lod.json').read_text())
+          print('GitLab paths:',a['file_count'])
+          print('LOD levels:',len(b['levels']))
+          assert a['file_count']>200
+          assert a['categories']['rendering']['count']>10
+          assert len(b['levels'])>=3
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Distant-Horizons-Source-Audit-and-LOD-Prototype
+          path: |
+            build/dh_audit.json
+            build/dh_commit.txt
+            build/heightmap_lod.json
