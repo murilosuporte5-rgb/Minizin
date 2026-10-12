@@ -1,0 +1,63 @@
+name: Minizin Worlds - isolated validation
+on:
+  push:
+    branches: ["feature/minizin-worlds"]
+    paths: ["bedrock/worlds/**", ".github/workflows/minizin-worlds-validation.yml"]
+  pull_request:
+    paths: ["bedrock/worlds/**", ".github/workflows/minizin-worlds-validation.yml"]
+  workflow_dispatch:
+jobs:
+  build-worlds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Initialize only authorized source submodules
+        run: |
+          git submodule update --init --depth 1 mods/19-biomes-o-plenty/upstream
+          git submodule update --init --depth 1 mods/41-the-aether/upstream
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate runtime syntax
+        run: node --check bedrock/worlds/aether/main.js
+      - name: Run static tests
+        run: python -m unittest discover -s bedrock/worlds/tests -v
+      - name: Build packs locally with originals (do not upload copyrighted assets)
+        run: |
+          python -m pip install --disable-pip-version-check Pillow
+          python bedrock/worlds/build_worlds.py --mod both
+      - name: Inspect generated Bedrock ZIP layout and resource wiring
+        run: |
+          python - <<'PY'
+          import json, pathlib, zipfile
+          root = pathlib.Path("build/worlds")
+          for mod in ("aether", "bop"):
+              p = root / f"Minizin_Worlds_{mod}_v0.2.8.mcaddon"
+              assert p.exists(), p
+              with zipfile.ZipFile(p) as z:
+                  names = set(z.namelist())
+                  assert "BP/manifest.json" in names
+                  assert "RP/manifest.json" in names
+                  assert "RP/textures/terrain_texture.json" in names
+                  assert any(n.startswith("RP/textures/blocks/") for n in names)
+                  bp = json.loads(z.read("BP/manifest.json"))
+                  rp = json.loads(z.read("RP/manifest.json"))
+                  assert bp["dependencies"][0]["uuid"] == rp["header"]["uuid"]
+                  if mod == "aether":
+                      assert "BP/scripts/main.js" in names
+                  else:
+                      assert sum(n.startswith("BP/biomes/") for n in names) == 4
+          print("Static ZIP and pack manifests passed; in-game behavior NOT validated.")
+          PY
+      - name: Enforce repository asset separation
+        run: |
+          git diff --exit-code
+          if git ls-files bedrock/worlds | grep -E '\.(png|ogg|nbt|mcstructure|mcaddon)$'; then
+            echo "Forbidden redistributed assets committed in worlds folder"; exit 1
+          fi
