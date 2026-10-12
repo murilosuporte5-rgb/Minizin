@@ -49,3 +49,7 @@ Waystones/Carry On/Origins (sistemas); Mowzie's Mobs (geometrias já próximas d
 - Origins: analisar `data/origins/origins/*.json` e `data/origins/powers/*.json`, preservar as referências a ícones; a API Apoli/Fabric não é a Script API Bedrock.
 - Execute `python tools/extract_next_four.py --mod <mca|carryon|rftools|origins> --output build/extracted/<mod>` e `python tools/analyze_four_resources.py --mod <mod> --stage build/extracted/<mod>`. A saída é ignorada pelo Git e publicada temporariamente em artefatos da CI.
 - Não declarar os quatro mods portados até existir BP/RP e teste Minecraft Bedrock real.
+
+## Conversões publicadas na branch generated-bedrock
+
+**OBRIGATÓRIO:** leia `CODEX_HANDOFF.md` e obtenha `generated/` de `origin/generated-bedrock` antes de criar novos modelos. O Codex deve reutilizar os PNG, geometrias, OBJ/Blend, JSON de animação e regras existentes. Não sobrescreva recursos já implementados; salve antes/depois e registre testes.

@@ -98,3 +98,9 @@ Os três trabalhos foram executados e aprovados no GitHub Actions. Nenhum desses
 **Código:** `tools/extract_next_four.py`, `tools/analyze_four_resources.py` e testes automatizados. Documentação: [docs/NEXT_FOUR_EXTRACTION.md](docs/NEXT_FOUR_EXTRACTION.md).
 
 **Licenças verificadas no upstream:** MCA GPL-3.0, Carry On LGPL-3.0, RFTools MIT e Origins MIT. Cada artefato inclui arquivo de licença. Não inclui fontes tipográficas. Os arquivos gerados são extração de fontes, **não mods Bedrock jogáveis** e ainda precisam de portabilidade/otimização/validação no celular.
+
+## Nova entrega: próximos quatro em arquivos Bedrock (12/10/2026)
+
+[Build aprovado](https://github.com/murilosuporte5-rgb/Minizin/actions/runs/38238336803). Na branch [generated-bedrock](https://github.com/murilosuporte5-rgb/Minizin/tree/generated-bedrock/generated/next_four) foram confirmados **375 itens Bedrock e ícones**, **176 composições de itens MCA a partir das texturas Java**, **10 NPCs MCA experimentais**, **68 geometrias RFTools** e **1 geometria MCA**, com o pacote `Minizin_Next_Four_Prototype.mcaddon` para testes. Não é port integral; os modelos poligonais OBJ/Blend originais permanecem intactos para o Codex.
+
+A entrega agrega o trabalho novo às referências anteriores dos 14 mods. A publicação permanente de todos os modelos já convertidos, fora dos pacotes de teste, é tratada pela workflow `publish-all-conversions.yml`.

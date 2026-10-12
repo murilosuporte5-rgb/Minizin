@@ -68,3 +68,9 @@ git submodule update --init --recursive
 ## Conversores e resultados — 12/10/2026
 
 [Relatório técnico verificado](ENGINEERING_STATUS.md). Conversores, builds experimentais e jobs do GitHub Actions foram publicados. Os testes de geração foram aprovados, mas **a engenharia reversa completa e os 14 ports jogáveis ainda não foram concluídos**. Não criar modelos novos antes de tentar reaproveitar `.bbmodel`, `.geo.json`, Tabula `.tbl`, `AdvancedModelBox`, `.obj`, `.blend`, JSON de blocos e PNG/OGG originais.
+
+## Branch de conversões pronta para o Codex
+
+Arquivos gerados pela CI foram publicados em [generated-bedrock](https://github.com/murilosuporte5-rgb/Minizin/tree/generated-bedrock/generated), com scripts/conversores originais na branch `main`. Leia [CODEX_HANDOFF.md](CODEX_HANDOFF.md) antes de alterar modelos, itens ou lógica.
+
+A extração/compilação de 375 definições de itens, 10 NPCs MCA e 69 modelos de blocos MCA/RFTools passou no [GitHub Actions](https://github.com/murilosuporte5-rgb/Minizin/actions/runs/38238336803). Nenhuma dessas compilações equivale a 14 mods totalmente jogáveis no Minecraft Android.
