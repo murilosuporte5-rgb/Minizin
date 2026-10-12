@@ -77,6 +77,13 @@ jobs:
                           assert f"RP/models/entity/{mob}.geo.json" in names, mob
                           assert f"RP/entity/{mob}.entity.json" in names, mob
                           assert f"RP/textures/entity/minizin_aether/{mob}.png" in names, mob
+                      for mob in ("blue_swet", "golden_swet", "sentry"):
+                          assert f"BP/entities/{mob}.json" in names
+                          assert f"RP/entity/{mob}.entity.json" in names
+                          assert f"RP/textures/entity/minizin_aether/{mob}.png" in names
+                          desc = json.loads(z.read(f"RP/entity/{mob}.entity.json"))["minecraft:client_entity"]["description"]
+                          assert desc["geometry"]["default"] == "geometry.slime"
+                          assert desc["geometry"]["outer"] == "geometry.slime.armor"
                       for mob, body in (("phyg", "geometry.pig.v3"), ("flying_cow", "geometry.cow.v2")):
                           assert f"RP/textures/entity/minizin_aether/{mob}_wings.png" in names
                           desc = json.loads(z.read(f"RP/entity/{mob}.entity.json"))["minecraft:client_entity"]["description"]
