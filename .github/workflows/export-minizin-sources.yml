@@ -30,6 +30,23 @@ jobs:
           git rev-parse origin/feature/minizin-worlds > stage/WORLDS_HEAD.txt
           git rev-parse origin/feature/minizin-creatures > stage/CREATURES_HEAD.txt
           echo 'Source stage complete; no third-party texture, sound or structure binaries are included.'
+      - name: Export Bedrock biome metadata from pinned Java sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git submodule update --init --depth 1 mods/19-biomes-o-plenty/upstream
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'stage/bedrock/worlds/bop')
+          from worldgen_full import build_all
+          java = Path('mods/19-biomes-o-plenty/upstream/common/src/generated/resources/data/biomesoplenty/worldgen/biome')
+          bp = Path('stage/native_biomes/BP')
+          rp = Path('stage/native_biomes/RP')
+          result = build_all(java,bp,rp,set(),lambda s: {},lambda s: {})
+          assert result['source_count'] >= 60
+          print('Native biome definitions:',result['source_count'], result['coverage'])
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: minizin-worlds-creatures-source-only
