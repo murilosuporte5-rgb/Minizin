@@ -50,6 +50,7 @@ LEAVES = {
     "aether": {"skyroot_leaves", "golden_oak_leaves"},
     "bop": {"magic_leaves", "redwood_leaves", "umbran_leaves"},
 }
+BIOME_SOURCE = ROOT / "mods/19-biomes-o-plenty/upstream/common/src/generated/resources/data/biomesoplenty/worldgen/biome"
 BIOMES = {
     "lavender_field": dict(temp=.75, rain=.42, noise="lowlands", climate="medium",
                           tree=None, flower="lavender", trees=0, flowers=10,
@@ -91,15 +92,15 @@ def manifest(mod: str, kind: str) -> dict:
     }
     if kind == "BP":
         data["dependencies"] = [{"uuid": uid(f"{mod}-RP-header"), "version": [0, 2, 8]}]
-        if mod == "aether":
+        if mod in ("aether", "bop"):
             data["modules"].append({
                 "type": "script",
                 "language": "javascript",
                 "entry": "scripts/main.js",
-                "uuid": uid("aether-BP-script"),
+                "uuid": uid(f"{mod}-BP-script"),
                 "version": [0, 2, 8],
             })
-            data["dependencies"].append({"module_name": "@minecraft/server", "version": "beta"})
+            data["dependencies"].append({"module_name": "@minecraft/server", "version": "beta" if mod == "aether" else "2.0.0"})
     return data
 
 def block_def(mod: str, name: str) -> dict:
@@ -173,6 +174,26 @@ def copy_texture(source: Path, target: Path, mod: str, name: str) -> None:
     else:
         shutil.copyfile(source, target)
 
+def java_biome_spec(name: str, proposal: dict) -> dict:
+    """Read climatic values and water palette from the pinned original Java data.
+
+    Java noise/router, spawn rules and feature lists are not directly executable.
+    Those fields must NOT be represented as ported.
+    """
+    path = BIOME_SOURCE / f"{name}.json"
+    if not path.is_file():
+        raise FileNotFoundError(f"Original biome definition missing: {path}")
+    source = json.loads(path.read_text(encoding="utf-8"))
+    if "temperature" not in source or "downfall" not in source:
+        raise ValueError(f"Original biome missing temperature/downfall: {name}")
+    palette = source.get("effects", {})
+    return {**proposal, "temp": float(source["temperature"]),
+            "rain": float(source["downfall"]),
+            "water": palette.get("water_color", proposal["water"]),
+            "grass_color": palette.get("grass_color"),
+            "foliage_color": palette.get("foliage_color")}
+
+
 def biome_def(name: str, spec: dict) -> dict:
     ns = NAMESPACE["bop"]
     return {"format_version": "1.21.40", "minecraft:biome": {
@@ -244,14 +265,21 @@ def flower_feature(name: str) -> dict:
     }}
 
 def add_biomes(bp: Path, rp: Path) -> None:
-    for name, spec in BIOMES.items():
+    for name, proposal in BIOMES.items():
+        spec = java_biome_spec(name, proposal)
         jwrite(bp / "biomes" / f"{name}.json", biome_def(name, spec))
         jwrite(rp / "biomes_client" / f"{name}.biome_client.json", {
             "format_version": "1.21.40",
             "minecraft:client_biome": {
                 "description": {"identifier": f"minizin_bop:{name}"},
-                "components": {"minecraft:water_appearance": {
-                    "surface_color": spec["water"], "surface_transparency": .6}},
+                "components": {
+                    "minecraft:water_appearance": {
+                        "surface_color": spec["water"], "surface_opacity": .6},
+                    **({"minecraft:grass_appearance": {"color": spec["grass_color"]}}
+                       if spec["grass_color"] else {}),
+                    **({"minecraft:foliage_appearance": {"color": spec["foliage_color"]}}
+                       if spec["foliage_color"] else {}),
+                },
             },
         })
         if spec["tree"]:
@@ -285,8 +313,7 @@ def validate_pack(bp: Path, rp: Path, mod: str) -> None:
             assert (bp / f"biomes/{name}.json").is_file()
             if spec["tree"]:
                 assert (bp / f"features/{spec['tree']}_feature.json").is_file()
-    if mod == "aether":
-        assert (bp / "scripts/main.js").stat().st_size > 1000
+    assert (bp / "scripts/main.js").stat().st_size > 1000
 
 def pack_zip(root: Path, target: Path) -> None:
     with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as z:
@@ -321,10 +348,10 @@ def build(mod: str, output: Path) -> Path:
     (rp / "texts/en_US.lang").write_text("\n".join(translations) + "\n", encoding="utf-8")
     (rp / "texts/pt_BR.lang").write_text("\n".join(translations) + "\n", encoding="utf-8")
     (rp / "texts/languages.json").write_text('["en_US", "pt_BR"]\n', encoding="utf-8")
+    (bp / "scripts").mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(HERE / mod / "main.js", bp / "scripts/main.js")
     if mod == "aether":
         jwrite(rp / "models/blocks/portal.geo.json", geometry("portal"))
-        (bp / "scripts").mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(HERE / "aether/main.js", bp / "scripts/main.js")
     else:
         jwrite(rp / "models/blocks/cross.geo.json", geometry("cross"))
         add_biomes(bp, rp)
