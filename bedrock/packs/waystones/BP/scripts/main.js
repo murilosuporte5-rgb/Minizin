@@ -70,7 +70,13 @@ function arrival(row) {
   const dim=dimensionOf(row.dimension),base={
     x:Math.floor(row.x),y:Math.floor(row.y),z:Math.floor(row.z)
   };
-  if(dim.getBlock(base)?.typeId!==BLOCK) return null;
+  try {
+    if(dim.getBlock(base)?.typeId!==BLOCK)return null;
+  } catch {
+    // In 2.0.0 getBlock may throw for distant/unloaded chunks.
+    // Fall back to a controlled real teleport and verify the arrival later.
+    return null;
+  }
   for(const [dx,dz] of DIRECTION) {
     const here={x:base.x+dx,y:base.y,z:base.z+dz};
     try {
