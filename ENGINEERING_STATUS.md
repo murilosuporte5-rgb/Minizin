@@ -83,3 +83,18 @@ O job [Minizin-Bedrock-Prototypes](https://github.com/murilosuporte5-rgb/Minizin
 - **Distant Horizons:** CI https://github.com/murilosuporte5-rgb/Minizin/actions/runs/38234659523 — **534 caminhos** da árvore GitLab catalogados e protótipo independente de LOD de alturas com 3 níveis validado; **não reproduz renderização distante**.
 
 Os três trabalhos foram executados e aprovados no GitHub Actions. Nenhum desses três mods foi portado integralmente para Minecraft Bedrock Android nem testado no dispositivo.
+
+## Nova extração — MCA Reborn, Carry On, RFTools, Origins (12/10/2026)
+
+[Pipeline automatizado dos quatro mods](https://github.com/murilosuporte5-rgb/Minizin/actions/runs/38236291289): **quatro jobs de extração aprovados**, com recursos originais, SHA-256, tamanhos, formato e relatório individual em artefatos do GitHub Actions.
+
+| Mod | Arquivos extraídos | Evidência e conteúdo |
+|---|---:|---|
+| MCA Reborn | **2.491** | 1.145 skins PNG, 280 modelos JSON, 10 classes Java de modelos, 100 OGG, receitas/dados, renderização e skins. Os modelos de NPC usam ModelPart Java, não .geo.json direto. |
+| Carry On | **39** | 6 tags de whitelist/blacklist, Java para captura, colocação, regras, renderizadores e configurações; nenhum modelo 3D próprio confirmado no snapshot. |
+| RFTools | **864** | 266 modelos de bloco/item JSON, 2 meshes OBJ, 2 MTL, 2 Blender, 298 PNG e 6 OGG. A geometria triangulada OBJ fica preservada para Blender/Blockbench: ainda NÃO foi convertida para cubos Bedrock. |
+| Origins | **195** | 10 origens, 61 poderes JSON, origin layer, ícones e texturas. Exportação de grafo origem→poder e tipos de poderes; a implementação do runtime Apoli continua necessária no Bedrock. |
+
+**Código:** `tools/extract_next_four.py`, `tools/analyze_four_resources.py` e testes automatizados. Documentação: [docs/NEXT_FOUR_EXTRACTION.md](docs/NEXT_FOUR_EXTRACTION.md).
+
+**Licenças verificadas no upstream:** MCA GPL-3.0, Carry On LGPL-3.0, RFTools MIT e Origins MIT. Cada artefato inclui arquivo de licença. Não inclui fontes tipográficas. Os arquivos gerados são extração de fontes, **não mods Bedrock jogáveis** e ainda precisam de portabilidade/otimização/validação no celular.

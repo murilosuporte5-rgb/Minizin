@@ -40,3 +40,12 @@ Waystones/Carry On/Origins (sistemas); Mowzie's Mobs (geometrias já próximas d
 2. Xaero: importar os waypoints a partir do backup existente usando tools/xaero_waypoint_import.py; sem UI de minimapa nativo ainda.
 3. Distant Horizons: auditar o GitLab com tools/distant_horizons_source_audit.py; tools/distant_horizons_lod.py produz apenas dados de altura multirresolução offline.
 4. Manter a coluna de limites e o status factual em ENGINEERING_STATUS.md; não declarar port integral com base em geometria estática.
+
+## Próximos quatro — não refazer modelos/assets existentes
+
+- MCA Reborn: aproveitar **1.145 skins**, 280 modelos JSON e os modelos Java (`ModelPart`) já existentes; compor texturas/skins sem redesenhar. Diagnóstico em `build/extracted/mca/format_analysis.json`.
+- Carry On: não inventar modelos próprios — o original reutiliza renderizadores vanilla. Aproveitar as 6 tags e as classes Java de pegar/soltar/configuração; implementar equivalente independente e testar anti-duplicação/itens contidos.
+- RFTools: importar `art/*.blend` ou `models/block/*.obj` e `.mtl` antes de qualquer modelagem; preservar UV e materiais; converter OBJ para geometria Bedrock com QA, nunca renomear .obj para .geo.json.
+- Origins: analisar `data/origins/origins/*.json` e `data/origins/powers/*.json`, preservar as referências a ícones; a API Apoli/Fabric não é a Script API Bedrock.
+- Execute `python tools/extract_next_four.py --mod <mca|carryon|rftools|origins> --output build/extracted/<mod>` e `python tools/analyze_four_resources.py --mod <mod> --stage build/extracted/<mod>`. A saída é ignorada pelo Git e publicada temporariamente em artefatos da CI.
+- Não declarar os quatro mods portados até existir BP/RP e teste Minecraft Bedrock real.
