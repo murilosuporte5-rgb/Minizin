@@ -1,0 +1,45 @@
+name: Cataclysm original Java models to Bedrock
+on:
+  push:
+    paths:
+      - "tools/cataclysm_batch_to_bedrock.py"
+      - "tools/citadel_java_to_bedrock.py"
+      - "tests/test_citadel_java_to_bedrock.py"
+      - ".github/workflows/cataclysm-convert.yml"
+  workflow_dispatch:
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        run: python -m unittest discover -s tests -p 'test_citadel_java_to_bedrock.py'
+      - name: Fetch pinned Cataclysm original model definitions
+        run: |
+          mkdir -p build
+          git clone --depth 1 --filter=blob:none --no-checkout https://github.com/lender544/new1.20.1.git build/cataclysm
+          git -C build/cataclysm sparse-checkout init --cone
+          git -C build/cataclysm sparse-checkout set src/main/java/com/github/L_Ender/cataclysm/client/model/entity
+          git -C build/cataclysm checkout 819937203e22b4fa72fdeccc6c56ad415d65eeef
+      - name: Audit and convert entity models
+        run: |
+          python tools/cataclysm_batch_to_bedrock.py \
+            --source build/cataclysm/src/main/java/com/github/L_Ender/cataclysm/client/model/entity \
+            --output build/cataclysm_geometry --minimum 8
+      - name: Check per-source report
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('build/cataclysm_geometry/audit.json').read_text())
+          assert r['scanned']>=50 and r['converted']>=8,r
+          print('Cataclysm converted',r['converted'],'/',r['scanned'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Cataclysm-Original-Models-Bedrock-Geometry
+          path: build/cataclysm_geometry/
+          retention-days: 30

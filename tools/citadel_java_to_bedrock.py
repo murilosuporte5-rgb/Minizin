@@ -33,7 +33,7 @@ def recover_models(sources:list[str],identifier="geometry.minizin.citadel"):
         events+= [(p,"new",args) for p,args in find_calls(rf"({NAME[1:-1]})\s*=\s*new\s+AdvancedModelBox\s*\(\s*this\s*\)",source)]
         events+= [(p,"point",args) for p,args in find_calls(rf"{NAME}\.setRotationPoint\(\s*{num}\s*,\s*{num}\s*,\s*{num}\s*\)",source)]
         events+= [(p,"child",args) for p,args in find_calls(rf"{NAME}\.addChild\(\s*{NAME}\s*\)",source)]
-        events+= [(p,"rotate",args) for p,args in find_calls(rf"setRotateAngle\(\s*{NAME}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*\)",source)]
+        events+= [(p,"rotate",args) for p,args in find_calls(rf"setRotat(?:e|ion)Angle\(\s*{NAME}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*\)",source)]
         events+= [(p,"box",args) for p,args in find_calls(
             rf"{NAME}\.setTextureOffset\(\s*{num}\s*,\s*{num}\s*\)\.addBox\(\s*"
             rf"{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*(true|false)\s*\)",source)]
