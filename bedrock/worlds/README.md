@@ -4,12 +4,44 @@
 
 Este diretório tem código e testes próprios. Não modifica os módulos de outros chats, `generated/`, manifests compartilhados nem submódulos Java. Compila dois add-ons **independentes**.
 
+## Estado atual — componentes implementados, não validação de jogo
+
+> Atualizado após a CI de 26 testes. Os trechos de histórico mais abaixo são
+> marcos anteriores; **esta seção descreve o escopo de código mais recente**.
+
+| Área | Estado em código / evidência | O que permanece sem comprovação |
+| --- | --- | --- |
+| The Aether | 46 blocos definidos com PNGs extraídos dos sources pinados; 4 perfis Skyroot, portais e ilhas | render, dimensão Beta e geração em Android |
+| Criaturas | 16 entidades definidas a partir de arquivos Java `ModelPart` ou rigs herdados, com cubos, hierarquia e UV convertidos; Phyg/Flying Cow combinam corpo vanilla e asas Java originais, com texturas separadas | animação idêntica, IA exata, materiais/UV/collision corretos no cliente |
+| Bosses | Slider (400 HP), Valkyrie Queen (500 HP) e Sun Spirit (500 HP), rotinas distintas de ataque, vulnerabilidade por ferramenta/gelo, lunge/cristal/fogo, spawn e recompensa de progressão vinculados às estruturas | sequências/timing exatos do Java, multiplayer, reentradas e crash-safety |
+| Estruturas/loot | 21/21 templates Java NBT exportados, 40 tabelas Java transformadas para JSON Bedrock, com 7/7/9 candidatos representáveis nos pools Bronze/Silver/Gold | loot integral, muitas armas/acessórios ausentes, contents NBT e jigsaw/AI original |
+| Biomes O' Plenty | 68 JSON Java representados como bioma Bedrock, **61 substituições parciais no Overworld, 5 no Nether, 2 cavernas sem substituição nativa equivalente**; 20 blocos e catálogo de vegetação baseado nos biomas efetivamente consultados por `getBiome` | biome noise/router Java, all terrain/placed features, geração de cavernas equivalente e validação in-game |
+
+A **dimensão de cada bioma** foi corrigida com base em
+`BOPBiomes.java` e `BOPNetherRegionCommon/Rare.java` do commit pinado:
+`volcano`, `volcanic_plains` e os biomas com prefixo `end_` aparecem no registro de Overworld; os 5 biomas da região Nether são `crystalline_chasm`, `erupting_inferno`, `undergrowth`, `visceral_heap` e `withered_abyss`. `glowing_grotto` e `spider_nest` são biomas de cavernas que não devem ser inseridos artificialmente na superfície. O Bedrock desde 1.21.110 suporta `minecraft:replace_biomes` no Overworld/Nether; o add-on BOP exige Bedrock >= 1.21.120 e `@minecraft/server` 2.3.0 para a seleção por bioma em runtime. **Substituição parcial não é port integral do worldgen Java**.
+
+Os modelos Java usam animações procedurais `setupAnim` e goals da AI
+específicos. O gerador atual recupera rig/cubos, mas os clips de ataque/idle são
+**adaptações Bedrock**; não há correspondência integral de keyframes,
+curvas e restrições. As 40 loot tables foram serializadas, mas itens Java não
+registrados no pack e funções de loot incompatíveis continuam omitidos,
+registrados em `build/worlds/aether/loot_conversion_report.json`.
+A lista exata de limitações do gerador de biomas está em
+`build/worlds/bop/worldgen_conversion_report.json`.
+
+A workflow compila os dois `.mcaddon` em `build/` (ignorado), valida sintaxe
+dos scripts, estruturas NBT e identidade dos assets; **não executa Minecraft
+Android**. A PR continua Draft. Sem permissão explícita dos detentores dos
+recursos com reserva de direitos, **não publique** os pacotes gerados com
+texturas e modelos originais.
+
 ## Proveniência auditada
 
 | Módulo | Fonte Java como submódulo no Minizin | Classes / dados relevantes | Recursos locais aproveitados |
 | --- | --- | --- | --- |
-| The Aether | `mods/41-the-aether/upstream` gitlink `e07d30e16fbd0f09cc067b39594035e395dcf996` | `src/generated/resources/data/aether/worldgen/`, `src/main/resources/data/aether/structure/`; lógica original não executável no Android | 34 definições de bloco, incluindo 2 variantes de Silver Dungeon e múltiplas texturas de origem (holystone, skyroot, golden oak, minerais, portal e faces); texturas copiadas **somente em build/** |
-| Biomes O' Plenty | `mods/19-biomes-o-plenty/upstream` gitlink `ef7f13e117faef0b97591f569175e53ea4fe664b` | `common/src/generated/resources/data/biomesoplenty/worldgen/biome/*.json` | 20 definições de bloco, com as texturas originais de troncos, folhas e plantas (incluindo faces superiores de troncos); para quatro biomas **temperatura, chuva, água, cor da folhagem e grama lidas do JSON Java fixado**, quando disponíveis |
+| The Aether | `mods/41-the-aether/upstream` gitlink `e07d30e16fbd0f09cc067b39594035e395dcf996` | `src/generated/resources/data/aether/worldgen/`, `src/main/resources/data/aether/structure/`; lógica original não executável no Android | 46 definições de bloco, incluindo modelos de masmorras de Silver Dungeon e múltiplas texturas de origem (holystone, skyroot, golden oak, minerais, portal e faces); texturas copiadas **somente em build/** |
+| Biomes O' Plenty | `mods/19-biomes-o-plenty/upstream` gitlink `ef7f13e117faef0b97591f569175e53ea4fe664b` | `common/src/generated/resources/data/biomesoplenty/worldgen/biome/*.json` | 20 definições de bloco, com as texturas originais de troncos, folhas e plantas (incluindo faces superiores de troncos); para todos os 68 biomas **temperatura, chuva, água, cor da folhagem e grama lidas do JSON Java fixado**, quando disponíveis |
 
 **Licenças:** Aether `LICENSE-ASSETS.txt` e Biomes O' Plenty `LICENSE` indicam **ALL RIGHTS RESERVED** para recursos. Código disponível publicamente ou autorização de estudar **não autoriza automaticamente redistribuir os PNGs**. O Git armazena somente código que consome os arquivos originais; todos os PNG, pacotes finais e derivados permanecem em `build/` (gitignored) até registrar autorização expressa de adaptação/redistribuição. **Não publique os .mcaddon gerados na CI nem em releases públicas sem tal autorização.**
 
@@ -26,8 +58,8 @@ Este diretório tem código e testes próprios. Não modifica os módulos de out
 ### Biomes O' Plenty
 
 - Blocos com as texturas originais: lavender, glowflower, magic/redwood/umbran wood e leaves.
-- Quatro perfis: `lavender_field`, `mystic_grove`, `redwood_forest`, `ominous_woods` com documentos Bedrock de biome/client biome e feature rules para árvores e flores.
-- **Adaptação executável em mundos atuais:** `bop/main.js` distribui árvores e plantas em regiões determinísticas de 48 blocos, sobre solo natural carregado no Overworld. É um **overlay**: não troca os IDs dos biomas vanilla, não modifica seu ruído, não implementa o biome router do Java. Mantém regiões processadas em propriedades dinâmicas e não regenera após reconectar. O recorte do recurso é intencional e compatível com a separação dos packs.
+- O catálogo original de 68 biomas gera documentos Bedrock de biome/client biome, e regras de árvore/flor quando espécies e features têm registro.
+- **Geração atual:** `minecraft:replace_biomes` fornece substituição parcial no Overworld/Nether, e `bop/main.js` verifica `Dimension.getBiome` antes de decorar. O ruido/roteamento Java permanece não portado.
 
 ## Build e validação (local ou CI)
 
@@ -63,7 +95,7 @@ Criar **cópia de um mundo** antes de instalar. Importar cada pack individualmen
 
 ## Segunda etapa implementada na mesma branch (12/10/2026)
 
-- **The Aether:** 34 definições de bloco no builder, incluindo os arquivos originais de Aercloud, Quicksoil, Icestone, Gravitite, Carved Stone, Angelic/Hellfire Stone, Pillar e Sentry Stone. Faces superiores originais continuam preservadas. No runtime, Quicksoil concede aceleração temporária, Icestone congela blocos líquidos adjacentes na colocação, Cold Aercloud concede Slow Falling breve e Blue Aercloud aplica impulso vertical com cooldown. São adaptações de comportamento, não reprodução byte-a-byte da física Java.
+- **The Aether:** 46 definições de bloco no builder, incluindo os arquivos originais de Aercloud, Quicksoil, Icestone, Gravitite, Carved Stone, Angelic/Hellfire Stone, Pillar e Sentry Stone. Faces superiores originais continuam preservadas. No runtime, Quicksoil concede aceleração temporária, Icestone congela blocos líquidos adjacentes na colocação, Cold Aercloud concede Slow Falling breve e Blue Aercloud aplica impulso vertical com cooldown. São adaptações de comportamento, não reprodução byte-a-byte da física Java.
 - **Ilhas:** costa ocasional de Quicksoil; minérios com Gravitite raro; nuvens Aercloud em estratos de altura determinística. Não usa as density functions originais e não há implementação do céu/som/fog nativo do Java.
 - **Estruturas:** `aether/convert_structures.py` lê os NBT Java de Bronze/Silver/Gold, reconstrói a paleta registrável e gera arquivos `.mcstructure` little-endian do Bedrock em `build/`, com um `conversion_report.json` registrando perda de estados, tile entities, entidades, omissões e templates grandes demais. Na CI foram exportados **21/21 templates** após declarar os blocos `locked_angelic_stone` e `boss_doorway_angelic_stone`; blocos sem correspondência, propriedades, tile entities, processos de geração e itens continuam registrados como perdas no relatório. O runtime chama `world.structureManager.place` para um template original de boss room ou entrada quando o pack está disponível e utiliza a sala simplificada apenas como fallback. A localização, a montagem modular (jigsaw) e os processadores Java não são reproduzidos.
 - **Biomes O' Plenty:** 20 tipos de bloco, 9 definições de bioma Bedrock derivadas das configurações climáticas originais (`coniferous_forest`, `maple_woods`, `jade_cliffs`, `tropics` e `highland` adicionados) e geração em regiões determinísticas de 9 perfis com os respectivos troncos e folhas. Locais de chunks descarregados deixam de ser marcados permanentemente. Não é o roteamento real dos nove biomas Java.
