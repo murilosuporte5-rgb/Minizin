@@ -29,6 +29,7 @@ jobs:
           node --check bedrock/worlds/aether/main.js
           node --check bedrock/worlds/bop/main.js
           node --check bedrock/worlds/aether/bosses.js
+          node --check bedrock/worlds/aether/wildlife.js
       - name: Install conversion dependencies
         run: python -m pip install --disable-pip-version-check Pillow nbtlib numpy
       - name: Run static tests
@@ -40,6 +41,7 @@ jobs:
         run: |
           node --check build/worlds/aether/BP/scripts/main.js
           node --check build/worlds/aether/BP/scripts/bosses.js
+          node --check build/worlds/aether/BP/scripts/wildlife.js
           node --check build/worlds/aether/BP/scripts/dungeon_loot.js
           node --check build/worlds/bop/BP/scripts/main.js
           node --check build/worlds/bop/BP/scripts/native_biomes.js
@@ -64,14 +66,22 @@ jobs:
                       assert "BP/scripts/main.js" in names
                       assert "BP/scripts/biome_profiles.js" in names
                       assert "BP/scripts/bosses.js" in names
+                      assert "BP/scripts/wildlife.js" in names
                       assert "BP/scripts/dungeon_loot.js" in names
                       for mob in ("slider", "valkyrie_queen", "sun_spirit",
                                   "zephyr", "aechor_plant", "fire_minion",
-                                  "aerbunny", "cockatrice", "sheepuff"):
+                                  "aerbunny", "cockatrice", "sheepuff",
+                                  "valkyrie", "aerwhale", "mimic", "phyg",
+                                  "flying_cow", "moa", "cloud_minion"):
                           assert f"BP/entities/{mob}.json" in names, mob
                           assert f"RP/models/entity/{mob}.geo.json" in names, mob
                           assert f"RP/entity/{mob}.entity.json" in names, mob
                           assert f"RP/textures/entity/minizin_aether/{mob}.png" in names, mob
+                      for mob, body in (("phyg", "geometry.pig.v3"), ("flying_cow", "geometry.cow.v2")):
+                          assert f"RP/textures/entity/minizin_aether/{mob}_wings.png" in names
+                          desc = json.loads(z.read(f"RP/entity/{mob}.entity.json"))["minecraft:client_entity"]["description"]
+                          assert desc["geometry"]["default"] == body
+                          assert desc["geometry"]["wings"] == f"geometry.minizin_aether.{mob}"
                       for key in ("bronze_dungeon_key", "silver_dungeon_key", "gold_dungeon_key"):
                           assert f"BP/items/{key}.json" in names
                       for boss in ("slider", "valkyrie_queen", "sun_spirit"):
