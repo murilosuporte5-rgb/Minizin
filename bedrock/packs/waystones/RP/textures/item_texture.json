@@ -1,0 +1,12 @@
+{
+  "resource_pack_name": "Minizin Waystones",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "minizin_waystone_original_item": {
+      "textures": "textures/items/waystones/andesite_waystone"
+    },
+    "minizin_warp_stone": {
+      "textures": "textures/items/warp_stone"
+    }
+  }
+}

@@ -3,8 +3,8 @@
   "minecraft:entity": {
     "description": {
       "identifier": "minizin:andesite_waystone",
-      "is_spawnable": true,
-      "is_summonable": true,
+      "is_spawnable": false,
+      "is_summonable": false,
       "is_experimental": false
     },
     "components": {
@@ -30,6 +30,17 @@
             "interact_text": "Usar marco",
             "swing": false,
             "use_item": false
+          }
+        ]
+      },
+      "minecraft:knockback_resistance": {
+        "value": 1.0
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "all",
+            "deals_damage": false
           }
         ]
       }

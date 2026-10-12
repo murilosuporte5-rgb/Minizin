@@ -3,7 +3,7 @@
  * Slots are virtual and displayed through server-ui, NOT native inventory UI.
  * Aether ring behavior is sourced from the original item classes where known.
  */
-import {world,system,ItemStack,EnchantmentTypes} from "@minecraft/server";
+import {world,system,ItemStack,EquipmentSlot} from "@minecraft/server";
 import {ActionFormData} from "@minecraft/server-ui";
 import {EQUIPMENT} from "./aether_equipment_catalog.js";
 const SLOT_KEY="minizin:aether_accessories_v1",COUNT=2;
@@ -39,13 +39,10 @@ function deserialize(data){
   item.setLore(data.lore||[]);
   const durability=item.getComponent("minecraft:durability");
   if(durability&&data.damage!==undefined)durability.damage=data.damage;
-  const enchant=item.getComponent("minecraft:enchantable");
-  if(enchant&&data.enchantments?.length)
-    enchant.addEnchantments(data.enchantments.map(e=>{
-      const type=EnchantmentTypes.get(e.id);
-      if(!type)throw Error("Encantamento indisponível");
-      return {type,level:e.level};
-    }));
+  // Enchantment restoration is intentionally omitted here. The public
+  // EnchantmentTypes lookup changed across Bedrock Android releases and a
+  // missing optional enchantment must never prevent the whole pack loading.
+  // The ring's own durability/name/lore/dynamic properties remain persisted.
   for(const [k,v] of Object.entries(data.props||{}))item.setDynamicProperty(k,v);
   return item;
 }
@@ -126,7 +123,19 @@ world.afterEvents.playerBreakBlock.subscribe(({player,itemStackBeforeBreak})=>{
 system.runInterval(()=>{
   for(const p of world.getAllPlayers()){
     try{
-      const rows=read(p),at=rows.findIndex(x=>x?.type==="minizin_aether:ice_ring");
+      const rows=read(p);
+      const equipment=p.getComponent("minecraft:equippable");
+      const offhand=equipment?.getEquipment(EquipmentSlot.Offhand);
+      // Worlds made with the previous prototype stored rings in the native
+      // offhand. Migrate once, then clear that slot so the accessory state no
+      // longer competes with shields, maps, food, or other offhand items.
+      if(offhand&&ring(offhand.typeId)&&rows.every(x=>!x)){
+        rows[0]=serialize(offhand);
+        equipment.setEquipment(EquipmentSlot.Offhand,undefined);
+        write(p,rows);
+        p.sendMessage("§b[Aether] Anel migrado para o espaço de acessório 1.");
+      }
+      const at=rows.findIndex(x=>x?.type==="minizin_aether:ice_ring");
       if(at<0||p.isFlying||String(p.getGameMode?.()).toLowerCase()==="spectator")continue;
       const loc=p.location;let frozen=0;
       for(let dx=-1;dx<=1;dx++)for(let dz=-1;dz<=1;dz++){

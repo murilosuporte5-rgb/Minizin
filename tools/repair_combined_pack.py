@@ -9,6 +9,84 @@ from validate_gameplay_packs import check
 ROOT=Path(__file__).resolve().parents[1]
 
 
+def add_aether_accessories(rp,bp):
+    """Add the original Aether ring/tool icons and the non-offhand accessory UI."""
+    base=ROOT/'mods/41-the-aether/upstream'
+    assets=base/'src/main/resources/assets/aether'
+    registry_path=rp/'textures/item_texture.json'
+    registry=json.loads(registry_path.read_text(encoding='utf-8'))
+    names=[tier+'_'+kind for tier in ['skyroot','holystone','zanite','gravitite','valkyrie']
+      for kind in ['pickaxe','axe','shovel']]
+    names += [tier+'_sword' for tier in ['skyroot','holystone','zanite','gravitite','flaming']]
+    names += ['vampire_blade','iron_ring','golden_ring','ice_ring','zanite_ring']
+    catalog={}
+    for name in names:
+        found=list((assets/'textures/item').rglob(name+'.png'))
+        if not found:
+            continue
+        key='minizin_aether_equipment_'+name
+        rel='textures/items/aether_equipment/'+name
+        target=rp/(rel+'.png');target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(found[0],target)
+        registry.setdefault('texture_data',{})[key]={'textures':rel}
+        ident='minizin_aether:'+name
+        is_ring=name.endswith('_ring')
+        components={'minecraft:icon':{'textures':{'default':key}},
+                    'minecraft:max_stack_size':1,
+                    'minecraft:display_name':{'value':'item.'+ident+'.name'}}
+        if not is_ring:
+            components['minecraft:hand_equipped']=True
+        catalog[ident]={'ring':is_ring}
+        write(bp/'items/aether_equipment'/f'{name}.json',{
+          'format_version':'1.21.90','minecraft:item':{
+            'description':{'identifier':ident,'menu_category':{'category':'equipment'}},
+            'components':components}})
+    write(registry_path,registry)
+    shutil.copy2(ROOT/'bedrock/runtime/aether_equipment_v2.js',bp/'scripts/aether_equipment.js')
+    (bp/'scripts/aether_equipment_catalog.js').write_text(
+        'export const EQUIPMENT = '+json.dumps(catalog,ensure_ascii=False)+';\n',encoding='utf-8')
+    main=bp/'scripts/main.js';raw=main.read_text(encoding='utf-8') if main.exists() else ''
+    if 'import "./aether_equipment.js";' not in raw:
+        main.write_text(raw.rstrip()+'\nimport "./aether_equipment.js";\n',encoding='utf-8')
+    return len(catalog)
+
+
+def add_creature_items(rp,bp):
+    """Stage the original Ice and Fire/Alex's Caves item icons used by the mobs."""
+    root=ROOT/'mods'
+    sources={
+      'minizin_iceandfire:dragon_meal':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/item/dragon_meal.png',
+      'minizin_iceandfire:creative_dragon_meal':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/item/creative_dragon_meal.png',
+      'minizin_iceandfire:dragon_flute':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/item/dragon_flute.png',
+      'minizin_iceandfire:dragon_armor_iron':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/item/dragonarmor_iron_head.png',
+      'minizin_iceandfire:dragon_scale_fire':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/item/scales_red.png',
+      'minizin_iceandfire:dragon_scale_ice':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/item/scales_blue.png',
+      'minizin_iceandfire:dragon_scale_lightning':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/item/scales_black.png',
+      'minizin_iceandfire:dragon_egg_fire':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/models/firedragon/egg_red.png',
+      'minizin_iceandfire:dragon_egg_ice':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/models/icedragon/egg_blue.png',
+      'minizin_iceandfire:dragon_egg_lightning':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/models/lightningdragon/egg_black.png',
+      'minizin_alexscaves:serene_salad':root/'42-alexs-caves/upstream/src/main/resources/assets/alexscaves/textures/item/serene_salad.png',
+    }
+    registry_path=rp/'textures/item_texture.json'
+    registry=json.loads(registry_path.read_text(encoding='utf-8'))
+    for ident,source in sources.items():
+        if not source.is_file():
+            continue
+        name=ident.replace(':','_')
+        rel='textures/items/creatures/'+name
+        target=rp/(rel+'.png');target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(source,target)
+        registry.setdefault('texture_data',{})[name]={'textures':rel}
+        write(bp/'items/creatures'/f'{name}.json',{
+          'format_version':'1.21.90','minecraft:item':{
+            'description':{'identifier':ident,'menu_category':{'category':'items'}},
+            'components':{'minecraft:icon':{'textures':{'default':name}},
+              'minecraft:display_name':{'value':'item.'+ident+'.name'},
+              'minecraft:max_stack_size':64}}})
+    write(registry_path,registry)
+    return len([x for x in sources.values() if x.is_file()])
+
+
 def write(path,doc):
     path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(doc,indent=2)+'\n')
 
@@ -37,6 +115,19 @@ def repair(source,output):
             for file in files:
                 try:dictionaries[namespace][language].update(json.loads(file.read_text(),strict=False))
                 except ValueError as error:language_warnings.append({'source':str(file.relative_to(ROOT)),'error':str(error)})
+    pt_overrides={
+      'minizin:andesite_waystone_block':'Marco de Teleporte',
+      'minizin:warp_stone':'Pedra de Teleporte',
+      'minizin_aether:iron_ring':'Anel de Ferro',
+      'minizin_aether:golden_ring':'Anel de Ouro',
+      'minizin_aether:ice_ring':'Anel de Gelo',
+      'minizin_aether:zanite_ring':'Anel de Zanite',
+      'minizin_iceandfire:dragon_meal':'Comida de Dragão',
+      'minizin_iceandfire:creative_dragon_meal':'Comida de Dragão Criativa',
+      'minizin_iceandfire:dragon_flute':'Flauta de Dragão',
+      'minizin_iceandfire:dragon_armor_iron':'Armadura de Dragão de Ferro',
+      'minizin_alexscaves:serene_salad':'Salada Serena',
+    }
     def translated(kind,ident):
         ns,name=ident.split(':',1)
         if ns=='minizin':
@@ -47,9 +138,15 @@ def repair(source,output):
         for language in languages:
             originals=dictionaries.get(namespace,{}).get(language,{})
             title=originals.get(kind+'.'+namespace+'.'+name,name.replace('_',' ').title())
+            if language=='pt_BR' and ident in pt_overrides:title=pt_overrides[ident]
             languages[language][key]=str(title).replace('\n',' ')
         return key
-    registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text())
+    registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text(encoding='utf-8'))
+    accessory_count=add_aether_accessories(rp,bp)
+    creature_item_count=add_creature_items(rp,bp)
+    # add_aether_accessories updates the on-disk atlas; continue with that
+    # merged registry so later block/item processing cannot erase its entries.
+    registry=json.loads(registry_path.read_text(encoding='utf-8'))
     terrain=json.loads((rp/'textures/terrain_texture.json').read_text())['texture_data']
     geometries={}
     for path in (rp/'models').rglob('*.geo.json'):
@@ -88,15 +185,31 @@ def repair(source,output):
           'components':{'minecraft:icon':{'textures':{'default':icon}},'minecraft:display_name':{'value':display},
             'minecraft:block_placer':{'block':ident},'minecraft:max_stack_size':64}}})
         write(path,doc);block_items+=1
+    spawnable={}
+    for path in (bp/'entities').rglob('*.json'):
+        doc=json.loads(path.read_text(encoding='utf-8'))
+        entity=doc.get('minecraft:entity',{}).get('description',{})
+        if entity.get('identifier'):
+            spawnable[entity['identifier']]=bool(entity.get('is_spawnable',False))
     for path in (bp/'items').rglob('*.json'):
         doc=json.loads(path.read_text());item=doc['minecraft:item'];ident=item['description']['identifier'];comp=item['components']
         if ident.startswith('minizin_') and 'minecraft:block_placer' in comp:continue
         comp['minecraft:display_name']={'value':translated('item',ident)}
         if isinstance(comp.get('minecraft:icon'),str):comp['minecraft:icon']={'textures':{'default':comp['minecraft:icon']}}
+        if 'minecraft:icon' not in comp:
+            candidates=[ident.replace(':','_'),path.stem]
+            icon=next((candidate for candidate in candidates if candidate in registry.get('texture_data',{})),None)
+            if icon:
+                comp['minecraft:icon']={'textures':{'default':icon}}
         if 'ring' in ident:comp['minecraft:max_stack_size']=1
         write(path,doc)
     for path in (rp/'entity').rglob('*.json'):
         doc=json.loads(path.read_text());desc=doc['minecraft:client_entity']['description'];ident=desc['identifier']
+        if not spawnable.get(ident,True):
+            # Migration-only entities must never regain a creative spawn egg.
+            desc.pop('spawn_egg',None)
+            write(path,doc)
+            continue
         # Bedrock localizes the entity itself and the inventory spawn egg with
         # separate keys. Some versions/resource packs request the egg key without
         # the final .name; keep both aliases for the *same* translated entity.
@@ -132,6 +245,7 @@ def repair(source,output):
             if 'uuid' in dependency:dependency['version']=[0,2,2]
         write(path,doc)
     counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
+      'aether_accessories':accessory_count,'creature_items':creature_item_count,
       'fixes':['Preserved models/entity and models/blocks loader paths','Original-pixel explicit block placer icons',
         'Names from upstream language files where available','Individual spawn egg colors from original textures',
         'MCA rings: 50 affinity engagement, 100 marriage','Origins orb opens original selection menu'],

@@ -3,24 +3,37 @@
   "minecraft:block": {
     "description": {
       "identifier": "minizin:andesite_waystone_block",
+      "menu_category": {
+        "category": "construction"
+      },
       "states": {
         "minizin:active": [
           false,
           true
         ]
       },
-      "menu_category": {
-        "category": "construction"
+      "traits": {
+        "minecraft:placement_direction": {
+          "enabled_states": [
+            "minecraft:cardinal_direction"
+          ]
+        }
       }
     },
     "components": {
-      "minecraft:geometry": "geometry.minizin.andesite_waystone",
+      "minecraft:geometry": {
+        "identifier": "geometry.minizin.andesite_waystone_block"
+      },
       "minecraft:material_instances": {
         "*": {
           "texture": "minizin_waystone_original",
-          "render_method": "opaque"
+          "render_method": "alpha_test"
         }
       },
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 2.5
+      },
+      "minecraft:loot": "loot_tables/blocks/andesite_waystone_block.json",
       "minecraft:collision_box": {
         "origin": [
           -8,
@@ -45,8 +58,64 @@
           16
         ]
       },
-      "minecraft:loot": "loot_tables/blocks/andesite_waystone.json",
+      "minecraft:display_name": "tile.minizin:andesite_waystone_block.name",
       "minizin:waystone_control": {}
-    }
+    },
+    "permutations": [
+      {
+        "condition": "q.block_state('minecraft:cardinal_direction') == 'north'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('minecraft:cardinal_direction') == 'east'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              90,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('minecraft:cardinal_direction') == 'south'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              180,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('minecraft:cardinal_direction') == 'west'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              270,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('minizin:active') == true",
+        "components": {
+          "minecraft:light_emission": 7
+        }
+      }
+    ]
   }
 }

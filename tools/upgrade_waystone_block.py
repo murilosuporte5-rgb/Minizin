@@ -145,7 +145,7 @@ def upgrade(folder: Path):
                 "minecraft:icon": {"textures": {"default": icon_key}},
                 "minecraft:display_name": {"value": name},
                 "minecraft:max_stack_size": 64,
-                "minecraft:block_placer": {"block": BLOCK},
+                "minecraft:block_placer": {"block": BLOCK, "replace_block_item": True},
             },
         },
     })
