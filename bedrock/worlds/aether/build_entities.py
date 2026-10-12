@@ -100,6 +100,9 @@ KNOWN_ANIMATION_BONES = {
     "flying_cow": {"body": [4, 0, 0]},
     "moa": {"head": [10, 0, 0]},
     "cloud_minion": {"cloudMinion": [0, 15, 0]},
+    "blue_swet": {"root": [0, 5, 0]},
+    "golden_swet": {"root": [0, 5, 0]},
+    "sentry": {"root": [0, 7, 0]},
 }
 FLOAT = re.compile(r"[-+]?(?:\d*\.\d+|\d+)(?:[FfDd])?$")
 
@@ -379,6 +382,17 @@ def client_entity(mob: str) -> dict:
         desc["textures"]["wings"] = f"textures/entity/minizin_aether/{mob}_wings"
         desc["render_controllers"].append("controller.render.minizin_aether.wings")
     if spec.get("slime_outer"):
+        # Original Aether Swet/Sentry reuse Java SlimeModel. Vanilla Bedrock
+        # slime deformation is retained for genuine bounce/squish rendering.
+        desc["scripts"]["pre_animation"] = [
+            "variable.squish_factor = (query.previous_squish_value + (query.current_squish_value - query.previous_squish_value) * query.frame_alpha);",
+            "variable.bounce = 1 / ((variable.squish_factor / (query.variant * 0.5 + 1)) + 1);",
+            "variable.horizontal_scale_amount = variable.bounce * query.variant;",
+            "variable.vertical_scale_amount = (1 / variable.bounce) * query.variant;"
+        ]
+        desc["scripts"]["scaleX"] = "variable.horizontal_scale_amount"
+        desc["scripts"]["scaleY"] = "variable.vertical_scale_amount"
+        desc["scripts"]["scaleZ"] = "variable.horizontal_scale_amount"
         desc["materials"]["default"] = "slime"
         desc["materials"]["outer"] = "slime_outer"
         desc["geometry"]["outer"] = "geometry.slime.armor"
