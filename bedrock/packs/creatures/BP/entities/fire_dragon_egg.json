@@ -1,0 +1,35 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minizin_creatures:fire_dragon_egg",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "minizin_creatures",
+          "dragon_egg"
+        ]
+      },
+      "minecraft:health": {
+        "value": 3,
+        "max": 3
+      },
+      "minecraft:collision_box": {
+        "width": 0.55,
+        "height": 0.6
+      },
+      "minecraft:physics": {},
+      "minecraft:knockback_resistance": {
+        "value": 1
+      },
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": false
+      }
+    }
+  }
+}
