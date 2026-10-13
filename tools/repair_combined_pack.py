@@ -206,6 +206,123 @@ def add_creature_items(rp,bp):
     return len([x for x in {**sources,**armor_sources}.values() if x.is_file()])
 
 
+def add_source_backed_mowzie_sun_bosses(rp,bp):
+    """Integrate Umvuthi/Umvuthana with the original Mowzie assets.
+
+    The combined pack previously shipped only Bluff even though the pinned
+    Java source includes these two entities, their Bedrock-compatible geometry,
+    textures and animation timelines.  Keep the source meshes and animation
+    keys intact; only the identifier namespace and the runtime property name
+    are adapted for the combined pack.
+    """
+    source_root=ROOT/'mods/44-mowzies-mobs/upstream/src/main/resources/assets/mowziesmobs'
+    legacy_root=ROOT/'bedrock/packs/creatures'
+    specs={
+      'umvuthi': {'health':150,'width':2.7,'height':3.8,'boss':True},
+      'umvuthana': {'health':30,'width':0.75,'height':1.65,'boss':False},
+    }
+    added=[]
+    for name,spec in specs.items():
+        source_bp=legacy_root/'BP/entities'/f'{name}.json'
+        if not source_bp.is_file():
+            raise FileNotFoundError(source_bp)
+        entity=json.loads(source_bp.read_text(encoding='utf-8'))
+        entity_text=json.dumps(entity).replace('minizin_creatures:', 'minizin_mowzies:')
+        entity=json.loads(entity_text)
+        desc=entity['minecraft:entity']['description']
+        ident=f'minizin_mowzies:{name}'
+        desc['identifier']=ident
+        # The Java animation controller uses this enum as its authoritative
+        # attack state; the legacy standalone JSON already preserves its full
+        # attack vocabulary and collision/AI values.
+        prop=desc.setdefault('properties',{}).get('minizin_mowzies:attack')
+        if not prop:
+            raise ValueError(f'Missing attack property in source-backed {name}')
+        write(bp/'entities/mowzies'/f'{name}.json',entity)
+
+        geo=json.loads((source_root/'geo'/f'{name}.geo.json').read_text(encoding='utf-8'))
+        geometry=geo['minecraft:geometry'][0]
+        geometry['description']['identifier']=f'geometry.minizin_mowzies.{name}'
+        write(rp/'models/entity/mowzies'/f'{name}.geo.json',{
+          'format_version':'1.12.0','minecraft:geometry':[geometry]})
+        texture_rel=f'textures/mowzies/entity/{name}'
+        target=rp/(texture_rel+'.png');target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(source_root/'textures/entity'/f'{name}.png',target)
+
+        original=json.loads((source_root/'animations'/f'{name}.animation.json').read_text(encoding='utf-8'))
+        animation_map={}
+        animations={}
+        for animation_name,animation in original.get('animations',{}).items():
+            key=f'animation.minizin.mowzies.{name}.{animation_name}'
+            animations[key]=adapt_source_animation(animation)
+            animation_map[animation_name]=key
+        write(rp/'animations/mowzies'/f'{name}.animation.json',{
+          'format_version':'1.8.0','animations':animations})
+        idle='idle' if name=='umvuthi' else 'idle_neutral'
+        client={
+          'format_version':'1.10.0',
+          'minecraft:client_entity':{'description':{
+            'identifier':ident,
+            'materials':{'default':'entity_alphatest'},
+            'textures':{'default':texture_rel},
+            'geometry':{'default':f'geometry.minizin_mowzies.{name}'},
+            'render_controllers':[f'controller.render.mowzies.{name}'],
+            'animations':animation_map,
+            'scripts':{'animate':[
+              {idle:"query.property('minizin_mowzies:attack') == 'idle'"}
+            ]}
+          }}
+        }
+        # Keep every Java animation addressable from the client entity. The
+        # action property selects attack timelines without replacing geometry.
+        client['minecraft:client_entity']['description']['scripts']['animate'] += [
+          {animation_name:f"query.property('minizin_mowzies:attack') == '{animation_name}'"}
+          for animation_name in animation_map if animation_name not in {'idle','idle_neutral'}
+        ]
+        image=Image.open(target).convert('RGBA')
+        palette=image.getcolors(image.width*image.height) or []
+        opaque=[color for _,color in sorted(palette,reverse=True) if color[3]>128]
+        base='#%02x%02x%02x'%opaque[0][:3] if opaque else '#8c5a32'
+        overlay='#%02x%02x%02x'%opaque[min(3,len(opaque)-1)][:3] if opaque else '#f0c15a'
+        client['minecraft:client_entity']['description']['spawn_egg']={'base_color':base,'overlay_color':overlay}
+        write(rp/'entity/mowzies'/f'{name}.entity.json',client)
+        write(rp/'render_controllers/mowzies'/f'{name}.json',{
+          'format_version':'1.8.0','render_controllers':{
+            f'controller.render.mowzies.{name}':{
+              'geometry':'Geometry.default','materials':[{'*':'Material.default'}],
+              'textures':['Texture.default']}}})
+        added.append(ident)
+
+    # Reuse the audited standalone attack implementation, but isolate its
+    # dynamic-property and entity IDs from the old legacy namespace.
+    runtime=legacy_root/'BP/scripts/umvuthi.js'
+    text=runtime.read_text(encoding='utf-8')
+    text=text.replace('minizin_creatures:umvuthi','minizin_mowzies:umvuthi')
+    text=text.replace('minizin_creatures:umvuthana','minizin_mowzies:umvuthana')
+    text=text.replace('state(e,"attack",name)', 'setAttack(e,name)')
+    text=text.replace('state(e,"attack","idle")', 'setAttack(e,"idle")')
+    text=text.replace('const BOSS=', 'function setAttack(e,name){try{e.setProperty("minizin_mowzies:attack",name);}catch{}}\nconst BOSS=')
+    text += '''\nexport function installMowzieSunBosses(){\n  system.runInterval(()=>{\n    for(const dimensionName of ["overworld","nether","the_end"]){\n      let dimension; try{dimension=world.getDimension(dimensionName);}catch{continue;}\n      for(const entity of dimension.getEntities({families:["minizin_mowzies"]})){\n        try{tickUmvuthi(entity,system.currentTick);}catch(error){\n          if(system.currentTick%600===0) console.warn("[Minizin Mowzie sun bosses] "+error);\n        }\n      }\n    }\n  },10);\n}\n'''
+    # The copied module uses the same audited helper contract as the source
+    # standalone implementation; place its dependency beside it.
+    core=(legacy_root/'BP/scripts/core.js').read_text(encoding='utf-8')
+    write(bp/'scripts/mowzie_sun_core.js',{})
+    (bp/'scripts/mowzie_sun_core.js').write_text(core,encoding='utf-8')
+    (bp/'scripts/mowzie_sun_math.js').write_text(
+        (legacy_root/'BP/scripts/math.js').read_text(encoding='utf-8'),encoding='utf-8')
+    core_path=bp/'scripts/mowzie_sun_core.js'
+    core_path.write_text(core_path.read_text(encoding='utf-8').replace('from "./math.js"','from "./mowzie_sun_math.js"'),encoding='utf-8')
+    text=text.replace('from "./core.js"','from "./mowzie_sun_core.js"')
+    (bp/'scripts/mowzie_sun_bosses.js').write_text(text,encoding='utf-8')
+    main=bp/'scripts/main.js'
+    main_text=main.read_text(encoding='utf-8') if main.is_file() else ''
+    import_line='import {installMowzieSunBosses} from "./mowzie_sun_bosses.js";'
+    if import_line not in main_text:
+        main_text=main_text.rstrip()+'\n'+import_line+'\ninstallMowzieSunBosses();\n'
+    main.write_text(main_text,encoding='utf-8')
+    return added
+
+
 def add_aether_material_items(rp,bp):
     """Stage small source-backed materials required by Aether recipes."""
     assets=ROOT/'mods/41-the-aether/upstream/src/main/resources/assets/aether'
@@ -479,6 +596,23 @@ def write(path,doc):
     path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(doc,indent=2)+'\n')
 
 
+def adapt_source_animation(animation):
+    """Convert the pinned Mowzie animation channel wrappers to Bedrock arrays."""
+    result=json.loads(json.dumps(animation))
+    for bone in result.get('bones',{}).values():
+        for channel,data in list(bone.items()):
+            if not isinstance(data,dict):
+                continue
+            if 'vector' in data:
+                bone[channel]=data['vector']
+            else:
+                bone[channel]={
+                  time:(value['vector'] if isinstance(value,dict) and 'vector' in value else value)
+                  for time,value in data.items() if time!='easing' and time!='easingArgs'
+                }
+    return result
+
+
 def add_waystone_scrolls(rp,bp,registry):
     """Stage the Java Waystones scroll family with original source icons."""
     source=ROOT/'bedrock/packs/waystones'
@@ -675,6 +809,7 @@ def repair(source,output):
     aether_incubator_item_count=add_aether_incubator_items(rp,bp)
     aether_enchanting_item_count=add_aether_enchanting_items(rp,bp)
     creature_item_count=add_creature_items(rp,bp)
+    mowzie_sun_bosses=add_source_backed_mowzie_sun_bosses(rp,bp)
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
@@ -878,6 +1013,7 @@ def repair(source,output):
         write(path,doc)
     counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
       'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
+      'mowzie_sun_bosses':mowzie_sun_bosses,
       'aether_freezer_items':aether_freezer_item_count,
       'aether_enchanting_items':aether_enchanting_item_count,
       'aether_incubator_items':aether_incubator_item_count,
