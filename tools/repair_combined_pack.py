@@ -764,6 +764,117 @@ def add_aether_recipes(bp):
     return {'written':len(written),'written_by_type':written_by_type,'skipped':skipped,'registered_ids':len(registered)}
 
 
+def add_source_backed_cataclysm_recipes(bp):
+    """Convert only Cataclysm vanilla-serializer recipes with real BP IDs.
+
+    This intentionally excludes custom Java serializers and any recipe whose
+    output or ingredient is absent from the combined Bedrock pack.  A partial
+    recipe is worse than a skipped recipe: Bedrock can reject the whole pack,
+    and a fake ingredient would not reproduce the Java progression.
+    """
+    source_root=ROOT/'mods/43-cataclysm/upstream/src/main/resources/data/cataclysm'
+    recipe_root=source_root/'recipes'
+    out=bp/'recipes/cataclysm';out.mkdir(parents=True,exist_ok=True)
+    registered=set()
+    for path in list((bp/'items').rglob('*.json'))+list((bp/'blocks').rglob('*.json')):
+        try:doc=json.loads(path.read_text(encoding='utf-8'))
+        except (OSError,ValueError):continue
+        registered.add(doc.get('minecraft:item',{}).get('description',{}).get('identifier'))
+        registered.add(doc.get('minecraft:block',{}).get('description',{}).get('identifier'))
+    registered.discard(None)
+
+    def ident(value):
+        if not isinstance(value,str):return None
+        if value.startswith('cataclysm:'):value='minizin_cataclysm:'+value.split(':',1)[1]
+        if value.startswith('minecraft:') or value in registered:return value
+        return None
+
+    def ingredient_options(entry):
+        if not isinstance(entry,dict):return []
+        value=entry.get('item') or entry.get('id')
+        resolved=ident(value)
+        if resolved:return [{'item':resolved}]
+        # Java tags cannot be safely passed through unless the Bedrock tag is
+        # known to exist.  Cataclysm recipes currently use concrete items;
+        # keep this branch conservative for future source updates.
+        return []
+
+    def result_id(recipe):
+        result=recipe.get('result',{})
+        if isinstance(result,str):return ident(result)
+        if isinstance(result,dict):return ident(result.get('id') or result.get('item') or result.get('block'))
+        return None
+
+    def variants(entries,limit=64):
+        rows=[{}]
+        for name,options in entries:
+            if not options:return []
+            next_rows=[]
+            for row in rows:
+                for option in options:
+                    copy=dict(row);copy[name]=option;next_rows.append(copy)
+                    if len(next_rows)>=limit:break
+                if len(next_rows)>=limit:break
+            rows=next_rows
+        return rows
+
+    written=[];written_by_type={};skipped={}
+    def skip(reason):skipped[reason]=skipped.get(reason,0)+1
+    def record(recipe_type):
+        written_by_type[recipe_type]=written_by_type.get(recipe_type,0)+1
+
+    for path in sorted(recipe_root.glob('*.json')):
+        try:recipe=json.loads(path.read_text(encoding='utf-8'))
+        except (OSError,ValueError):skip('invalid_json');continue
+        recipe_type=recipe.get('type','');output=result_id(recipe)
+        if not output or not output.startswith('minizin_cataclysm:'):
+            skip('missing_output');continue
+        if recipe_type in {'minecraft:smelting','minecraft:blasting'}:
+            raw=recipe.get('ingredient',[]);raw=raw if isinstance(raw,list) else [raw]
+            options=[]
+            for ingredient in raw:options.extend(ingredient_options(ingredient))
+            if not options:skip('unresolved_ingredient');continue
+            tag='blast_furnace' if recipe_type=='minecraft:blasting' else 'furnace'
+            for ordinal,option in enumerate(options,1):
+                suffix=f'_v{ordinal}' if len(options)>1 else ''
+                ident_name='minizin_cataclysm:'+path.stem+suffix
+                body={'description':{'identifier':ident_name},'tags':[tag],
+                      'input':option['item'],'output':output}
+                target=out/(path.stem+suffix+'.json')
+                target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_furnace':body},indent=2)+'\n',encoding='utf-8')
+                written.append(target);record(recipe_type)
+            continue
+        if recipe_type not in {'minecraft:crafting_shaped','minecraft:crafting_shapeless'}:
+            skip('unsupported_type');continue
+        if recipe_type=='minecraft:crafting_shaped':
+            entries=[(key,ingredient_options(value)) for key,value in recipe.get('key',{}).items()]
+            combinations=variants(entries)
+            if not combinations:skip('unresolved_ingredient');continue
+            for ordinal,combination in enumerate(combinations,1):
+                suffix=f'_v{ordinal}' if len(combinations)>1 else ''
+                ident_name='minizin_cataclysm:'+path.stem+suffix
+                body={'description':{'identifier':ident_name},'tags':['crafting_table'],
+                      'pattern':recipe.get('pattern',[]),'key':combination,
+                      'result':{'item':output,'count':recipe.get('result',{}).get('count',1)}}
+                target=out/(path.stem+suffix+'.json')
+                target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shaped':body},indent=2)+'\n',encoding='utf-8')
+                written.append(target);record(recipe_type)
+        else:
+            entries=[(str(index),ingredient_options(value)) for index,value in enumerate(recipe.get('ingredients',[]))]
+            combinations=variants(entries)
+            if not combinations:skip('unresolved_ingredient');continue
+            for ordinal,combination in enumerate(combinations,1):
+                suffix=f'_v{ordinal}' if len(combinations)>1 else ''
+                ident_name='minizin_cataclysm:'+path.stem+suffix
+                body={'description':{'identifier':ident_name},'tags':['crafting_table'],
+                      'ingredients':[combination[str(index)] for index in range(len(entries))],
+                      'result':{'item':output,'count':recipe.get('result',{}).get('count',1)}}
+                target=out/(path.stem+suffix+'.json')
+                target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shapeless':body},indent=2)+'\n',encoding='utf-8')
+                written.append(target);record(recipe_type)
+    return {'written':len(written),'written_by_type':written_by_type,'skipped':skipped,'registered_ids':len(registered)}
+
+
 def write(path,doc):
     path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(doc,indent=2)+'\n')
 
@@ -1017,6 +1128,7 @@ def repair(source,output):
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
     cataclysm_items=add_source_backed_cataclysm_items(rp,bp,registry)
+    cataclysm_recipe_report=add_source_backed_cataclysm_recipes(bp)
     mowzie_item_count=add_source_backed_mowzie_items(rp,bp,registry)
     waystone_scroll_count=add_waystone_scrolls(rp,bp,registry)
     bop_biome_count=add_bop_worldgen(rp,bp)
@@ -1230,6 +1342,7 @@ def repair(source,output):
       'mowzie_sun_bosses':mowzie_sun_bosses,
       'mowzie_entities':mowzie_entities,
       'cataclysm_items':cataclysm_items,
+      'cataclysm_recipes':cataclysm_recipe_report,
       'mowzie_items':mowzie_item_count,
       'aether_freezer_items':aether_freezer_item_count,
       'aether_enchanting_items':aether_enchanting_item_count,
