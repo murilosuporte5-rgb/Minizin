@@ -52,3 +52,11 @@ test('bound scroll invokes safe travel without requiring a second manual activat
   assert.equal(h.travel[0].options.requireKnown,false);
   assert.equal(h.held,undefined);
 });
+
+test('standalone Waystones uses the same completion-capable travel runtime as the combined pack',()=>{
+  const runtime=readFileSync(new URL('../bedrock/runtime/waystones_block.js',import.meta.url),'utf8');
+  const standalone=readFileSync(new URL('../bedrock/packs/waystones/BP/scripts/waystones_block.js',import.meta.url),'utf8');
+  assert.equal(standalone,runtime);
+  assert.match(standalone,/onComplete/);
+  assert.match(standalone,/requireKnown/);
+});

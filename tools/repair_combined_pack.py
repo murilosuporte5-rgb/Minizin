@@ -165,6 +165,43 @@ def add_aether_material_items(rp,bp):
     write(registry_path,registry);return added
 
 
+def add_aether_freezer_items(rp,bp):
+    """Stage every non-vanilla item referenced by the nine Java Freezer recipes.
+
+    The recipe runtime must never point at an item ID that the pack does not
+    register: ItemStack construction would otherwise fail when a recipe
+    completes. Icons are copied from the Aether source, not recreated.
+    """
+    assets=ROOT/'mods/41-the-aether/upstream/src/main/resources/assets/aether'
+    entries={
+      'skyroot_bucket':('item/miscellaneous/skyroot_bucket.png','Skyroot Bucket','Bucket used by the Aether Freezer.'),
+      'skyroot_water_bucket':('item/miscellaneous/skyroot_water_bucket.png','Skyroot Water Bucket','A Skyroot Bucket filled with water.'),
+      'music_disc_chinchilla':('item/miscellaneous/music_disc_chinchilla.png','Sepia Music Disc','Plays "chinchilla" by RENREN.'),
+      'music_disc_high':('item/miscellaneous/music_disc_high.png','Super Music Disc','Plays "high" by RENREN.'),
+    }
+    registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text(encoding='utf-8'))
+    added=0
+    for name,(relative,title,lore) in entries.items():
+        source=assets/'textures'/relative
+        if not source.is_file():
+            raise FileNotFoundError(f'Missing source-backed Aether Freezer item icon: {source}')
+        ident='minizin_aether:'+name;icon='minizin_aether_freezer_'+name;texture='textures/items/aether_freezer/'+name
+        target=rp/(texture+'.png');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
+        registry.setdefault('texture_data',{})[icon]={'textures':texture}
+        components={'minecraft:icon':{'textures':{'default':icon}},'minecraft:max_stack_size':1,
+          'minecraft:display_name':{'value':'item.'+ident+'.name'},'minecraft:lore':{'value':[lore]}}
+        write(bp/'items/aether_freezer'/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{
+          'description':{'identifier':ident,'menu_category':{'category':'items'}},'components':components}})
+        for language in ('en_US','pt_BR'):
+            title_pt={'skyroot_bucket':'Balde de Skyroot','skyroot_water_bucket':'Balde de Skyroot com Água',
+                      'music_disc_chinchilla':'Disco de Música Sépia','music_disc_high':'Super Disco de Música'}[name]
+            value=title if language=='en_US' else title_pt
+            lang=rp/'texts'/f'{language}.lang';lang.parent.mkdir(parents=True,exist_ok=True)
+            with lang.open('a',encoding='utf-8') as file:file.write(f'item.{ident}.name={value}\n')
+        added+=1
+    write(registry_path,registry);return added
+
+
 def add_aether_recipes(bp):
     """Convert source Aether vanilla recipes whose IDs exist in this BP.
 
@@ -409,6 +446,7 @@ def repair(source,output):
     registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text(encoding='utf-8'))
     accessory_count=add_aether_accessories(rp,bp)
     aether_material_count=add_aether_material_items(rp,bp)
+    aether_freezer_item_count=add_aether_freezer_items(rp,bp)
     creature_item_count=add_creature_items(rp,bp)
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
@@ -527,6 +565,19 @@ def repair(source,output):
     origins_script=bp/'scripts/origins/origins.js'
     if origins_script.parent.is_dir():
         shutil.copy2(ROOT/'bedrock/packs/next_four/BP/scripts/origins.js',origins_script)
+    # Port the source-backed Aether Freezer recipe runtime into the combined
+    # pack. The old candidate only counted these custom serializers and left
+    # the visible block inert.
+    aether_scripts=bp/'scripts/aether_full_v3';aether_scripts.mkdir(parents=True,exist_ok=True)
+    shutil.copy2(ROOT/'bedrock/runtime/aether_freezer.js',aether_scripts/'aether_freezer.js')
+    shutil.copy2(ROOT/'bedrock/runtime/aether_freezer_catalog.js',aether_scripts/'aether_freezer_catalog.js')
+    aether_main=aether_scripts/'main.js'
+    aether_lines=aether_main.read_text(encoding='utf-8').splitlines() if aether_main.exists() else []
+    if 'import "./aether_freezer.js";' not in aether_lines:aether_lines.append('import "./aether_freezer.js";')
+    # Do not deduplicate Aether source lines: repeated control-flow lines are
+    # meaningful JavaScript.  Only remove blank padding while keeping order
+    # and every original statement intact.
+    aether_main.write_text('\n'.join(line for line in aether_lines if line.strip())+'\n',encoding='utf-8')
     # Keep the entrypoint idempotent.  Re-running this repair used to append
     # item_actions.js repeatedly, producing noisy and fragile combined packs.
     main=bp/'scripts/main.js'
@@ -549,7 +600,9 @@ def repair(source,output):
         write(path,doc)
     counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
       'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
+      'aether_freezer_items':aether_freezer_item_count,
       'waystone_scrolls':waystone_scroll_count,
+      'aether_freezer_recipes':9,
       'aether_recipes':aether_recipe_report,
       'fixes':['Preserved models/entity and models/blocks loader paths','Original-pixel explicit block placer icons',
         'Names from upstream language files where available','Individual spawn egg colors from original textures',

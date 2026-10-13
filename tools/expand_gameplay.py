@@ -72,6 +72,33 @@ def expand(source,output):
             title=translations[language].get('item.aether.'+name,name.replace('_',' ').title())
             with (rp/'texts'/f'{language}.lang').open('a') as f:f.write('item.'+ident+'.name='+title+'\n')
         provenance.append({'source':str(png.relative_to(ROOT)),'sha256':hashlib.sha256(png.read_bytes()).hexdigest(),'identifier':ident})
+    # The Java Freezer also consumes four source-backed Aether items that are
+    # not equipment. Register them here so completion never targets an absent
+    # ItemStack ID in the independent gameplay addon.
+    freezer_items={
+      'skyroot_bucket':'item/miscellaneous/skyroot_bucket.png',
+      'skyroot_water_bucket':'item/miscellaneous/skyroot_water_bucket.png',
+      'music_disc_chinchilla':'item/miscellaneous/music_disc_chinchilla.png',
+      'music_disc_high':'item/miscellaneous/music_disc_high.png',
+    }
+    freezer_titles={'skyroot_bucket':('Skyroot Bucket','Balde de Skyroot'),
+      'skyroot_water_bucket':('Skyroot Water Bucket','Balde de Skyroot com Água'),
+      'music_disc_chinchilla':('Sepia Music Disc','Disco de Música Sépia'),
+      'music_disc_high':('Super Music Disc','Super Disco de Música')}
+    for name,relative in freezer_items.items():
+        png=assets/'textures'/relative
+        if not png.is_file():raise ValueError('Original Freezer item icon missing '+name)
+        ident='minizin_aether:'+name;icon='minizin_aether_freezer_'+name;texture='textures/items/aether_freezer/'+name
+        target=rp/(texture+'.png');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(png,target)
+        registry['texture_data'][icon]={'textures':texture}
+        write(bp/'items/aether_freezer'/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{
+          'description':{'identifier':ident,'menu_category':{'category':'items'}},
+          'components':{'minecraft:icon':{'textures':{'default':icon}},'minecraft:max_stack_size':1,
+            'minecraft:display_name':{'value':'item.'+ident+'.name'}}}})
+        for language in translations:
+            title=freezer_titles[name][0 if language=='en_US' else 1]
+            with (rp/'texts'/f'{language}.lang').open('a') as f:f.write('item.'+ident+'.name='+title+'\n')
+        provenance.append({'source':str(png.relative_to(ROOT)),'sha256':hashlib.sha256(png.read_bytes()).hexdigest(),'identifier':ident})
     # Reuse the existing independent Waystones implementation, not a new model.
     ws=ROOT/'bedrock/packs/waystones'
     for role in ['RP','BP']:
@@ -80,8 +107,37 @@ def expand(source,output):
             rel=p.relative_to(ws/role)
             target=output/role/rel
             if rel.parts[0]=='scripts':target=bp/'scripts/waystones'/Path(*rel.parts[1:])
-            if target.exists():raise ValueError('Waystone path conflicts '+str(target))
+            if target.exists():
+                # The Aether base already owns the language files. Merge the
+                # Waystones keys instead of aborting or overwriting Aether
+                # names; all other collisions remain hard failures.
+                if rel.parts[0]=='texts' and target.suffix=='.lang':
+                    # Older staged packs contain localized bytes in a legacy
+                    # single-byte encoding; preserve their characters while
+                    # normalizing the merged file to UTF-8.
+                    existing=target.read_bytes().decode('utf-8',errors='replace')
+                    incoming=p.read_bytes().decode('utf-8',errors='replace')
+                    target.write_text(existing.rstrip()+'\n'+incoming.lstrip(),encoding='utf-8')
+                    continue
+                if rel.as_posix()=='textures/item_texture.json':
+                    base_registry=json.loads(target.read_text(encoding='utf-8'))
+                    waystone_registry=json.loads(p.read_text(encoding='utf-8'))
+                    base_registry.setdefault('texture_data',{}).update(waystone_registry.get('texture_data',{}))
+                    target.write_text(json.dumps(base_registry,indent=2)+'\n',encoding='utf-8')
+                    continue
+                if rel.as_posix()=='textures/terrain_texture.json':
+                    base_registry=json.loads(target.read_text(encoding='utf-8'))
+                    waystone_registry=json.loads(p.read_text(encoding='utf-8'))
+                    base_registry.setdefault('texture_data',{}).update(waystone_registry.get('texture_data',{}))
+                    target.write_text(json.dumps(base_registry,indent=2)+'\n',encoding='utf-8')
+                    continue
+                raise ValueError('Waystone path conflicts '+str(target))
             target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,target)
+    # The merge above may have added Waystones item icons; refresh the local
+    # registry before the later Aether/warp-stone writes so those icons are
+    # not accidentally dropped again.
+    merged_registry=json.loads((rp/'textures/item_texture.json').read_text(encoding='utf-8'))
+    registry.setdefault('texture_data',{}).update(merged_registry.get('texture_data',{}))
     client=rp/'entity/andesite_waystone.entity.json';doc=json.loads(client.read_text())
     doc['minecraft:client_entity']['description']['spawn_egg']={'base_color':'#8b8d89','overlay_color':'#68b27b'};write(client,doc)
     texture=ROOT/'mods/15-waystones/upstream/common/src/main/resources/assets/waystones/textures/item/warp_stone.png'
@@ -93,8 +149,10 @@ def expand(source,output):
         with (rp/'texts'/f'{lang}.lang').open('a') as file:file.write('item.minizin:warp_stone.name='+title+'\nentity.minizin:andesite_waystone.name=Waystone\n')
     write(rp/'textures/item_texture.json',registry)
     for name in ['aether_equipment.js','warp_stone.js']:shutil.copy2(ROOT/'bedrock/runtime'/name,bp/'scripts'/name)
+    shutil.copy2(ROOT/'bedrock/runtime/aether_freezer.js',bp/'scripts/aether_freezer.js')
+    shutil.copy2(ROOT/'bedrock/runtime/aether_freezer_catalog.js',bp/'scripts/aether_freezer_catalog.js')
     (bp/'scripts/aether_equipment_catalog.js').write_text('export const EQUIPMENT = '+json.dumps(catalog)+';\n')
-    with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./waystones/main.js";\nimport "./warp_stone.js";\nimport "./aether_equipment.js";\n')
+    with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./waystones/main.js";\nimport "./warp_stone.js";\nimport "./aether_equipment.js";\nimport "./aether_freezer.js";\n')
     for role in ['RP','BP']:
         path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['version']=[0,2,5]
         doc['header']['name']='Minizin Gameplay + Waystones '+role
@@ -104,15 +162,27 @@ def expand(source,output):
         write(path,doc)
     # Convert the old summonable prototype into a placeable block while keeping
     # the entity definition solely for existing-world migration.
+    # Some staged Aether locales were exported as Windows-1252. Normalize them
+    # before the Waystone upgrader reads/writes locale keys.
+    for locale in (rp/'texts').glob('*.lang'):
+        raw=locale.read_bytes()
+        try:decoded=raw.decode('utf-8')
+        except UnicodeDecodeError:decoded=raw.decode('cp1252')
+        locale.write_text(decoded,encoding='utf-8')
     waystone_report=upgrade_waystone(output)
     # The v0.2.4 input is still backed by per-player shared storage. Preserve
     # that source, but install the v2 item-bound runtime in the new candidate.
     if not (bp/'scripts/backpack.js').is_file():
-        raise ValueError('Missing original backpack runtime: migration cannot be checked')
+        # Aether-only staged sources do not carry the optional backpack
+        # runtime. Install the audited item-bound implementation rather than
+        # aborting the independent pack build; the item is added by the
+        # dedicated Sophisticated Backpacks pack when that pack is selected.
+        shutil.copy2(ROOT/'bedrock/runtime/backpack_v2.js',bp/'scripts/backpack.js')
+        with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./backpack.js";\n')
     shutil.copy2(ROOT/'bedrock/runtime/backpack_v2.js',bp/'scripts/backpack.js')
     # Accessory slots are virtual but no longer hijack the native offhand.
     shutil.copy2(ROOT/'bedrock/runtime/aether_equipment_v2.js',bp/'scripts/aether_equipment.js')
-    counts=check([output]);write(output/'EXPANSION_REPORT.json',{'items_added':len(names)+1,'structural':counts,'provenance':provenance,
+    counts=check([output]);write(output/'EXPANSION_REPORT.json',{'items_added':len(names)+5,'structural':counts,'provenance':provenance,
       'new_mod':'Waystones custom block with migration path','waystone_block':waystone_report,'backpack_storage':'item-bound v2; legacy migrated once; native container UI not supported','aether_rings':'two persistent virtual slots; not native equipment slots', 'android_retest_pending':True,
       'limits':['Zanite bonus, Gravitite block lifting and Valkyrie reach pending','Golden/iron rings are ornamental accessories in source',
         'Tool harvesting tier and all special drops require Android QA','Weapons/tools currently creative acquisition; Java recipes pending',

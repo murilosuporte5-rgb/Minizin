@@ -4,7 +4,7 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 
 ## Pacote gerado
 
-- `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon` (candidato v40)
+- `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon` (candidato v42)
 - SHA-256: `0e087a835ac83a46ee15bf4a00b862cce12f12c331e39a49ea61e2dae4561210`.
 - Estruturalmente: 43 entidades, 375 blocos, 31 scripts, 48 animações e 8 sons.
 - ZIP externo e os dois `.mcpack` internos íntegros.
@@ -14,6 +14,8 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 - Correção v37: o entrypoint combinado ficou idempotente (um único import de `item_actions.js`) e o runtime Waystones é recopiado do código canônico em cada reconstrução; o pacote continua com `beta` porque o Aether usa `registerCustomDimension`.
 - Correção v38: adicionados quatro pergaminhos Waystones baseados nas classes Java `BlankScrollItem`, `BoundScrollItem`, `WarpScrollItem` e `ReturnScrollItem`; o vínculo persiste ID/nome no item, usa os ícones Java originais e só consome após teleporte aceito.
 - Correção v40: o runtime combinado agora sincroniza o poder Java `shulker_inventory`: nove espaços persistentes, preservação de metadados e round-trip testado; a abertura usa `!origins inventario`/`!origins shulk` porque a API Bedrock não permite adicionar uma aba nativa ao inventário.
+- Correção v42: o Freezer do Aether deixou de ser apenas estrutura/contador. O runtime persistente implementa as nove receitas Java de congelamento, com tempos originais, saída e sobras de balde; os quatro itens não-vanilla necessários foram registrados com ícones do upstream.
+- Correção v42: o builder combinado preserva o `main.js` original do Aether sem deduplicar linhas de controle de fluxo. O builder independente também mescla atlas e idiomas de Waystones sem apagar os ícones Aether.
 - Bundle independente: `Minizin_Independent_Packs_2026-10-12.zip`, com 11 `.mcaddon` e os dois `.mcpack` do Sophisticated Backpacks; SHA-256 `e12f499711237474686cc8b53205d6948acf2e2098b8999d8a851b85a6bac5b5`.
 - Pack independente atualizado de criaturas: `Minizin_Creatures_Research.mcaddon`, SHA-256 `c5f7a2c24f47fa8935a3626ee8430576e3ff268ab92b4034d55a229ab9e4b41c`; inclui os 32 itens canônicos de armadura gerados dos ícones Java originais e as chaves PT-BR para itens e ovos geradores.
 
@@ -25,11 +27,12 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 - `node --check` em todos os scripts do BP final: PASS.
 - Validação estrutural final: PASS.
 - Origins: ciclo v40 testado com 5 testes direcionados; além dos poderes adaptados anteriores, o inventário Shulk de 9 espaços preserva item real e metadados em round-trip. Phasing, elytra real, restrições de armadura/alcance e os demais poderes ainda continuam explicitamente pendentes.
+- Aether Freezer: 9/9 receitas Java catalogadas, 9/9 tempos preservados, runtime persistente e quatro itens auxiliares registrados; a interface é uma adaptação via formulário server-side, não a tela nativa Java. Teste no cliente Bedrock/Android ainda não realizado.
 - MCA: profissões Java `none`, `guard`, `archer`, `outlaw`, `adventurer`, `mercenary` e `cultist` podem ser escolhidas e ficam persistidas no NPC; guarda/arqueiro têm defesa adaptada contra monstros. Comércio, roupas e rotinas Java completas continuam pendentes.
 - RFTools: Machine Frame, gerador, Power Cell normal/simple/advanced/creative e seis receitas derivadas dos recursos Java estão no candidato; o runtime migra o estado `v2` e limita transferência pela capacidade de cada tier. A unidade continua sendo Minizin, não Forge FE.
 - Carry On: a whitelist efetiva foi ampliada para blocos vanilla comuns, com portas, camas, portais, líquidos, plantas não transportáveis e entidades críticas bloqueados conforme a blacklist Java; estruturas e estados continuam persistentes e a duplicação permanece bloqueada em escrita incerta.
 
 ## Limite honesto
 
-O pacote ainda não foi instalado/executado em um aparelho Android nesta sessão. Renderização, carregamento real, FPS, memória, multiplayer e compatibilidade com a versão específica do Bedrock continuam pendentes de teste no dispositivo. A matriz completa está em `docs/FUNCTIONALITY_MATRIX.md`.
+O pacote ainda não foi instalado/executado em um aparelho Android nesta sessão. Renderização, carregamento real, FPS, memória, multiplayer, persistência após reconexão e compatibilidade com a versão específica do Bedrock continuam pendentes de teste no dispositivo. A matriz completa está em `docs/FUNCTIONALITY_MATRIX.md`.
 As referências visuais `Minizin_Referencias_Visuais_Java_para_Codex.md` não foram encontradas no filesystem nesta execução; portanto, nenhuma comparação imagem-a-imagem foi declarada como concluída.

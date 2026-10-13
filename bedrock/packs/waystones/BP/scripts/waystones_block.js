@@ -84,22 +84,22 @@ function arrival(row) {
   }
   return null;
 }
-export function travelTo(player,id) {
+export function travelTo(player,id,options={}) {
+  const requireKnown=options.requireKnown!==false;
+  const complete=typeof options.onComplete==='function'?options.onComplete:()=>{};
   const rows=read(world,KEY),row=rows.find(x=>x.id===id);
-  if(!row || !read(player,KNOWN).includes(id)) {
+  if(!row || (requireKnown&&!read(player,KNOWN).includes(id))) {
     player.sendMessage("§eDestino removido ou não ativado.");return false;
   }
   const safe=arrival(row);
   if(safe) {
     try {
       player.teleport(safe.location,{dimension:safe.dimension,checkForBlocks:true});
-      player.sendMessage("§bTeleportado para "+row.name+".");return true;
+      player.sendMessage("§bTeleportado para "+row.name+".");complete(true,row);return true;
     } catch {
-      player.sendMessage("§cTeleporte impedido: destino inacessível.");return false;
+      player.sendMessage("§cTeleporte impedido: destino inacessível.");complete(false,row);return false;
     }
   }
-  // If the destination chunk is not exposed yet, let Bedrock load the real
-  // destination and verify it shortly after. Revert to the source on failure.
   const previous={location:{...player.location},dimension:player.dimension};
   let dimension;
   try {
@@ -107,7 +107,7 @@ export function travelTo(player,id) {
     player.teleport({x:Math.floor(row.x)+1.5,y:Math.floor(row.y)+1,z:Math.floor(row.z)+0.5},
       {dimension,checkForBlocks:true});
   } catch (error) {
-    player.sendMessage("§cRegião distante ainda indisponível: "+String(error));return false;
+    player.sendMessage("§cRegião distante ainda indisponível: "+String(error));complete(false,row);return false;
   }
   system.runTimeout(()=>{
     if(!player.isValid)return;
@@ -115,12 +115,12 @@ export function travelTo(player,id) {
       const loaded=arrival(row);
       if(loaded) {
         player.teleport(loaded.location,{dimension:loaded.dimension,checkForBlocks:true});
-        player.sendMessage("§bChegada segura em "+row.name+".");
+        player.sendMessage("§bChegada segura em "+row.name+".");complete(true,row);
       } else {
         player.teleport(previous.location,{dimension:previous.dimension,checkForBlocks:true});
-        player.sendMessage("§eDestino removido, bloqueado ou não carregado; viagem revertida.");
+        player.sendMessage("§eDestino removido, bloqueado ou não carregado; viagem revertida.");complete(false,row);
       }
-    } catch(error) { player.sendMessage("§cFalha de verificação do destino: "+String(error)); }
+    } catch(error) { player.sendMessage("§cFalha de verificação do destino: "+String(error));complete(false,row); }
   },10);
   return true;
 }
@@ -182,7 +182,10 @@ system.beforeEvents.startup.subscribe(init=>{
       catch(error){console.warn("[Waystones] place: "+String(error));}
     }),
     onPlayerInteract:e=>{
-      if(e.player)system.run(()=>interact(e.player,e.block));
+      // Java lets scrolls act on the waystone instead of opening its menu.
+      // The item-use handler performs the binding transaction separately.
+      if(e.player&&!['minizin:blank_scroll'].includes(e.itemStack?.typeId))
+        system.run(()=>interact(e.player,e.block));
     },
     onPlayerBreak:e=>{
       // A destroyed block cannot be read reliably here; its location remains.
