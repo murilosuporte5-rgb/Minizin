@@ -30,6 +30,12 @@ test('Aether accessories are usable without the native offhand',()=>{
   assert.match(runtime,/EquipmentSlot\.Offhand/);
 });
 
+test('Aether accessory runtime ports Java Zanite speed and glove durability',()=>{
+  assert.match(runtime,/1\.4\+\(d\.damage\/\(d\.maxDurability\*3\)\)/);
+  assert.match(runtime,/wearEquipped\(player,data=>data\.type\?\.endsWith\("_gloves"\)\)/);
+  assert.match(runtime,/minizin:aether_invisibility_attack/);
+});
+
 test('Aether accessory round-trip attempts to restore Java enchantment metadata',()=>{
   assert.match(runtime,/EnchantmentTypes/);
   assert.match(runtime,/data\.enchantments/);

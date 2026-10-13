@@ -68,6 +68,22 @@ function deserialize(data){
   return item;
 }
 function label(slot){return slot?.name||slot?.type?.split(":").pop()?.replace(/_/g," ")||"Vazio";}
+function equippedRows(player){return read(player).filter(Boolean);}
+function hasEquipped(player,...types){const wanted=new Set(types);return equippedRows(player).some(row=>wanted.has(row.type));}
+function wearEquipped(player,predicate,amount=1){
+  const rows=read(player),next=[...rows];
+  for(let index=0;index<next.length;index++){
+    const data=next[index];if(!data||!predicate(data))continue;
+    const item=deserialize(data),durability=item.getComponent("minecraft:durability");
+    if(!durability)continue;
+    durability.damage+=amount;next[index]=durability.damage>=durability.maxDurability?null:serialize(item);write(player,next);return true;
+  }
+  return false;
+}
+function clearInvisibilityAfterAttack(player){
+  if(!hasEquipped(player,"minizin_aether:invisibility_cloak"))return;
+  player.setDynamicProperty("minizin:aether_invisibility_attack",system.currentTick+100);
+}
 async function menu(player){
   if(busy.has(player.id))return;busy.add(player.id);
   try{
@@ -112,6 +128,10 @@ function wear(player,amount){
 }
 world.afterEvents.entityHitEntity.subscribe(({damagingEntity,hitEntity:target})=>{
   if(damagingEntity.typeId!=="minecraft:player")return;const player=damagingEntity,item=inventory(player)?.getItem(player.selectedSlotIndex),spec=EQUIPMENT[item?.typeId];
+  clearInvisibilityAfterAttack(player);
+  // Java's AccessoryAbilityListener damages equipped gloves on every hit,
+  // independently of the weapon held in the native hand.
+  try{wearEquipped(player,data=>data.type?.endsWith("_gloves"));}catch(error){console.warn("[Aether gloves] "+String(error));}
   if(!spec||spec.accessory)return;
   try{
     if(system.currentTick-(timers.get(player.id)??-1000)>=12){timers.set(player.id,system.currentTick);
@@ -138,10 +158,21 @@ system.runInterval(()=>{
       }
     }
     const equipped=rows.filter(Boolean).map(value=>value.type);
-    if(equipped.includes("minizin_aether:invisibility_cloak"))player.addEffect?.("invisibility",20,{amplifier:0,showParticles:false});
+    const invisibilityBlocked=Number(player.getDynamicProperty("minizin:aether_invisibility_attack")||0)>system.currentTick;
+    if(equipped.includes("minizin_aether:invisibility_cloak")&&!invisibilityBlocked)player.addEffect?.("invisibility",20,{amplifier:0,showParticles:false});
     if(equipped.includes("minizin_aether:golden_feather")||equipped.includes("minizin_aether:agility_cape")||equipped.includes("minizin_aether:valkyrie_cape"))player.addEffect?.("slow_falling",20,{amplifier:0,showParticles:false});
     if(equipped.includes("minizin_aether:iron_bubble"))player.addEffect?.("water_breathing",20,{amplifier:0,showParticles:false});
     if(equipped.includes("minizin_aether:regeneration_stone"))player.addEffect?.("regeneration",20,{amplifier:0,showParticles:false});
+    // Java ZaniteAccessory.handleMiningSpeed applies a continuous multiplier
+    // of 1.4 + (damage / (maxDamage * 3)). Bedrock exposes no break-speed
+    // event, so Haste is the closest public API adaptation while preserving
+    // the real persisted durability ratio.
+    const zanite=rows.filter(value=>value&&(value.type==="minizin_aether:zanite_ring"||value.type==="minizin_aether:zanite_pendant"));
+    if(zanite.length){
+      const strongest=Math.max(...zanite.map(value=>{
+        try{const item=deserialize(value),d=item.getComponent("minecraft:durability");return d?1.4+(d.damage/(d.maxDurability*3)):1.4;}catch{return 1.4;}}));
+      player.addEffect?.("haste",20,{amplifier:strongest>=1.6?1:0,showParticles:false});
+    }
   }catch(error){console.warn("[Aether accessories] "+String(error));}
 },10);
 world.afterEvents.playerLeave.subscribe(({playerId})=>{busy.delete(playerId);timers.delete(playerId);});
