@@ -1,5 +1,5 @@
 import {world, system, EntityDamageCause, ItemStack} from '@minecraft/server';
-import {planAttack} from './combat.js';
+import {planAttack,planUmvuthiAttack} from './combat.js';
 import {CREATURES} from './creature_catalog.js';
 import {ARMOR_MATERIALS,ARMOR_SLOTS,armorOrdinal,armorRating} from './dragon_armor.js';
 
@@ -185,7 +185,8 @@ function installDragonInteractions() {
 installDragonInteractions();
 const SPECIAL_BOSSES = new Set([
   'minizin_cataclysm:ignis','minizin_cataclysm:harbinger',
-  'minizin_cataclysm:ender_guardian','minizin_mowzies:bluff'
+  'minizin_cataclysm:ender_guardian','minizin_mowzies:bluff',
+  'minizin_mowzies:umvuthi'
 ]);
 const bossKey = (entity,key,fallback=0) => {
   try { return entity.getDynamicProperty('minizin:boss_'+key) ?? fallback; }
@@ -207,8 +208,79 @@ function bossStrike(entity,target,damage,particle='minecraft:basic_smoke_particl
     entity.setProperty('minizin:attacking',true);
   } catch {}
 }
+function tickUmvuthi(entity,target,tick,health){
+  let mode=Number(bossKey(entity,'mode',0));
+  const start=Number(bossKey(entity,'start',tick));
+  const elapsed=tick-start;
+  const duration=mode===1?25:mode===2?30:100;
+  if(mode&&(elapsed<0||elapsed>=duration)){
+    mode=0;setBossKey(entity,'mode',0);
+    entity.setProperty('minizin:attack_mode',0);
+    entity.setProperty('minizin:attacking',false);
+  }
+  const players=entity.dimension.getPlayers({location:entity.location,maxDistance:24});
+  if(mode){
+    if(mode===1&&elapsed>=9&&!bossKey(entity,'impact',false)){
+      setBossKey(entity,'impact',true);
+      for(const player of players)if(length(difference(player.location,target.location))<=2.5&&visible(entity,player)){
+        bossStrike(entity,player,9,'minecraft:basic_flame_particle',0.25);
+        try{player.setOnFire(3,true);}catch{}
+      }
+    }
+    if(mode===2&&elapsed>=12&&!bossKey(entity,'impact',false)){
+      setBossKey(entity,'impact',true);
+      for(const player of players){
+        const d=difference(player.location,entity.location),range=length(d);
+        if(range>4||!visible(entity,player))continue;
+        bossStrike(entity,player,8,'minecraft:basic_flame_particle');
+        try{player.applyImpulse({x:d.x/Math.max(1,range)*0.9,y:0.3,z:d.z/Math.max(1,range)*0.9});}catch{}
+      }
+    }
+    if(mode===3&&elapsed>=22&&elapsed<90&&tick-Number(bossKey(entity,'last_beam',-1000))>=10){
+      setBossKey(entity,'last_beam',tick);
+      for(const player of players)
+        if(segmentDistance(player.location,entity.location,target.location)<=1.5&&
+           length(difference(player.location,entity.location))<=24&&visible(entity,player)){
+          bossStrike(entity,player,4,'minecraft:basic_flame_particle');
+          try{player.setOnFire(2,true);}catch{}
+        }
+    }
+    if(mode===4){
+      if(elapsed<30)for(const player of players){
+        const d=difference(entity.location,player.location),range=length(d);
+        if(range>16||range<0.5)continue;
+        try{player.applyImpulse({x:d.x/range*0.03,y:0.075,z:d.z/range*0.03});}catch{}
+      }
+      if(elapsed>=44&&!bossKey(entity,'impact',false)){
+        setBossKey(entity,'impact',true);
+        for(const player of players)if(length(difference(player.location,entity.location))<=10&&visible(entity,player))
+          bossStrike(entity,player,16,'minecraft:basic_flame_particle',0.6);
+      }
+    }
+    return true;
+  }
+  const ready=key=>{
+    const value=Number(bossKey(entity,key,0));
+    return value-tick>10000?0:value; // world tick may restart after a reload
+  };
+  const attack=planUmvuthiAttack(length(difference(target.location,entity.location)),
+    health.currentValue/Math.max(1,health.effectiveMax),tick,
+    {supernova:ready('supernova_ready'),beam:ready('beam_ready'),sunstrike:ready('sunstrike_ready')});
+  if(!attack||tick<ready('cooldown'))return false;
+  setBossKey(entity,'mode',attack.mode);setBossKey(entity,'start',tick);
+  setBossKey(entity,'impact',false);setBossKey(entity,'cooldown',tick+attack.duration+10);
+  if(attack.mode===4)setBossKey(entity,'supernova_ready',tick+attack.repeat);
+  if(attack.mode===3)setBossKey(entity,'beam_ready',tick+attack.repeat);
+  if(attack.mode===1)setBossKey(entity,'sunstrike_ready',tick+attack.repeat);
+  entity.setProperty('minizin:attack_mode',attack.mode);
+  entity.setProperty('minizin:attacking',true);
+  try { if(attack.mode===4)entity.dimension.playSound('minizin.mowzies.umvuthi.attack',entity.location); }
+  catch{}
+  return true;
+}
 function specialBossAttack(entity,target,tick,health) {
   if(!SPECIAL_BOSSES.has(entity.typeId)||!target)return false;
+  if(entity.typeId==='minizin_mowzies:umvuthi')return tickUmvuthi(entity,target,tick,health);
   const distanceTo=length(difference(target.location,entity.location));
   const cooldown=Number(bossKey(entity,'cooldown',0));
   if(tick<cooldown)return false;
@@ -304,6 +376,10 @@ system.runInterval(() => {
           const closest = candidates[0];
           if (!closest) {
             entity.setProperty('minizin:attacking',false);
+            if(spec.kind==='umvuthi'){
+              setBossKey(entity,'mode',0);
+              entity.setProperty('minizin:attack_mode',0);
+            }
             if(spec.kind==='dragon'&&entity.getProperty('minizin:flying')){
               entity.triggerEvent('minizin:land');entity.setProperty('minizin:flying',false);
             }

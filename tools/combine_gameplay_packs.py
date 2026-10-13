@@ -36,6 +36,14 @@ def combine(folders,output):
                 rel=path.relative_to(folder/role)
                 if rel.as_posix()=='manifest.json':continue
                 if rel.parts[0]=='scripts':continue
+                if role=='RP' and rel.parts[0]=='texts' and rel.suffix=='.lang':
+                    # Bedrock loads locale files from RP/texts/, not nested mod
+                    # directories. Namespaced keys may coexist in one file.
+                    locale=output/role/rel
+                    locale.parent.mkdir(parents=True,exist_ok=True)
+                    with locale.open('a',encoding='utf-8') as stream:
+                        stream.write(path.read_text(encoding='utf-8').rstrip('\n')+'\n')
+                    continue
                 target=output/role/rel.parts[0]/mod/Path(*rel.parts[1:])
                 # Models have a loader-specific second directory. Preserve it.
                 if role=='RP' and rel.parts[0]=='models':

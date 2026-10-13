@@ -94,8 +94,10 @@ def add_entity(folder, name, geo, texture, kind, report, clips=None, sound=None,
                                                'textures':['Texture.default']}}})
     hostile = kind != 'atlatitan'
     components = {'minecraft:type_family':{'family':['minizin_creature',folder.name,'mob']},
-        'minecraft:health':{'value':200 if kind in ('dragon','boss') else 40,'max':200 if kind in ('dragon','boss') else 40},
-        'minecraft:collision_box':{'width':2 if kind in ('dragon','boss','atlatitan') else 1,'height':3 if kind!='bluff' else 1.5},
+        'minecraft:health':{'value':150 if kind=='umvuthi' else 200 if kind in ('dragon','boss') else 40,
+                            'max':150 if kind=='umvuthi' else 200 if kind in ('dragon','boss') else 40},
+        'minecraft:collision_box':{'width':1.5 if kind=='umvuthi' else 2 if kind in ('dragon','boss','atlatitan') else 1,
+                                   'height':3.2 if kind=='umvuthi' else 3 if kind!='bluff' else 1.5},
         'minecraft:physics':{},'minecraft:pushable':{'is_pushable':True,'is_pushable_by_piston':True},
         'minecraft:movement':{'value':0.2},'minecraft:movement.basic':{},'minecraft:navigation.walk':{'can_path_over_water':True},
         'minecraft:behavior.random_stroll':{'priority':7,'speed_multiplier':0.7},
@@ -106,6 +108,11 @@ def add_entity(folder, name, geo, texture, kind, report, clips=None, sound=None,
             'entity_types':[{'filters':{'test':'is_family','subject':'other','value':'player'},'max_dist':24}]}
     components['minecraft:attack']={'damage':6}
     components['minecraft:behavior.melee_attack']={'priority':3,'speed_multiplier':1.2,'track_target':True}
+    if kind=='umvuthi':
+        # Umvuthi's Java attacks are timed abilities, not an ordinary melee AI.
+        components.pop('minecraft:behavior.melee_attack')
+        components.pop('minecraft:behavior.random_stroll')
+        components['minecraft:movement']={'value':0}
     groups, events = {}, {}
     if kind=='dragon':
         # Each slot is a synchronized ordinal. The texture overlays come from
@@ -142,11 +149,13 @@ def add_entity(folder, name, geo, texture, kind, report, clips=None, sound=None,
             events[key]={'remove':{'component_groups':[f'minizin:dragon_armor_{n}' for n in range(1,17) if n!=rating]},
                          'add':{'component_groups':[key]}}
         events['minizin:dragon_armor_0']={'remove':{'component_groups':[f'minizin:dragon_armor_{n}' for n in range(1,17)]}}
-    if kind=='boss':
+    if kind in ('boss','umvuthi'):
         components['minecraft:boss']={'name':name.replace('_',' ').title(),'hud_range':48,'should_darken_sky':False}
     write(bp/'entities'/f'{name}.json',{'format_version':'1.21.0','minecraft:entity':{
         'description':{'identifier':ident,'is_spawnable':True,'is_summonable':True,'is_experimental':False,
             'properties':{**{f'minizin:{p}':{'type':'bool','default':False,'client_sync':True} for p in ['flying','attacking','enraged']},
+                **({'minizin:attack_mode':{'type':'int','range':[0,4],'default':0,'client_sync':True}}
+                    if kind=='umvuthi' else {}),
                 **({f'minizin:armor_{slot}':{'type':'int','range':[0,8],'default':0,'client_sync':True}
                     for slot in DRAGON_ARMOR_SLOTS} if kind=='dragon' else {})}},
         'components':components,'component_groups':groups,'events':events}})
@@ -155,6 +164,56 @@ def add_entity(folder, name, geo, texture, kind, report, clips=None, sound=None,
         copy_asset(sound,rp/'sounds'/f'{name}.ogg',report)
         sound_id = f'minizin.{folder.name}.{name}.attack'
     return ident, {'kind':kind,'element':element,'sound':sound_id}
+
+
+def add_sol_visage(folder, assets, report):
+    """Umvuthi's player-kill reward, with its own Java rig and mask texture."""
+    rp,bp=folder/'RP',folder/'BP'
+    ident='minizin_mowzies:sol_visage'
+    copy_asset(assets/'textures/item/sol_visage.png',rp/'textures/items/sol_visage.png',report)
+    copy_asset(assets/'textures/entity/umvuthi.png',rp/'textures/entity/sol_visage.png',report)
+    write(rp/'textures/item_texture.json',{'resource_pack_name':'Minizin Mowzies',
+        'texture_name':'atlas.items','texture_data':{'minizin_mowzies_sol_visage':{
+            'textures':'textures/items/sol_visage'}}})
+    write(bp/'items/sol_visage.json',{'format_version':'1.21.90','minecraft:item':{
+        'description':{'identifier':ident,'menu_category':{'category':'equipment'}},
+        'components':{'minecraft:icon':{'textures':{'default':'minizin_mowzies_sol_visage'}},
+            'minecraft:display_name':{'value':'item.minizin_mowzies:sol_visage.name'},
+            'minecraft:max_stack_size':1,
+            'minecraft:wearable':{'slot':'slot.armor.head','protection':2}}}})
+    for language in ('en_US','pt_BR'):
+        target=rp/'texts'/f'{language}.lang'
+        target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_text('item.minizin_mowzies:sol_visage.name='+
+            ('Sol Visage' if language=='en_US' else 'Máscara Sol Visage')+'\n')
+    geo=load_geometry(assets/'geo/sol_visage.geo.json')
+    geo['description']['identifier']='geometry.minizin_mowzies.sol_visage'
+    # The original is a player head rig. Bind the root to the wearer head;
+    # the source coordinates are retained for an Android visual QA pass.
+    for bone in geo['bones']:
+        if bone['name']=='bipedHead': bone['binding']='head'
+    write(rp/'models/entity/sol_visage.geo.json',{'format_version':'1.12.0','minecraft:geometry':[geo]})
+    report.append({'source':str((assets/'geo/sol_visage.geo.json').relative_to(ROOT)),
+        'strategy':'CONVERT','item':ident,
+        'sha256':hashlib.sha256((assets/'geo/sol_visage.geo.json').read_bytes()).hexdigest()})
+    write(rp/'attachables/sol_visage.json',{'format_version':'1.10.0','minecraft:attachable':{
+        'description':{'identifier':ident,'materials':{'default':'entity_alphatest'},
+            'textures':{'default':'textures/entity/sol_visage'},
+            'geometry':{'default':'geometry.minizin_mowzies.sol_visage'},
+            'render_controllers':['controller.render.minizin_mowzies.sol_visage']}}})
+    write(rp/'render_controllers/sol_visage.json',{'format_version':'1.8.0',
+        'render_controllers':{'controller.render.minizin_mowzies.sol_visage':{
+            'geometry':'Geometry.default','materials':[{'*':'Material.default'}],
+            'textures':['Texture.default']}}})
+    write(bp/'loot_tables/entities/umvuthi.json',{'pools':[
+        {'rolls':1,'conditions':[{'condition':'killed_by_player'}],
+         'entries':[{'type':'item','name':ident,'weight':1}]},
+        {'rolls':1,'entries':[{'type':'item','name':'minecraft:feather','weight':1,
+            'functions':[{'function':'set_count','count':{'min':0,'max':4}}]}]}]})
+    entity_path=bp/'entities/umvuthi.json'
+    entity=json.loads(entity_path.read_text())
+    entity['minecraft:entity']['components']['minecraft:loot']={'table':'loot_tables/entities/umvuthi.json'}
+    write(entity_path,entity)
 
 
 def add_dragon_egg(folder, kind, texture, report):
@@ -288,6 +347,22 @@ def build(output):
             ident,spec=add_entity(folder,'bluff',geo,assets/'textures/entity/bluff.png','bluff',report,clips,
                 assets/'sounds/entity/bluff/spike_explode.ogg')
             catalog[ident]=spec
+            # The pinned Mowzie source ships a Bedrock-format rig and GeckoLib
+            # keyframes for Umvuthi. Keep its own four attack clips, not Bluff's
+            # mesh or a generic boss animation.
+            umvuthi=json.loads((assets/'animations/umvuthi.animation.json').read_text())['animations']
+            modes=[('mask_twitch',0),('sun_strike',1),('flare',2),('solar_beam',3),('supernova',4)]
+            clips=[]
+            for key,mode in modes:
+                animation=adapt_gecko(umvuthi[key]);animation['loop']=mode==0
+                clips.append((key,{'format_version':'1.8.0','animations':{
+                    'animation.minizin.umvuthi.'+key:animation}},
+                    f"query.property('minizin:attack_mode') == {mode}"))
+            ident,spec=add_entity(folder,'umvuthi',assets/'geo/umvuthi.geo.json',
+                assets/'textures/entity/umvuthi.png','umvuthi',report,clips,
+                assets/'sounds/entity/umvuthi/attack1.ogg')
+            catalog[ident]=spec
+            add_sol_visage(folder,assets,report)
         scripts=folder/'BP/scripts';scripts.mkdir(parents=True,exist_ok=True)
         for source,dest in [('creatures.js','main.js'),('combat.mjs','combat.js'),('dragon_armor.js','dragon_armor.js')]:
             shutil.copy2(ROOT/'bedrock/runtime'/source,scripts/dest)

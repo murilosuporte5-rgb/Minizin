@@ -98,3 +98,16 @@ Arquivos reconstruídos e preservados para teste privado:
 | `Minizin_12_Packs_Independentes_CANDIDATOS.zip` | 3.019.072 | `16cf1a474f2820fc6850b43933688e3c57b5ff139da440a39c92f8a243b1a07f` |
 
 Verificação local executada: 36 testes Python do projeto, 28 testes de mundos e 18 arquivos de testes Node; validação estrutural do integrado (49 entidades, 399 blocos, 50 scripts, 67 definições de animação e oito referências de áudio), referências BP/RP, manifestos, JSON e integridade ZIP aninhada no empacotador. O BP integrado contém 900 definições de itens e 69 biomas; contagem de arquivos não comprova sua geração ou comportamento no jogo. O usuário fará o teste Android, ainda pendente. Verificar importação, Content Log, ícones, armaduras equipadas, animações, portal/retorno, biomas em mundo novo, persistência da mochila após reinício, Carry On entre chunks, FPS e memória. Permanecem incompletos os catálogos completos de mobs, máquinas, upgrades, poderes, arenas e sistemas originais Java descritos na matriz anterior. Não declarar os 12 mods concluídos nem publicar a arte de terceiros sem confirmar o direito de redistribuição.
+
+## Continuação: candidato privado v0.3.8
+
+Fonte fixada de Mowzie's Mobs (`7aa17309337cbd4102efc418cba12a4983b1540c`) forneceu geometria original de Umvuthi, textura 256×128, cinco animações adaptadas e som de ataque. O boss agora usa 150 pontos de vida, estado de animação sincronizado e quatro ataques programados (`sun_strike`, `flare`, `solar_beam`, `supernova`) com alcance, janelas de impacto e recarga próprios. A máscara Sol Visage tem ícone de origem, armadura de cabeça, rig original vinculado à cabeça e loot condicionado à morte do boss por jogador. O Java também permite invocar minions com ela; **essa habilidade ainda não foi portada**. Aparência equipada, escala, sincronização em combate e loot real exigem verificação no Android.
+
+O combinador agora mescla arquivos `.lang` na raiz `RP/texts` para que Bedrock encontre as traduções. O build final foi reconstruído a partir da fonte, integrou o binário v0.3.3 anexado com todos os seus identificadores e passou a validação offline. O pacote contém 50 definições de entidades (incluindo seis aliases legados), 399 blocos, 72 animações, 50 scripts, nove sons e 69 biomas. Esses números não atestam fidelidade funcional ou geração natural de biomas.
+
+| Arquivo privado de teste | Bytes | SHA-256 |
+|---|---:|---|
+| `Minizin_Integrado_12_MODS_ANDROID_CANDIDATO_v038.mcaddon` | 4.666.163 | `77a4b505fd9dd6a09c89e5aa80a1078144b33931dd8d2966ef945f9d8bc92c75` |
+| `Minizin_12_Packs_Independentes_CANDIDATOS.zip` | 3.091.312 | `c58e570a6bac473e04bb0d2427aad453de809b8551c54b4b0f17f00ae8742d5d` |
+
+Testes executados: 37 testes Python do projeto, 28 testes Python de mundos, 19 arquivos de testes Node e integridade dos dois arquivos aninhados `.mcpack` no integrado. `tests/test_umvuthi_pack.py` verifica links de geometria, textura, animações, loot e item; `tests/umvuthi.test.mjs` verifica escolha de padrões por distância e fase. Não há acesso ao Minecraft Android nesta execução. O catálogo integral Java dos 12 mods, a fidelidade visual comprovada e o teste de coexistência em jogo continuam pendentes. Arte derivada de terceiros permanece apenas nos builds privados ignorados pelo Git; a publicação pública do binário depende de direito de redistribuição.
