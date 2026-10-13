@@ -4,9 +4,10 @@ import {readFileSync} from 'node:fs';
 
 const runtime=readFileSync(new URL('../bedrock/runtime/aether_equipment_v2.js',import.meta.url),'utf8');
 const builder=readFileSync(new URL('../tools/repair_combined_pack.py',import.meta.url),'utf8');
-const catalogSource=readFileSync(new URL('../build/combined_all_bosses_final_v30/BP/scripts/aether_equipment_catalog.js',import.meta.url),'utf8');
-const pickaxe=JSON.parse(readFileSync(new URL('../build/combined_all_bosses_final_v30/BP/items/aether_equipment/skyroot_pickaxe.json',import.meta.url),'utf8'));
-const recipe=JSON.parse(readFileSync(new URL('../build/combined_all_bosses_final_v30/BP/recipes/aether/skyroot_pickaxe.json',import.meta.url),'utf8'));
+const catalogSource=readFileSync(new URL('../build/combined_all_bosses_final_v32/BP/scripts/aether_equipment_catalog.js',import.meta.url),'utf8');
+const pickaxe=JSON.parse(readFileSync(new URL('../build/combined_all_bosses_final_v32/BP/items/aether_equipment/skyroot_pickaxe.json',import.meta.url),'utf8'));
+const recipe=JSON.parse(readFileSync(new URL('../build/combined_all_bosses_final_v32/BP/recipes/aether/skyroot_pickaxe.json',import.meta.url),'utf8'));
+const recipeReport=JSON.parse(readFileSync(new URL('../build/combined_all_bosses_final_v32/FIX_REPORT.json',import.meta.url),'utf8'));
 const catalog=JSON.parse(catalogSource.replace(/^export const EQUIPMENT = /,'').replace(/;\s*$/,''));
 
 test('Aether virtual accessory menu matches Java slot categories and counts',()=>{
@@ -43,6 +44,14 @@ test('final Aether tools preserve Java tier components and crafting progression'
   assert.equal(recipe['minecraft:recipe_shaped'].result.item,'minizin_aether:skyroot_pickaxe');
   assert.equal(recipe['minecraft:recipe_shaped'].key['#'].item,'minizin_aether:skyroot_planks');
   assert.equal(recipe['minecraft:recipe_shaped'].key['/'].item,'minizin_aether:skyroot_stick');
+});
+
+test('final Aether recipe report preserves furnace and stonecutter conversions',()=>{
+  const written=recipeReport.aether_recipes.written_by_type;
+  assert.equal(written['minecraft:stonecutting'],22);
+  assert.equal(written['minecraft:smelting'],9);
+  assert.equal(written['minecraft:blasting'],9);
+  assert.equal(recipeReport.aether_recipes.written,106);
 });
 
 test('repair builder stages original icons and Java durability boundaries',()=>{

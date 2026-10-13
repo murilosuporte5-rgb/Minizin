@@ -229,14 +229,50 @@ def add_aether_recipes(bp):
     def result_id(recipe):
         result=recipe.get('result',{})
         return ident(result.get('id') or result.get('item') or result.get('block'))
-    written=[];skipped={}
+    written=[];written_by_type={};skipped={}
+    def record(target,recipe_type):
+        written.append(target);written_by_type[recipe_type]=written_by_type.get(recipe_type,0)+1
     for path in sorted(recipe_root.glob('*.json')):
         try:recipe=json.loads(path.read_text(encoding='utf-8'))
         except (OSError,ValueError):skipped['invalid_json']=skipped.get('invalid_json',0)+1;continue
         recipe_type=recipe.get('type','')
+        output=result_id(recipe)
+        if recipe_type=='minecraft:stonecutting':
+            options=ingredient_options(recipe.get('ingredient'))
+            count=recipe.get('result',{}).get('count',1)
+            if not output or not options or count < 1:
+                skipped['unresolved_ingredient']=skipped.get('unresolved_ingredient',0)+1;continue
+            for ordinal,option in enumerate(options,1):
+                suffix=f'_v{ordinal}' if len(options)>1 else ''
+                ident_name='minizin_aether:'+path.stem+suffix
+                body={'description':{'identifier':ident_name},'tags':['stonecutter'],
+                  'ingredients':[option],'result':{'item':output,'count':count}}
+                target=out/(ident_name.split(':',1)[1]+'.json')
+                target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shapeless':body},indent=2)+'\n',encoding='utf-8')
+                record(target,recipe_type)
+            continue
+        if recipe_type in {'minecraft:smelting','minecraft:blasting'}:
+            raw=recipe.get('ingredient',[])
+            ingredients=raw if isinstance(raw,list) else [raw]
+            options=[]
+            for ingredient in ingredients:options.extend(ingredient_options(ingredient))
+            count=recipe.get('result',{}).get('count',1)
+            if not output or not options or count != 1:
+                skipped['unresolved_ingredient']=skipped.get('unresolved_ingredient',0)+1;continue
+            tag='blast_furnace' if recipe_type=='minecraft:blasting' else 'furnace'
+            for ordinal,option in enumerate(options,1):
+                if 'item' not in option:
+                    skipped['unresolved_ingredient']=skipped.get('unresolved_ingredient',0)+1;continue
+                suffix=f'_v{ordinal}' if len(options)>1 else ''
+                ident_name='minizin_aether:'+path.stem+suffix
+                body={'description':{'identifier':ident_name},'tags':[tag],
+                  'input':option['item'],'output':output}
+                target=out/(ident_name.split(':',1)[1]+'.json')
+                target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_furnace':body},indent=2)+'\n',encoding='utf-8')
+                record(target,recipe_type)
+            continue
         if recipe_type not in {'minecraft:crafting_shaped','minecraft:crafting_shapeless'}:
             skipped[recipe_type]=skipped.get(recipe_type,0)+1;continue
-        output=result_id(recipe)
         if not output or not output.startswith('minizin_aether:'):
             skipped['missing_output']=skipped.get('missing_output',0)+1;continue
         if recipe_type=='minecraft:crafting_shaped':
@@ -247,7 +283,7 @@ def add_aether_recipes(bp):
             for ordinal,combination in enumerate(combinations,1):
                 body={'description':{'identifier':'minizin_aether:'+path.stem+(f'_v{ordinal}' if len(combinations)>1 else '')},'tags':['crafting_table'],
                   'pattern':recipe.get('pattern',[]),'key':combination,'result':{'item':output,'count':recipe.get('result',{}).get('count',1)}}
-                target=out/(body['description']['identifier'].split(':',1)[1]+'.json');target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shaped':body},indent=2)+'\n',encoding='utf-8');written.append(target)
+                target=out/(body['description']['identifier'].split(':',1)[1]+'.json');target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shaped':body},indent=2)+'\n',encoding='utf-8');record(target,recipe_type)
         else:
             entries=[(str(index),ingredient_options(value)) for index,value in enumerate(recipe.get('ingredients',[]))]
             combinations=variants(entries)
@@ -255,8 +291,8 @@ def add_aether_recipes(bp):
             for ordinal,combination in enumerate(combinations,1):
                 body={'description':{'identifier':'minizin_aether:'+path.stem+(f'_v{ordinal}' if len(combinations)>1 else '')},'tags':['crafting_table'],
                   'ingredients':[combination[str(index)] for index in range(len(entries))],'result':{'item':output,'count':recipe.get('result',{}).get('count',1)}}
-                target=out/(body['description']['identifier'].split(':',1)[1]+'.json');target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shapeless':body},indent=2)+'\n',encoding='utf-8');written.append(target)
-    return {'written':len(written),'skipped':skipped,'registered_ids':len(registered)}
+                target=out/(body['description']['identifier'].split(':',1)[1]+'.json');target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shapeless':body},indent=2)+'\n',encoding='utf-8');record(target,recipe_type)
+    return {'written':len(written),'written_by_type':written_by_type,'skipped':skipped,'registered_ids':len(registered)}
 
 
 def write(path,doc):

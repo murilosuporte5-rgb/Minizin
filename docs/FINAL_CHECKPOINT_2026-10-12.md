@@ -5,11 +5,11 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 ## Pacote gerado
 
 - `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`
-- SHA-256: `e16d7426bb937a15a167d78c53f61f2dd67bb967963466be07b383ea2e2a944a`
+- SHA-256: `e46fa533312ad27bf223d8a76e20fdbaee43a45e6d61649f9056ca4debe3d71f`
 - Estruturalmente: 43 entidades, 375 blocos, 30 scripts, 48 animações e 8 sons.
 - ZIP externo e os dois `.mcpack` internos íntegros.
 - Aether no pacote: 21 estruturas `.mcstructure`, 21 entidades (16 modelos convertidos, 3 rigs Slime vanilla e 2 atores procedurais de partículas) e scripts de dimensão, biomas, loot, bosses e fauna. Ice and Fire: 3 dragões montáveis e 3 ovos incubáveis. Cataclysm/Mowzie: adapters de ataques específicos para quatro bosses.
-- Aether: 59 itens/material com ícones originais, 32 acessórios e 8 posições virtuais correspondentes às categorias Java; 66 receitas vanilla convertidas; ferramentas usam durabilidade/dano/encantabilidade dos tiers Java; mundos do protótipo que usavam a mão secundária são migrados automaticamente.
+- Aether: 59 itens/material com ícones originais, 32 acessórios e 8 posições virtuais correspondentes às categorias Java; 106 receitas vanilla/stonecutter/fornalha convertidas (22 stonecutting, 9 smelting e 9 blasting); ferramentas usam durabilidade/dano/encantabilidade dos tiers Java; mundos do protótipo que usavam a mão secundária são migrados automaticamente.
 - Dependência de script: `@minecraft/server` `beta`, exigida pelo registro de dimensão customizada atual.
 - Bundle independente: `Minizin_Independent_Packs_2026-10-12.zip`, com 11 `.mcaddon` e os dois `.mcpack` do Sophisticated Backpacks; SHA-256 `e12f499711237474686cc8b53205d6948acf2e2098b8999d8a851b85a6bac5b5`.
 
