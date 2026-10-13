@@ -114,7 +114,8 @@ class DragonRuntime(unittest.TestCase):
         for dragon in ('firedragon', 'icedragon', 'lightningdragon'):
             client = json.loads((root / 'RP/entity' / f'{dragon}.entity.json').read_text(encoding='utf-8'))
             controllers = client['minecraft:client_entity']['description']['render_controllers']
-            self.assertEqual(sum(f'.armor_{slot}' in controllers for slot in ('head','neck','body','tail')), 4)
+            self.assertEqual(sum(any(x.endswith(f'.armor_{slot}') for x in controllers)
+                                 for slot in ('head','neck','body','tail')), 4)
             for slot in ('head','neck','body','tail'):
                 self.assertTrue((root / 'RP/textures/iceandfire/dragon_armor' / dragon / f'{slot}_8.png').is_file())
 
