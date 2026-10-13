@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class AetherCombinedRuntime(unittest.TestCase):
     def test_world_builder_preserves_functional_aether_scope(self):
-        pack = ROOT / 'build/worlds_v2/aether'
+        pack = ROOT / 'build/worlds_v3/aether'
         self.assertTrue(pack.is_dir(), 'run the Aether world builder before this test')
         blocks = list((pack / 'BP/blocks').glob('*.json'))
         entities = list((pack / 'BP/entities').glob('*.json'))
@@ -17,13 +17,14 @@ class AetherCombinedRuntime(unittest.TestCase):
         loot = list((pack / 'BP/loot_tables/minizin_aether').rglob('*.json'))
         models = list((pack / 'RP/models/entity').glob('*.geo.json'))
         self.assertEqual(len(blocks), 46)
-        self.assertEqual(len(entities), 16)
+        self.assertEqual(len(entities), 21)
         self.assertEqual(len(structures), 21)
         self.assertEqual(len(loot), 40)
         self.assertEqual(len(models), 16)
         self.assertTrue((pack / 'BP/scripts/main.js').is_file())
         self.assertTrue((pack / 'BP/scripts/bosses.js').is_file())
         self.assertTrue((pack / 'BP/scripts/wildlife.js').is_file())
+        self.assertTrue((pack / 'BP/scripts/whirlwinds.js').is_file())
 
     def test_combined_candidate_contains_aether_runtime_and_beta_api(self):
         candidates = sorted((ROOT / 'build').glob('combined_all_*_final_v*/BP'))
@@ -41,7 +42,7 @@ class AetherCombinedRuntime(unittest.TestCase):
             for path in (bp / 'entities').rglob('*.json')
             if 'minizin_aether:' in path.read_text(encoding='utf-8')
         }
-        self.assertEqual(len([x for x in aether_ids if x.startswith('minizin_aether:')]), 16)
+        self.assertEqual(len([x for x in aether_ids if x.startswith('minizin_aether:')]), 21)
         pack_namespace = scripts.name
         self.assertEqual(len(list((bp / 'structures' / pack_namespace / 'minizin_aether').rglob('*.mcstructure'))), 21)
         self.assertEqual(len(list((bp / 'loot_tables' / pack_namespace / 'minizin_aether').rglob('*.json'))), 40)

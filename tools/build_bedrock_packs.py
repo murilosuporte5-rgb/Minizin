@@ -6,6 +6,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
+# Aether's Java WhirlwindRenderer is procedural particle output and has no
+# ModelPart/texture. These two behavior entities are therefore intentionally
+# clientless; their particles are emitted by bedrock/worlds/aether/whirlwinds.js.
+CLIENTLESS_PARTICLE_ENTITIES = {
+    "minizin_aether:whirlwind",
+    "minizin_aether:evil_whirlwind",
+}
+
 def scan_json(base):
     for path in base.rglob("*.json"):
         try: yield path, json.loads(path.read_text(encoding="utf-8-sig"))
@@ -33,6 +41,8 @@ def validate(root):
         "geometry.player",
         "geometry.zombie",
         "geometry.skeleton",
+        "geometry.slime",
+        "geometry.slime.armor",
     }
     animations=set()
     for file,doc in data["RP"].items():
@@ -43,7 +53,10 @@ def validate(root):
         for geo in doc.get("minecraft:geometry",[]): geos.add(geo["description"]["identifier"])
         animations.update(doc.get("animations",{}).keys())
     entities={d["minecraft:entity"]["description"]["identifier"] for p,d in data["BP"].items() if "minecraft:entity" in d}
-    if clients.keys()!=entities: raise ValueError(f"Client/behavior IDs differ: {clients.keys()} vs {entities}")
+    missing_clients = entities - clients.keys()
+    unexpected_clients = clients.keys() - entities
+    if missing_clients - CLIENTLESS_PARTICLE_ENTITIES or unexpected_clients:
+        raise ValueError(f"Client/behavior IDs differ: {clients.keys()} vs {entities}")
     for ident,desc in clients.items():
         for g in desc.get("geometry",{}).values():
             if g not in geos: raise ValueError(f"{ident}: geometry missing: {g}")

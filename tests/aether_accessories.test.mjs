@@ -4,9 +4,9 @@ import {readFileSync} from 'node:fs';
 
 const runtime=readFileSync(new URL('../bedrock/runtime/aether_equipment_v2.js',import.meta.url),'utf8');
 const builder=readFileSync(new URL('../tools/repair_combined_pack.py',import.meta.url),'utf8');
-const catalogSource=readFileSync(new URL('../build/combined_all_bosses_final_v25/BP/scripts/aether_equipment_catalog.js',import.meta.url),'utf8');
-const pickaxe=JSON.parse(readFileSync(new URL('../build/combined_all_bosses_final_v25/BP/items/aether_equipment/skyroot_pickaxe.json',import.meta.url),'utf8'));
-const recipe=JSON.parse(readFileSync(new URL('../build/combined_all_bosses_final_v25/BP/recipes/aether/skyroot_pickaxe.json',import.meta.url),'utf8'));
+const catalogSource=readFileSync(new URL('../build/combined_all_bosses_final_v30/BP/scripts/aether_equipment_catalog.js',import.meta.url),'utf8');
+const pickaxe=JSON.parse(readFileSync(new URL('../build/combined_all_bosses_final_v30/BP/items/aether_equipment/skyroot_pickaxe.json',import.meta.url),'utf8'));
+const recipe=JSON.parse(readFileSync(new URL('../build/combined_all_bosses_final_v30/BP/recipes/aether/skyroot_pickaxe.json',import.meta.url),'utf8'));
 const catalog=JSON.parse(catalogSource.replace(/^export const EQUIPMENT = /,'').replace(/;\s*$/,''));
 
 test('Aether virtual accessory menu matches Java slot categories and counts',()=>{
