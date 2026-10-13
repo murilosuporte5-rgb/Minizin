@@ -136,6 +136,92 @@ def add_source_backed_cataclysm_items(rp,bp,registry):
         added.append(ident)
     return added
 
+
+def add_source_backed_cataclysm_simple_blocks(rp,bp,registry):
+    """Port Cataclysm blocks whose Java model is an explicit cube model.
+
+    Only source models with cube_all/cube_column parents are emitted.  Their
+    original PNGs and face texture mapping are preserved; custom murals,
+    machines, altars and stateful blocks remain pending instead of receiving
+    a misleading full-cube substitute.
+    """
+    source_root=ROOT/'mods/43-cataclysm/upstream/src/main/resources/assets/cataclysm'
+    java_blocks=ROOT/'mods/43-cataclysm/upstream/src/main/java'
+    source_java=next(java_blocks.rglob('ModBlocks.java'))
+    names=set(re.findall(r'(?:BLOCKS\.register|registerBlockAndItem)\("([a-z0-9_]+)"',source_java.read_text(encoding='utf-8')))
+    model_dir=source_root/'models/block';texture_dir=rp/'textures/blocks/cataclysm'
+    texture_dir.mkdir(parents=True,exist_ok=True)
+    terrain_path=rp/'textures/terrain_texture.json'
+    terrain=json.loads(terrain_path.read_text(encoding='utf-8')) if terrain_path.is_file() else {'texture_data':{}}
+    terrain_data=terrain.setdefault('texture_data',{})
+    added=[];skipped={}
+    for name in sorted(names):
+        model_path=model_dir/(name+'.json')
+        if not model_path.is_file():skipped['missing_model']=skipped.get('missing_model',0)+1;continue
+        try:model=json.loads(model_path.read_text(encoding='utf-8'))
+        except (OSError,ValueError):skipped['invalid_model']=skipped.get('invalid_model',0)+1;continue
+        parent=model.get('parent','')
+        if parent not in {'minecraft:block/cube_all','minecraft:block/cube_column'}:
+            skipped['non_cube_model']=skipped.get('non_cube_model',0)+1;continue
+        refs=model.get('textures',{})
+        resolved={}
+        valid=True
+        for face,ref in refs.items():
+            if not isinstance(ref,str) or ref.startswith('minecraft:'):
+                valid=False;break
+            texture_name=ref.split(':',1)[-1].split('/',1)[-1]
+            source_texture=source_root/'textures/block'/(texture_name+'.png')
+            if not source_texture.is_file():valid=False;break
+            rel='textures/blocks/cataclysm/'+texture_name
+            shutil.copy2(source_texture,rp/(rel+'.png'))
+            icon='cataclysm_'+texture_name
+            registry.setdefault('texture_data',{})[icon]={'textures':rel}
+            terrain_data[icon]={'textures':rel}
+            resolved[face]=(icon,rel)
+        if not valid or not resolved:
+            skipped['non_source_texture']=skipped.get('non_source_texture',0)+1;continue
+        ident='minizin_cataclysm:'+name
+        if parent=='minecraft:block/cube_column':
+            side=resolved.get('side') or resolved.get('all') or next(iter(resolved.values()))
+            top=resolved.get('end') or resolved.get('top') or side
+            materials={'up':{'texture':top[0],'render_method':'opaque'},'down':{'texture':top[0],'render_method':'opaque'},
+                       'north':{'texture':side[0],'render_method':'opaque'},'south':{'texture':side[0],'render_method':'opaque'},
+                       'east':{'texture':side[0],'render_method':'opaque'},'west':{'texture':side[0],'render_method':'opaque'}}
+            icon_rel=top[1]
+        else:
+            all_texture=resolved.get('all') or next(iter(resolved.values()))
+            materials={'*':{'texture':all_texture[0],'render_method':'opaque'}};icon_rel=all_texture[1]
+        write(bp/'blocks/cataclysm'/f'{name}.json',{'format_version':'1.21.90','minecraft:block':{
+          'description':{'identifier':ident,'menu_category':{'category':'construction'}},
+          'components':{'minecraft:geometry':'minecraft:geometry.full_block','minecraft:material_instances':materials,
+                        'minecraft:destructible_by_mining':{'seconds_to_destroy':1.5}}}})
+        item_icon='cataclysm_block_'+name
+        registry.setdefault('texture_data',{})[item_icon]={'textures':icon_rel}
+        item_doc={'format_version':'1.21.90','minecraft:item':{
+          'description':{'identifier':ident,'menu_category':{'category':'construction'}},
+          'components':{'minecraft:icon':{'textures':{'default':item_icon}},'minecraft:block_placer':{'block':ident},
+                        'minecraft:max_stack_size':64,'minecraft:display_name':{'value':'tile.'+ident+'.name'}}}}
+        existing=[]
+        for item_path in (bp/'items').rglob('*.json'):
+            try:existing_doc=json.loads(item_path.read_text(encoding='utf-8'))
+            except (OSError,ValueError):continue
+            if existing_doc.get('minecraft:item',{}).get('description',{}).get('identifier')==ident:
+                existing.append(item_path)
+        if existing:
+            # Java block items may share the block ID. Update the authoritative
+            # item instead of creating a second Bedrock identifier.
+            authoritative=next((path for path in existing if path.parent.name!='cataclysm_blocks'),existing[0])
+            for duplicate in existing:
+                if duplicate != authoritative and duplicate.parent.name=='cataclysm_blocks':duplicate.unlink()
+            current=json.loads(authoritative.read_text(encoding='utf-8'))
+            current['minecraft:item'].setdefault('components',{}).update(item_doc['minecraft:item']['components'])
+            write(authoritative,current)
+        else:
+            write(bp/'items/cataclysm_blocks'/f'{name}.json',item_doc)
+        added.append({'id':ident,'parent':parent,'textures':sorted(set(v[1] for v in resolved.values()))})
+    terrain_path.write_text(json.dumps(terrain,indent=2)+'\n',encoding='utf-8')
+    return {'added':added,'count':len(added),'skipped':skipped}
+
 def add_dragon_armor_layers(rp,bp):
     """Render Ice and Fire's original four dragon-armor overlay layers.
 
@@ -1128,6 +1214,8 @@ def repair(source,output):
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
     cataclysm_items=add_source_backed_cataclysm_items(rp,bp,registry)
+    cataclysm_blocks=add_source_backed_cataclysm_simple_blocks(rp,bp,registry)
+    write(registry_path,registry)
     cataclysm_recipe_report=add_source_backed_cataclysm_recipes(bp)
     mowzie_item_count=add_source_backed_mowzie_items(rp,bp,registry)
     waystone_scroll_count=add_waystone_scrolls(rp,bp,registry)
@@ -1342,6 +1430,7 @@ def repair(source,output):
       'mowzie_sun_bosses':mowzie_sun_bosses,
       'mowzie_entities':mowzie_entities,
       'cataclysm_items':cataclysm_items,
+      'cataclysm_blocks':cataclysm_blocks,
       'cataclysm_recipes':cataclysm_recipe_report,
       'mowzie_items':mowzie_item_count,
       'aether_freezer_items':aether_freezer_item_count,
