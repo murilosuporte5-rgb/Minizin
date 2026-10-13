@@ -55,6 +55,13 @@ DRAGON_ARMOR_TITLES={
  "dragonsteel_ice":"Armadura de Aço Dracônico de Gelo",
  "dragonsteel_lightning":"Armadura de Aço Dracônico Elétrico"
 }
+ITEM_TITLES_PT_BR={
+ "dragon_meal":"Comida de Dragão", "creative_dragon_meal":"Super Comida de Dragão",
+ "dragon_flute":"Flauta de Osso de Dragão", "dragon_egg_fire":"Ovo de Dragão de Fogo",
+ "dragon_egg_ice":"Ovo de Dragão de Gelo", "dragon_egg_lightning":"Ovo de Dragão Elétrico",
+ "dragon_scale_fire":"Escama de Dragão de Fogo", "dragon_scale_ice":"Escama de Dragão de Gelo",
+ "dragon_scale_lightning":"Escama de Dragão Elétrico", "serene_salad":"Salada Serena"
+}
 for _material in DRAGON_ARMOR_TITLES:
     for _slot in ("head","neck","body","tail"):
         ITEMS["dragonarmor_"+_material+"_"+_slot]=(
@@ -259,6 +266,33 @@ def build(out,has_permission,validate_only=False):
         controllers["controller.render.minizin_creatures."+kind+"_egg"]={"geometry":"Geometry.default",
           "materials":[{"*":"Material.default"}],"textures":["Texture.default"]}
     write_json(rp/"render_controllers/creatures.json",{"format_version":"1.8.0","render_controllers":controllers})
+    # Bedrock's generated spawn-egg labels use these keys. Without them the
+    # creative inventory exposes raw `item.spawn_egg.entity.*` identifiers.
+    entity_titles={
+      "fire_dragon":"Dragão de Fogo", "ice_dragon":"Dragão de Gelo",
+      "lightning_dragon":"Dragão Elétrico", "fire_dragon_egg":"Ovo de Dragão de Fogo",
+      "ice_dragon_egg":"Ovo de Dragão de Gelo", "lightning_dragon_egg":"Ovo de Dragão Elétrico",
+      "atlatitan":"Atlatitan", "ignis":"Ignis, o Campeão do Nether",
+      "ender_guardian":"Guardião Ender, O Encerrador de Jornadas",
+      "umvuthi":"Umvuthi, o Pássaro do Sol", "umvuthana":"Umvuthana"
+    }
+    pt_lines=[];en_lines=[]
+    for id in ITEMS:
+        armor_match=next((material for material in DRAGON_ARMOR_TITLES if id.startswith("dragonarmor_"+material+"_")),None)
+        title=DRAGON_ARMOR_TITLES[armor_match] if armor_match else ITEM_TITLES_PT_BR.get(id,id.replace("_"," ").title())
+        key="item.minizin_creatures:"+(("dragonarmor_"+armor_match) if armor_match else id)+".name"
+        pt_lines.append(key+"="+title)
+        en_lines.append(key+"="+("Dragon Armor "+armor_match.replace("_"," ").title() if armor_match else id.replace("_"," ").title()))
+    for id,title in entity_titles.items():
+        for key in ("entity.minizin_creatures:"+id+".name",
+                    "item.spawn_egg.entity.minizin_creatures:"+id,
+                    "item.spawn_egg.entity.minizin_creatures:"+id+".name"):
+            pt_lines.append(key+"="+title)
+            en_lines.append(key+"="+title)
+    (rp/"texts").mkdir(parents=True,exist_ok=True)
+    (rp/"texts/languages.json").write_text(json.dumps(["en_US","pt_BR"],ensure_ascii=False)+"\n",encoding="utf-8")
+    (rp/"texts/pt_BR.lang").write_text("\n".join(sorted(pt_lines))+"\n",encoding="utf-8")
+    (rp/"texts/en_US.lang").write_text("\n".join(sorted(en_lines))+"\n",encoding="utf-8")
     atlas={}
     for id,(mod,namespace,file) in ITEMS.items():
         src=original(mod,namespace,("models/"+{"fire":"firedragon","ice":"icedragon","lightning":"lightningdragon"}[id.split("_")[-1]]) if id.startswith("dragon_egg_") else "item",file)
@@ -269,7 +303,7 @@ def build(out,has_permission,validate_only=False):
         write_json(bp/"items"/(id+".json"),{"format_version":"1.21.90","minecraft:item":{
           "description":{"identifier":"minizin_creatures:"+id,"menu_category":{"category":"items"}},
           "components":{"minecraft:icon":"minizin_creatures_"+id,
-             "minecraft:display_name":{"value":DRAGON_ARMOR_TITLES[armor_match] if armor_match else id.replace("_"," ").title()},
+             "minecraft:display_name":{"value":"item.minizin_creatures:"+(("dragonarmor_"+armor_match) if armor_match else id)+".name"},
              "minecraft:max_stack_size":1 if armor_match else 64,
              "minecraft:use_modifiers":{"use_duration":0.2,"movement_modifier":1.0},
              **({"minizin_creatures:activate":{}} if id.startswith("dragon_egg_") or id in ("dragon_flute","serene_salad") else {})}}})

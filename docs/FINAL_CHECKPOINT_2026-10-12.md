@@ -12,11 +12,11 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 - Aether: 59 itens/material com ícones originais, 32 acessórios e 8 posições virtuais correspondentes às categorias Java; 106 receitas vanilla/stonecutter/fornalha convertidas (22 stonecutting, 9 smelting e 9 blasting); ferramentas usam durabilidade/dano/encantabilidade dos tiers Java; mundos do protótipo que usavam a mão secundária são migrados automaticamente. Ice and Fire agora expõe também as 32 peças canônicas de armadura Java (8 materiais × cabeça/pescoço/corpo/cauda), com ícones originais, pilha 1, nomes PT-BR e preservação de slot no runtime; o overlay 3D da armadura ainda não foi validado no cliente Bedrock.
 - Dependência de script: `@minecraft/server` `beta`, exigida pelo registro de dimensão customizada atual.
 - Bundle independente: `Minizin_Independent_Packs_2026-10-12.zip`, com 11 `.mcaddon` e os dois `.mcpack` do Sophisticated Backpacks; SHA-256 `e12f499711237474686cc8b53205d6948acf2e2098b8999d8a851b85a6bac5b5`.
-- Pack independente atualizado de criaturas: `Minizin_Creatures_Research.mcaddon`, SHA-256 `1815f3428e5552173e79b2194d098068f97aeb478154837d0f69e7c326f4277e`; inclui os 32 itens canônicos de armadura gerados dos ícones Java originais.
+- Pack independente atualizado de criaturas: `Minizin_Creatures_Research.mcaddon`, SHA-256 `c5f7a2c24f47fa8935a3626ee8430576e3ff268ab92b4034d55a229ab9e4b41c`; inclui os 32 itens canônicos de armadura gerados dos ícones Java originais e as chaves PT-BR para itens e ovos geradores.
 
 ## Evidência executada
 
-- 32 testes Python do diretório `tests`: PASS.
+- 33 testes Python do diretório `tests`: PASS.
 - 28 testes Python de `bedrock/worlds/tests`: PASS.
 - 46 testes JavaScript: PASS.
 - `node --check` em todos os scripts do BP final: PASS.

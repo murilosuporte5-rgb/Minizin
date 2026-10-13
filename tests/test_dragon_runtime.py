@@ -8,6 +8,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DragonRuntime(unittest.TestCase):
+    def test_independent_creature_pack_localizes_item_and_spawn_egg_keys(self):
+        staged = ROOT / 'build/creatures_staged_v36/Minizin_Creatures_RP'
+        self.assertTrue(staged.is_dir())
+        lang = (staged / 'texts' / 'pt_BR.lang').read_text(encoding='utf-8')
+        for key in (
+            'item.minizin_creatures:dragon_meal.name=Comida de Dragão',
+            'item.minizin_creatures:creative_dragon_meal.name=Super Comida de Dragão',
+            'item.spawn_egg.entity.minizin_creatures:atlatitan.name=Atlatitan',
+        ):
+            self.assertIn(key, lang)
+        item = json.loads((ROOT / 'build/creatures_staged_v36/Minizin_Creatures_BP/items/dragon_meal.json').read_text(encoding='utf-8'))
+        self.assertEqual(item['minecraft:item']['components']['minecraft:display_name']['value'],
+                         'item.minizin_creatures:dragon_meal.name')
+
     def test_combined_candidate_preserves_java_dragon_armor_slots_and_materials(self):
         candidates = sorted((ROOT / 'build').glob('combined_all_*_final_v*/BP'))
         self.assertTrue(candidates)
