@@ -54,7 +54,7 @@ The input archives, converted art and binary candidate stay under ignored `build
 
 ## Standalone packs and extra renderers
 
-Local builders also produced independent staged worlds, creatures, Waystones and four gameplay packs. These builds have separate UUIDs and retain the limitations in their own reports; the combined addon is the only deliverable checked for the complete 12-mod coexistence graph here. Sophisticated Backpacks has standalone BP/RP source, but this checkpoint does not claim a verified standalone Android installation.
+`tools/package_independent_candidates.py --build-root build/final_20261013_compat` packages twelve individually installable, **experimental** `.mcaddon` files as `Minizin_12_Packs_Independentes_CANDIDATOS.zip`: 2,356,566 bytes, SHA-256 `5a3c7a278f37068906a7e1b4b7daaf1297c2f6cfb6f681a9754b3fd905acae0c`. The independent Sophisticated Backpacks pack uses its item-bound runtime, filter upgrade and original-source inventory icon. Each archive passed ZIP integrity and its source BP/RP passed structural validation. These independent builds have different feature coverage from the combined pack; test one at a time in a fresh world. No standalone Android installation was verified and independent packs are not claimed to coexist with the integrated pack.
 
 Immersive Portals, Xaero's Minimap and Distant Horizons were not added to the candidate. Existing source audits contain waypoint and offline LOD data, not a proved live portal camera, minimap renderer or distant chunk renderer on Android.
 
