@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Build a fresh Android retest candidate using original textures and rigs."""
-import argparse,json,re,shutil,zipfile
+import argparse,json,re,shutil,zipfile,subprocess,sys,tempfile
 from pathlib import Path
 from PIL import Image
 from build_bedrock_packs import zipped
@@ -634,6 +634,36 @@ def add_waystone_scrolls(rp,bp,registry):
     return count
 
 
+def add_bop_worldgen(rp,bp):
+    """Integrate the source-derived BOP biome layer into the combined pack.
+
+    The Java biome router cannot be reproduced by a Bedrock script, but the
+    pinned world builder produces real named biome definitions, native
+    replacement rules and source-aware vegetation. Generate that layer during
+    every combined build so it cannot silently depend on an ignored artifact.
+    """
+    with tempfile.TemporaryDirectory(prefix='minizin_bop_') as temp:
+        temp_root=Path(temp)
+        subprocess.run([sys.executable,str(ROOT/'bedrock/worlds/build_worlds.py'),
+                        '--mod','bop','--output',str(temp_root)],
+                       cwd=ROOT,check=True,capture_output=True,text=True)
+        source=temp_root/'bop'
+        for role,folders in ((bp,('biomes','feature_rules','features')),
+                             (rp,('biomes_client',))):
+            for folder in folders:
+                src=source/('BP' if role is bp else 'RP')/folder
+                if src.is_dir():shutil.copytree(src,role/folder,dirs_exist_ok=True)
+        scripts=bp/'scripts/bop_worldgen';scripts.mkdir(parents=True,exist_ok=True)
+        for name in ('main.js','native_biomes.js'):
+            shutil.copy2(source/'BP/scripts'/name,scripts/name)
+        main=bp/'scripts/main.js'
+        lines=main.read_text(encoding='utf-8').splitlines() if main.exists() else []
+        import_line='import "./bop_worldgen/main.js";'
+        if import_line not in lines:lines.insert(0,import_line)
+        main.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+        return len(list((source/'BP/biomes').glob('*.json')))
+
+
 def repair(source,output):
     if output.exists():raise ValueError('Fresh output required')
     shutil.copytree(source,output)
@@ -814,6 +844,7 @@ def repair(source,output):
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
     waystone_scroll_count=add_waystone_scrolls(rp,bp,registry)
+    bop_biome_count=add_bop_worldgen(rp,bp)
     terrain=json.loads((rp/'textures/terrain_texture.json').read_text())['texture_data']
     geometries={}
     for path in (rp/'models').rglob('*.geo.json'):
@@ -1011,6 +1042,10 @@ def repair(source,output):
     for role in ['RP','BP']:
         path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['name']='Minizin Correção Mobile '+role
         doc['header']['version']=[0,2,2]
+        # BOP native biome definitions use the 1.21.110 schema. Keep the
+        # existing beta server dependency: Aether's registerCustomDimension
+        # contract is stronger than BOP's optional getBiome decoration API.
+        doc['header']['min_engine_version']=[1,21,110]
         for module in doc['modules']:module['version']=[0,2,2]
         for dependency in doc.get('dependencies',[]):
             if 'uuid' in dependency:dependency['version']=[0,2,2]
@@ -1022,6 +1057,7 @@ def repair(source,output):
       'aether_enchanting_items':aether_enchanting_item_count,
       'aether_incubator_items':aether_incubator_item_count,
       'waystone_scrolls':waystone_scroll_count,
+      'bop_biomes':bop_biome_count,
       'aether_freezer_recipes':9,
       'aether_recipes':aether_recipe_report,
       'fixes':['Preserved models/entity and models/blocks loader paths','Original-pixel explicit block placer icons',
