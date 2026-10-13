@@ -1,0 +1,80 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minizin_creatures:atlatitan",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false,
+      "properties": {
+        "minizin_creatures:attack": {
+          "type": "enum",
+          "values": [
+            "idle",
+            "bite",
+            "tail",
+            "wing",
+            "stream",
+            "charge",
+            "kick",
+            "whip",
+            "stomp",
+            "shield_smash",
+            "soul_sweep",
+            "ultimate",
+            "phase2",
+            "phase3"
+          ],
+          "default": "idle",
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "minizin_creatures",
+          "mob"
+        ]
+      },
+      "minecraft:health": {
+        "value": 400,
+        "max": 400
+      },
+      "minecraft:collision_box": {
+        "width": 4,
+        "height": 7
+      },
+      "minecraft:physics": {},
+      "minecraft:movement": {
+        "value": 0.325
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:navigation.walk": {},
+      "minecraft:behavior.random_stroll": {
+        "priority": 5,
+        "speed_multiplier": 0.7
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 6,
+        "look_distance": 16
+      },
+      "minecraft:rideable": {
+        "seat_count": 1,
+        "family_types": [
+          "player"
+        ],
+        "seats": [
+          {
+            "position": [
+              0,
+              4,
+              0
+            ]
+          }
+        ]
+      },
+      "minecraft:input_ground_controlled": {}
+    }
+  }
+}

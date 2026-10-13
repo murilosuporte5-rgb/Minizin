@@ -1,0 +1,85 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minizin_creatures:umvuthi",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false,
+      "properties": {
+        "minizin_creatures:attack": {
+          "type": "enum",
+          "values": [
+            "idle",
+            "solar_beam",
+            "sun_strike",
+            "flare",
+            "supernova",
+            "spawn_strix",
+            "roar",
+            "attack_slash_right",
+            "attack_slash_left",
+            "heal_loop"
+          ],
+          "default": "idle",
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "minizin_creatures",
+          "mowzie",
+          "umvuthi"
+        ]
+      },
+      "minecraft:health": {
+        "value": 150,
+        "max": 150
+      },
+      "minecraft:collision_box": {
+        "width": 2.7,
+        "height": 3.8
+      },
+      "minecraft:physics": {},
+      "minecraft:movement": {
+        "value": 0.22
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:navigation.walk": {},
+      "minecraft:behavior.random_stroll": {
+        "priority": 5,
+        "speed_multiplier": 0.7
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 6,
+        "look_distance": 16
+      },
+      "minecraft:boss": {
+        "name": "Umvuthi",
+        "hud_range": 40,
+        "should_darken_sky": false
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 2,
+        "reselect_targets": true,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "player"
+            },
+            "max_dist": 30
+          }
+        ]
+      },
+      "minecraft:behavior.move_towards_target": {
+        "priority": 3,
+        "speed_multiplier": 0.8,
+        "within_radius": 7
+      }
+    }
+  }
+}

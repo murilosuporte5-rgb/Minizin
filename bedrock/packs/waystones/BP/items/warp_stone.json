@@ -1,0 +1,22 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:item": {
+    "description": {
+      "identifier": "minizin:warp_stone",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "minizin_warp_stone"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "item.minizin:warp_stone.name"
+      },
+      "minecraft:max_stack_size": 1
+    }
+  }
+}

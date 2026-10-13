@@ -1,0 +1,29 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Minizin • Sophisticated Backpacks RP",
+    "description": "Backpack pack resources; vanilla icon until original asset cleared",
+    "uuid": "92295709-3c70-4d34-b553-41299b40e337",
+    "version": [
+      0,
+      2,
+      8
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      90
+    ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "293985e4-e3d0-48dc-85e8-cfc62e2c8609",
+      "version": [
+        0,
+        2,
+        8
+      ]
+    }
+  ]
+}

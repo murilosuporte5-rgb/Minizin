@@ -1,0 +1,153 @@
+{
+  "origin_count": 10,
+  "original_images": 4,
+  "experimental_features": [
+    "Origins origin selection and 4 passive status effects",
+    "Carry On same-entity following for four animals",
+    "MCA vanilla villager reputation dialogue",
+    "RFTools lodestone+redstone energy demonstration"
+  ],
+  "source_files": [
+    {
+      "upstream": "origins",
+      "source": "src/main/resources/assets/origins/textures/gui/badge/star.png",
+      "output": "build/next_four/RP/textures/minizin/origins/star.png",
+      "sha256": "e34b9c7285b3177e1cef0ff0760d309b2af51c833f9d956376098be63889f929",
+      "bytes": 181
+    },
+    {
+      "upstream": "origins",
+      "source": "src/main/resources/assets/origins/textures/gui/choose_origin.png",
+      "output": "build/next_four/RP/textures/minizin/origins/choose_origin.png",
+      "sha256": "3b88f67cf4c8b494edad53d710f9e3dd24ee37ccdec0d5a49f163b01585c735f",
+      "bytes": 2078
+    },
+    {
+      "upstream": "rftools",
+      "source": "src/main/resources/assets/rftools/textures/gui/powercell.png",
+      "output": "build/next_four/RP/textures/minizin/rftools/powercell.png",
+      "sha256": "2d3e5d4efb74f7d16888afadb52040360ff178eb73dedde7c801e8496b04bb87",
+      "bytes": 491
+    },
+    {
+      "upstream": "mca",
+      "source_layers": [
+        "common/src/main/resources/assets/mca/skins/skin/female/0.png",
+        "common/src/main/resources/assets/mca/skins/face/normal/0.png",
+        "common/src/main/resources/assets/mca/skins/hair/female/0.png",
+        "common/src/main/resources/assets/mca/skins/clothing/normal/female/armorer/0.png"
+      ],
+      "output": "build/next_four/RP/textures/minizin/mca/female_armorer_composite.png",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "6737f854e1049d76d6b3144ec7febb16927042745d2d836e1cff31fda35e0819",
+      "type": "composition_of_original_64x64_skin_layers"
+    },
+    {
+      "upstream": "rftools",
+      "source": "src/main/resources/assets/rftools/models/block/powercell.obj",
+      "output": "build/next_four/original_meshes/rftools/powercell.obj",
+      "sha256": "97a7390a72dba6da494ffdef27be8c46ec61294e0cc30678b93f3e272f8f072c",
+      "bytes": 9488
+    },
+    {
+      "upstream": "rftools",
+      "source": "src/main/resources/assets/rftools/models/block/powercell.mtl",
+      "output": "build/next_four/original_meshes/rftools/powercell.mtl",
+      "sha256": "8d89d581265c586d8ab4b172260e69dedafc40d1a949e9f95e2db5b90905b0de",
+      "bytes": 813
+    },
+    {
+      "upstream": "rftools",
+      "source": "src/main/resources/assets/rftools/models/block/environmental.obj",
+      "output": "build/next_four/original_meshes/rftools/environmental.obj",
+      "sha256": "fb1bc5a3affe822ebcaac98e252cac04c3d7e8b5ed3b418532ea5461d79ee42c",
+      "bytes": 4599
+    },
+    {
+      "upstream": "rftools",
+      "source": "src/main/resources/assets/rftools/models/block/environmental.mtl",
+      "output": "build/next_four/original_meshes/rftools/environmental.mtl",
+      "sha256": "6c3b9ccb51a27b9352fb4db5ce27121d315ece695082379581dc609d56ad25b7",
+      "bytes": 424
+    },
+    {
+      "upstream": "rftools",
+      "source": "art/powercell.blend",
+      "output": "build/next_four/original_meshes/rftools/powercell.blend",
+      "sha256": "714e4a38d886bebb45e504543474e2e223559ee2528a9ef213eaf9b6543e84ca",
+      "bytes": 528964
+    },
+    {
+      "upstream": "rftools",
+      "source": "art/environmental.blend",
+      "output": "build/next_four/original_meshes/rftools/environmental.blend",
+      "sha256": "8e6d01f25db3087a5a93a97248538ef4a2cfb51cbc6744126ac5270e12253148",
+      "bytes": 539464
+    },
+    {
+      "upstream": "carryon",
+      "source": "Common/src/main/resources/data/carryon/tags/blocks/block_blacklist.json",
+      "output": "build/next_four/original_rules/carryon/block_blacklist.json",
+      "sha256": "bdf1a0f17755507fe69b98c60820a1919268cc2e8c50f17645697f3039b9d4c4",
+      "bytes": 41
+    },
+    {
+      "upstream": "carryon",
+      "source": "Common/src/main/resources/data/carryon/tags/blocks/block_whitelist.json",
+      "output": "build/next_four/original_rules/carryon/block_whitelist.json",
+      "sha256": "bdf1a0f17755507fe69b98c60820a1919268cc2e8c50f17645697f3039b9d4c4",
+      "bytes": 41
+    },
+    {
+      "upstream": "carryon",
+      "source": "Common/src/main/resources/data/carryon/tags/entity_types/entity_blacklist.json",
+      "output": "build/next_four/original_rules/carryon/entity_blacklist.json",
+      "sha256": "bdf1a0f17755507fe69b98c60820a1919268cc2e8c50f17645697f3039b9d4c4",
+      "bytes": 41
+    },
+    {
+      "upstream": "carryon",
+      "source": "Common/src/main/resources/data/carryon/tags/entity_types/entity_whitelist.json",
+      "output": "build/next_four/original_rules/carryon/entity_whitelist.json",
+      "sha256": "bdf1a0f17755507fe69b98c60820a1919268cc2e8c50f17645697f3039b9d4c4",
+      "bytes": 41
+    },
+    {
+      "upstream": "mca",
+      "source": "LICENSE",
+      "output": "build/next_four/licenses/mca.txt",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "bytes": 35149
+    },
+    {
+      "upstream": "carryon",
+      "source": "LICENSE",
+      "output": "build/next_four/licenses/carryon.txt",
+      "sha256": "ea8af5e789cb2d4e9b10bce3874982ade163b749b6bfbdb32e2df21c4d106de1",
+      "bytes": 7650
+    },
+    {
+      "upstream": "rftools",
+      "source": "LICENSE.md",
+      "output": "build/next_four/licenses/rftools.txt",
+      "sha256": "bca2ebdd7dd4e20ba4529d9da29c92b76864f90c9b1caba2e591f3e27c880be2",
+      "bytes": 1072
+    },
+    {
+      "upstream": "origins",
+      "source": "LICENSE",
+      "output": "build/next_four/licenses/origins.txt",
+      "sha256": "d99d258d31cfa562a427264b78f3e5cdb63ff3d309ebba5ed8d79586fc2963d7",
+      "bytes": 1065
+    }
+  ],
+  "warnings": [
+    "Not a port of the four Java mods.",
+    "Skin composite is a 2D preview and not connected to a villager renderer.",
+    "RFTools original OBJ/Blend preserved for manual UV/mesh conversion; no fabricated .geo.json.",
+    "Must test on a real Minecraft Bedrock Android client."
+  ]
+}

@@ -28,14 +28,15 @@ ENTRYPOINTS = {
 installMCA();
 ''',
     "carryon": '''import {world,system} from "@minecraft/server";
-import {installCarryOn,release} from "./carryon.js";
+import {installCarryOn,release,recoverBlock} from "./carryon.js";
 import {tell} from "./core.js";
 installCarryOn();
 world.beforeEvents.chatSend.subscribe(ev=>{
   const cmd=ev.message.trim().toLowerCase();
-  if(cmd!=="!carryon soltar"&&cmd!=="!minizin soltar")return;
+  if(!["!carryon soltar","!minizin soltar","!carryon recuperar","!minizin recuperar"].includes(cmd))return;
   ev.cancel=true;
   system.run(()=>{
+    if(cmd.endsWith("recuperar")){recoverBlock(ev.sender);return;}
     if(!release(ev.sender))tell(ev.sender,"Você não está carregando um animal.");
   });
 });
