@@ -24,3 +24,22 @@ class AlexEntityRigs(unittest.TestCase):
         for name in ('beholder', 'candicorn', 'corrodent', 'grottoceratops', 'vallumraptor'):
             self.assertIn(f'minizin_alexscaves:{name}', catalog)
 
+    def test_candidate_exposes_original_alex_inventory_icons(self):
+        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes'))
+        if not candidates:
+            self.skipTest('v94 candidate not built yet')
+        root = max(candidates, key=lambda path: len(json.loads((path / 'FIX_REPORT.json').read_text()).get('alex_items', [])))
+        report = json.loads((root / 'FIX_REPORT.json').read_text())
+        self.assertEqual(len(report['alex_items']), 205)
+        atlas = json.loads((root / 'RP/textures/item_texture.json').read_text())['texture_data']
+        for name in ('acid_bucket', 'alex_meal', 'desolate_dagger', 'serene_salad'):
+            paths = list(root.glob(f'BP/items/**/*{name}*.json'))
+            if not paths:
+                paths = [path for path in root.glob('BP/items/**/*.json')
+                         if json.loads(path.read_text())['minecraft:item']['description']['identifier'].endswith(':' + name)]
+            path = paths[0]
+            doc = json.loads(path.read_text())
+            icon = doc['minecraft:item']['components']['minecraft:icon']['textures']['default']
+            self.assertIn(icon, atlas)
+            self.assertTrue((root / 'RP/textures/items/alexscaves' / f'{name}.png').is_file())
+

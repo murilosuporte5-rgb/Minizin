@@ -156,6 +156,38 @@ def add_source_backed_alex_entities(rp,bp):
         catalog_path.write_text(prefix+json.dumps(catalog,ensure_ascii=False,sort_keys=True)+';\n',encoding='utf-8')
     return added
 
+
+def add_source_backed_alex_items(rp,bp,registry):
+    """Expose Alex's Caves original inventory PNGs without fake abilities."""
+    source=ROOT/'mods/42-alexs-caves/upstream/src/main/resources/assets/alexscaves/textures/item'
+    item_dir=bp/'items/alexscaves';texture_dir=rp/'textures/items/alexscaves'
+    item_dir.mkdir(parents=True,exist_ok=True);texture_dir.mkdir(parents=True,exist_ok=True)
+    existing_by_id={}
+    for item_path in (bp/'items').rglob('*.json'):
+        try:item_id=json.loads(item_path.read_text(encoding='utf-8')).get('minecraft:item',{}).get('description',{}).get('identifier')
+        except (OSError,ValueError):item_id=None
+        if item_id:existing_by_id[item_id]=item_path
+    excluded=('_glow.png','_layer.png','_overlay.png')
+    stack_one=('armor','helmet','chestplate','leggings','boots','sword','dagger','axe','pickaxe','shovel','hoe','spear','hook','bow','crossbow','bucket','book','map','tablet','codex','disc','egg','bomb','arrow','bullet','staff','dagger')
+    added=[]
+    for source_path in sorted(source.rglob('*.png')):
+        if source_path.name.endswith(excluded):continue
+        name=source_path.stem
+        ident='minizin_alexscaves:'+name;icon='minizin_alexscaves_'+name;rel='textures/items/alexscaves/'+name
+        target=rp/(rel+'.png');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source_path,target)
+        registry.setdefault('texture_data',{})[icon]={'textures':rel}
+        one=any(token in name for token in stack_one)
+        components={'minecraft:icon':{'textures':{'default':icon}},'minecraft:display_name':{'value':'item.'+ident+'.name'},'minecraft:max_stack_size':1 if one else 64}
+        if one and any(token in name for token in ('sword','dagger','axe','pickaxe','shovel','hoe','spear','hook','bow','crossbow','staff')):components['minecraft:hand_equipped']=True
+        item_doc={'format_version':'1.21.90','minecraft:item':{'description':{'identifier':ident,'menu_category':{'category':'items'}},'components':components}}
+        existing=existing_by_id.get(ident)
+        if existing:
+            current=json.loads(existing.read_text(encoding='utf-8'));current['minecraft:item'].setdefault('components',{}).update(components);write(existing,current)
+        else:
+            target=item_dir/f'{name}.json';write(target,item_doc);existing_by_id[ident]=target
+        added.append(ident)
+    return added
+
 def add_source_backed_cataclysm_items(rp,bp,registry):
     """Expose Cataclysm's registered-looking original item icons.
 
@@ -1279,6 +1311,7 @@ def repair(source,output):
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
+    alex_items=add_source_backed_alex_items(rp,bp,registry)
     cataclysm_items=add_source_backed_cataclysm_items(rp,bp,registry)
     cataclysm_blocks=add_source_backed_cataclysm_simple_blocks(rp,bp,registry)
     write(registry_path,registry)
@@ -1496,6 +1529,7 @@ def repair(source,output):
       'mowzie_sun_bosses':mowzie_sun_bosses,
       'mowzie_entities':mowzie_entities,
       'alex_entities':alex_entities,
+      'alex_items':alex_items,
       'cataclysm_items':cataclysm_items,
       'cataclysm_blocks':cataclysm_blocks,
       'cataclysm_recipes':cataclysm_recipe_report,
