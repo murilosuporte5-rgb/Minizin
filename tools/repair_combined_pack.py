@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Build a fresh Android retest candidate using original textures and rigs."""
-import argparse,json,shutil,zipfile
+import argparse,json,re,shutil,zipfile
 from pathlib import Path
 from PIL import Image
 from build_bedrock_packs import zipped
@@ -113,9 +113,20 @@ def add_creature_items(rp,bp):
       'minizin_iceandfire:dragon_egg_lightning':root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/models/lightningdragon/egg_black.png',
       'minizin_alexscaves:serene_salad':root/'42-alexs-caves/upstream/src/main/resources/assets/alexscaves/textures/item/serene_salad.png',
     }
+    # ItemDragonArmor.java registers one non-stackable item per material and
+    # dragon slot. Keep those registry IDs and original pixels instead of
+    # collapsing the Java inventory into one generic Bedrock item.
+    armor_materials=('iron','gold','diamond','silver','copper',
+                     'dragonsteel_fire','dragonsteel_ice','dragonsteel_lightning')
+    armor_slots=('head','neck','body','tail')
+    armor_sources={}
+    for material in armor_materials:
+        for slot in armor_slots:
+            ident='minizin_iceandfire:dragonarmor_'+material+'_'+slot
+            armor_sources[ident]=root/'16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/item'/('dragonarmor_'+material+'_'+slot+'.png')
     registry_path=rp/'textures/item_texture.json'
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
-    for ident,source in sources.items():
+    for ident,source in {**sources,**armor_sources}.items():
         if not source.is_file():
             continue
         name=ident.replace(':','_')
@@ -123,14 +134,15 @@ def add_creature_items(rp,bp):
         target=rp/(rel+'.png');target.parent.mkdir(parents=True,exist_ok=True)
         shutil.copy2(source,target)
         registry.setdefault('texture_data',{})[name]={'textures':rel}
+        components={'minecraft:icon':{'textures':{'default':name}},
+              'minecraft:display_name':{'value':'item.'+ident+'.name'},
+              'minecraft:max_stack_size':1 if ident in armor_sources else 64}
         write(bp/'items/creatures'/f'{name}.json',{
           'format_version':'1.21.90','minecraft:item':{
             'description':{'identifier':ident,'menu_category':{'category':'items'}},
-            'components':{'minecraft:icon':{'textures':{'default':name}},
-              'minecraft:display_name':{'value':'item.'+ident+'.name'},
-              'minecraft:max_stack_size':64}}})
+            'components':components}})
     write(registry_path,registry)
-    return len([x for x in sources.values() if x.is_file()])
+    return len([x for x in {**sources,**armor_sources}.values() if x.is_file()])
 
 
 def add_aether_material_items(rp,bp):
@@ -336,8 +348,28 @@ def repair(source,output):
       'minizin_iceandfire:dragon_armor_iron':'Armadura de Dragão de Ferro',
       'minizin_alexscaves:serene_salad':'Salada Serena',
     }
+    armor_material_titles={
+      'iron':'Armadura de Ferro para Dragão',
+      'gold':'Armadura de Ouro para Dragão',
+      'diamond':'Armadura de Diamante para Dragão',
+      'silver':'Armadura de Prata para Dragão',
+      'copper':'Armadura de Cobre para Dragão',
+      'dragonsteel_fire':'Armadura de Aço Dracônico de Fogo',
+      'dragonsteel_ice':'Armadura de Aço Dracônico de Gelo',
+      'dragonsteel_lightning':'Armadura de Aço Dracônico Elétrico',
+    }
     def translated(kind,ident):
         ns,name=ident.split(':',1)
+        armor_match=re.fullmatch(r'minizin_iceandfire:dragonarmor_(iron|gold|diamond|silver|copper|dragonsteel_fire|dragonsteel_ice|dragonsteel_lightning)_(head|neck|body|tail)',ident)
+        if kind=='item' and armor_match:
+            material=armor_match.group(1)
+            key='item.'+ident+'.name'
+            source_key='item.iceandfire.dragonarmor_'+material
+            for language in languages:
+                title=dictionaries.get('iceandfire',{}).get(language,{}).get(source_key,armor_material_titles[material])
+                if language=='pt_BR':title=armor_material_titles[material]
+                languages[language][key]=str(title).replace('\\n',' ')
+            return key
         if ns=='minizin':
             namespace,name=name.split('_',1)
             if name.startswith('item_'):name=name[5:]
@@ -447,6 +479,10 @@ def repair(source,output):
         target=rp/'texts'/f'{language}.lang';target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text('\n'.join(k+'='+v for k,v in sorted(entries.items()))+'\n',encoding='utf-8')
     write(rp/'texts/languages.json',list(languages))
+    # Refresh the shared creature runtime from source after every repair build;
+    # otherwise a new combined candidate would silently keep the previous
+    # dragon interaction implementation.
+    shutil.copy2(ROOT/'bedrock/runtime/creatures.js',bp/'scripts/creatures.js')
     shutil.copy2(ROOT/'bedrock/runtime/item_actions.js',bp/'scripts/item_actions.js')
     main=bp/'scripts/main.js';main.write_text(main.read_text()+'\nimport "./item_actions.js";\n')
     for role in ['RP','BP']:

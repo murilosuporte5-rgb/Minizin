@@ -47,6 +47,18 @@ ITEMS={
  "dragon_scale_ice":("16-ice-and-fire","iceandfire","scales_blue.png"),
  "dragon_scale_lightning":("16-ice-and-fire","iceandfire","scales_black.png")
 }
+DRAGON_ARMOR_TITLES={
+ "iron":"Armadura de Ferro para Dragão", "gold":"Armadura de Ouro para Dragão",
+ "diamond":"Armadura de Diamante para Dragão", "silver":"Armadura de Prata para Dragão",
+ "copper":"Armadura de Cobre para Dragão",
+ "dragonsteel_fire":"Armadura de Aço Dracônico de Fogo",
+ "dragonsteel_ice":"Armadura de Aço Dracônico de Gelo",
+ "dragonsteel_lightning":"Armadura de Aço Dracônico Elétrico"
+}
+for _material in DRAGON_ARMOR_TITLES:
+    for _slot in ("head","neck","body","tail"):
+        ITEMS["dragonarmor_"+_material+"_"+_slot]=(
+            "16-ice-and-fire","iceandfire","dragonarmor_"+_material+"_"+_slot+".png")
 AUDIO={
  "fire_dragon_breath":("16-ice-and-fire","iceandfire","mobs/dragon/fire/breath.ogg"),
  "ice_dragon_breath":("16-ice-and-fire","iceandfire","mobs/dragon/ice/breath.ogg"),
@@ -253,11 +265,12 @@ def build(out,has_permission,validate_only=False):
         if not src.is_file():raise FileNotFoundError("Ícone original ausente: "+str(src))
         dst=rp/"textures/items"/(id+".png");dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,dst)
         atlas["minizin_creatures_"+id]={"textures":"textures/items/"+id}
+        armor_match=next((material for material in DRAGON_ARMOR_TITLES if id.startswith("dragonarmor_"+material+"_")),None)
         write_json(bp/"items"/(id+".json"),{"format_version":"1.21.90","minecraft:item":{
           "description":{"identifier":"minizin_creatures:"+id,"menu_category":{"category":"items"}},
           "components":{"minecraft:icon":"minizin_creatures_"+id,
-             "minecraft:display_name":{"value":id.replace("_"," ").title()},
-             "minecraft:max_stack_size":64,
+             "minecraft:display_name":{"value":DRAGON_ARMOR_TITLES[armor_match] if armor_match else id.replace("_"," ").title()},
+             "minecraft:max_stack_size":1 if armor_match else 64,
              "minecraft:use_modifiers":{"use_duration":0.2,"movement_modifier":1.0},
              **({"minizin_creatures:activate":{}} if id.startswith("dragon_egg_") or id in ("dragon_flute","serene_salad") else {})}}})
     write_json(rp/"textures/item_texture.json",{"resource_pack_name":"minizin_creatures","texture_name":"atlas.items","texture_data":atlas})

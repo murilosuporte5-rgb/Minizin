@@ -4,20 +4,21 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 
 ## Pacote gerado
 
-- `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`
-- SHA-256: `e46fa533312ad27bf223d8a76e20fdbaee43a45e6d61649f9056ca4debe3d71f`
+- `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon` (candidato v35)
+- SHA-256: `d31b1aac81bb7477440ab5049385c5e8bfcc90e6c9d350c05b11d747de4604dc`
 - Estruturalmente: 43 entidades, 375 blocos, 30 scripts, 48 animações e 8 sons.
 - ZIP externo e os dois `.mcpack` internos íntegros.
 - Aether no pacote: 21 estruturas `.mcstructure`, 21 entidades (16 modelos convertidos, 3 rigs Slime vanilla e 2 atores procedurais de partículas) e scripts de dimensão, biomas, loot, bosses e fauna. Ice and Fire: 3 dragões montáveis e 3 ovos incubáveis. Cataclysm/Mowzie: adapters de ataques específicos para quatro bosses.
-- Aether: 59 itens/material com ícones originais, 32 acessórios e 8 posições virtuais correspondentes às categorias Java; 106 receitas vanilla/stonecutter/fornalha convertidas (22 stonecutting, 9 smelting e 9 blasting); ferramentas usam durabilidade/dano/encantabilidade dos tiers Java; mundos do protótipo que usavam a mão secundária são migrados automaticamente.
+- Aether: 59 itens/material com ícones originais, 32 acessórios e 8 posições virtuais correspondentes às categorias Java; 106 receitas vanilla/stonecutter/fornalha convertidas (22 stonecutting, 9 smelting e 9 blasting); ferramentas usam durabilidade/dano/encantabilidade dos tiers Java; mundos do protótipo que usavam a mão secundária são migrados automaticamente. Ice and Fire agora expõe também as 32 peças canônicas de armadura Java (8 materiais × cabeça/pescoço/corpo/cauda), com ícones originais, pilha 1, nomes PT-BR e preservação de slot no runtime; o overlay 3D da armadura ainda não foi validado no cliente Bedrock.
 - Dependência de script: `@minecraft/server` `beta`, exigida pelo registro de dimensão customizada atual.
 - Bundle independente: `Minizin_Independent_Packs_2026-10-12.zip`, com 11 `.mcaddon` e os dois `.mcpack` do Sophisticated Backpacks; SHA-256 `e12f499711237474686cc8b53205d6948acf2e2098b8999d8a851b85a6bac5b5`.
+- Pack independente atualizado de criaturas: `Minizin_Creatures_Research.mcaddon`, SHA-256 `1815f3428e5552173e79b2194d098068f97aeb478154837d0f69e7c326f4277e`; inclui os 32 itens canônicos de armadura gerados dos ícones Java originais.
 
 ## Evidência executada
 
-- 31 testes Python do diretório `tests`: PASS.
+- 32 testes Python do diretório `tests`: PASS.
 - 28 testes Python de `bedrock/worlds/tests`: PASS.
-- 45 testes JavaScript: PASS.
+- 46 testes JavaScript: PASS.
 - `node --check` em todos os scripts do BP final: PASS.
 - Validação estrutural final: PASS.
 - Origins: novo ciclo testado com 3 testes direcionados; imunidade a fogo, vulnerabilidade à água, efeitos aquáticos, queda lenta, salto felino, resistência/pressa, invisibilidade condicional e escalada/teia adaptadas estão no candidato. Phasing, inventário extra e elytra real continuam explicitamente pendentes.

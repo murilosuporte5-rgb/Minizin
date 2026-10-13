@@ -8,6 +8,41 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DragonRuntime(unittest.TestCase):
+    def test_combined_candidate_preserves_java_dragon_armor_slots_and_materials(self):
+        candidates = sorted((ROOT / 'build').glob('combined_all_*_final_v*/BP'))
+        self.assertTrue(candidates)
+        bp = max(candidates, key=lambda path: int(re.search(r'_v(\d+)', path.parent.name).group(1)))
+        items = {json.loads(path.read_text(encoding='utf-8'))['minecraft:item']['description']['identifier']
+                 for path in (bp / 'items').rglob('*.json')}
+        materials = ('iron','gold','diamond','silver','copper',
+                     'dragonsteel_fire','dragonsteel_ice','dragonsteel_lightning')
+        slots = ('head','neck','body','tail')
+        expected = {f'minizin_iceandfire:dragonarmor_{material}_{slot}'
+                    for material in materials for slot in slots}
+        self.assertTrue(expected.issubset(items))
+        for ident in expected:
+            doc_path = bp / 'items' / 'creatures' / (ident.replace(':','_') + '.json')
+            doc = json.loads(doc_path.read_text(encoding='utf-8'))['minecraft:item']
+            self.assertEqual(doc['components']['minecraft:max_stack_size'], 1)
+            display_key='item.'+ident+'.name'
+            self.assertEqual(doc['components']['minecraft:display_name']['value'], display_key)
+            material=ident.split('dragonarmor_',1)[1].rsplit('_',1)[0]
+            expected_title={
+                'iron':'Armadura de Ferro para Dragão', 'gold':'Armadura de Ouro para Dragão',
+                'diamond':'Armadura de Diamante para Dragão', 'silver':'Armadura de Prata para Dragão',
+                'copper':'Armadura de Cobre para Dragão',
+                'dragonsteel_fire':'Armadura de Aço Dracônico de Fogo',
+                'dragonsteel_ice':'Armadura de Aço Dracônico de Gelo',
+                'dragonsteel_lightning':'Armadura de Aço Dracônico Elétrico'
+            }[material]
+            lang=(bp.parent / 'RP' / 'texts' / 'pt_BR.lang').read_text(encoding='utf-8')
+            self.assertIn(display_key+'='+expected_title, lang)
+
+        runtime = (bp / 'scripts' / 'creatures.js').read_text(encoding='utf-8')
+        for token in ('dragon_armor_'+ 'iron', 'armor_'+ "'+armor.slot",
+                      "['head','neck','body','tail']", 'dragonsteel_lightning'):
+            self.assertIn(token, runtime)
+
     def test_current_ice_and_fire_ids_have_mountable_dragon_and_egg_entities(self):
         pack = ROOT / 'build/creature_world_v3/iceandfire'
         self.assertTrue(pack.is_dir())

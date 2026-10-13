@@ -3,6 +3,13 @@ import {dragonStage} from "./math.js";
 import {onUse} from "./controls.js";
 const IDS=["fire_dragon","ice_dragon","lightning_dragon"];
 const TYPES=IDS.map(x=>"minizin_creatures:"+x);
+const ARMOR_ITEMS=new Map([
+  ["minizin_creatures:dragon_armor_iron",{material:"iron",slot:"head"}],
+  ...["iron","gold","diamond","silver","copper","dragonsteel_fire","dragonsteel_ice","dragonsteel_lightning"]
+    .flatMap(material=>["head","neck","body","tail"].map(slot=>[
+      "minizin_creatures:dragonarmor_"+material+"_"+slot,{material,slot}
+    ]))
+]);
 const DAY_TICKS=24000;
 function stage(e){return dragonStage(Number(get(e,"days",0)));}
 function own(e,p){return get(e,"owner","")===p.id;}
@@ -70,8 +77,10 @@ export function installDragons(){
       if(hand==="minizin_creatures:dragon_meal"){
         put(e,"days",Number(get(e,"days",0))+1);take(p,hand);p.sendMessage("Idade: "+get(e,"days")+" dias / estágio "+stage(e));return;
       }
-      if(hand==="minizin_creatures:dragon_armor_iron"){
-        put(e,"armor",Math.min(4,Number(get(e,"armor",0))+1));take(p,hand);p.sendMessage("Armadura equipada: "+get(e,"armor")+"/4");return;
+      const armor=ARMOR_ITEMS.get(hand);
+      if(armor){
+        take(p,hand);put(e,"armor_"+armor.slot,armor.material);put(e,"armor_"+armor.slot+"_item",hand);
+        p.sendMessage("Armadura de "+armor.material+" equipada: "+armor.slot+".");return;
       }
       if(!hand&&stage(e)>=3) {
         try {e.getComponent("minecraft:rideable")?.addRider(p);}catch{}

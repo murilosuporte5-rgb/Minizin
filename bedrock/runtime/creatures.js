@@ -20,6 +20,13 @@ const DRAGON_EGGS = {
   'minizin_creatures:dragon_egg_ice': {kind:'ice', prefix:'minizin_creatures'},
   'minizin_creatures:dragon_egg_lightning': {kind:'lightning', prefix:'minizin_creatures'}
 };
+const DRAGON_ARMOR = new Map([
+  ['minizin_iceandfire:dragon_armor_iron',{material:'iron',slot:'head'}],
+  ...['iron','gold','diamond','silver','copper','dragonsteel_fire','dragonsteel_ice','dragonsteel_lightning']
+    .flatMap(material=>['head','neck','body','tail'].map(slot=>[
+      'minizin_iceandfire:dragonarmor_'+material+'_'+slot,{material,slot}
+    ]))
+]);
 const DAY_TICKS = 24000;
 const dragonKey = (entity,key,fallback='') => {
   try { return entity.getDynamicProperty('minizin:dragon_'+key) ?? fallback; }
@@ -46,6 +53,9 @@ const consumeHeld = (player,typeId) => {
   } catch { return false; }
 };
 const dragonOwner = entity => String(dragonKey(entity,'owner',''));
+const dragonArmor = itemId => DRAGON_ARMOR.get(itemId) ?? (
+  itemId==='minizin_iceandfire:dragon_armor_iron' ? {material:'iron',slot:'head'} : null
+);
 function setDragonState(entity,state) {
   try { entity.setProperty('minizin:flying',state); } catch {}
   try { entity.triggerEvent(state ? 'minizin:takeoff' : 'minizin:land'); } catch {}
@@ -109,9 +119,12 @@ function installDragonInteractions() {
         setDragonKey(entity,'days',Number(dragonKey(entity,'days',0))+1);consumeHeld(player,item);
         player.sendMessage('Idade: '+dragonKey(entity,'days',0)+' dias / estágio '+dragonStage(Number(dragonKey(entity,'days',0))));return;
       }
-      if(item===info.prefix+':dragon_armor_iron') {
-        const armor=Math.min(4,Number(dragonKey(entity,'armor',0))+1);setDragonKey(entity,'armor',armor);consumeHeld(player,item);
-        player.sendMessage('Armadura equipada: '+armor+'/4');return;
+      const armor=dragonArmor(item);
+      if(armor) {
+        if(!consumeHeld(player,item))return;
+        setDragonKey(entity,'armor_'+armor.slot,armor.material);
+        setDragonKey(entity,'armor_'+armor.slot+'_item',item);
+        player.sendMessage('Armadura de '+armor.material+' equipada: '+armor.slot+'.');return;
       }
       if(!item&&dragonStage(Number(dragonKey(entity,'days',0)))>=3) {
         try { entity.getComponent('minecraft:rideable')?.addRider(player); } catch {}
