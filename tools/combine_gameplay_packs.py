@@ -74,7 +74,8 @@ def combine(folders,output):
     scripts=output/'BP/scripts';scripts.mkdir(parents=True,exist_ok=True)
     if catalog:
         source=next(f/'BP/scripts' for f in folders if (f/'BP/scripts/creature_catalog.js').exists())
-        for name in ['main.js','combat.js']:shutil.copy2(source/name,scripts/('creatures.js' if name=='main.js' else name))
+        for name in ['main.js','combat.js','dragon_armor.js']:
+            shutil.copy2(source/name,scripts/('creatures.js' if name=='main.js' else name))
         (scripts/'creature_catalog.js').write_text('export const CREATURES = '+json.dumps(catalog)+';\n')
         imports.insert(0,'import "./creatures.js";')
     (scripts/'main.js').write_text('\n'.join(imports)+'\n')

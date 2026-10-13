@@ -24,7 +24,8 @@ def run(*args):
     subprocess.run([sys.executable, *map(str, args)], cwd=ROOT, check=True)
 
 
-def build(output: Path, backpack_source: Path, previous_addon: Path | None = None) -> Path:
+def build(output: Path, backpack_source: Path, previous_addon: Path | None = None,
+          version: tuple[int, int, int] = (0, 3, 5)) -> Path:
     output = output.resolve()
     backpack_source = backpack_source.resolve()
     if output.exists():
@@ -68,21 +69,23 @@ def build(output: Path, backpack_source: Path, previous_addon: Path | None = Non
     for role in ('BP', 'RP'):
         manifest = candidate / role / 'manifest.json'
         document = json.loads(manifest.read_text(encoding='utf-8'))
-        document['header']['name'] = f'Minizin 12 Mods Android Candidato v0.3.4 {role}'
+        label='.'.join(map(str,version))
+        document['header']['name'] = f'Minizin 12 Mods Android Candidato v{label} {role}'
         document['header']['description'] = 'Integracao experimental; validacao no Minecraft Android pendente'
-        document['header']['version'] = [0, 3, 4]
+        document['header']['version'] = list(version)
         document['header']['min_engine_version'] = [1, 21, 120]
         for module in document['modules']:
-            module['version'] = [0, 3, 4]
+            module['version'] = list(version)
         for dependency in document.get('dependencies', []):
             if 'uuid' in dependency:
-                dependency['version'] = [0, 3, 4]
+                dependency['version'] = list(version)
         manifest.write_text(json.dumps(document, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     counts = check([candidate])
-    archive = output / 'Minizin_Integrado_12_MODS_ANDROID_CANDIDATO_v0.3.4.mcaddon'
+    version_code=''.join(map(str,version))
+    archive = output / f'Minizin_Integrado_12_MODS_ANDROID_CANDIDATO_v{version_code}.mcaddon'
     with zipfile.ZipFile(archive, 'w', zipfile.ZIP_STORED) as bundle:
         for role in ('BP', 'RP'):
-            bundle.writestr(f'Minizin_v034_{role}.mcpack', zipped(candidate / role))
+            bundle.writestr(f'Minizin_v{version_code}_{role}.mcpack', zipped(candidate / role))
     with zipfile.ZipFile(archive) as bundle:
         assert bundle.testzip() is None
         for name in bundle.namelist():
@@ -117,5 +120,10 @@ if __name__ == '__main__':
                         default=ROOT / 'mods/56-sophisticated-backpacks/upstream')
     parser.add_argument('--previous-addon', type=Path,
                         help='Previously tested v0.3.3 archive to retain all existing IDs')
+    parser.add_argument('--version', default='0.3.5',
+                        help='Pack version, default 0.3.5 for the dragon armor candidate')
     args = parser.parse_args()
-    build(args.output, args.backpack_source, args.previous_addon)
+    version=tuple(int(part) for part in args.version.split('.'))
+    if len(version)!=3 or any(part<0 for part in version):
+        parser.error('Version must have three nonnegative integer parts')
+    build(args.output, args.backpack_source, args.previous_addon, version)

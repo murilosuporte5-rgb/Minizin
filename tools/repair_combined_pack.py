@@ -598,6 +598,7 @@ def repair(source,output):
     # otherwise a new combined candidate would silently keep the previous
     # dragon interaction implementation.
     shutil.copy2(ROOT/'bedrock/runtime/creatures.js',bp/'scripts/creatures.js')
+    shutil.copy2(ROOT/'bedrock/runtime/dragon_armor.js',bp/'scripts/dragon_armor.js')
     shutil.copy2(ROOT/'bedrock/runtime/item_actions.js',bp/'scripts/item_actions.js')
     # Refresh the Waystones runtime as well.  This matters because the block
     # migration/visibility fix is shared with the standalone pack and must not

@@ -1,6 +1,7 @@
-import {world, system, EntityDamageCause} from '@minecraft/server';
+import {world, system, EntityDamageCause, ItemStack} from '@minecraft/server';
 import {planAttack} from './combat.js';
 import {CREATURES} from './creature_catalog.js';
+import {ARMOR_MATERIALS,ARMOR_SLOTS,armorOrdinal,armorRating} from './dragon_armor.js';
 
 const attacks = new Map();
 const retaliation = new Map();
@@ -22,8 +23,8 @@ const DRAGON_EGGS = {
 };
 const DRAGON_ARMOR = new Map([
   ['minizin_iceandfire:dragon_armor_iron',{material:'iron',slot:'head'}],
-  ...['iron','gold','diamond','silver','copper','dragonsteel_fire','dragonsteel_ice','dragonsteel_lightning']
-    .flatMap(material=>['head','neck','body','tail'].map(slot=>[
+  ...ARMOR_MATERIALS
+    .flatMap(material=>ARMOR_SLOTS.map(slot=>[
       'minizin_iceandfire:dragonarmor_'+material+'_'+slot,{material,slot}
     ]))
 ]);
@@ -71,6 +72,19 @@ function dragonTick(entity) {
   if(stage!==previous) {
     setDragonKey(entity,'stage',stage);
     try { entity.triggerEvent('minizin:stage_'+stage); } catch {}
+  }
+  if(info.prefix==='minizin_iceandfire') {
+    const materials=Object.fromEntries(ARMOR_SLOTS.map(slot=>[slot,dragonKey(entity,'armor_'+slot,'')]));
+    for(const slot of ARMOR_SLOTS) {
+      const ordinal=armorOrdinal(materials[slot]);
+      if(entity.getProperty('minizin:armor_'+slot)!==ordinal)
+        entity.setProperty('minizin:armor_'+slot,ordinal);
+    }
+    const rating=armorRating(materials);
+    if(Number(dragonKey(entity,'armor_applied',-1))!==rating) {
+      entity.triggerEvent('minizin:dragon_armor_'+rating);
+      setDragonKey(entity,'armor_applied',rating);
+    }
   }
   const rider=entity.getComponent('minecraft:rideable')?.getRiders?.().find(x=>x.typeId==='minecraft:player');
   if(rider && dragonOwner(entity)===rider.id && stage>=3) {
@@ -121,9 +135,24 @@ function installDragonInteractions() {
       }
       const armor=dragonArmor(item);
       if(armor) {
-        if(!consumeHeld(player,item))return;
-        setDragonKey(entity,'armor_'+armor.slot,armor.material);
-        setDragonKey(entity,'armor_'+armor.slot+'_item',item);
+        const inventory=player.getComponent('minecraft:inventory')?.container;
+        const slot=player.selectedSlotIndex,stack=inventory?.getItem(slot);
+        if(player.getGameMode?.()!=='Creative'&&(!stack||stack.typeId!==item||stack.amount!==1))return;
+        const old=String(dragonKey(entity,'armor_'+armor.slot+'_item',''));
+        if(old===item){player.sendMessage('Esta peça já está equipada.');return;}
+        try {
+          entity.setDynamicProperty('minizin:dragon_armor_'+armor.slot,armor.material);
+          entity.setDynamicProperty('minizin:dragon_armor_'+armor.slot+'_item',item);
+          if(player.getGameMode?.()!=='Creative')inventory.setItem(slot,old?new ItemStack(old,1):undefined);
+        } catch(error) {
+          try {
+            entity.setDynamicProperty('minizin:dragon_armor_'+armor.slot,old ?
+              ARMOR_MATERIALS.find(material=>old.includes('dragonarmor_'+material+'_'))??'iron' : '');
+            entity.setDynamicProperty('minizin:dragon_armor_'+armor.slot+'_item',old);
+          } catch {}
+          player.sendMessage('Não foi possível trocar a armadura: '+String(error));return;
+        }
+        // The synced texture and protection follow on the next creature tick.
         player.sendMessage('Armadura de '+armor.material+' equipada: '+armor.slot+'.');return;
       }
       if(!item&&dragonStage(Number(dragonKey(entity,'days',0)))>=3) {

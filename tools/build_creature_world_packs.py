@@ -16,6 +16,7 @@ from build_bedrock_packs import validate, zipped
 
 ROOT = Path(__file__).resolve().parents[1]
 CONVERSIONS = ROOT/'generated/conversions'
+DRAGON_ARMOR_SLOTS = ('head', 'neck', 'body', 'tail')
 
 
 def write(path, data):
@@ -107,6 +108,27 @@ def add_entity(folder, name, geo, texture, kind, report, clips=None, sound=None,
     components['minecraft:behavior.melee_attack']={'priority':3,'speed_multiplier':1.2,'track_target':True}
     groups, events = {}, {}
     if kind=='dragon':
+        # Each slot is a synchronized ordinal. The texture overlays come from
+        # EnumDragonTextures.Armor in the pinned Ice and Fire source.
+        armor_path = texture.parent
+        transparent = ROOT/'mods/16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/models/firedragon/empty.png'
+        copy_asset(transparent,rp/'textures/entity'/f'{name}_armor_empty.png',report)
+        for slot in DRAGON_ARMOR_SLOTS:
+            description['textures'][f'armor_{slot}_0']=f'textures/entity/{name}_armor_empty'
+            for ordinal in range(1,9):
+                image=f'armor_{slot}_{ordinal}.png'
+                copy_asset(armor_path/image,rp/'textures/entity'/f'{name}_{image}',report)
+                description['textures'][f'armor_{slot}_{ordinal}']=f'textures/entity/{name}_armor_{slot}_{ordinal}'
+        description['materials']['default']='entity_multitexture'
+        controller_path=rp/'render_controllers'/f'{name}.json'
+        controller=json.loads(controller_path.read_text())
+        renderer=controller['render_controllers'][f'controller.render.{folder.name}.{name}']
+        arrays=renderer.setdefault('arrays',{}).setdefault('textures',{})
+        for slot in DRAGON_ARMOR_SLOTS:
+            arrays[f'Array.armor_{slot}']=[f'Texture.armor_{slot}_{n}' for n in range(9)]
+            renderer['textures'].append(f"Array.armor_{slot}[query.property('minizin:armor_{slot}')]" )
+        write(controller_path,controller)
+        write(rp/'entity'/f'{name}.entity.json',{'format_version':'1.10.0','minecraft:client_entity':{'description':description}})
         components['minecraft:rideable']={'seat_count':1,'family_types':['player'],
             'interact_text':'action.interact.mount','seats':[{'position':[0,1.4,0]}]}
         groups['minizin:flight']={'minecraft:physics':{'has_gravity':False},'minecraft:movement.fly':{},
@@ -114,11 +136,19 @@ def add_entity(folder, name, geo, texture, kind, report, clips=None, sound=None,
         groups['minizin:ground']={'minecraft:physics':{'has_gravity':True},'minecraft:movement.basic':{},'minecraft:navigation.walk':{}}
         events={'minizin:takeoff':{'remove':{'component_groups':['minizin:ground']},'add':{'component_groups':['minizin:flight']}},
                 'minizin:land':{'remove':{'component_groups':['minizin:flight']},'add':{'component_groups':['minizin:ground']}}}
+        for rating in range(1,17):
+            key=f'minizin:dragon_armor_{rating}'
+            groups[key]={'minecraft:armor':{'value':rating}}
+            events[key]={'remove':{'component_groups':[f'minizin:dragon_armor_{n}' for n in range(1,17) if n!=rating]},
+                         'add':{'component_groups':[key]}}
+        events['minizin:dragon_armor_0']={'remove':{'component_groups':[f'minizin:dragon_armor_{n}' for n in range(1,17)]}}
     if kind=='boss':
         components['minecraft:boss']={'name':name.replace('_',' ').title(),'hud_range':48,'should_darken_sky':False}
     write(bp/'entities'/f'{name}.json',{'format_version':'1.21.0','minecraft:entity':{
         'description':{'identifier':ident,'is_spawnable':True,'is_summonable':True,'is_experimental':False,
-            'properties':{f'minizin:{p}':{'type':'bool','default':False,'client_sync':True} for p in ['flying','attacking','enraged']}},
+            'properties':{**{f'minizin:{p}':{'type':'bool','default':False,'client_sync':True} for p in ['flying','attacking','enraged']},
+                **({f'minizin:armor_{slot}':{'type':'int','range':[0,8],'default':0,'client_sync':True}
+                    for slot in DRAGON_ARMOR_SLOTS} if kind=='dragon' else {})}},
         'components':components,'component_groups':groups,'events':events}})
     sound_id = None
     if sound:
@@ -259,7 +289,7 @@ def build(output):
                 assets/'sounds/entity/bluff/spike_explode.ogg')
             catalog[ident]=spec
         scripts=folder/'BP/scripts';scripts.mkdir(parents=True,exist_ok=True)
-        for source,dest in [('creatures.js','main.js'),('combat.mjs','combat.js')]:
+        for source,dest in [('creatures.js','main.js'),('combat.mjs','combat.js'),('dragon_armor.js','dragon_armor.js')]:
             shutil.copy2(ROOT/'bedrock/runtime'/source,scripts/dest)
         (scripts/'creature_catalog.js').write_text('export const CREATURES = '+json.dumps(catalog)+';\n')
         sounds={s['sound']:{'category':'hostile','sounds':['sounds/'+i.split(':')[1]]} for i,s in catalog.items() if s['sound']}
