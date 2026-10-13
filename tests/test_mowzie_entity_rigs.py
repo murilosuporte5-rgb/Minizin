@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class MowzieEntityRigs(unittest.TestCase):
     def test_latest_combined_candidate_contains_source_backed_entity_rigs(self):
-        candidates = sorted(ROOT.glob('build/combined_all_*_v88_mowzie_entities'))
+        candidates = sorted(ROOT.glob('build/combined_all_*_v89_mowzie_flight')) or sorted(ROOT.glob('build/combined_all_*_v88_mowzie_entities'))
         if not candidates:
             self.skipTest('v88 candidate not built yet')
         root = candidates[-1]
@@ -29,4 +29,12 @@ class MowzieEntityRigs(unittest.TestCase):
             self.assertEqual(entity['minecraft:entity']['description']['identifier'], f'minizin_mowzies:{name}')
             client = json.loads((root / 'RP/entity/mowzies' / f'{name}.entity.json').read_text())
             self.assertEqual(client['minecraft:client_entity']['description']['geometry']['default'], f'geometry.minizin_mowzies.{name}')
+
+        naga = json.loads((root / 'BP/entities/mowzies/naga.json').read_text())['minecraft:entity']['components']
+        self.assertFalse(naga['minecraft:physics']['has_gravity'])
+        self.assertIn('minecraft:navigation.fly', naga)
+        self.assertIn('minecraft:movement.fly', naga)
+        self.assertIn('minecraft:behavior.random_fly', naga)
+        grottol = json.loads((root / 'BP/entities/mowzies/grottol.json').read_text())['minecraft:entity']['components']
+        self.assertIn('minecraft:behavior.avoid_mob', grottol)
 

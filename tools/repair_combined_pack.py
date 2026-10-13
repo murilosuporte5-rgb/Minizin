@@ -25,7 +25,7 @@ def add_source_backed_mowzie_entities(rp,bp):
       'foliaath': {'model':'ModelFoliaath.java','texture':'foliaath.png','health':10,'width':1.2,'height':2.0,'attack':3,'hostile':True,'bounds':[8,8]},
       'frostmaw': {'model':'ModelFrostmaw.java','texture':'frostmaw.png','health':250,'width':4.2,'height':5.2,'attack':14,'hostile':True,'boss':'Frostmaw','bounds':[96,96]},
       'grottol': {'model':'ModelGrottol.java','texture':'grottol.png','health':20,'width':1.4,'height':0.9,'attack':4,'hostile':False,'bounds':[8,8]},
-      'naga': {'model':'ModelNaga.java','texture':'naga.png','health':30,'width':3.0,'height':2.8,'attack':8,'hostile':True,'boss':'Naga','bounds':[96,64]},
+      'naga': {'model':'ModelNaga.java','texture':'naga.png','health':30,'width':3.0,'height':2.8,'attack':8,'hostile':True,'boss':'Naga','flying':True,'bounds':[96,64]},
       'wroughtnaut': {'model':'ModelWroughtnaut.java','texture':'wroughtnaut.png','health':40,'width':1.8,'height':3.4,'attack':10,'hostile':True,'boss':'Wroughtnaut','bounds':[12,12]},
     }
     added=[]
@@ -56,14 +56,21 @@ def add_source_backed_mowzie_entities(rp,bp):
           'minecraft:type_family':{'family':family},
           'minecraft:health':{'value':spec['health'],'max':spec['health']},
           'minecraft:collision_box':{'width':spec['width'],'height':spec['height']},
-          'minecraft:physics':{},
+          'minecraft:physics':{'has_gravity':not spec.get('flying',False)},
           'minecraft:movement':{'value':0.22},
-          'minecraft:movement.basic':{},
-          'minecraft:navigation.walk':{'can_path_over_water':True,'avoid_damage_blocks':True},
           'minecraft:attack':{'damage':spec['attack']},
           'minecraft:behavior.look_at_player':{'priority':6,'look_distance':18,'probability':0.8},
-          'minecraft:behavior.random_stroll':{'priority':7,'speed_multiplier':0.7},
         }
+        if spec.get('flying'):
+            components['minecraft:navigation.fly']={'can_path_over_water':True,'can_open_doors':False}
+            components['minecraft:movement.fly']={}
+            components['minecraft:behavior.random_fly']={'priority':7,'speed_multiplier':0.7}
+        else:
+            components['minecraft:navigation.walk']={'can_path_over_water':True,'avoid_damage_blocks':True}
+            components['minecraft:movement.basic']={}
+            components['minecraft:behavior.random_stroll']={'priority':7,'speed_multiplier':0.7}
+        if name=='grottol':
+            components['minecraft:behavior.avoid_mob']={'priority':2,'entity_types':[{'filters':{'test':'is_family','subject':'other','value':'player'},'max_dist':16,'walk_speed_multiplier':0.5,'sprint_speed_multiplier':0.7}]}
         if spec['hostile']:
             components['minecraft:behavior.nearest_attackable_target']={'priority':1,'within_radius':24,'reselect_targets':True,'entity_types':[{'filters':{'test':'is_family','subject':'other','value':'player'},'max_dist':24}]}
             components['minecraft:behavior.melee_attack']={'priority':2,'track_target':True,'speed_multiplier':1.0,'reach_multiplier':1.5}
