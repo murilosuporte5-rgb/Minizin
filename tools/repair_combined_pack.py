@@ -18,7 +18,31 @@ def add_aether_accessories(rp,bp):
     names=[tier+'_'+kind for tier in ['skyroot','holystone','zanite','gravitite','valkyrie']
       for kind in ['pickaxe','axe','shovel']]
     names += [tier+'_sword' for tier in ['skyroot','holystone','zanite','gravitite','flaming']]
-    names += ['vampire_blade','iron_ring','golden_ring','ice_ring','zanite_ring']
+    names += [
+      'vampire_blade','iron_ring','golden_ring','ice_ring','zanite_ring',
+      'iron_pendant','golden_pendant','ice_pendant','zanite_pendant',
+      'leather_gloves','chainmail_gloves','iron_gloves','golden_gloves',
+      'diamond_gloves','netherite_gloves','zanite_gloves','gravitite_gloves',
+      'valkyrie_gloves','neptune_gloves','phoenix_gloves','obsidian_gloves',
+      'red_cape','blue_cape','yellow_cape','white_cape','agility_cape',
+      'swet_cape','invisibility_cloak','valkyrie_cape','golden_feather',
+      'regeneration_stone','iron_bubble','shield_of_repulsion'
+    ]
+    accessory_slots={
+      **{name:'ring' for name in ['iron_ring','golden_ring','ice_ring','zanite_ring']},
+      **{name:'pendant' for name in ['iron_pendant','golden_pendant','ice_pendant','zanite_pendant']},
+      **{name:'gloves' for name in ['leather_gloves','chainmail_gloves','iron_gloves','golden_gloves','diamond_gloves','netherite_gloves','zanite_gloves','gravitite_gloves','valkyrie_gloves','neptune_gloves','phoenix_gloves','obsidian_gloves']},
+      **{name:'cape' for name in ['red_cape','blue_cape','yellow_cape','white_cape','agility_cape','swet_cape','invisibility_cloak','valkyrie_cape']},
+      **{name:'accessory' for name in ['golden_feather','regeneration_stone','iron_bubble']},
+      'shield_of_repulsion':'shield'
+    }
+    durability={
+      'zanite_ring':49,'ice_ring':125,'zanite_pendant':98,'ice_pendant':250,
+      'leather_gloves':59,'chainmail_gloves':131,'iron_gloves':250,'golden_gloves':32,
+      'diamond_gloves':1561,'netherite_gloves':2031,'zanite_gloves':250,
+      'gravitite_gloves':1561,'valkyrie_gloves':1561,'neptune_gloves':250,
+      'phoenix_gloves':1561,'obsidian_gloves':2031,'shield_of_repulsion':512
+    }
     catalog={}
     for name in names:
         found=list((assets/'textures/item').rglob(name+'.png'))
@@ -30,13 +54,16 @@ def add_aether_accessories(rp,bp):
         shutil.copy2(found[0],target)
         registry.setdefault('texture_data',{})[key]={'textures':rel}
         ident='minizin_aether:'+name
-        is_ring=name.endswith('_ring')
+        is_accessory=name in accessory_slots
         components={'minecraft:icon':{'textures':{'default':key}},
                     'minecraft:max_stack_size':1,
                     'minecraft:display_name':{'value':'item.'+ident+'.name'}}
-        if not is_ring:
+        if not is_accessory:
             components['minecraft:hand_equipped']=True
-        catalog[ident]={'ring':is_ring}
+        if name in durability:components['minecraft:durability']={'max_durability':durability[name]}
+        catalog[ident]={'accessory':is_accessory}
+        if is_accessory:catalog[ident]['slot']=accessory_slots[name]
+        if name=='ice_ring' or name=='ice_pendant':catalog[ident]['freezing']=True
         write(bp/'items/aether_equipment'/f'{name}.json',{
           'format_version':'1.21.90','minecraft:item':{
             'description':{'identifier':ident,'menu_category':{'category':'equipment'}},

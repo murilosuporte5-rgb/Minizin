@@ -1,14 +1,15 @@
 # Minizin — checkpoint de integração
 
-O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de Waystones em chunks distantes, ampliou os poderes Origins com base nos JSON Java fixados, adicionou profissões persistentes do MCA, fechou os tiers/receitas do RFTools e ampliou a fronteira segura do Carry On.
+O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de Waystones em chunks distantes, ampliou os poderes Origins com base nos JSON Java fixados, adicionou profissões persistentes do MCA, fechou os tiers/receitas do RFTools, ampliou a fronteira segura do Carry On e corrigiu os slots de acessórios do Aether.
 
 ## Pacote gerado
 
 - `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`
-- SHA-256: `09692c383e26541d0cf54fb7a61a931c8959a9160762914f8ef33543c121a69f`
+- SHA-256: `45ea0f3cc1a9f7c333d2c2dad9b33e70eec276343954968cd21872af3ab7efdb`
 - Estruturalmente: 38 entidades, 375 blocos, 29 scripts, 42 animações e 8 sons.
 - ZIP externo e os dois `.mcpack` internos íntegros.
 - Aether no pacote: 21 estruturas `.mcstructure`, 16 entidades/modelos e scripts de dimensão, biomas, loot, bosses e fauna. Ice and Fire: 3 dragões montáveis e 3 ovos incubáveis. Cataclysm/Mowzie: adapters de ataques específicos para quatro bosses.
+- Aether acessórios: 53 itens com ícones originais no pacote, 32 acessórios e 8 posições virtuais correspondentes às categorias Java; mundos do protótipo que usavam a mão secundária são migrados automaticamente.
 - Dependência de script: `@minecraft/server` `beta`, exigida pelo registro de dimensão customizada atual.
 - Bundle independente: `Minizin_Independent_Packs_2026-10-12.zip`, com 11 `.mcaddon` e os dois `.mcpack` do Sophisticated Backpacks; SHA-256 `e12f499711237474686cc8b53205d6948acf2e2098b8999d8a851b85a6bac5b5`.
 
@@ -16,7 +17,7 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 
 - 31 testes Python do diretório `tests`: PASS.
 - 26 testes Python de `bedrock/worlds/tests`: PASS.
-- 40 testes JavaScript: PASS.
+- 44 testes JavaScript: PASS.
 - `node --check` em todos os scripts do BP final: PASS.
 - Validação estrutural final: PASS.
 - Origins: novo ciclo testado com 3 testes direcionados; imunidade a fogo, vulnerabilidade à água, efeitos aquáticos, queda lenta, salto felino, resistência/pressa, invisibilidade condicional e escalada/teia adaptadas estão no candidato. Phasing, inventário extra e elytra real continuam explicitamente pendentes.

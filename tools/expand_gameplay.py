@@ -22,7 +22,22 @@ def expand(source,output):
       (base/'src/main/java/com/aetherteam/aether/item/combat/AetherItemTiers.java').read_text())}
     names=[tier+'_'+kind for tier in ['skyroot','holystone','zanite','gravitite','valkyrie'] for kind in ['pickaxe','axe','shovel']]
     names += [tier+'_sword' for tier in ['skyroot','holystone','zanite','gravitite','flaming']]+['vampire_blade']
-    names+=['iron_ring','golden_ring','ice_ring','zanite_ring']
+    names+=['iron_ring','golden_ring','ice_ring','zanite_ring','iron_pendant','golden_pendant','ice_pendant','zanite_pendant',
+      'leather_gloves','chainmail_gloves','iron_gloves','golden_gloves','diamond_gloves','netherite_gloves','zanite_gloves',
+      'gravitite_gloves','valkyrie_gloves','neptune_gloves','phoenix_gloves','obsidian_gloves','red_cape','blue_cape',
+      'yellow_cape','white_cape','agility_cape','swet_cape','invisibility_cloak','valkyrie_cape','golden_feather',
+      'regeneration_stone','iron_bubble','shield_of_repulsion']
+    accessory_slots={
+      **{name:'ring' for name in ['iron_ring','golden_ring','ice_ring','zanite_ring']},
+      **{name:'pendant' for name in ['iron_pendant','golden_pendant','ice_pendant','zanite_pendant']},
+      **{name:'gloves' for name in ['leather_gloves','chainmail_gloves','iron_gloves','golden_gloves','diamond_gloves','netherite_gloves','zanite_gloves','gravitite_gloves','valkyrie_gloves','neptune_gloves','phoenix_gloves','obsidian_gloves']},
+      **{name:'cape' for name in ['red_cape','blue_cape','yellow_cape','white_cape','agility_cape','swet_cape','invisibility_cloak','valkyrie_cape']},
+      **{name:'accessory' for name in ['golden_feather','regeneration_stone','iron_bubble']},
+      'shield_of_repulsion':'shield'}
+    accessory_durability={'zanite_ring':49,'ice_ring':125,'zanite_pendant':98,'ice_pendant':250,
+      'leather_gloves':59,'chainmail_gloves':131,'iron_gloves':250,'golden_gloves':32,'diamond_gloves':1561,
+      'netherite_gloves':2031,'zanite_gloves':250,'gravitite_gloves':1561,'valkyrie_gloves':1561,
+      'neptune_gloves':250,'phoenix_gloves':1561,'obsidian_gloves':2031,'shield_of_repulsion':512}
     translations={}
     for lang in ['en_US','pt_BR']:
         translations[lang]={}
@@ -36,10 +51,10 @@ def expand(source,output):
         registry['texture_data'][icon]={'textures':'textures/items/aether_equipment/'+name}
         comp={'minecraft:icon':{'textures':{'default':icon}},'minecraft:max_stack_size':1,
           'minecraft:display_name':{'value':'item.'+ident+'.name'}}
-        spec={'ring':name.endswith('_ring')}
-        if spec['ring']:
-            comp['minecraft:allow_off_hand']=True
-            if name in ['ice_ring','zanite_ring']:comp['minecraft:durability']={'max_durability':125 if name=='ice_ring' else 49}
+        spec={'accessory':name in accessory_slots}
+        if spec['accessory']:
+            spec['slot']=accessory_slots[name]
+            if name in accessory_durability:comp['minecraft:durability']={'max_durability':accessory_durability[name]}
         else:
             tier='vampire' if name=='vampire_blade' else name.split('_')[0];kind='sword' if name=='vampire_blade' else name.split('_')[-1]
             values=tiers[tier];comp['minecraft:durability']={'max_durability':values['durability']}

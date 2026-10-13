@@ -4,7 +4,7 @@ Atualização: 2026-10-12. Esta matriz separa o que foi implementado e validado 
 
 | Modo | Escopo Java coberto nesta entrega | Implementação Bedrock atual | Evidência offline | Lacuna conhecida / próxima correção |
 |---|---|---|---|---|
-| The Aether | Blocos, itens-base, fauna, dungeons, loot, portal, dimensão e progressão inicial | Dimensão customizada, ilhas, portal glowstone+água, biomas determinísticos, estruturas convertidas, Slider/Valkyrie Queen/Sun Spirit, fauna e loot | `build/worlds_v2/aether`: 46 blocos funcionais, 16 entidades, 21 estruturas, 40 loot tables; candidato combinado: 371 blocos e scripts Aether presentes | Progressão completa, receitas, todas as animações/IA e validação de geração em Android ainda pendentes |
+| The Aether | Blocos, itens-base, acessórios, fauna, dungeons, loot, portal, dimensão e progressão inicial | Dimensão customizada, ilhas, portal glowstone+água, biomas determinísticos, estruturas convertidas, Slider/Valkyrie Queen/Sun Spirit, fauna/loot e 32 acessórios originais catalogados em 8 slots virtuais Java (2 anéis, pendant, luva, capa, escudo e 2 acessórios) | `build/worlds_v2/aether`: 46 blocos funcionais, 16 entidades, 21 estruturas, 40 loot tables; v22: 53 itens Aether, ícones originais e migração do offhand legado | Progressão completa, receitas, renderização 3D de acessórios, todas as animações/IA e validação de geração em Android ainda pendentes |
 | Biomes O’ Plenty | Catálogo de blocos e perfis de bioma do material de origem | Blocos, atlas, itens de bloco e catálogo empacotado | Validação estrutural do pacote combinado, referências de atlas e ícones | Geração procedural e integração de todos os biomas Java ainda não equivalentes |
 | Ice and Fire | Dragões, ovos, alimentação, crescimento, armaduras, flauta, ataques e montaria | IDs atuais `minizin_iceandfire:*`, entidades montáveis, três ovos incubáveis por condição ambiental, domesticação, crescimento, armadura, flauta e combate elementar | `tests/test_dragon_runtime.py`, `tests/creatures_logic.test.mjs`; 3 ovos e 3 dragões no candidato | Teste visual Android, reprodução completa, todas as variantes de armadura/animação e equivalência integral de IA ainda pendentes |
 | Alex’s Caves | Criaturas, blocos e itens de cavernas | Entidades, modelos, blocos/itens e lógica compartilhada de criatura | Pacote combinado validado e itens originais presentes quando disponíveis | Biomas/cavernas especiais, efeitos, máquinas e comportamento individual ainda incompletos |
@@ -19,8 +19,9 @@ Atualização: 2026-10-12. Esta matriz separa o que foi implementado e validado 
 
 ## Estado do pacote de correção
 
-- Candidato gerado: `build/combined_all_bosses_final_v21/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
-- Estruturalmente: 38 entidades, 371 blocos, 29 scripts, 42 animações e 8 sons.
+- Candidato gerado: `build/combined_all_bosses_final_v22/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
+- Estruturalmente: 38 entidades, 375 blocos, 29 scripts, 42 animações e 8 sons.
+- O v22 substitui o protótipo de 2 anéis por 8 posições virtuais baseadas no `AetherAccessorySlots` Java; o offhand só é usado para migrar mundos criados pelo protótipo antigo.
 - O Aether usa `@minecraft/server` `beta` porque o registro de dimensão customizada e as APIs de ticking area exigem essa superfície no código atual.
 - O pacote não foi executado em um aparelho Android nesta sessão. Portanto, carregamento real, renderização intermitente, FPS, memória, multiplayer e compatibilidade com a versão instalada do Bedrock permanecem “não testados”, mesmo quando a validação offline passa.
 - A referência visual Java `Minizin_Referencias_Visuais_Java_para_Codex.md` não estava disponível no filesystem nesta execução; a comparação imagem-a-imagem continua pendente e não foi inferida.
