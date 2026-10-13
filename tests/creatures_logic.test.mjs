@@ -27,3 +27,12 @@ test("Dragon mount steering preserves the Java control boundary",()=>{
  assert.match(runtime,/riderIsOwner/);
  assert.match(runtime,/do not let the combat adaptation/i);
 });
+test("Mowzie source attack contracts are wired without generic entity fallbacks",()=>{
+ const runtime=readFileSync(new URL("../bedrock/runtime/creatures.js",import.meta.url),"utf-8");
+ assert.match(runtime,/minizin_mowzies:frostmaw/);
+ assert.match(runtime,/minizin_mowzies:naga/);
+ assert.match(runtime,/minizin_mowzies:wroughtnaut/);
+ for(const state of ["bite","ice_breath","ice_ball","slam","spit","swoop","vertical_attack","stomp"])
+  assert.match(runtime,new RegExp("['\\\"]"+state+"['\\\"]"));
+ assert.match(runtime,/families:\['minizin_creature','minizin_mowzies'\]/);
+});

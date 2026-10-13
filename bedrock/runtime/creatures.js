@@ -190,6 +190,11 @@ const SPECIAL_BOSSES = new Set([
   'minizin_cataclysm:ignis','minizin_cataclysm:harbinger',
   'minizin_cataclysm:ender_guardian','minizin_mowzies:bluff'
 ]);
+const MOWZIE_ENTITIES = new Set([
+  'minizin_mowzies:foliaath','minizin_mowzies:frostmaw',
+  'minizin_mowzies:grottol','minizin_mowzies:naga',
+  'minizin_mowzies:wroughtnaut'
+]);
 const bossKey = (entity,key,fallback=0) => {
   try { return entity.getDynamicProperty('minizin:boss_'+key) ?? fallback; }
   catch { return fallback; }
@@ -209,6 +214,60 @@ function bossStrike(entity,target,damage,particle='minecraft:basic_smoke_particl
     entity.dimension.spawnParticle(particle,target.location);
     entity.setProperty('minizin:attacking',true);
   } catch {}
+}
+function mowzieState(entity,state) {
+  try { entity.setProperty('minizin_mowzies:attack',state); } catch {}
+  try { entity.setProperty('minizin:attacking',state!=='idle'); } catch {}
+}
+function mowzieAreaStrike(entity,range,damage,particle,knock=0) {
+  try {
+    for (const player of entity.dimension.getPlayers({location:entity.location,maxDistance:range}))
+      bossStrike(entity,player,damage,particle,knock);
+  } catch {}
+}
+function sourceMowzieAttack(entity,target,tick,health) {
+  if (!MOWZIE_ENTITIES.has(entity.typeId)||!target)return false;
+  const distanceTo=length(difference(target.location,entity.location));
+  const cooldown=Number(bossKey(entity,'cooldown',0));
+  if(tick<cooldown)return false;
+  const ratio=health.currentValue/Math.max(1,health.effectiveMax);
+  if(entity.typeId==='minizin_mowzies:foliaath'&&distanceTo<=4) {
+    setBossKey(entity,'cooldown',tick+14);mowzieState(entity,'bite');bossStrike(entity,target,4,'minecraft:basic_smoke_particle',0.25);return true;
+  }
+  if(entity.typeId==='minizin_mowzies:frostmaw') {
+    if(distanceTo<=6.5) {
+      setBossKey(entity,'cooldown',tick+28);mowzieState(entity,Math.random()<0.35?'swipe_twice':'swipe');mowzieAreaStrike(entity,6.5,12,'minecraft:basic_smoke_particle',0.45);return true;
+    }
+    if(ratio<0.6&&distanceTo<=8.5) {
+      setBossKey(entity,'cooldown',tick+113);mowzieState(entity,'slam');mowzieAreaStrike(entity,8.5,14,'minecraft:basic_smoke_particle',0.8);return true;
+    }
+    if(distanceTo<=13.5) {
+      setBossKey(entity,'cooldown',tick+92);mowzieState(entity,'ice_breath');try{target.addEffect('slowness',80,{amplifier:1});}catch{};bossStrike(entity,target,8,'minecraft:basic_smoke_particle',0.15);return true;
+    }
+    if(distanceTo<=24) {
+      setBossKey(entity,'cooldown',tick+50);mowzieState(entity,'ice_ball');try{target.addEffect('slowness',60,{amplifier:2});}catch{};bossStrike(entity,target,9,'minecraft:basic_smoke_particle',0.25);return true;
+    }
+  }
+  if(entity.typeId==='minizin_mowzies:naga') {
+    if(distanceTo<=8) {
+      setBossKey(entity,'cooldown',tick+54);mowzieState(entity,'swoop');bossStrike(entity,target,10,'minecraft:basic_smoke_particle',0.65);return true;
+    }
+    if(distanceTo<=24) {
+      setBossKey(entity,'cooldown',tick+50);mowzieState(entity,'spit');try{target.addEffect('poison',60,{amplifier:0});}catch{};bossStrike(entity,target,7,'minecraft:basic_smoke_particle',0.2);return true;
+    }
+  }
+  if(entity.typeId==='minizin_mowzies:wroughtnaut') {
+    if(distanceTo<=5) {
+      setBossKey(entity,'cooldown',tick+50);mowzieState(entity,'attack');mowzieAreaStrike(entity,5,16,'minecraft:basic_smoke_particle',0.65);return true;
+    }
+    if(distanceTo<=9) {
+      setBossKey(entity,'cooldown',tick+40);mowzieState(entity,'vertical_attack');mowzieAreaStrike(entity,9,14,'minecraft:basic_smoke_particle',0.8);return true;
+    }
+    if(distanceTo<=12) {
+      setBossKey(entity,'cooldown',tick+40);mowzieState(entity,'stomp');mowzieAreaStrike(entity,12,10,'minecraft:basic_smoke_particle',0.55);return true;
+    }
+  }
+  return false;
 }
 function specialBossAttack(entity,target,tick,health) {
   if(!SPECIAL_BOSSES.has(entity.typeId)||!target)return false;
@@ -293,12 +352,13 @@ system.runInterval(() => {
     const dimension = players[0].dimension;
     let processed = 0;
     for (const player of players) {
-      for (const entity of dimension.getEntities({location:player.location,maxDistance:32,families:['minizin_creature']})) {
+      for (const entity of dimension.getEntities({location:player.location,maxDistance:32,families:['minizin_creature','minizin_mowzies']})) {
         if (seen.has(entity.id) || processed >= 48) continue;
         seen.add(entity.id); processed++;
         try {
           const spec = CREATURES[entity.typeId];
-          if (!spec || !entity.isValid) continue;
+          const isMowzie=MOWZIE_ENTITIES.has(entity.typeId);
+          if ((!spec&&!isMowzie) || !entity.isValid) continue;
           dragonTick(entity);
           const owner=spec.kind==='dragon' ? dragonOwner(entity) : '';
           const rider=spec.kind==='dragon' ? entity.getComponent('minecraft:rideable')?.getRiders?.().find(x=>x.typeId==='minecraft:player') : null;
@@ -315,9 +375,15 @@ system.runInterval(() => {
           const closest = candidates[0];
           if (!closest) {
             entity.setProperty('minizin:attacking',false);
-            if(spec.kind==='dragon'&&entity.getProperty('minizin:flying')){
+            if(isMowzie)mowzieState(entity,'idle');
+            if(spec?.kind==='dragon'&&entity.getProperty('minizin:flying')){
               entity.triggerEvent('minizin:land');entity.setProperty('minizin:flying',false);
             }
+            continue;
+          }
+          if (isMowzie) {
+            const health=entity.getComponent('minecraft:health');
+            if (!health || !sourceMowzieAttack(entity,closest.player,system.currentTick,health)) mowzieState(entity,'idle');
             continue;
           }
           if (spec.kind === 'atlatitan') {

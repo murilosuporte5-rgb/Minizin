@@ -28,6 +28,13 @@ def add_source_backed_mowzie_entities(rp,bp):
       'naga': {'model':'ModelNaga.java','texture':'naga.png','health':30,'width':3.0,'height':2.8,'attack':8,'hostile':True,'boss':'Naga','flying':True,'bounds':[96,64]},
       'wroughtnaut': {'model':'ModelWroughtnaut.java','texture':'wroughtnaut.png','health':40,'width':1.8,'height':3.4,'attack':10,'hostile':True,'boss':'Wroughtnaut','bounds':[12,12]},
     }
+    attack_states={
+      'foliaath':['idle','bite'],
+      'frostmaw':['idle','roar','swipe','swipe_twice','ice_breath','ice_ball','slam','dodge','activate','deactivate'],
+      'grottol':['idle','burrow'],
+      'naga':['idle','flap','dodge','spit','swoop','tail_demo'],
+      'wroughtnaut':['idle','attack','attack_twice','attack_thrice','vertical_attack','stomp','activate','deactivate'],
+    }
     added=[]
     for name,spec in specs.items():
         model_path=model_root/spec['model']; texture_path=assets/'textures/entity'/spec['texture']
@@ -79,7 +86,8 @@ def add_source_backed_mowzie_entities(rp,bp):
             components['minecraft:boss']={'name':spec['boss'],'hud_range':40,'should_darken_sky':False}
         write(bp/'entities/mowzies'/f'{name}.json',{
           'format_version':'1.21.90','minecraft:entity':{'description':{
-            'identifier':ident,'is_spawnable':True,'is_summonable':True,'is_experimental':False},
+            'identifier':ident,'is_spawnable':True,'is_summonable':True,'is_experimental':False,
+            'properties':{'minizin_mowzies:attack':{'type':'enum','values':attack_states[name],'default':'idle','client_sync':True}}},
             'components':components}})
         write(rp/'entity/mowzies'/f'{name}.entity.json',{
           'format_version':'1.10.0','minecraft:client_entity':{'description':{

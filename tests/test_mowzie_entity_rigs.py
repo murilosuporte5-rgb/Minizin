@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class MowzieEntityRigs(unittest.TestCase):
     def test_latest_combined_candidate_contains_source_backed_entity_rigs(self):
-        candidates = sorted(ROOT.glob('build/combined_all_*_v89_mowzie_flight')) or sorted(ROOT.glob('build/combined_all_*_v88_mowzie_entities'))
+        candidates = sorted(ROOT.glob('build/combined_all_*_v90_mowzie_attacks')) or sorted(ROOT.glob('build/combined_all_*_v89_mowzie_flight')) or sorted(ROOT.glob('build/combined_all_*_v88_mowzie_entities'))
         if not candidates:
             self.skipTest('v88 candidate not built yet')
         root = candidates[-1]
