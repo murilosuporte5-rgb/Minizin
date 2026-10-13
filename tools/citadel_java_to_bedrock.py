@@ -16,6 +16,7 @@ def find_calls(pattern, text):
     return [(m.start(), m.groups()) for m in re.finditer(pattern,text,re.MULTILINE)]
 def recover_models(sources:list[str],identifier="geometry.minizin.citadel"):
     all_part={}
+    constructor_uv={}
     report={"classes":len(sources),"unsupported":[],"models":[],"box_total":0}
     texture_w=texture_h=None
     for source in sources:
@@ -30,18 +31,25 @@ def recover_models(sources:list[str],identifier="geometry.minizin.citadel"):
         num=NUM
         # Handles parent.addChild(child), child.setRotationPoint(x,y,z)
         events=[]
-        events+= [(p,"new",args) for p,args in find_calls(rf"({NAME[1:-1]})\s*=\s*new\s+AdvancedModelBox\s*\(\s*this\s*\)",source)]
+        # Mowzie's pinned sources use AdvancedModelRenderer while older
+        # Citadel sources use AdvancedModelBox.  Both expose the same static
+        # constructor/pose API for the cuboids recovered here.
+        events+= [(p,"new",args) for p,args in find_calls(rf"({NAME[1:-1]})\s*=\s*new\s+AdvancedModel(?:Box|Renderer)\s*\(\s*this(?:\s*,\s*{num}\s*,\s*{num})?\s*\)",source)]
         events+= [(p,"point",args) for p,args in find_calls(rf"{NAME}\.setRotationPoint\(\s*{num}\s*,\s*{num}\s*,\s*{num}\s*\)",source)]
         events+= [(p,"child",args) for p,args in find_calls(rf"{NAME}\.addChild\(\s*{NAME}\s*\)",source)]
         events+= [(p,"rotate",args) for p,args in find_calls(rf"setRotat(?:e|ion)Angle\(\s*{NAME}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*\)",source)]
         events+= [(p,"box",args) for p,args in find_calls(
             rf"{NAME}\.setTextureOffset\(\s*{num}\s*,\s*{num}\s*\)\.addBox\(\s*"
             rf"{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*(true|false)\s*\)",source)]
+        events+= [(p,"direct_box",args) for p,args in find_calls(
+            rf"({NAME[1:-1]})\.addBox\(\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}\s*,\s*{num}(?:\s*,\s*(true|false))?\s*\)",source)]
         events.sort(key=lambda x:x[0])
         for p,tag,args in events:
             if tag=="new":
                 name=args[0]
                 all_part[name]={"name":name,"pos":[0,0,0],"angle":[0,0,0],"parent":None,"cubes":[]}
+                if len(args)>=3 and args[1] is not None and args[2] is not None:
+                    constructor_uv[name]=[int(parse_num(args[1])),int(parse_num(args[2]))]
             elif tag=="point":
                 name=args[0]
                 if name in all_part:all_part[name]["pos"]=[parse_num(v) for v in args[1:]]
@@ -59,6 +67,15 @@ def recover_models(sources:list[str],identifier="geometry.minizin.citadel"):
                     mirror=args[10]=="true"
                     all_part[name]["cubes"].append({"offset":[x,y,z],"size":[dx,dy,dz],
                         "inflate":inflate,"uv":[int(u),int(v)],"mirror":mirror})
+            elif tag=="direct_box":
+                name=args[0]
+                if name in all_part:
+                    x,y,z,dx,dy,dz,inflate=[parse_num(v) for v in args[1:8]]
+                    uv=constructor_uv.get(name,[0,0])
+                    if name not in constructor_uv:
+                        report["unsupported"].append(f"{name}: constructor UV offset unavailable")
+                    all_part[name]["cubes"].append({"offset":[x,y,z],"size":[dx,dy,dz],
+                        "inflate":inflate,"uv":uv,"mirror":len(args)>8 and args[8]=="true"})
         report["models"].append({"parsed_classes":len(all_part),"events":len(events)})
     if not all_part: raise ValueError("No AdvancedModelBox declarations detected")
     if texture_w is None or texture_h is None:

@@ -5,8 +5,90 @@ from pathlib import Path
 from PIL import Image
 from build_bedrock_packs import zipped
 from validate_gameplay_packs import check
+from citadel_java_to_bedrock import recover_models
 
 ROOT=Path(__file__).resolve().parents[1]
+
+def add_source_backed_mowzie_entities(rp,bp):
+    """Recover the remaining Mowzie Citadel rigs from the pinned Java source.
+
+    These models are static constructor geometry (AdvancedModelRenderer), not
+    generic replacement meshes.  The converter preserves source cuboids, UVs,
+    pivots, rotations and parent links.  Java pose code is deliberately not
+    guessed: no Bedrock animation is advertised until a source-backed clip or
+    a separately verified runtime implementation exists.
+    """
+    source_root=ROOT/'mods/44-mowzies-mobs/upstream/src/main'
+    assets=source_root/'resources/assets/mowziesmobs'
+    model_root=source_root/'java/com/bobmowzie/mowziesmobs/client/model/entity'
+    specs={
+      'foliaath': {'model':'ModelFoliaath.java','texture':'foliaath.png','health':10,'width':1.2,'height':2.0,'attack':3,'hostile':True,'bounds':[8,8]},
+      'frostmaw': {'model':'ModelFrostmaw.java','texture':'frostmaw.png','health':250,'width':4.2,'height':5.2,'attack':14,'hostile':True,'boss':'Frostmaw','bounds':[96,96]},
+      'grottol': {'model':'ModelGrottol.java','texture':'grottol.png','health':20,'width':1.4,'height':0.9,'attack':4,'hostile':False,'bounds':[8,8]},
+      'naga': {'model':'ModelNaga.java','texture':'naga.png','health':30,'width':3.0,'height':2.8,'attack':8,'hostile':True,'boss':'Naga','bounds':[96,64]},
+      'wroughtnaut': {'model':'ModelWroughtnaut.java','texture':'wroughtnaut.png','health':40,'width':1.8,'height':3.4,'attack':10,'hostile':True,'boss':'Wroughtnaut','bounds':[12,12]},
+    }
+    added=[]
+    for name,spec in specs.items():
+        model_path=model_root/spec['model']; texture_path=assets/'textures/entity'/spec['texture']
+        if not model_path.is_file() or not texture_path.is_file():
+            raise FileNotFoundError(str(model_path if not model_path.is_file() else texture_path))
+        with Image.open(texture_path) as image:
+            texture_size=(image.width,image.height)
+        source=model_path.read_text(encoding='utf-8')
+        # The old Citadel model base owns the texture fields, so derive the
+        # dimensions from the actual original PNG instead of inventing Java
+        # defaults in the converter.
+        source += f"\nint texWidth = {texture_size[0]}; int texHeight = {texture_size[1]};\n"
+        geometry,report=recover_models([source],f'geometry.minizin_mowzies.{name}')
+        geometry['minecraft:geometry'][0]['description'].update({
+          'visible_bounds_width':spec['bounds'][0],
+          'visible_bounds_height':spec['bounds'][1],
+          'visible_bounds_offset':[0,1,0],
+        })
+        write(rp/'models/entity/mowzies'/f'{name}.geo.json',geometry)
+        texture_rel=f'textures/mowzies/entity/{name}'
+        target=rp/(texture_rel+'.png');target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(texture_path,target)
+        ident=f'minizin_mowzies:{name}'
+        family=['mowzie','minizin_mowzies',name]
+        components={
+          'minecraft:type_family':{'family':family},
+          'minecraft:health':{'value':spec['health'],'max':spec['health']},
+          'minecraft:collision_box':{'width':spec['width'],'height':spec['height']},
+          'minecraft:physics':{},
+          'minecraft:movement':{'value':0.22},
+          'minecraft:movement.basic':{},
+          'minecraft:navigation.walk':{'can_path_over_water':True,'avoid_damage_blocks':True},
+          'minecraft:attack':{'damage':spec['attack']},
+          'minecraft:behavior.look_at_player':{'priority':6,'look_distance':18,'probability':0.8},
+          'minecraft:behavior.random_stroll':{'priority':7,'speed_multiplier':0.7},
+        }
+        if spec['hostile']:
+            components['minecraft:behavior.nearest_attackable_target']={'priority':1,'within_radius':24,'reselect_targets':True,'entity_types':[{'filters':{'test':'is_family','subject':'other','value':'player'},'max_dist':24}]}
+            components['minecraft:behavior.melee_attack']={'priority':2,'track_target':True,'speed_multiplier':1.0,'reach_multiplier':1.5}
+            components['minecraft:behavior.move_towards_target']={'priority':3,'speed_multiplier':0.8,'within_radius':8}
+        if spec.get('boss'):
+            components['minecraft:boss']={'name':spec['boss'],'hud_range':40,'should_darken_sky':False}
+        write(bp/'entities/mowzies'/f'{name}.json',{
+          'format_version':'1.21.90','minecraft:entity':{'description':{
+            'identifier':ident,'is_spawnable':True,'is_summonable':True,'is_experimental':False},
+            'components':components}})
+        write(rp/'entity/mowzies'/f'{name}.entity.json',{
+          'format_version':'1.10.0','minecraft:client_entity':{'description':{
+            'identifier':ident,'materials':{'default':'entity_alphatest'},
+            'textures':{'default':texture_rel},
+            'geometry':{'default':f'geometry.minizin_mowzies.{name}'},
+            'render_controllers':['controller.render.mowzies.'+name]}}})
+        write(rp/'render_controllers/mowzies'/f'{name}.json',{
+          'format_version':'1.8.0','render_controllers':{
+            f'controller.render.mowzies.{name}':{
+              'geometry':'Geometry.default','materials':[{'*':'Material.default'}],
+              'textures':['Texture.default']}}})
+        report['source_model']=str(model_path.relative_to(ROOT));report['source_texture']=str(texture_path.relative_to(ROOT))
+        write(rp/'models/entity/mowzies'/f'{name}.conversion.json',report)
+        added.append({'id':ident,'bones':report['bones'],'boxes':report['box_total'],'texture':texture_size})
+    return added
 
 def add_dragon_armor_layers(rp,bp):
     """Render Ice and Fire's original four dragon-armor overlay layers.
@@ -884,6 +966,7 @@ def repair(source,output):
     aether_enchanting_item_count=add_aether_enchanting_items(rp,bp)
     creature_item_count=add_creature_items(rp,bp)
     mowzie_sun_bosses=add_source_backed_mowzie_sun_bosses(rp,bp)
+    mowzie_entities=add_source_backed_mowzie_entities(rp,bp)
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
@@ -1098,6 +1181,7 @@ def repair(source,output):
     counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
       'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
       'mowzie_sun_bosses':mowzie_sun_bosses,
+      'mowzie_entities':mowzie_entities,
       'mowzie_items':mowzie_item_count,
       'aether_freezer_items':aether_freezer_item_count,
       'aether_enchanting_items':aether_enchanting_item_count,
