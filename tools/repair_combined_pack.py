@@ -8,6 +8,67 @@ from validate_gameplay_packs import check
 
 ROOT=Path(__file__).resolve().parents[1]
 
+def add_dragon_armor_layers(rp,bp):
+    """Render Ice and Fire's original four dragon-armor overlay layers.
+
+    Java's LayerDragonArmor renders the dragon model again with four slot
+    textures selected by the armor ordinal. Bedrock has no equivalent native
+    equipment layer, so expose the same ordinal as client-synced entity
+    properties and use conditional render controllers. The PNGs are copied
+    from the pinned Java source; no replacement texture is generated.
+    """
+    source=ROOT/'mods/16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/models'
+    for dragon in ['firedragon','icedragon','lightningdragon']:
+        entity_path=bp/f'entities/iceandfire/{dragon}.json'
+        client_path=rp/f'entity/iceandfire/{dragon}.entity.json'
+        controller_path=rp/f'render_controllers/iceandfire/{dragon}.json'
+        if not entity_path.exists() or not client_path.exists() or not controller_path.exists():
+            continue
+        entity_doc=json.loads(entity_path.read_text(encoding='utf-8'))
+        desc=entity_doc['minecraft:entity']['description']
+        props=desc.setdefault('properties',{})
+        for slot in ['head','neck','body','tail']:
+            props.setdefault('minizin:armor_'+slot,{
+                'type':'int','range':[0,8],'default':0,'client_sync':True})
+        write(entity_path,entity_doc)
+        client_doc=json.loads(client_path.read_text(encoding='utf-8'))
+        cdesc=client_doc['minecraft:client_entity']['description']
+        textures=cdesc.setdefault('textures',{})
+        controllers=cdesc.setdefault('render_controllers',[])
+        base='textures/iceandfire/dragon_armor/'+dragon
+        empty_src=source/'firedragon'/'empty.png'
+        empty_rel=base+'/empty'
+        empty_target=rp/(empty_rel+'.png');empty_target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(empty_src,empty_target)
+        textures['armor_empty']=empty_rel
+        for slot in ['head','neck','body','tail']:
+            for ordinal in range(1,9):
+                src=source/dragon/f'armor_{slot}_{ordinal}.png'
+                if not src.exists():
+                    raise FileNotFoundError(src)
+                rel=base+'/'+slot+'_'+str(ordinal)
+                target=rp/(rel+'.png');target.parent.mkdir(parents=True,exist_ok=True)
+                shutil.copy2(src,target)
+                textures[f'armor_{slot}_{ordinal}']=rel
+            controller='controller.render.iceandfire.'+dragon+'.armor_'+slot
+            if controller not in controllers:controllers.append(controller)
+        write(client_path,client_doc)
+        original=json.loads(controller_path.read_text(encoding='utf-8'))
+        rendered=original.setdefault('render_controllers',{})
+        geometry=next(iter(rendered.values())).get('geometry','Geometry.default')
+        for slot in ['head','neck','body','tail']:
+            controller='controller.render.iceandfire.'+dragon+'.armor_'+slot
+            rendered[controller]={
+                'geometry':geometry,
+                'materials':[{'*':'Material.default'}],
+                'textures':['Array.armor_'+slot],
+                'arrays':{'textures':{'Array.armor_'+slot:[
+                    'Texture.armor_empty',
+                    *['Texture.armor_'+slot+'_'+str(i) for i in range(1,9)]
+                ]}},
+            }
+        write(controller_path,original)
+
 
 def add_aether_accessories(rp,bp):
     """Add the original Aether ring/tool icons and the non-offhand accessory UI."""
@@ -634,6 +695,7 @@ def repair(source,output):
     # otherwise a new combined candidate would silently keep the previous
     # dragon interaction implementation.
     shutil.copy2(ROOT/'bedrock/runtime/creatures.js',bp/'scripts/creatures.js')
+    add_dragon_armor_layers(rp,bp)
     shutil.copy2(ROOT/'bedrock/runtime/item_actions.js',bp/'scripts/item_actions.js')
     # Refresh the Waystones runtime as well.  This matters because the block
     # migration/visibility fix is shared with the standalone pack and must not

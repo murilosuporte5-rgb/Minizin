@@ -27,6 +27,12 @@ const DRAGON_ARMOR = new Map([
       'minizin_iceandfire:dragonarmor_'+material+'_'+slot,{material,slot}
     ]))
 ]);
+const DRAGON_ARMOR_ORDINAL = {
+  iron: 1, gold: 2, diamond: 3, silver: 4, fire: 5, ice: 6,
+  copper: 7, lightning: 8, dragonsteel_fire: 5,
+  dragonsteel_ice: 6, dragonsteel_lightning: 8,
+};
+const DRAGON_ARMOR_SLOTS = ['head', 'neck', 'body', 'tail'];
 const DAY_TICKS = 24000;
 const dragonKey = (entity,key,fallback='') => {
   try { return entity.getDynamicProperty('minizin:dragon_'+key) ?? fallback; }
@@ -35,6 +41,11 @@ const dragonKey = (entity,key,fallback='') => {
 const setDragonKey = (entity,key,value) => {
   try { entity.setDynamicProperty('minizin:dragon_'+key,value); } catch {}
 };
+function syncDragonArmorProperty(entity, slot, material) {
+  const ordinal = Number(DRAGON_ARMOR_ORDINAL[material] ?? material ?? 0);
+  if (!DRAGON_ARMOR_SLOTS.includes(slot) || !Number.isInteger(ordinal) || ordinal < 0 || ordinal > 8) return;
+  try { entity.setProperty('minizin:armor_'+slot, ordinal); } catch {}
+}
 const dragonStage = days => days >= 100 ? 5 : days >= 75 ? 4 : days >= 50 ? 3 : days >= 25 ? 2 : 1;
 const dragonInfo = entity => DRAGONS[entity.typeId];
 const heldItem = player => {
@@ -72,6 +83,8 @@ function dragonTick(entity) {
     setDragonKey(entity,'stage',stage);
     try { entity.triggerEvent('minizin:stage_'+stage); } catch {}
   }
+  for (const slot of DRAGON_ARMOR_SLOTS)
+    syncDragonArmorProperty(entity, slot, dragonKey(entity, 'armor_'+slot, 0));
   const rider=entity.getComponent('minecraft:rideable')?.getRiders?.().find(x=>x.typeId==='minecraft:player');
   if(rider && dragonOwner(entity)===rider.id && stage>=3) {
     if(Boolean(dragonKey(entity,'flight',false))) {
@@ -124,6 +137,7 @@ function installDragonInteractions() {
         if(!consumeHeld(player,item))return;
         setDragonKey(entity,'armor_'+armor.slot,armor.material);
         setDragonKey(entity,'armor_'+armor.slot+'_item',item);
+        syncDragonArmorProperty(entity,armor.slot,armor.material);
         player.sendMessage('Armadura de '+armor.material+' equipada: '+armor.slot+'.');return;
       }
       if(!item&&dragonStage(Number(dragonKey(entity,'days',0)))>=3) {
