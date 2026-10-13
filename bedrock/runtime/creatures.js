@@ -71,6 +71,22 @@ function setDragonState(entity,state) {
   try { entity.setProperty('minizin:flying',state); } catch {}
   try { entity.triggerEvent(state ? 'minizin:takeoff' : 'minizin:land'); } catch {}
 }
+// Bedrock does not expose Java's player xxa/zza ride inputs to scripts. Use the
+// camera vector for forward/vertical steering and native rideable movement for
+// the mobile strafe/backward input. The velocity damping keeps the mount
+// controllable instead of accumulating impulses every five ticks.
+function dragonRiderImpulse(rider, entity) {
+  const view=rider.getViewDirection?.()??{x:0,y:0,z:0};
+  const horizontal=Math.hypot(view.x,view.z);
+  const speed=rider.isSprinting ? 0.20 : 0.16;
+  const velocity=entity.getVelocity?.()??{x:0,y:0,z:0};
+  const lift=Math.max(-0.08,Math.min(0.14,view.y*0.22-velocity.y*0.45));
+  return {
+    x: horizontal>0.001 ? view.x/horizontal*speed : -velocity.x*0.08,
+    y: lift,
+    z: horizontal>0.001 ? view.z/horizontal*speed : -velocity.z*0.08
+  };
+}
 function dragonTick(entity) {
   const info=dragonInfo(entity); if(!info) return;
   const age=Number(dragonKey(entity,'age_ticks',0))+5;
@@ -86,10 +102,12 @@ function dragonTick(entity) {
   for (const slot of DRAGON_ARMOR_SLOTS)
     syncDragonArmorProperty(entity, slot, dragonKey(entity, 'armor_'+slot, 0));
   const rider=entity.getComponent('minecraft:rideable')?.getRiders?.().find(x=>x.typeId==='minecraft:player');
+  const persistedFlight=Boolean(dragonKey(entity,'flight',false));
+  if (stage>=3 && dragonOwner(entity) && Boolean(entity.getProperty?.('minizin:flying'))!==persistedFlight)
+    setDragonState(entity,persistedFlight);
   if(rider && dragonOwner(entity)===rider.id && stage>=3) {
-    if(Boolean(dragonKey(entity,'flight',false))) {
-      const view=rider.getViewDirection?.()??{x:0,y:0,z:0};
-      try { entity.applyImpulse({x:view.x*0.13,y:Math.max(-0.07,Math.min(0.15,view.y*0.18)),z:view.z*0.13}); } catch {}
+    if(persistedFlight) {
+      try { entity.applyImpulse(dragonRiderImpulse(rider,entity)); } catch {}
     }
   }
 }
@@ -283,6 +301,14 @@ system.runInterval(() => {
           if (!spec || !entity.isValid) continue;
           dragonTick(entity);
           const owner=spec.kind==='dragon' ? dragonOwner(entity) : '';
+          const rider=spec.kind==='dragon' ? entity.getComponent('minecraft:rideable')?.getRiders?.().find(x=>x.typeId==='minecraft:player') : null;
+          const riderIsOwner=Boolean(rider && rider.id===owner && Number(dragonKey(entity,'days',0))>=50);
+          if (riderIsOwner) {
+            // Java DragonAIRide takes over navigation/targeting while mounted.
+            // Do not let the combat adaptation below fight the player's input.
+            entity.setProperty('minizin:attacking',false);
+            continue;
+          }
           const candidates = players.filter(p => p.isValid)
             .map(p=>({player:p,distance:length(difference(p.location,entity.location))}))
             .filter(p=>p.distance<=24 && p.player.id!==owner).sort((a,b)=>a.distance-b.distance);

@@ -19,3 +19,11 @@ test("Bluff fissure segment hits the line, not an unbounded area",()=>{
  assert.equal(nearSegment({x:14,z:0},a,b,1.1),false);
  assert.deepEqual(direction(a,b),{x:1,z:0});
 });
+test("Dragon mount steering preserves the Java control boundary",()=>{
+ const runtime=readFileSync(new URL("../bedrock/runtime/creatures.js",import.meta.url),"utf-8");
+ assert.ok(runtime.includes("getRiders?.().find"));
+ assert.match(runtime,/rider\.isSprinting/);
+ assert.match(runtime,/getVelocity\?\.\(\)/);
+ assert.match(runtime,/riderIsOwner/);
+ assert.match(runtime,/do not let the combat adaptation/i);
+});

@@ -13,6 +13,14 @@ const ARMOR_ITEMS=new Map([
 const DAY_TICKS=24000;
 function stage(e){return dragonStage(Number(get(e,"days",0)));}
 function own(e,p){return get(e,"owner","")===p.id;}
+function riderImpulse(p,e){
+  const v=p.getViewDirection?.()??{x:0,y:0,z:0};
+  const horizontal=Math.hypot(v.x,v.z),speed=p.isSprinting?0.20:0.16;
+  const velocity=e.getVelocity?.()??{x:0,y:0,z:0};
+  return {x:horizontal>0.001?v.x/horizontal*speed:-velocity.x*0.08,
+    y:Math.max(-0.08,Math.min(0.14,v.y*0.22-velocity.y*0.45)),
+    z:horizontal>0.001?v.z/horizontal*speed:-velocity.z*0.08};
+}
 function combat(e,target,tick){
   const mode=e.typeId.split(":")[1]; const count=Number(get(e,"cooldown",0));
   if(count>0){put(e,"cooldown",Math.max(0,count-10));return;}
@@ -54,8 +62,7 @@ export function tickDragons(e,tick){
   const pilot=rider(e);
   if(pilot&&level>=3&&own(e,pilot)){
     if(get(e,"flight",false)){
-      const v=pilot.getViewDirection();
-      e.applyImpulse({x:v.x*0.13,y:Math.max(-0.07,Math.min(0.15,v.y*0.18)),z:v.z*0.13});
+      e.applyImpulse(riderImpulse(pilot,e));
     }
     return;
   }
