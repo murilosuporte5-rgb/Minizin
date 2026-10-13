@@ -31,7 +31,7 @@ class AetherCombinedRuntime(unittest.TestCase):
         self.assertTrue(candidates, 'build the corrected combined Aether candidate before this test')
         bp = max(candidates, key=lambda path: int(re.search(r'_v(\d+)', path.parent.name).group(1)))
         root = bp.parent
-        scripts = next(path.parent for path in (bp / 'scripts').glob('*/main.js'))
+        scripts = bp / 'scripts/aether_full_v3'
         for name in ('main.js', 'biome_profiles.js', 'dungeon_loot.js', 'bosses.js', 'wildlife.js'):
             self.assertTrue((scripts / name).is_file(), name)
         manifest = json.loads((bp / 'manifest.json').read_text(encoding='utf-8'))

@@ -27,6 +27,7 @@ function seed(x, z) {
   return (n ^ (n >>> 16)) >>> 0;
 }
 const cellKey = (x, z) => "minizin_aether:cell:" + x + ":" + z;
+const exitKey = (x, z) => "minizin_aether:linked_exit:" + x + ":" + z;
 const center = (x, z) => ({ x: x * CELL_SIZE, z: z * CELL_SIZE });
 function terrain(x, z, cx, cz) {
   const s = seed(cx, cz);
@@ -291,8 +292,8 @@ async function generateCell(cx, cz) {
         }
       }
     }
-    // Every linked island needs a deterministic clear arrival pad and
-    // a return frame, independent of the Overworld coordinates of entry.
+    // Exploration generates neighboring islands too. Keep their arrival pads
+    // clear, but only create a return portal after a player links that cell.
     const pad = terrain(c.x, c.z, cx, cz).surface;
     for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++)
       set(dim, c.x + x, pad, c.z + z, "minizin_aether:aether_grass");
@@ -300,8 +301,6 @@ async function generateCell(cx, cz) {
       for (let x = -2; x <= 2; x++)
         for (let z = -2; z <= 2; z++)
           set(dim, c.x + x, y, c.z + z, "minecraft:air");
-    const exitHeight = terrain(c.x + 7, c.z - 7, cx, cz)?.surface ?? pad;
-    addExitFrame(dim, exitHeight, cx, cz);
     // Persist only on complete success; interrupted cells regenerate idempotently.
     world.setDynamicProperty(key, true);
   } finally {
@@ -366,7 +365,15 @@ async function visitAether(player) {
     from: { x: at.x - 4, y: y - 6, z: at.z - 4 },
     to: { x: at.x + 4, y: y + 8, z: at.z + 4 },
   });
-  try { player.teleport({ x: at.x + .5, y, z: at.z + .5 }, { dimension: dim }); }
+  try {
+    const key = exitKey(cx, cz);
+    if (world.getDynamicProperty(key) !== true) {
+      const exitHeight = terrain(at.x + 7, at.z - 7, cx, cz)?.surface ?? y - 2;
+      addExitFrame(dim, exitHeight, cx, cz);
+      world.setDynamicProperty(key, true);
+    }
+    player.teleport({ x: at.x + .5, y, z: at.z + .5 }, { dimension: dim });
+  }
   finally { world.tickingAreaManager.removeTickingArea(a); }
 }
 function returnOverworld(player) {

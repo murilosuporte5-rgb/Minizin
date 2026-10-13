@@ -469,7 +469,7 @@ def repair(source,output):
                 languages[language][key]=str(title).replace('\\n',' ')
             return key
         if ns=='minizin':
-            namespace,name=name.split('_',1)
+            namespace,name=name.split('_',1) if '_' in name else ('minizin',name)
             if name.startswith('item_'):name=name[5:]
         else:namespace=ns.removeprefix('minizin_')
         key=('tile.' if kind=='block' else 'item.')+ident+'.name'
@@ -493,6 +493,10 @@ def repair(source,output):
     geometries={}
     for path in (rp/'models').rglob('*.geo.json'):
         for geo in json.loads(path.read_text()).get('minecraft:geometry',[]):geometries[geo['description']['identifier']]=geo
+    existing_block_items = {}
+    for item_path in (bp/'items').rglob('*.json'):
+        item = json.loads(item_path.read_text(encoding='utf-8'))['minecraft:item']
+        existing_block_items[item['description']['identifier']] = item
     block_items=0
     for path in (bp/'blocks').rglob('*.json'):
         doc=json.loads(path.read_text());block=doc['minecraft:block'];ident=block['description']['identifier']
@@ -519,6 +523,14 @@ def repair(source,output):
                     if score>0:candidates.append((score,image))
         image=max(candidates,key=lambda x:x[0])[1] if candidates else atlas
         if image.getchannel('A').getbbox() is None:raise ValueError('Original atlas fully transparent '+ident)
+        existing_item = existing_block_items.get(ident)
+        if existing_item:
+            existing_components = existing_item.get('components', {})
+            if (existing_components.get('minecraft:block_placer', {}).get('block') != ident
+                    or not existing_components.get('minecraft:icon')):
+                raise ValueError('Existing block item lacks functional placer/icon: '+ident)
+            write(path,doc)
+            continue
         icon='minizin_block_icon_'+ident.replace(':','_');texture='textures/items/block_icons/'+icon
         (rp/'textures/items/block_icons').mkdir(parents=True,exist_ok=True);image.save(rp/(texture+'.png'))
         registry['texture_data'][icon]={'textures':texture}
@@ -528,6 +540,8 @@ def repair(source,output):
           'description':{'identifier':ident,'menu_category':{'category':'construction'}},
           'components':{'minecraft:icon':{'textures':{'default':icon}},'minecraft:display_name':{'value':display},
             'minecraft:block_placer':{'block':ident},'minecraft:max_stack_size':64}}})
+        existing_block_items[ident] = {'components': {'minecraft:block_placer': {'block': ident},
+                                                        'minecraft:icon': {'textures': {'default': icon}}}}
         write(path,doc);block_items+=1
     spawnable={}
     for path in (bp/'entities').rglob('*.json'):

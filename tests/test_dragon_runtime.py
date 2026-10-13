@@ -58,9 +58,9 @@ class DragonRuntime(unittest.TestCase):
             self.assertIn(token, runtime)
 
     def test_current_ice_and_fire_ids_have_mountable_dragon_and_egg_entities(self):
-        pack = ROOT / 'build/creature_world_v3/iceandfire'
-        self.assertTrue(pack.is_dir())
-        behavior = pack / 'BP/entities'
+        candidates = list((ROOT / 'build').glob('combined_all_*_final_v*/BP'))
+        self.assertTrue(candidates, 'build the integrated candidate first')
+        behavior = max(candidates, key=lambda path: int(re.search(r'_v(\d+)', path.parent.name).group(1))) / 'entities/iceandfire'
         for name in ('firedragon', 'icedragon', 'lightningdragon'):
             doc = json.loads((behavior / f'{name}.json').read_text(encoding='utf-8'))['minecraft:entity']
             self.assertIn('minecraft:rideable', doc['components'])

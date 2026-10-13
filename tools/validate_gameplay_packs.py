@@ -10,6 +10,23 @@ def check(folders):
     uuids=set();identifiers=set();counts={'packs':0,'entities':0,'blocks':0,'scripts':0,'animations':0,'sounds':0}
     for folder in folders:
         rp,bp,n=validate(folder);counts['packs']+=1;counts['entities']+=n
+        for category, root in [('items', 'minecraft:item'), ('biomes', 'minecraft:biome')]:
+            seen = set()
+            for definition in (bp/category).rglob('*.json'):
+                document = json.loads(definition.read_text(encoding='utf-8'))
+                identifier = document.get(root, {}).get('description', {}).get('identifier')
+                if identifier and identifier in seen:
+                    raise ValueError(f'Duplicate {category} identifier: {identifier}')
+                if identifier:seen.add(identifier)
+        recipes = set()
+        for definition in (bp/'recipes').rglob('*.json'):
+            document = json.loads(definition.read_text(encoding='utf-8'))
+            for recipe_type, value in document.items():
+                if not recipe_type.startswith('minecraft:recipe_'):continue
+                identifier = value.get('description', {}).get('identifier')
+                if identifier and identifier in recipes:
+                    raise ValueError(f'Duplicate recipe identifier: {identifier}')
+                if identifier:recipes.add(identifier)
         geometries={
             # These are supplied by Bedrock itself and need not be packaged
             # as custom geometry files.

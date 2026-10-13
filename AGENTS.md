@@ -53,3 +53,13 @@ Waystones/Carry On/Origins (sistemas); Mowzie's Mobs (geometrias já próximas d
 ## Conversões publicadas na branch generated-bedrock
 
 **OBRIGATÓRIO:** leia `CODEX_HANDOFF.md` e obtenha `generated/` de `origin/generated-bedrock` antes de criar novos modelos. O Codex deve reutilizar os PNG, geometrias, OBJ/Blend, JSON de animação e regras existentes. Não sobrescreva recursos já implementados; salve antes/depois e registre testes.
+
+
+## Referências visuais originais obrigatórias para o Codex
+
+Antes de editar modelos, texturas, itens, anéis, NPCs, dragões, bosses, biomas ou interfaces, consulte [docs/visual-references/README.md](docs/visual-references/README.md). A galeria contém fotografias reais dos 12 mods Java, anéis do Aether, anéis do MCA Reborn, armas, máquinas e mochilas, com links diretos e instruções de verificação. Compare o recurso da **mesma versão Java** com o Bedrock, preserve fontes e licenças, e registre diferenças observadas e testes no Android. Imagens são referências, não autorização de redistribuição. Não declare fidelidade visual ou funcional sem evidência.
+
+
+## QA Android — binário real v0.3.0 com defeitos observados
+
+Antes de alegar que ícones, Waystone, mochila, portal Aether ou biomas foram corrigidos, leia [docs/ANDROID_TESTED_BINARY_MINIZIN_V030.md](docs/ANDROID_TESTED_BINARY_MINIZIN_V030.md). Este arquivo registra **SHA-256 e conteúdo do arquivo .mcaddon exato** testado no Android e os defeitos vistos em screenshots; a versão testada NÃO é necessariamente o último build da branch de integração. Peça o arquivo binário ao usuário quando precisar inspecionar seus bytes. Não declare correção visual no Android sem um novo teste no dispositivo.

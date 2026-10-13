@@ -60,7 +60,16 @@ def add(source,upstream,output):
       'tags':['crafting_table'],'pattern':['LSL','LCL','LLL'],'key':{'L':{'item':'minecraft:leather'},'S':{'item':'minecraft:string'},'C':{'item':'minecraft:chest'}},'result':{'item':'minizin:backpack','count':1}}},indent=2))
     for language,title in [('pt_BR','Mochila — 27 espaços pessoais'),('en_US','Backpack — 27 personal slots')]:
         with (rp/'texts'/f'{language}.lang').open('a') as f:f.write('item.minizin:backpack.name='+title+'\n')
-    shutil.copy2(ROOT/'bedrock/runtime/backpack.js',bp/'scripts/backpack.js')
+    # The old per-player runtime silently discards independent bag identity
+    # and the filter/sort/deposit upgrades. Keep the audited item-bound pack
+    # implementation that is already present in the systems workstream.
+    shutil.copy2(ROOT/'bedrock/packs/sophisticated_backpacks/BP/scripts/main.js',
+                 bp/'scripts/backpack.js')
+    for name in ('filter_upgrade.json',):
+        shutil.copy2(ROOT/'bedrock/packs/sophisticated_backpacks/BP/items'/name,
+                     bp/'items'/name)
+        shutil.copy2(ROOT/'bedrock/packs/sophisticated_backpacks/BP/recipes'/name,
+                     bp/'recipes'/name)
     with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./backpack.js";\n')
     for role in ['RP','BP']:
         path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['version']=[0,2,3]
@@ -72,8 +81,9 @@ def add(source,upstream,output):
     counts=check([output]);commit=subprocess.check_output(['git','-C',str(upstream),'rev-parse','HEAD'],text=True).strip()
     shutil.copy2(upstream/'LICENSE.md',output/'SOPHISTICATED_BACKPACKS_LICENSE.md')
     (output/'BACKPACK_REPORT.json').write_text(json.dumps({'upstream':'https://github.com/P3pp3rF1y/SophisticatedBackpacks','commit':commit,
-        'provenance':provenance,'issues':issues,'capacity':27,'storage':'persistent per-player, shared by their backpack items',
-        'limits':['No upgrades, tanks, wearable attachment or Java menu','Containers cannot be nested','Inventory transfer crash consistency not Android-tested'],
+        'provenance':provenance,'issues':issues,'capacity':27,'storage':'persistent per-backpack item identity (v2)',
+        'limits':['Filter/sort/deposit present; other Java upgrades, wearable attachment and native menu remain pending',
+                  'Containers cannot be nested','Inventory transfer crash consistency not Android-tested'],
         'android_retest_pending':True,'structural':counts},indent=2))
     addon=output/'Minizin_Todos_Juntos_Correcao_e_Mochila_v0.2.3.mcaddon'
     with zipfile.ZipFile(addon,'w',zipfile.ZIP_STORED) as archive:
