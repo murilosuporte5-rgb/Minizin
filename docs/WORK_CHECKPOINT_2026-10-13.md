@@ -86,6 +86,8 @@ This remains an experimental candidate. The known Java feature gaps in the scope
 
 Branch exclusiva `work/minizin-final-20261013`, PR #7 em rascunho. O build reutiliza os submódulos fixados, `generated/` e o binário v0.3.3 enviado pelo usuário (SHA-256 `0c4ed7e822763037e01e156ea34c848bd2f9eb3a2f777589628ba70d5eaa0ce4`). O relatório `build/final_20261013_recovered_b/BUILD_REPORT.json` registra os commits das fontes. Branches de outros agentes não foram alteradas.
 
+O código final deste ciclo está no commit remoto `2f3c3df82e2ad417fb2dad8170cc17989a06d6fc` (árvore `613b2374f6cc97f4dc0937169c840f1bfb0f0c44`). O campo `source_commit` do relatório de build foi capturado antes do commit final de testes/documentação e da correção do JSON da expansão; o build usou essa correção já presente na árvore de trabalho. O JSON resultante e a árvore final foram verificados após o empacotamento.
+
 O gerador dos quatro sistemas agora usa os scripts mantidos de Carry On e RFTools, em vez dos protótipos antigos do snapshot. O Carry On bloqueia a colocação se o chunk original não estiver carregado e oferece `!carryon recuperar` para cargas incertas. Os oito slots persistentes do Aether incluem dois anéis e dois espaços de acessórios/relíquias; dados corrompidos são retidos, e encantamentos dos acessórios passam por ida e volta. A mochila individual mantém 27 espaços de base e oferece duas expansões fabricáveis, para 54 e 81, com páginas, depósito e organização. O ícone do filtro usa `filter_upgrade.png` e a expansão adaptada usa `upgrade_base.png` da fonte Java fixada. Esta expansão de espaços é uma adaptação Bedrock, sem equivalência comprovada aos upgrades de pilha do Java.
 
 Arquivos reconstruídos e preservados para teste privado:
