@@ -86,6 +86,28 @@ class DragonRuntime(unittest.TestCase):
         self.assertIn('minizin_iceandfire:dragon_meal', item_ids)
         self.assertIn('minizin_iceandfire:dragon_egg_fire', item_ids)
 
+    def test_combined_candidate_renders_source_dragon_armor_layers(self):
+        candidates = sorted((ROOT / 'build').glob('combined_all_*_final_v*/RP'))
+        self.assertTrue(candidates)
+        rp = max(candidates, key=lambda path: int(re.search(r'_v(\d+)', path.parent.name).group(1)))
+        for dragon in ('firedragon', 'icedragon', 'lightningdragon'):
+            client = json.loads((rp / 'entity' / 'iceandfire' / f'{dragon}.entity.json').read_text(encoding='utf-8'))
+            controllers = client['minecraft:client_entity']['description']['render_controllers']
+            for slot in ('head', 'neck', 'body', 'tail'):
+                self.assertIn(f'controller.render.iceandfire.{dragon}.armor_{slot}', controllers)
+                source = rp / 'textures' / 'iceandfire' / 'dragon_armor' / dragon
+                self.assertTrue((source / f'{slot}_8.png').is_file())
+            controller = json.loads((rp / 'render_controllers' / 'iceandfire' / f'{dragon}.json').read_text(encoding='utf-8'))
+            for slot in ('head', 'neck', 'body', 'tail'):
+                entry = controller['render_controllers'][f'controller.render.iceandfire.{dragon}.armor_{slot}']
+                self.assertEqual(len(entry['arrays']['textures'][f'Array.armor_{slot}']), 9)
+
+        bp = rp.parent / 'BP'
+        for dragon in ('firedragon', 'icedragon', 'lightningdragon'):
+            props = json.loads((bp / 'entities' / 'iceandfire' / f'{dragon}.json').read_text(encoding='utf-8'))['minecraft:entity']['description']['properties']
+            for slot in ('head', 'neck', 'body', 'tail'):
+                self.assertEqual(props[f'minizin:armor_{slot}']['range'], [0, 8])
+
     def test_combined_creature_runtime_has_unique_boss_adapters(self):
         candidates = sorted((ROOT / 'build').glob('combined_all_*_final_v*/BP'))
         bp = max(candidates, key=lambda path: int(re.search(r'_v(\d+)', path.parent.name).group(1)))
