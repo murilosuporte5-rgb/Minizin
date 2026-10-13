@@ -75,6 +75,40 @@ def overlay_registry(source: Path, destination: Path, *, item: bool) -> None:
     destination.write_text(json.dumps(current, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def overlay_flipbook(source: Path, destination: Path) -> None:
+    """Merge the Aether flipbook into the combined RP root catalog.
+
+    Bedrock discovers this catalog at RP/textures/flipbook_texture.json, not
+    below a mod namespace directory. Every asset path and atlas key still has
+    to use the combined-pack prefix used by terrain_texture.json.
+    """
+    incoming = json.loads(source.read_text(encoding="utf-8"))
+    if not isinstance(incoming, list):
+        raise ValueError(f"Invalid flipbook catalog: {source}")
+    current = json.loads(destination.read_text(encoding="utf-8")) if destination.exists() else []
+    if not isinstance(current, list):
+        raise ValueError(f"Invalid combined flipbook catalog: {destination}")
+    merged = [entry for entry in current if not (
+        isinstance(entry, dict) and str(entry.get("atlas_tile", "")).startswith(f"{PREFIX}_")
+    )]
+    for entry in incoming:
+        if not isinstance(entry, dict):
+            raise ValueError(f"Invalid flipbook entry in {source}: {entry!r}")
+        converted = dict(entry)
+        path = converted.get("flipbook_texture")
+        if isinstance(path, str) and path.startswith("textures/"):
+            converted["flipbook_texture"] = f"textures/{PREFIX}/{path.removeprefix('textures/')}"
+        tile = converted.get("atlas_tile")
+        if isinstance(tile, str) and not tile.startswith(f"{PREFIX}_"):
+            converted["atlas_tile"] = f"{PREFIX}_{tile}"
+        variant = converted.get("atlas_tile_variant")
+        if isinstance(variant, str) and not variant.startswith(f"{PREFIX}_"):
+            converted["atlas_tile_variant"] = f"{PREFIX}_{variant}"
+        merged.append(converted)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(json.dumps(merged, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
 def target_for(role: str, relative: Path, output: Path) -> Path | None:
     if relative.name == "manifest.json":
         return None
@@ -106,6 +140,9 @@ def overlay(combined_source: Path, world_pack: Path, output: Path) -> None:
                 continue
             if role == "RP" and relative.as_posix() == "textures/item_texture.json":
                 overlay_registry(path, output / "RP/textures/item_texture.json", item=True)
+                continue
+            if role == "RP" and relative.as_posix() == "textures/flipbook_texture.json":
+                overlay_flipbook(path, output / "RP/textures/flipbook_texture.json")
                 continue
             destination = target_for(role, relative, output)
             if destination is None:

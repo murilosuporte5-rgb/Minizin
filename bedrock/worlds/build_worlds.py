@@ -259,20 +259,11 @@ def copy_texture(source: Path, target: Path, mod: str, name: str) -> None:
     if not source.is_file():
         raise FileNotFoundError(f"Original asset missing: {source}. Initialize git submodules.")
     target.parent.mkdir(parents=True, exist_ok=True)
-    # Java animated portal sprite sheets have vertically stacked frames. Retain
-    # the original first frame instead of incorrectly stretching the whole PNG.
-    if name == "aether_portal":
-        try:
-            from PIL import Image
-        except ImportError as exc:
-            raise RuntimeError("Pillow required for extracting Aether portal animation frame") from exc
-        with Image.open(source) as img:
-            if img.height > img.width:
-                img.crop((0, 0, img.width, img.width)).save(target)
-            else:
-                img.save(target)
-    else:
-        shutil.copyfile(source, target)
+    # Java animated portal sprite sheets are vertically stacked frames. Keep
+    # every source pixel; the Bedrock flipbook catalog below selects the same
+    # frame order and timing instead of silently collapsing the portal to one
+    # static frame.
+    shutil.copyfile(source, target)
 
 def aether_biome_profiles() -> list[dict]:
     """Extract real Java biome IDs and feature references from pinned sources.
@@ -436,6 +427,13 @@ def validate_pack(bp: Path, rp: Path, mod: str) -> None:
             assert (rp / f"textures/blocks/{face_key}.png").is_file()
     if mod == "aether":
         assert (bp / "scripts/biome_profiles.js").is_file()
+        flipbook = rp / "textures/flipbook_texture.json"
+        assert flipbook.is_file(), "Aether portal flipbook catalog missing"
+        entries = json.loads(flipbook.read_text(encoding="utf-8"))
+        portal = next((entry for entry in entries
+                       if entry.get("atlas_tile") == "minizin_aether_aether_portal"), None)
+        assert portal and portal.get("frames") == list(range(32))
+        assert portal.get("ticks_per_frame") == 2
     if mod == "bop":
         assert len(list((bp / "biomes").glob("*.json"))) >= len(BIOMES)
         assert (bp.parent / "worldgen_conversion_report.json").is_file()
@@ -490,6 +488,15 @@ def build(mod: str, output: Path) -> Path:
         shutil.copyfile(HERE / "aether/wildlife.js", bp / "scripts/wildlife.js")
         shutil.copyfile(HERE / "aether/whirlwinds.js", bp / "scripts/whirlwinds.js")
     if mod == "aether":
+        # Java aether_portal.png is 16x512 (32 frames) with frametime 2.
+        # Bedrock uses one pack-level flipbook catalog for the same animation.
+        jwrite(rp / "textures/flipbook_texture.json", [{
+            "flipbook_texture": "textures/blocks/minizin_aether_aether_portal",
+            "atlas_tile": "minizin_aether_aether_portal",
+            "frames": list(range(32)),
+            "ticks_per_frame": 2,
+            "blend_frames": False,
+        }])
         jwrite(rp / "models/blocks/portal.geo.json", geometry("portal"))
         jwrite(rp / "models/blocks/cross.geo.json", geometry("cross"))
         profiles = aether_biome_profiles()

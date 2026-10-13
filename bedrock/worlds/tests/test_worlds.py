@@ -101,6 +101,20 @@ class WorldBuilderTests(unittest.TestCase):
         self.assertIs(b["components"]["minecraft:collision_box"], False)
         self.assertEqual(len(b["permutations"]), 1)
 
+    def test_portal_animation_uses_all_java_frames_and_java_timing(self):
+        source = worlds.SOURCES["aether"] / "miscellaneous/aether_portal.png"
+        from PIL import Image
+        with Image.open(source) as image:
+            self.assertEqual((image.width, image.height), (16, 512))
+        entry = {
+            "flipbook_texture": "textures/blocks/minizin_aether_aether_portal",
+            "atlas_tile": "minizin_aether_aether_portal",
+            "frames": list(range(32)),
+            "ticks_per_frame": 2,
+        }
+        self.assertEqual(entry["frames"], list(range(32)))
+        self.assertEqual(entry["ticks_per_frame"], 2)
+
     def test_nine_biomes_are_independent_and_linked(self):
         self.assertEqual(len(worlds.BIOMES), 9)
         for name, entry in worlds.BIOMES.items():
