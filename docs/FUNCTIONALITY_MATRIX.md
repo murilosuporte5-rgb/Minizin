@@ -6,7 +6,7 @@ Atualização: 2026-10-12. Esta matriz separa o que foi implementado e validado 
 |---|---|---|---|---|
 | The Aether | Blocos, itens-base, fauna, dungeons, loot, portal, dimensão e progressão inicial | Dimensão customizada, ilhas, portal glowstone+água, biomas determinísticos, estruturas convertidas, Slider/Valkyrie Queen/Sun Spirit, fauna e loot | `build/worlds_v2/aether`: 46 blocos funcionais, 16 entidades, 21 estruturas, 40 loot tables; candidato combinado: 371 blocos e scripts Aether presentes | Progressão completa, receitas, todas as animações/IA e validação de geração em Android ainda pendentes |
 | Biomes O’ Plenty | Catálogo de blocos e perfis de bioma do material de origem | Blocos, atlas, itens de bloco e catálogo empacotado | Validação estrutural do pacote combinado, referências de atlas e ícones | Geração procedural e integração de todos os biomas Java ainda não equivalentes |
-| Ice and Fire | Dragões, ovos, alimentação, crescimento, armaduras, flauta, ataques e montaria | Entidades/modelos/texturas, itens nomeados/iconizados e runtime de combate/crescimento parcial | `tests/creatures_logic.test.mjs`; itens `minizin_iceandfire:*` no pacote | Domar/incubar, voo montado, armadura equipada e IA/ataques elementais ainda exigem implementação dedicada |
+| Ice and Fire | Dragões, ovos, alimentação, crescimento, armaduras, flauta, ataques e montaria | IDs atuais `minizin_iceandfire:*`, entidades montáveis, três ovos incubáveis por condição ambiental, domesticação, crescimento, armadura, flauta e combate elementar | `tests/test_dragon_runtime.py`, `tests/creatures_logic.test.mjs`; 3 ovos e 3 dragões no candidato | Teste visual Android, reprodução completa, todas as variantes de armadura/animação e equivalência integral de IA ainda pendentes |
 | Alex’s Caves | Criaturas, blocos e itens de cavernas | Entidades, modelos, blocos/itens e lógica compartilhada de criatura | Pacote combinado validado e itens originais presentes quando disponíveis | Biomas/cavernas especiais, efeitos, máquinas e comportamento individual ainda incompletos |
 | Mowzie’s Mobs | Bosses com fases, ataques, animações e partículas | Bluff e demais entidades/modelos com runtime de combate/fases parcial | `tests/creatures_logic.test.mjs`; 42 animações no candidato | IA única, animações sincronizadas, partículas e todos os bosses ainda precisam de adapters próprios |
 | Cataclysm | Bosses, arenas, armas, armaduras, efeitos e estruturas | Entidades/modelos, blocos/itens e combate genérico com thresholds para bosses conhecidos | Validação estrutural e testes de fases do Ignis | Ataques, arenas, loot e animações Java-específicos ainda não estão completos |
@@ -19,8 +19,8 @@ Atualização: 2026-10-12. Esta matriz separa o que foi implementado e validado 
 
 ## Estado do pacote de correção
 
-- Candidato gerado: `build/combined_all_aether_final_v11/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
-- Estruturalmente: 35 entidades, 371 blocos, 29 scripts, 42 animações e 8 sons.
+- Candidato gerado: `build/combined_all_dragons_final_v12/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
+- Estruturalmente: 38 entidades, 371 blocos, 29 scripts, 42 animações e 8 sons.
 - O Aether usa `@minecraft/server` `beta` porque o registro de dimensão customizada e as APIs de ticking area exigem essa superfície no código atual.
 - O pacote não foi executado em um aparelho Android nesta sessão. Portanto, carregamento real, renderização intermitente, FPS, memória, multiplayer e compatibilidade com a versão instalada do Bedrock permanecem “não testados”, mesmo quando a validação offline passa.
 - Erros de pacote que aparecerem no Android devem ser reconciliados com o log/manifesto e não tratados como equivalência confirmada apenas pelo ZIP válido.

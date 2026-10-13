@@ -5,15 +5,15 @@ O ciclo atual integrou o runtime funcional do Aether no pacote dos 12 modos e co
 ## Pacote gerado
 
 - `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`
-- SHA-256: `369a40417d13dd7b12c4a77f5e87a37afac51bba97e4dff4177a5bc52c2b6b6e`
-- Estruturalmente: 35 entidades, 371 blocos, 29 scripts, 42 animações e 8 sons.
+- SHA-256: `ee31c032fa25b0c1653a97ff0c9397896ac84ca049a7a53462b11a148fc72898`
+- Estruturalmente: 38 entidades, 371 blocos, 29 scripts, 42 animações e 8 sons.
 - ZIP externo e os dois `.mcpack` internos íntegros.
-- Aether no pacote: 21 estruturas `.mcstructure`, 16 entidades/modelos e scripts de dimensão, biomas, loot, bosses e fauna.
+- Aether no pacote: 21 estruturas `.mcstructure`, 16 entidades/modelos e scripts de dimensão, biomas, loot, bosses e fauna. Ice and Fire: 3 dragões montáveis e 3 ovos incubáveis.
 - Dependência de script: `@minecraft/server` `beta`, exigida pelo registro de dimensão customizada atual.
 
 ## Evidência executada
 
-- 28 testes Python do diretório `tests`: PASS.
+- 30 testes Python do diretório `tests`: PASS.
 - 26 testes Python de `bedrock/worlds/tests`: PASS.
 - 36 testes JavaScript: PASS.
 - `node --check` em todos os scripts do BP final: PASS.

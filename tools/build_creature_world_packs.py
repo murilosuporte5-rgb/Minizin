@@ -107,6 +107,8 @@ def add_entity(folder, name, geo, texture, kind, report, clips=None, sound=None,
     components['minecraft:behavior.melee_attack']={'priority':3,'speed_multiplier':1.2,'track_target':True}
     groups, events = {}, {}
     if kind=='dragon':
+        components['minecraft:rideable']={'seat_count':1,'family_types':['player'],
+            'interact_text':'action.interact.mount','seats':[{'position':[0,1.4,0]}]}
         groups['minizin:flight']={'minecraft:physics':{'has_gravity':False},'minecraft:movement.fly':{},
             'minecraft:navigation.fly':{'can_path_over_water':True}}
         groups['minizin:ground']={'minecraft:physics':{'has_gravity':True},'minecraft:movement.basic':{},'minecraft:navigation.walk':{}}
@@ -123,6 +125,40 @@ def add_entity(folder, name, geo, texture, kind, report, clips=None, sound=None,
         copy_asset(sound,rp/'sounds'/f'{name}.ogg',report)
         sound_id = f'minizin.{folder.name}.{name}.attack'
     return ident, {'kind':kind,'element':element,'sound':sound_id}
+
+
+def add_dragon_egg(folder, kind, texture, report):
+    """Add a placeable incubation entity for the current Ice and Fire IDs."""
+    rp,bp=folder/'RP',folder/'BP'
+    name=f'{kind}_dragon_egg'
+    ident=f'minizin_{folder.name}:{name}'
+    geometry_id=f'geometry.minizin_{folder.name}.{name}'
+    geometry={'format_version':'1.12.0','minecraft:geometry':[{
+        'description':{'identifier':geometry_id,'texture_width':64,'texture_height':64,
+                       'visible_bounds_width':1.5,'visible_bounds_height':1.5,
+                       'visible_bounds_offset':[0,0.7,0]},
+        'bones':[{'name':'egg','pivot':[0,0,0],'cubes':[{'origin':[-5,0,-5],
+            'size':[10,14,10],'uv':{'north':{'uv':[0,0],'uv_size':[10,14]},
+            'south':{'uv':[0,0],'uv_size':[10,14]},'east':{'uv':[0,0],'uv_size':[10,14]},
+            'west':{'uv':[0,0],'uv_size':[10,14]},'up':{'uv':[10,0],'uv_size':[10,10]},
+            'down':{'uv':[10,0],'uv_size':[10,10]}}}]}]
+    }]}
+    write(rp/'models/entity'/f'{name}.geo.json',geometry)
+    copy_asset(texture,rp/'textures/entity'/f'{name}.png',report)
+    write(rp/'entity'/f'{name}.entity.json',{'format_version':'1.10.0','minecraft:client_entity':{
+        'description':{'identifier':ident,'materials':{'default':'entity_alphatest'},
+          'textures':{'default':f'textures/entity/{name}'},'geometry':{'default':geometry_id},
+          'render_controllers':[f'controller.render.{folder.name}.{name}']}}})
+    write(rp/'render_controllers'/f'{name}.json',{'format_version':'1.8.0','render_controllers':{
+        f'controller.render.{folder.name}.{name}':{'geometry':'Geometry.default',
+          'materials':[{'*':'Material.default'}],'textures':['Texture.default']}}})
+    write(bp/'entities'/f'{name}.json',{'format_version':'1.21.0','minecraft:entity':{
+        'description':{'identifier':ident,'is_spawnable':False,'is_summonable':False,'is_experimental':False},
+        'components':{'minecraft:type_family':{'family':['minizin_dragon_egg']},
+          'minecraft:health':{'value':1,'max':1},'minecraft:collision_box':{'width':0.7,'height':0.9},
+          'minecraft:physics':{'has_gravity':False},'minecraft:pushable':{'is_pushable':False,
+          'is_pushable_by_piston':False}}}})
+    return ident
 
 
 def dragon_clips(family, rest):
@@ -193,6 +229,9 @@ def build(output):
                     if any(f'_{clip}' in pose.name for clip in ['Walk','Flight','Bite']):
                         report.append({'source':str(pose.relative_to(ROOT)),'strategy':'CONVERT',
                             'use':'animation_keyframe','sha256':hashlib.sha256(pose.read_bytes()).hexdigest()})
+                egg_texture=assets/'textures/models'/family/({'firedragon':'egg_red.png','icedragon':'egg_blue.png',
+                    'lightningdragon':'egg_black.png'}[family])
+                add_dragon_egg(folder,element,egg_texture,report)
         elif mod=='cataclysm':
             for name,model,tex in [('ender_guardian','Ender_Guardian_Model','ender_guardian.png'),
                 ('ignis','Ignis_Model','ignis/ignis_idle_0.png'),('harbinger','The_Harbinger_Model','harbinger/the_harbinger.png')]:

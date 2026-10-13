@@ -25,7 +25,7 @@ class AetherCombinedRuntime(unittest.TestCase):
         self.assertTrue((pack / 'BP/scripts/wildlife.js').is_file())
 
     def test_combined_candidate_contains_aether_runtime_and_beta_api(self):
-        candidates = sorted((ROOT / 'build').glob('combined_all_aether_final_v*/BP'))
+        candidates = sorted((ROOT / 'build').glob('combined_all_*_final_v*/BP'))
         self.assertTrue(candidates, 'build the corrected combined Aether candidate before this test')
         bp = candidates[-1]
         root = bp.parent
