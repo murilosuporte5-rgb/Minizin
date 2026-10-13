@@ -221,9 +221,27 @@ function migrate(marker) {
   // Record must be durable before removing the legacy entity.
   save(world,KEY,rows);
   block.setType(BLOCK);
-  marker.remove();
+  // Do not remove the legacy marker in the same tick as the block replacement.
+  // On mobile clients the block palette can arrive one frame later; keeping the
+  // marker until the next tick makes migration recoverable instead of creating
+  // a visible/interactive gap or losing the old destination.
+  system.run(()=>{
+    try {
+      if (block.typeId === BLOCK && marker.isValid !== false) marker.remove();
+    } catch(error) { console.warn("[Waystones] delayed legacy cleanup: "+String(error)); }
+  });
   return true;
 }
+// Old worlds can load a legacy entity before the periodic proximity sweep.
+// Convert it as soon as the entity enters a loaded chunk, while retaining the
+// bounded sweep below for worlds/API versions that do not emit this event.
+try {
+  world.afterEvents.entitySpawn.subscribe(e=>{
+    try {
+      if (e.entity?.typeId === LEGACY) migrate(e.entity);
+    } catch(error) { console.warn("[Waystones] spawn migration: "+String(error)); }
+  });
+} catch(error) { console.warn("[Waystones] entity spawn migration unavailable: "+String(error)); }
 system.runInterval(()=>{
   const visited=new Set();
   for(const player of world.getAllPlayers()) {
@@ -236,4 +254,4 @@ system.runInterval(()=>{
       }
     }catch(error){console.warn("[Waystones] migration: "+String(error));}
   }
-},80);
+},20);

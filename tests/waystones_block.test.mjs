@@ -8,6 +8,7 @@ function harness(){
   const worldProps=new Map(),playerProps=new Map(),blocks=new Map();
   const at=loc=>[loc.x,loc.y,loc.z].join(",");
   let component,interval;
+  const spawnSignal={subscribe(fn){this.handler=fn;}};
   const dimension={id:"minecraft:overworld",getBlock:loc=>blocks.get(at(loc)),
     getEntities(){return this.entities||[];}};
   const makeBlock=(x,y,z,typeId)=>{
@@ -21,7 +22,7 @@ function harness(){
     getDynamicProperty:k=>playerProps.get(k),
     setDynamicProperty:(k,v)=>playerProps.set(k,v)};
   const signal={subscribe(){}};
-  const world={afterEvents:{playerBreakBlock:signal,playerLeave:signal},
+  const world={afterEvents:{playerBreakBlock:signal,playerLeave:signal,entitySpawn:spawnSignal},
     getDimension:()=>dimension,getAllPlayers:()=>[player],
     getDynamicProperty:k=>worldProps.get(k),
     setDynamicProperty:(k,v)=>worldProps.set(k,v)};
@@ -32,7 +33,7 @@ function harness(){
   const api=new Function("world","system","ActionFormData","ModalFormData",
     src+"\nreturn {register,migrate,travelTo,deleteRecord};"
   )(world,system,class {},class {});
-  return {api,component,interval,worldProps,playerProps,blocks,at,makeBlock,player,dimension};
+  return {api,component,interval,spawnSignal,worldProps,playerProps,blocks,at,makeBlock,player,dimension};
 }
 test("block is registered via v2 custom component, without entity interaction",()=>{
   const h=harness();
@@ -43,6 +44,17 @@ test("block is registered via v2 custom component, without entity interaction",(
   const rows=JSON.parse(h.worldProps.get("minizin:waystones_world_v1"));
   assert.equal(rows.length,1);
   assert.ok(rows[0].id.startsWith("ws_"));
+});
+test("legacy marker converts on entity spawn instead of waiting for the proximity sweep",()=>{
+  const h=harness(),marker={id:"spawned_entity",typeId:"minizin:andesite_waystone",
+    location:{x:12.5,y:64,z:12.5},dimension:h.dimension,getDynamicProperty:()=>undefined,
+    remove(){this.removed=true;},isValid:true};
+  const location={x:12,y:64,z:12};
+  const air=h.makeBlock(12,64,12,"minecraft:air");
+  h.blocks.set(h.at(location),air);
+  h.spawnSignal.handler({entity:marker});
+  assert.equal(air.typeId,"minizin:andesite_waystone_block");
+  assert.equal(marker.removed,true);
 });
 test("legacy marker migrates without replacing occupied blocks or losing known IDs",()=>{
   const h=harness(),marker={id:"old_entity",location:{x:10.5,y:64,z:10.5},

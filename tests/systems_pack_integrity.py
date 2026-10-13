@@ -44,6 +44,20 @@ def main():
             check(alias in atlas,f"No atlas alias for {name}: {alias}")
             texture=atlas[alias]["textures"]
             check((r/(texture+".png")).is_file(),f"Missing PNG for {name}: {texture}")
+    # Waystone visual regression guard: the real block must point at the
+    # source-backed pillar model and terrain texture, not only the legacy mob.
+    way_model=way_rp/"models/blocks/andesite_waystone.geo.json"
+    model=data(way_model)
+    descriptions=[g["description"] for g in model["minecraft:geometry"]]
+    check(any(d["identifier"]=="geometry.minizin.andesite_waystone_block" for d in descriptions),
+          "Waystone block geometry identifier is missing")
+    check(any(c["origin"][1]+c["size"][1] >= 32
+              for g in model["minecraft:geometry"] for bone in g.get("bones",[])
+              for c in bone.get("cubes",[])),
+          "Waystone pillar geometry lost its original two-block height")
+    way_texture=way_rp/"textures/entity/andesite_waystone.png"
+    check(way_texture.is_file() and way_texture.stat().st_size > 64,
+          "Waystone source-backed texture is missing or empty")
     mca_ids=geometry_ids(rp)
     animation=data(rp/"animations/mca_walk.animation.json")["animations"]
     check("animation.minizin.mca.walk" in animation,"MCA locomotion animation absent")
