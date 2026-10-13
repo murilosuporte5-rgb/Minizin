@@ -126,6 +126,15 @@ test("Origins applies real fire immunity, water vulnerability and passive moveme
   assert.equal(typeof callbacks.hit[0],"function");
 });
 
+test("Origins ports source-backed hotblooded, aerial, cobweb and creeper rules",()=>{
+  const source=load("origins");
+  assert.match(source,/removeEffect\?\.(?:\("poison"\)|\("hunger"\))/);
+  assert.match(source,/originOf\(attacker\)==="elytrian"&&attacker\.isGliding/);
+  assert.match(source,/feet\?\.typeId==="minecraft:web"/);
+  assert.match(source,/type:"minecraft:creeper"/);
+  assert.match(source,/PUMPKIN_FOODS/);
+});
+
 test("Origins Enderian launches a real Bedrock Ender Pearl with the Java cooldown",()=>{
   const source=load("origins");
   const pearls=[];

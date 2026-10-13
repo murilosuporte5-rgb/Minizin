@@ -10,6 +10,7 @@ const SHULK_KEY="minizin:origins_shulk_inventory_v1";
 const SHULK_SLOTS=9;
 const SHULK_MAX_BYTES=24000;
 const FIRE_CAUSES=new Set(["fire","fireTick","lava","campfire","soulCampfire","hotFloor"]);
+const PUMPKIN_FOODS=new Set(["minecraft:pumpkin_pie","minecraft:chorus_fruit"]);
 const SOLID_FOR_CLIMB=new Set([
   "minecraft:stone","minecraft:cobblestone","minecraft:deepslate","minecraft:cobbled_deepslate",
   "minecraft:brick_block","minecraft:bricks","minecraft:oak_planks","minecraft:birch_planks",
@@ -189,11 +190,21 @@ export function installOrigins(){
   });
   world.beforeEvents.entityHurt.subscribe(e=>{
     try{
-      if(e.hurtEntity.typeId!=="minecraft:player")return;
+      const attacker=e.damageSource?.damagingEntity;
+      if(e.hurtEntity.typeId!=="minecraft:player"&&!(attacker?.typeId==="minecraft:player"&&originOf(attacker)==="elytrian"&&attacker.isGliding))return;
+      if(e.hurtEntity.typeId!=="minecraft:player"&&attacker?.typeId==="minecraft:player"&&originOf(attacker)==="elytrian"&&attacker.isGliding){e.damage*=2;return;}
       const id=originOf(e.hurtEntity),cause=e.damageSource?.cause;
       if(cause==="fall"&&(id==="feline"||id==="avian"))e.cancel=true;
       if(id==="blazeborn"&&FIRE_CAUSES.has(cause))e.cancel=true;
+      // Java aerial_combatant doubles damage only while fall-flying. Bedrock
+      // exposes the same state as isGliding, and the before-event damage is
+      // writable on the supported API surface.
     }catch(error){console.warn("[Minizin Origins] fall immunity: "+String(error));}
+  });
+  world.beforeEvents.itemUse?.subscribe(e=>{
+    try{
+      if(originOf(e.source)==="enderian"&&PUMPKIN_FOODS.has(e.itemStack?.typeId))e.cancel=true;
+    }catch(error){console.warn("[Minizin Origins] pumpkin hate: "+String(error));}
   });
   world.afterEvents.entityHitEntity.subscribe(e=>{
     try{
@@ -235,6 +246,20 @@ export function installOrigins(){
           player.addEffect("slow_falling",100,{amplifier:0,showParticles:false});
         if(id==="phantom"&&player.isSneaking)
           player.addEffect("invisibility",100,{amplifier:0,showParticles:false});
+        if(id==="blazeborn"){
+          // origins:hotblooded: immunity to poison and hunger effects.
+          player.removeEffect?.("poison");player.removeEffect?.("hunger");
+        }
+        if(id==="arachnid"){
+          const feet=player.dimension.getBlock({x:Math.floor(player.location.x),y:Math.floor(player.location.y),z:Math.floor(player.location.z)});
+          if(feet?.typeId==="minecraft:web")player.addEffect("speed",100,{amplifier:0,showParticles:false});
+        }
+        if(id==="feline"){
+          for(const creeper of player.dimension.getEntities({type:"minecraft:creeper",location:player.location,maxDistance:8})){
+            const dx=creeper.location.x-player.location.x,dz=creeper.location.z-player.location.z,len=Math.max(0.1,Math.hypot(dx,dz));
+            try{creeper.applyImpulse({x:dx/len*0.35,y:0.08,z:dz/len*0.35});}catch{}
+          }
+        }
         if((id==="blazeborn"||id==="enderian")&&inWater(player))
           player.applyDamage(1);
       }catch(e){console.warn("[Minizin Origins] ",String(e));}
