@@ -610,6 +610,21 @@ def repair(source,output):
         color=lambda c:'#'+''.join(f'{v:02x}' for v in c[:3])
         desc['spawn_egg']={'base_color':color(palette[0]),'overlay_color':color(palette[min(3,len(palette)-1)])}
         write(path,doc)
+    # Compatibility aliases for the pre-PR creature namespace used by older
+    # worlds/screenshots. Keep the canonical IDs unchanged; these keys only
+    # prevent raw localization strings when Bedrock resolves legacy stacks.
+    legacy_names={
+      'item.minizin_creatures:dragon_meal.name':'Comida de Dragão',
+      'item.minizin_creatures:creative_dragon_meal.name':'Comida de Dragão Criativa',
+      'item.spawn_egg.entity.minizin_creatures:atlatitan.name':'Atlatitan',
+      'item.spawn_egg.entity.minizin_creatures:atlatitan':'Atlatitan'}
+    for language in languages:
+        for key,value in legacy_names.items():
+            languages[language].setdefault(key,value if language=='pt_BR' else {
+              'item.minizin_creatures:dragon_meal.name':'Dragon Meal',
+              'item.minizin_creatures:creative_dragon_meal.name':'Creative Dragon Meal',
+              'item.spawn_egg.entity.minizin_creatures:atlatitan.name':'Atlatitan',
+              'item.spawn_egg.entity.minizin_creatures:atlatitan':'Atlatitan'}[key])
     write(registry_path,registry)
     for language,entries in languages.items():
         target=rp/'texts'/f'{language}.lang';target.parent.mkdir(parents=True,exist_ok=True)

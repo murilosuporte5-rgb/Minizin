@@ -4,7 +4,7 @@
  * category/count contract is persisted in a server-ui accessory menu. The
  * native offhand is only a one-time migration path for old prototype worlds.
  */
-import {world,system,ItemStack,EquipmentSlot} from "@minecraft/server";
+import {world,system,ItemStack,EquipmentSlot,EnchantmentTypes} from "@minecraft/server";
 import {ActionFormData} from "@minecraft/server-ui";
 import {EQUIPMENT} from "./aether_equipment_catalog.js";
 const SLOT_KEY="minizin:aether_accessories_v2",LEGACY_SLOT_KEY="minizin:aether_accessories_v1";
@@ -57,8 +57,13 @@ function deserialize(data){
   if(!EQUIPMENT[data.type]?.accessory)throw Error("Acessório inválido");
   const item=new ItemStack(data.type,1);if(data.name!==undefined)item.nameTag=data.name;item.setLore(data.lore||[]);
   const durability=item.getComponent("minecraft:durability");if(durability&&data.damage!==undefined)durability.damage=data.damage;
-  // EnchantmentTypes changed across Bedrock Android releases; optional enchantments
-  // must not make the complete pack fail to load.
+  // EnchantmentTypes changed across Bedrock Android releases; preserve the
+  // Java metadata when the installed API exposes the resolver, but never make
+  // loading the complete pack depend on an optional enchantment.
+  const enchantable=item.getComponent("minecraft:enchantable");
+  if(enchantable&&Array.isArray(data.enchantments)&&data.enchantments.length)try{
+    enchantable.addEnchantments(data.enchantments.map(x=>({type:EnchantmentTypes.get(x.id),level:x.level})));
+  }catch{}
   for(const [key,value] of Object.entries(data.props||{}))item.setDynamicProperty(key,value);
   return item;
 }

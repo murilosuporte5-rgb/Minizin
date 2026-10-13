@@ -4,8 +4,8 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 
 ## Pacote gerado
 
-- `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon` (candidato v59)
-- SHA-256: `20fec30fbcdec5bc70c283a3f82cd234415f8b057a1ca37b326d2ecfa5e0928b`.
+- `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon` (candidato v61)
+- SHA-256: `45e0e2269c3e283d982f133d594bd12f8f30e2f9a3b7e7d9bfa9f7d6919d2b02`.
 - Estruturalmente: 43 entidades, 375 blocos, 37 scripts, 48 animações e 8 sons.
 - ZIP externo e os dois `.mcpack` internos íntegros.
 - Aether no pacote: 21 estruturas `.mcstructure`, 21 entidades (16 modelos convertidos, 3 rigs Slime vanilla e 2 atores procedurais de partículas) e scripts de dimensão, biomas, loot, bosses e fauna. Ice and Fire: 3 dragões montáveis e 3 ovos incubáveis. Cataclysm/Mowzie: adapters de ataques específicos para quatro bosses.
@@ -19,6 +19,7 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 - Correção v55: o Incubator do Aether agora tem runtime persistente source-backed, combustível Ambrosium de 500 ticks, três receitas Java de ovos de Moa de 1000 ticks, exige duas tochas por receita, spawn configurado como bebê e recuperação de slots ao quebrar o bloco.
 - Correção v57: o Altar do Aether agora implementa as 97 receitas Java `*_repairing`, com os dois combustíveis Java, cálculo de burn time, preservação de metadados e reset de durabilidade após conclusão.
 - Correção v59: o Altar do Aether implementa as 10 receitas Java `enchanting`, inclusive o tag de 11 discos aceitos, com itens source-backed, tempos originais, consumo proporcional de fuel e saída protegida contra falta de espaço.
+- Correção v61: aliases de localização para os namespaces legados observados nas capturas e restauração de encantamentos serializados dos acessórios Aether.
 - Bundle independente: `Minizin_Independent_Packs_2026-10-12.zip`, com 11 `.mcaddon` e os dois `.mcpack` do Sophisticated Backpacks; SHA-256 `e12f499711237474686cc8b53205d6948acf2e2098b8999d8a851b85a6bac5b5`.
 - Pack independente atualizado de criaturas: `Minizin_Creatures_Research.mcaddon`, SHA-256 `c5f7a2c24f47fa8935a3626ee8430576e3ff268ab92b4034d55a229ab9e4b41c`; inclui os 32 itens canônicos de armadura gerados dos ícones Java originais e as chaves PT-BR para itens e ovos geradores.
 
@@ -33,6 +34,7 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 - Aether Freezer: 9/9 receitas Java catalogadas, 9/9 tempos preservados, runtime persistente e quatro itens auxiliares registrados; a interface é uma adaptação via formulário server-side, não a tela nativa Java. Teste no cliente Bedrock/Android ainda não realizado.
 - Aether Incubator: 3/3 receitas Java catalogadas, tempo de 1000 ticks e combustível de 500 ticks preservados; duas tochas são exigidas como no ciclo de queima Java. A interface é uma adaptação via formulário server-side e a coloração/skin específica de ovos e Moas ainda não é 1:1.
 - Aether Altar: 97/97 receitas Java de reparo e 10/10 receitas Java de enchanting catalogadas e implementadas no runtime persistente; GUI nativa e teste no cliente Bedrock/Android continuam pendentes.
+- Capturas Android/Bedrock recebidas: nomes crus e aviso de falha de carregamento registrados em `docs/ANDROID_RETEST_FINDINGS_2026-10-13.md`; aliases foram adicionados, mas o reteste e o log do cliente continuam necessários.
 - MCA: profissões Java `none`, `guard`, `archer`, `outlaw`, `adventurer`, `mercenary` e `cultist` podem ser escolhidas e ficam persistidas no NPC; guarda/arqueiro têm defesa adaptada contra monstros. Comércio, roupas e rotinas Java completas continuam pendentes.
 - RFTools: Machine Frame, gerador, Power Cell normal/simple/advanced/creative e seis receitas derivadas dos recursos Java estão no candidato; o runtime migra o estado `v2` e limita transferência pela capacidade de cada tier. A unidade continua sendo Minizin, não Forge FE.
 - Carry On: a whitelist efetiva foi ampliada para blocos vanilla comuns, com portas, camas, portais, líquidos, plantas não transportáveis e entidades críticas bloqueados conforme a blacklist Java; estruturas e estados continuam persistentes e a duplicação permanece bloqueada em escrita incerta.

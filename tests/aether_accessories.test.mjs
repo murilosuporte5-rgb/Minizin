@@ -27,6 +27,12 @@ test('Aether accessories are usable without the native offhand',()=>{
   assert.match(runtime,/EquipmentSlot\.Offhand/);
 });
 
+test('Aether accessory round-trip attempts to restore Java enchantment metadata',()=>{
+  assert.match(runtime,/EnchantmentTypes/);
+  assert.match(runtime,/data\.enchantments/);
+  assert.match(runtime,/addEnchantments/);
+});
+
 test('final Aether catalog contains original accessory families',()=>{
   const accessories=Object.entries(catalog).filter(([,value])=>value.accessory);
   assert.equal(accessories.length,32);
