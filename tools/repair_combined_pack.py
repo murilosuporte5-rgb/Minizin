@@ -484,7 +484,24 @@ def repair(source,output):
     # dragon interaction implementation.
     shutil.copy2(ROOT/'bedrock/runtime/creatures.js',bp/'scripts/creatures.js')
     shutil.copy2(ROOT/'bedrock/runtime/item_actions.js',bp/'scripts/item_actions.js')
-    main=bp/'scripts/main.js';main.write_text(main.read_text()+'\nimport "./item_actions.js";\n')
+    # Refresh the Waystones runtime as well.  This matters because the block
+    # migration/visibility fix is shared with the standalone pack and must not
+    # be silently lost when the combined addon is rebuilt from an older stage.
+    shutil.copy2(ROOT/'bedrock/runtime/waystones_block.js',bp/'scripts/waystones_v2/waystones_block.js')
+    shutil.copy2(ROOT/'bedrock/runtime/warp_stone.js',bp/'scripts/waystones_v2/warp_stone.js')
+    # Keep the entrypoint idempotent.  Re-running this repair used to append
+    # item_actions.js repeatedly, producing noisy and fragile combined packs.
+    main=bp/'scripts/main.js'
+    lines=main.read_text(encoding='utf-8').splitlines()
+    imports=[];body=[]
+    for line in lines:
+        if line.strip().startswith('import ') and line.strip().endswith(';'):
+            if line.strip() in imports:continue
+            imports.append(line.strip())
+        else:body.append(line)
+    if 'import "./item_actions.js";' not in imports:
+        imports.append('import "./item_actions.js";')
+    main.write_text('\n'.join(imports+['']+[line for line in body if line.strip()])+'\n',encoding='utf-8')
     for role in ['RP','BP']:
         path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['name']='Minizin Correção Mobile '+role
         doc['header']['version']=[0,2,2]
