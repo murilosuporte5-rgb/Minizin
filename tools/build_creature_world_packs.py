@@ -120,6 +120,41 @@ def add_entity(folder, name, geo, texture, kind, report, clips=None, sound=None,
         'description':{'identifier':ident,'is_spawnable':True,'is_summonable':True,'is_experimental':False,
             'properties':{f'minizin:{p}':{'type':'bool','default':False,'client_sync':True} for p in ['flying','attacking','enraged']}},
         'components':components,'component_groups':groups,'events':events}})
+    if kind=='dragon':
+        # Match Ice and Fire's LayerDragonArmor in the independent creature
+        # pack as well. The layer PNGs are copied directly from the pinned
+        # Java source and selected by client-synced slot ordinals.
+        java_models=ROOT/'mods/16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/models'/name
+        bp_path=bp/'entities'/f'{name}.json'
+        bp_doc=json.loads(bp_path.read_text(encoding='utf-8'))
+        props=bp_doc['minecraft:entity']['description'].setdefault('properties',{})
+        for slot in ['head','neck','body','tail']:
+            props.setdefault('minizin:armor_'+slot,{'type':'int','range':[0,8],'default':0,'client_sync':True})
+        write(bp_path,bp_doc)
+        client_path=rp/'entity'/f'{name}.entity.json'
+        client_doc=json.loads(client_path.read_text(encoding='utf-8'))
+        cdesc=client_doc['minecraft:client_entity']['description']
+        textures=cdesc.setdefault('textures',{})
+        controller_path=rp/'render_controllers'/f'{name}.json'
+        controller_doc=json.loads(controller_path.read_text(encoding='utf-8'))
+        rendered=controller_doc['render_controllers']
+        base='textures/iceandfire/dragon_armor/'+name
+        # The upstream Java tree stores the transparent sentinel only once;
+        # it is shared by fire, ice and lightning armor layers.
+        empty=ROOT/'mods/16-ice-and-fire/upstream/src/main/resources/assets/iceandfire/textures/models/firedragon/empty.png';empty_rel=base+'/empty'
+        copy_asset(empty,rp/(empty_rel+'.png'),report);textures['armor_empty']=empty_rel
+        for slot in ['head','neck','body','tail']:
+            for ordinal in range(1,9):
+                source=java_models/f'armor_{slot}_{ordinal}.png'
+                rel=base+'/'+slot+'_'+str(ordinal)
+                copy_asset(source,rp/(rel+'.png'),report);textures['armor_'+slot+'_'+str(ordinal)]=rel
+            controller=f'controller.render.{folder.name}.{name}.armor_{slot}'
+            cdesc.setdefault('render_controllers',[]).append(controller)
+            rendered[controller]={'geometry':'Geometry.default','materials':[{'*':'Material.default'}],
+                'textures':['Array.armor_'+slot],
+                'arrays':{'textures':{'Array.armor_'+slot:['Texture.armor_empty']+
+                    ['Texture.armor_'+slot+'_'+str(i) for i in range(1,9)]}}}
+        write(client_path,client_doc);write(controller_path,controller_doc)
     sound_id = None
     if sound:
         copy_asset(sound,rp/'sounds'/f'{name}.ogg',report)
