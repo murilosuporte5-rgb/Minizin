@@ -43,3 +43,4 @@ class CataclysmRecipeAssets(unittest.TestCase):
         self.assertEqual(report['cataclysm_recipes']['written'], 73)
         self.assertGreater(report['cataclysm_recipes']['skipped']['missing_output'], 0)
         self.assertEqual(report['cataclysm_blocks']['count'], 34)
+        self.assertEqual(report['cataclysm_blocks']['loot_added'], 30)

@@ -154,7 +154,7 @@ def add_source_backed_cataclysm_simple_blocks(rp,bp,registry):
     terrain_path=rp/'textures/terrain_texture.json'
     terrain=json.loads(terrain_path.read_text(encoding='utf-8')) if terrain_path.is_file() else {'texture_data':{}}
     terrain_data=terrain.setdefault('texture_data',{})
-    added=[];skipped={}
+    added=[];skipped={};loot_added=0
     for name in sorted(names):
         model_path=model_dir/(name+'.json')
         if not model_path.is_file():skipped['missing_model']=skipped.get('missing_model',0)+1;continue
@@ -191,10 +191,24 @@ def add_source_backed_cataclysm_simple_blocks(rp,bp,registry):
         else:
             all_texture=resolved.get('all') or next(iter(resolved.values()))
             materials={'*':{'texture':all_texture[0],'render_method':'opaque'}};icon_rel=all_texture[1]
+        loot_rel='loot_tables/blocks/cataclysm/'+name+'.json'
+        source_loot=ROOT/'mods/43-cataclysm/upstream/src/main/resources/data/cataclysm/loot_tables/blocks'/f'{name}.json'
+        block_components={'minecraft:geometry':'minecraft:geometry.full_block','minecraft:material_instances':materials,
+                          'minecraft:destructible_by_mining':{'seconds_to_destroy':1.5}}
+        if source_loot.is_file():
+            try:
+                source_table=json.loads(source_loot.read_text(encoding='utf-8'))
+                direct=all(entry.get('type')=='minecraft:item' and entry.get('name') in {f'cataclysm:{name}',f'minecraft:{name}'}
+                           and not entry.get('conditions') and not any(fn.get('conditions') for fn in entry.get('functions',[]))
+                           for pool in source_table.get('pools',[]) for entry in pool.get('entries',[]))
+            except (OSError,ValueError):direct=False
+            if direct:
+                loot_target=bp/loot_rel;loot_target.parent.mkdir(parents=True,exist_ok=True)
+                write(loot_target,{'pools':[{'rolls':1,'entries':[{'type':'item','name':ident,'weight':1}]}]})
+                block_components['minecraft:loot']=loot_rel;loot_added+=1
         write(bp/'blocks/cataclysm'/f'{name}.json',{'format_version':'1.21.90','minecraft:block':{
           'description':{'identifier':ident,'menu_category':{'category':'construction'}},
-          'components':{'minecraft:geometry':'minecraft:geometry.full_block','minecraft:material_instances':materials,
-                        'minecraft:destructible_by_mining':{'seconds_to_destroy':1.5}}}})
+          'components':block_components}})
         item_icon='cataclysm_block_'+name
         registry.setdefault('texture_data',{})[item_icon]={'textures':icon_rel}
         item_doc={'format_version':'1.21.90','minecraft:item':{
@@ -220,7 +234,7 @@ def add_source_backed_cataclysm_simple_blocks(rp,bp,registry):
             write(bp/'items/cataclysm_blocks'/f'{name}.json',item_doc)
         added.append({'id':ident,'parent':parent,'textures':sorted(set(v[1] for v in resolved.values()))})
     terrain_path.write_text(json.dumps(terrain,indent=2)+'\n',encoding='utf-8')
-    return {'added':added,'count':len(added),'skipped':skipped}
+    return {'added':added,'count':len(added),'loot_added':loot_added,'skipped':skipped}
 
 def add_dragon_armor_layers(rp,bp):
     """Render Ice and Fire's original four dragon-armor overlay layers.
