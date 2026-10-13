@@ -610,10 +610,13 @@ def repair(source,output):
     shutil.copy2(ROOT/'bedrock/runtime/aether_freezer_catalog.js',aether_scripts/'aether_freezer_catalog.js')
     shutil.copy2(ROOT/'bedrock/runtime/aether_incubator.js',aether_scripts/'aether_incubator.js')
     shutil.copy2(ROOT/'bedrock/runtime/aether_incubator_catalog.js',aether_scripts/'aether_incubator_catalog.js')
+    shutil.copy2(ROOT/'bedrock/runtime/aether_altar.js',aether_scripts/'aether_altar.js')
+    shutil.copy2(ROOT/'bedrock/runtime/aether_altar_catalog.js',aether_scripts/'aether_altar_catalog.js')
     aether_main=aether_scripts/'main.js'
     aether_lines=aether_main.read_text(encoding='utf-8').splitlines() if aether_main.exists() else []
     if 'import "./aether_freezer.js";' not in aether_lines:aether_lines.append('import "./aether_freezer.js";')
     if 'import "./aether_incubator.js";' not in aether_lines:aether_lines.append('import "./aether_incubator.js";')
+    if 'import "./aether_altar.js";' not in aether_lines:aether_lines.append('import "./aether_altar.js";')
     # Do not deduplicate Aether source lines: repeated control-flow lines are
     # meaningful JavaScript.  Only remove blank padding while keeping order
     # and every original statement intact.

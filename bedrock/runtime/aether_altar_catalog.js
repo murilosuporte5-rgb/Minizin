@@ -1,0 +1,16 @@
+/* Generated from the pinned Aether *_repairing.json files.
+ * Values are Java repairTime ticks; the input item is also the output.
+ */
+const groups=[
+  [250,["minecraft:leather_boots","minecraft:leather_chestplate","minizin_aether:leather_gloves","minecraft:leather_helmet","minecraft:leather_leggings","minizin_aether:skyroot_axe","minizin_aether:skyroot_hoe","minizin_aether:skyroot_pickaxe","minizin_aether:skyroot_shovel","minizin_aether:skyroot_sword","minecraft:wooden_axe","minecraft:wooden_hoe","minecraft:wooden_pickaxe","minecraft:wooden_shovel","minecraft:wooden_sword"]],
+  [300,["minecraft:golden_axe","minecraft:golden_boots","minecraft:golden_chestplate","minizin_aether:golden_gloves","minecraft:golden_helmet","minecraft:golden_hoe","minecraft:golden_leggings","minecraft:golden_pickaxe","minecraft:golden_shovel","minecraft:golden_sword"]],
+  [500,["minizin_aether:holystone_axe","minizin_aether:holystone_hoe","minizin_aether:holystone_pickaxe","minizin_aether:holystone_shovel","minizin_aether:holystone_sword","minecraft:stone_axe","minecraft:stone_hoe","minecraft:stone_pickaxe","minecraft:stone_shovel","minecraft:stone_sword","minizin_aether:zanite_pendant","minizin_aether:zanite_ring"]],
+  [600,["minecraft:bow","minecraft:crossbow","minecraft:shield"]],
+  [700,["minecraft:chainmail_boots","minecraft:chainmail_chestplate","minizin_aether:chainmail_gloves","minecraft:chainmail_helmet","minecraft:chainmail_leggings"]],
+  [750,["minecraft:iron_axe","minecraft:iron_boots","minecraft:iron_chestplate","minizin_aether:iron_gloves","minecraft:iron_helmet","minecraft:iron_hoe","minecraft:iron_leggings","minecraft:iron_pickaxe","minecraft:iron_shovel","minecraft:iron_sword","minizin_aether:zanite_axe","minizin_aether:zanite_boots","minizin_aether:zanite_chestplate","minizin_aether:zanite_gloves","minizin_aether:zanite_helmet","minizin_aether:zanite_hoe","minizin_aether:zanite_leggings","minizin_aether:zanite_pickaxe","minizin_aether:zanite_shovel","minizin_aether:zanite_sword"]],
+  [1500,["minecraft:diamond_axe","minecraft:diamond_boots","minecraft:diamond_chestplate","minizin_aether:diamond_gloves","minecraft:diamond_helmet","minecraft:diamond_hoe","minecraft:diamond_leggings","minecraft:diamond_pickaxe","minecraft:diamond_shovel","minecraft:diamond_sword","minizin_aether:gravitite_axe","minizin_aether:gravitite_boots","minizin_aether:gravitite_chestplate","minizin_aether:gravitite_gloves","minizin_aether:gravitite_helmet","minizin_aether:gravitite_hoe","minizin_aether:gravitite_leggings","minizin_aether:gravitite_pickaxe","minizin_aether:gravitite_shovel","minizin_aether:gravitite_sword"]],
+  [2000,["minecraft:netherite_axe","minecraft:netherite_boots","minecraft:netherite_chestplate","minizin_aether:netherite_gloves","minecraft:netherite_helmet","minecraft:netherite_hoe","minecraft:netherite_leggings","minecraft:netherite_pickaxe","minecraft:netherite_shovel","minecraft:netherite_sword"]],
+  [300,["minecraft:fishing_rod","minecraft:flint_and_steel"]]
+];
+export const AETHER_ALTAR_REPAIRS=groups.flatMap(([time,items])=>items.map(input=>({input,time})));
+export const AETHER_ALTAR_FUEL={"minizin_aether:ambrosium_shard":250,"minizin_aether:ambrosium_block":2500};

@@ -171,11 +171,11 @@ def expand(source,output):
       'description':{'identifier':'minizin_aether:incubator'},'tags':['crafting_table'],'pattern':['HHH','HTH','HHH'],
       'key':{'H':{'item':'minizin_aether:holystone'},'T':{'item':'minizin_aether:ambrosium_torch'}},
       'result':{'item':'minizin_aether:incubator','count':1}}})
-    for name in ['aether_equipment.js','warp_stone.js','aether_incubator.js','aether_incubator_catalog.js']:shutil.copy2(ROOT/'bedrock/runtime'/name,bp/'scripts'/name)
+    for name in ['aether_equipment.js','warp_stone.js','aether_incubator.js','aether_incubator_catalog.js','aether_altar.js','aether_altar_catalog.js']:shutil.copy2(ROOT/'bedrock/runtime'/name,bp/'scripts'/name)
     shutil.copy2(ROOT/'bedrock/runtime/aether_freezer.js',bp/'scripts/aether_freezer.js')
     shutil.copy2(ROOT/'bedrock/runtime/aether_freezer_catalog.js',bp/'scripts/aether_freezer_catalog.js')
     (bp/'scripts/aether_equipment_catalog.js').write_text('export const EQUIPMENT = '+json.dumps(catalog)+';\n')
-    with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./waystones/main.js";\nimport "./warp_stone.js";\nimport "./aether_equipment.js";\nimport "./aether_freezer.js";\nimport "./aether_incubator.js";\n')
+    with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./waystones/main.js";\nimport "./warp_stone.js";\nimport "./aether_equipment.js";\nimport "./aether_freezer.js";\nimport "./aether_incubator.js";\nimport "./aether_altar.js";\n')
     for role in ['RP','BP']:
         path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['version']=[0,2,5]
         doc['header']['name']='Minizin Gameplay + Waystones '+role
