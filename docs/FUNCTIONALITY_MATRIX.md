@@ -19,7 +19,7 @@ Atualização: 2026-10-13. Esta matriz separa o que foi implementado e validado 
 
 ## Estado do pacote de correção
 
-- Candidato gerado: `build/combined_all_bosses_final_v61/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
+- Candidato gerado: `build/combined_all_bosses_final_v65/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
 - Estruturalmente: 43 entidades, 375 blocos, 37 scripts, 48 animações e 8 sons.
 - O v37 mantém a correção do protótipo de 2 anéis para 8 posições virtuais baseadas no `AetherAccessorySlots` Java; o offhand só é usado para migrar mundos criados pelo protótipo antigo.
 - O v37 mantém 106 receitas geradas pelo Aether, incluindo 22 stonecutting, 9 smelting e 9 blasting, e inclui durabilidade/dano/encantabilidade/escavação dos tiers `AetherItemTiers`; serializers Java especiais são contabilizados como pendentes, não simulados.
@@ -35,6 +35,7 @@ Atualização: 2026-10-13. Esta matriz separa o que foi implementado e validado 
 - O v57 adiciona o Altar baseado em `AltarMenu`, `AltarBlockEntity`, `AbstractAetherFurnaceBlockEntity` e os 97 JSONs `*_repairing`: fuel Java, consumo calculado por burn time, persistência, metadados/encantamentos e reset de durabilidade após conclusão.
 - O v59 adiciona as 10 receitas Java `enchanting`, incluindo as 11 entradas do tag `accepted_music_discs`, itens de entrada/saída source-backed, tempos Java de 50 a 1000 ticks e preservação da saída quando não há espaço.
 - O v61 adiciona aliases para os namespaces legados `minizin_creatures` vistos nas capturas e restaura encantamentos serializados dos acessórios quando `EnchantmentTypes` está disponível.
+- O v65 protege o registro da dimensão customizada Aether contra falhas de API/experimento, mantendo os demais módulos carregáveis quando o caminho Aether não está disponível; o reload de uma dimensão já existente é aceito.
 - As capturas recebidas estão registradas em `docs/ANDROID_RETEST_FINDINGS_2026-10-13.md`; o aviso vermelho de carregamento continua sem causa confirmada porque o log do cliente não foi fornecido.
 - O pacote não foi executado em um aparelho Android nesta sessão. Portanto, carregamento real, renderização intermitente, FPS, memória, multiplayer e compatibilidade com a versão instalada do Bedrock permanecem “não testados”, mesmo quando a validação offline passa.
 - A referência visual Java `Minizin_Referencias_Visuais_Java_para_Codex.md` não estava disponível no filesystem nesta execução; a comparação imagem-a-imagem continua pendente e não foi inferida.

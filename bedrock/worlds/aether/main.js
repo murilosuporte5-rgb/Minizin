@@ -20,6 +20,7 @@ const pending = [];
 const pendingKeys = new Set();
 const active = new Set();
 let running = false;
+let skyRegistered = false;
 
 function seed(x, z) {
   let n = (Math.imul(x, 374761393) ^ Math.imul(z, 668265263)) >>> 0;
@@ -47,7 +48,20 @@ function getKey(pos) { return Math.floor(pos.x) + ":" + Math.floor(pos.y) + ":" 
 system.beforeEvents.startup.subscribe((event) => {
   // Exactly one custom dimension; creating another dimension ID would alter
   // saved-world identity and should be done only by a migration.
-  event.dimensionRegistry.registerCustomDimension(SKY_ID);
+  try {
+    event.dimensionRegistry.registerCustomDimension(SKY_ID);
+    skyRegistered = true;
+  } catch (error) {
+    // A missing Beta APIs experiment or a previously registered dimension
+    // must not prevent the other Minizin modules from loading. The Aether
+    // travel path remains disabled until the dimension is available.
+    // Bedrock may report the existing saved dimension as an error during a
+    // world reload. That state is usable; only other registration failures
+    // disable the Aether travel path.
+    const message = String(error);
+    skyRegistered = /AlreadyRegistered|ReloadNewDimension|already registered/i.test(message);
+    console.warn("[Minizin Aether] custom dimension registration: " + message);
+  }
 });
 
 function isBlock(dimension, pos, typeId) {
@@ -198,6 +212,7 @@ function addExitFrame(dim, y, cx, cz) {
   activateFrame(dim, { tile, axis: "x" });
 }
 async function generateCell(cx, cz) {
+  if (!skyRegistered) throw new Error("Aether custom dimension is unavailable; enable Beta APIs and reload the world.");
   const key = cellKey(cx, cz);
   if (world.getDynamicProperty(key) === true) return;
   const dim = world.getDimension(SKY_ID);
@@ -432,7 +447,7 @@ system.runInterval(() => {
     try {
       quicksoilTick(player);
       aercloudTick(player);
-      if (player.dimension.id === SKY_ID) {
+      if (skyRegistered && player.dimension.id === SKY_ID) {
         if (player.location.y < 10) {
           if (readyToTravel(player)) returnOverworld(player);
           continue;
