@@ -202,6 +202,34 @@ def add_aether_freezer_items(rp,bp):
     write(registry_path,registry);return added
 
 
+def add_aether_incubator_items(rp,bp):
+    """Register the exact source items consumed by IncubationRecipe."""
+    assets=ROOT/'mods/41-the-aether/upstream/src/main/resources/assets/aether'
+    entries={
+      'black_moa_egg':('item/miscellaneous/moa_egg.png','Black Moa Egg','Ovo de Moa preto do Aether.'),
+      'blue_moa_egg':('item/miscellaneous/moa_egg.png','Blue Moa Egg','Ovo de Moa azul do Aether.'),
+      'white_moa_egg':('item/miscellaneous/moa_egg.png','White Moa Egg','Ovo de Moa branco do Aether.'),
+      'ambrosium_torch':('block/utility/ambrosium_torch.png','Ambrosium Torch','Combustível Java do Incubator.')
+    }
+    registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text(encoding='utf-8'));added=0
+    for name,(relative,title,lore) in entries.items():
+        source=assets/'textures'/relative
+        if not source.is_file():raise FileNotFoundError(f'Missing source-backed Aether Incubator item icon: {source}')
+        ident='minizin_aether:'+name;icon='minizin_aether_incubator_'+name;texture='textures/items/aether_incubator/'+name
+        target=rp/(texture+'.png');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
+        registry.setdefault('texture_data',{})[icon]={'textures':texture}
+        write(bp/'items/aether_incubator'/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{
+          'description':{'identifier':ident,'menu_category':{'category':'items'}},'components':{
+            'minecraft:icon':{'textures':{'default':icon}},'minecraft:max_stack_size':1,
+            'minecraft:display_name':{'value':'item.'+ident+'.name'},'minecraft:lore':{'value':[lore]}}}})
+        titles={'black_moa_egg':('Black Moa Egg','Ovo de Moa Preto'),'blue_moa_egg':('Blue Moa Egg','Ovo de Moa Azul'),'white_moa_egg':('White Moa Egg','Ovo de Moa Branco'),'ambrosium_torch':('Ambrosium Torch','Tocha de Ambrosium')}[name]
+        for language in ('en_US','pt_BR'):
+            lang=rp/'texts'/f'{language}.lang';lang.parent.mkdir(parents=True,exist_ok=True)
+            with lang.open('a',encoding='utf-8') as file:file.write(f'item.{ident}.name={titles[0 if language=="en_US" else 1]}\n')
+        added+=1
+    write(registry_path,registry);return added
+
+
 def add_aether_recipes(bp):
     """Convert source Aether vanilla recipes whose IDs exist in this BP.
 
@@ -341,6 +369,14 @@ def add_aether_recipes(bp):
                 body={'description':{'identifier':'minizin_aether:'+path.stem+(f'_v{ordinal}' if len(combinations)>1 else '')},'tags':['crafting_table'],
                   'ingredients':[combination[str(index)] for index in range(len(entries))],'result':{'item':output,'count':recipe.get('result',{}).get('count',1)}}
                 target=out/(body['description']['identifier'].split(':',1)[1]+'.json');target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shapeless':body},indent=2)+'\n',encoding='utf-8');record(target,recipe_type)
+    # The block recipe is ordinary Java crafting and is kept explicit because
+    # the custom IncubationRecipe serializers above are intentionally not
+    # emitted as invalid Bedrock crafting JSON.
+    incubator_target=out/'incubator.json'
+    incubator_body={'description':{'identifier':'minizin_aether:incubator'},'tags':['crafting_table'],
+      'pattern':['HHH','HTH','HHH'],'key':{'H':{'item':'minizin_aether:holystone'},'T':{'item':'minizin_aether:ambrosium_torch'}},
+      'result':{'item':'minizin_aether:incubator','count':1}}
+    incubator_target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shaped':incubator_body},indent=2)+'\n',encoding='utf-8');record(incubator_target,'minecraft:crafting_shaped')
     return {'written':len(written),'written_by_type':written_by_type,'skipped':skipped,'registered_ids':len(registered)}
 
 
@@ -447,6 +483,7 @@ def repair(source,output):
     accessory_count=add_aether_accessories(rp,bp)
     aether_material_count=add_aether_material_items(rp,bp)
     aether_freezer_item_count=add_aether_freezer_items(rp,bp)
+    aether_incubator_item_count=add_aether_incubator_items(rp,bp)
     creature_item_count=add_creature_items(rp,bp)
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
@@ -571,9 +608,12 @@ def repair(source,output):
     aether_scripts=bp/'scripts/aether_full_v3';aether_scripts.mkdir(parents=True,exist_ok=True)
     shutil.copy2(ROOT/'bedrock/runtime/aether_freezer.js',aether_scripts/'aether_freezer.js')
     shutil.copy2(ROOT/'bedrock/runtime/aether_freezer_catalog.js',aether_scripts/'aether_freezer_catalog.js')
+    shutil.copy2(ROOT/'bedrock/runtime/aether_incubator.js',aether_scripts/'aether_incubator.js')
+    shutil.copy2(ROOT/'bedrock/runtime/aether_incubator_catalog.js',aether_scripts/'aether_incubator_catalog.js')
     aether_main=aether_scripts/'main.js'
     aether_lines=aether_main.read_text(encoding='utf-8').splitlines() if aether_main.exists() else []
     if 'import "./aether_freezer.js";' not in aether_lines:aether_lines.append('import "./aether_freezer.js";')
+    if 'import "./aether_incubator.js";' not in aether_lines:aether_lines.append('import "./aether_incubator.js";')
     # Do not deduplicate Aether source lines: repeated control-flow lines are
     # meaningful JavaScript.  Only remove blank padding while keeping order
     # and every original statement intact.
@@ -601,6 +641,7 @@ def repair(source,output):
     counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
       'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
       'aether_freezer_items':aether_freezer_item_count,
+      'aether_incubator_items':aether_incubator_item_count,
       'waystone_scrolls':waystone_scroll_count,
       'aether_freezer_recipes':9,
       'aether_recipes':aether_recipe_report,

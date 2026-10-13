@@ -99,6 +99,25 @@ def expand(source,output):
             title=freezer_titles[name][0 if language=='en_US' else 1]
             with (rp/'texts'/f'{language}.lang').open('a') as f:f.write('item.'+ident+'.name='+title+'\n')
         provenance.append({'source':str(png.relative_to(ROOT)),'sha256':hashlib.sha256(png.read_bytes()).hexdigest(),'identifier':ident})
+    incubator_items={
+      'black_moa_egg':'item/miscellaneous/moa_egg.png','blue_moa_egg':'item/miscellaneous/moa_egg.png',
+      'white_moa_egg':'item/miscellaneous/moa_egg.png','ambrosium_torch':'block/utility/ambrosium_torch.png'}
+    incubator_titles={'black_moa_egg':('Black Moa Egg','Ovo de Moa Preto'),'blue_moa_egg':('Blue Moa Egg','Ovo de Moa Azul'),
+      'white_moa_egg':('White Moa Egg','Ovo de Moa Branco'),'ambrosium_torch':('Ambrosium Torch','Tocha de Ambrosium')}
+    for name,relative in incubator_items.items():
+        png=assets/'textures'/relative
+        if not png.is_file():raise ValueError('Original Incubator item icon missing '+name)
+        ident='minizin_aether:'+name;icon='minizin_aether_incubator_'+name;texture='textures/items/aether_incubator/'+name
+        target=rp/(texture+'.png');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(png,target)
+        registry['texture_data'][icon]={'textures':texture}
+        write(bp/'items/aether_incubator'/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{
+          'description':{'identifier':ident,'menu_category':{'category':'items'}},'components':{
+            'minecraft:icon':{'textures':{'default':icon}},'minecraft:max_stack_size':1,
+            'minecraft:display_name':{'value':'item.'+ident+'.name'}}}})
+        for language in translations:
+            title=incubator_titles[name][0 if language=='en_US' else 1]
+            with (rp/'texts'/f'{language}.lang').open('a') as f:f.write('item.'+ident+'.name='+title+'\n')
+        provenance.append({'source':str(png.relative_to(ROOT)),'sha256':hashlib.sha256(png.read_bytes()).hexdigest(),'identifier':ident})
     # Reuse the existing independent Waystones implementation, not a new model.
     ws=ROOT/'bedrock/packs/waystones'
     for role in ['RP','BP']:
@@ -148,11 +167,15 @@ def expand(source,output):
     for lang,title in [('pt_BR','Pedra de teleporte — Waystones'),('en_US','Warp Stone — Waystones')]:
         with (rp/'texts'/f'{lang}.lang').open('a') as file:file.write('item.minizin:warp_stone.name='+title+'\nentity.minizin:andesite_waystone.name=Waystone\n')
     write(rp/'textures/item_texture.json',registry)
-    for name in ['aether_equipment.js','warp_stone.js']:shutil.copy2(ROOT/'bedrock/runtime'/name,bp/'scripts'/name)
+    write(bp/'recipes/incubator.json',{'format_version':'1.20.10','minecraft:recipe_shaped':{
+      'description':{'identifier':'minizin_aether:incubator'},'tags':['crafting_table'],'pattern':['HHH','HTH','HHH'],
+      'key':{'H':{'item':'minizin_aether:holystone'},'T':{'item':'minizin_aether:ambrosium_torch'}},
+      'result':{'item':'minizin_aether:incubator','count':1}}})
+    for name in ['aether_equipment.js','warp_stone.js','aether_incubator.js','aether_incubator_catalog.js']:shutil.copy2(ROOT/'bedrock/runtime'/name,bp/'scripts'/name)
     shutil.copy2(ROOT/'bedrock/runtime/aether_freezer.js',bp/'scripts/aether_freezer.js')
     shutil.copy2(ROOT/'bedrock/runtime/aether_freezer_catalog.js',bp/'scripts/aether_freezer_catalog.js')
     (bp/'scripts/aether_equipment_catalog.js').write_text('export const EQUIPMENT = '+json.dumps(catalog)+';\n')
-    with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./waystones/main.js";\nimport "./warp_stone.js";\nimport "./aether_equipment.js";\nimport "./aether_freezer.js";\n')
+    with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./waystones/main.js";\nimport "./warp_stone.js";\nimport "./aether_equipment.js";\nimport "./aether_freezer.js";\nimport "./aether_incubator.js";\n')
     for role in ['RP','BP']:
         path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['version']=[0,2,5]
         doc['header']['name']='Minizin Gameplay + Waystones '+role
