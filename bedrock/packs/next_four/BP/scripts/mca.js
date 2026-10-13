@@ -3,8 +3,19 @@ import {ActionFormData} from "@minecraft/server-ui";
 import {tell,hasItem,takeOne,clamp,read,write,held} from "./core.js";
 
 const KEY="minizin:mca_relation_v2",PERSON="minizin:mca_person_v2",
-      SPOUSE="minizin:mca_spouse_v2",FAMILY="minizin:mca_family_v2";
+      SPOUSE="minizin:mca_spouse_v2",FAMILY="minizin:mca_family_v2",
+      PROFESSION="minizin:mca_profession_v2";
+const PROFESSIONS=[
+  {id:"none",label:"Aldeão",canTrade:false},
+  {id:"guard",label:"Guarda",canTrade:false},
+  {id:"archer",label:"Arqueiro(a)",canTrade:false},
+  {id:"outlaw",label:"Fora da lei",canTrade:false},
+  {id:"adventurer",label:"Aventureiro(a)",canTrade:true},
+  {id:"mercenary",label:"Mercenário(a)",canTrade:false},
+  {id:"cultist",label:"Cultista",canTrade:true}
+];
 const busy=new Set();
+const knownNPCs=new Map(),combatCooldown=new Map();
 function idOf(holder){
   let id=holder.getDynamicProperty(PERSON);
   if(typeof id==="string"&&id.length>6)return id;
@@ -21,22 +32,44 @@ function current(npc,pid){
   const all=read(npc,KEY,{});
   return {all,row:all[pid]??{affinity:0,last:-10000,married:false,children:0}};
 }
+function professionOf(npc){
+  const value=npc.getDynamicProperty(PROFESSION);
+  return PROFESSIONS.some(x=>x.id===value)?value:"none";
+}
+function professionLabel(id){return PROFESSIONS.find(x=>x.id===id)?.label??"Aldeão";}
+async function chooseProfession(p,npc){
+  if(!near(p,npc))return;
+  const form=new ActionFormData().title("MCA Reborn • Profissão")
+    .body("Profissão Java de MCA. A escolha fica salva neste NPC; comércio e roupa profissional dependem de conversão adicional.");
+  for(const item of PROFESSIONS)form.button(item.label+(item.canTrade?" • comércio Java":" • sem comércio Java"));
+  const choice=await form.show(p);
+  if(choice.canceled||choice.selection===undefined||!near(p,npc))return;
+  const selected=PROFESSIONS[choice.selection];
+  if(!selected)return;
+  npc.setDynamicProperty(PROFESSION,selected.id);
+  tell(p,"Profissão registrada: "+selected.label+". Persistência confirmada; aparência profissional ainda depende do renderer.");
+}
 async function show(p,npc){
   if(busy.has(p.id))return;busy.add(p.id);
   try{
     if(!near(p,npc))return;
     const pid=idOf(p),nid=idOf(npc);
     let {row}=current(npc,pid);
+    knownNPCs.set(npc.id,npc);
+    const profession=professionOf(npc);
     const form=new ActionFormData().title("MCA Reborn • "+(npc.nameTag||"Morador"))
       .body("Afinidade: "+row.affinity+"/100\nEstado: "+(row.married?"Casados":"Solteiros")+
-        "\nFilhos: "+row.children)
+        "\nFilhos: "+row.children+"\nProfissão: "+professionLabel(profession))
       .button("Cumprimentar").button("Conversar").button("Presentear esmeralda")
       .button("Pedir em casamento (70 de afinidade)")
       .button("Ter um filho (casamento e 90 de afinidade)")
-      .button("Divórcio").button("Ver histórico familiar");
+      .button("Divórcio").button("Ver histórico familiar")
+      .button("Escolher profissão");
     const choice=await form.show(p);
     if(choice.canceled||choice.selection===undefined||!near(p,npc))return;
-    const action=choice.selection,{all, row:old}=current(npc,pid);
+    const action=choice.selection;
+    if(action===7){await chooseProfession(p,npc);return;}
+    const {all,row:old}=current(npc,pid);
     row={...old};const now=world.getAbsoluteTime();
     if(action<=2){
       if(now-row.last<100){tell(p,"Aguarde 5 segundos antes de conversar novamente.");return;}
@@ -116,5 +149,22 @@ export function installMCA(){
     if(item?.typeId!=="minecraft:paper")return;
     system.run(()=>show(e.player,e.target));
   });
-  world.afterEvents.playerLeave.subscribe(e=>busy.delete(e.playerId));
+  world.afterEvents.playerLeave.subscribe(e=>{busy.delete(e.playerId);combatCooldown.delete(e.playerId);});
+  system.runInterval(()=>{
+    for(const [id,npc] of knownNPCs){
+      try{
+        if(!npc.isValid){knownNPCs.delete(id);continue;}
+        const profession=professionOf(npc);
+        if(profession!=="guard"&&profession!=="archer")continue;
+        const now=world.getAbsoluteTime();
+        if(now-(combatCooldown.get(id)??-10000)<20)continue;
+        const nearby=npc.dimension.getEntities({location:npc.location,maxDistance:8});
+        const target=nearby.find(entity=>entity.isValid&&entity.typeId!=="minecraft:player"&&
+          entity.getComponent?.("minecraft:type_family")?.hasTypeFamily?.("monster"));
+        if(!target)continue;
+        target.applyDamage(profession==="archer"?3:2);
+        combatCooldown.set(id,now);
+      }catch(error){console.warn("[MCA] profession combat "+String(error));}
+    }
+  },20);
 }

@@ -55,6 +55,19 @@ test("MCA records player-specific marriage, child birth and fidelity to identity
   assert.equal(read(npc,"minizin:mca_relation_v2",{}).mca_player_10000.children,1);
 });
 
+test("MCA profession selection persists the Java profession identity",async()=>{
+  const dim={id:"minecraft:overworld",getBlock:()=>({isAir:true})};
+  const player={...holder(),id:"profession-player",location:{x:0,y:64,z:0},dimension:dim};
+  const npc={...holder(),id:"profession-npc",location:{x:1,y:64,z:0},dimension:dim};
+  const world={getAbsoluteTime:()=>50000,afterEvents:{playerInteractWithEntity:hook,playerLeave:hook}};
+  const engine=new Function("world","system","ActionFormData","tell","hasItem","takeOne","clamp","read","write","held",
+    load("mca")+"\nreturn {chooseProfession};"
+  )(world,{run:f=>f()},Form,()=>{},()=>false,()=>false,(n,l,h)=>Math.max(l,Math.min(h,n)),read,write,()=>undefined);
+  Form.selection=1;
+  await engine.chooseProfession(player,npc);
+  assert.equal(get(npc,"minizin:mca_profession_v2"),"guard");
+});
+
 test("Origins stores active cooldown and avoids repeat Elytrian impulses",()=>{
   const source=load("origins");
   const world={getAllPlayers:()=>[],afterEvents:{playerLeave:hook,itemUse:hook,playerInteractWithBlock:hook}};

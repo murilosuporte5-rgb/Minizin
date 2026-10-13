@@ -40,3 +40,30 @@ test("power crosses a cable, enters a cell and lights an actual lamp state",()=>
   assert.equal(lamp.permutation.getState("minizin:lit"),true);
   assert.equal(api.linked(gen).some(x=>x.id===key(2)),true);
 });
+
+test("RFTools machine runtime migrates v2 state and transfers into advanced cells",()=>{
+  const source=readFileSync(new URL("../bedrock/runtime/rftools_machines.js",import.meta.url),"utf8")
+    .replace(/^import .*;$/gm,"");
+  const props=new Map(),blocks=new Map(),p=x=>x.x+","+x.y+","+x.z;
+  const signal={subscribe(){}};
+  const dimension={id:"minecraft:overworld",getBlock:pos=>blocks.get(p(pos))};
+  const make=(type,x)=>{const b={typeId:type,location:{x,y:64,z:0},dimension};blocks.set(p(b.location),b);return b;};
+  const gen=make("minizin_rftools:coalgenerator",0),cell=make("minizin_rftools:powercell_advanced",1);
+  const world={afterEvents:{playerInteractWithBlock:signal,playerBreakBlock:signal},getDimension:()=>dimension,
+    getDynamicProperty:k=>props.get(k),setDynamicProperty:(k,v)=>props.set(k,v)};
+  const system={interval:null,runInterval(fn){this.interval=fn;},run(fn){fn();}};
+  const read=(holder,key,fallback)=>{try{return JSON.parse(holder.getDynamicProperty(key))??fallback;}catch{return fallback;}};
+  const write=(holder,key,value)=>holder.setDynamicProperty(key,JSON.stringify(value));
+  new Function("world","system","ActionFormData","ItemStack","read","write","takeOne","tell","container",
+    source+"\nreturn {};"
+  )(world,system,class {},class {},read,write,()=>false,()=>{},()=>undefined);
+  const key=x=>"minecraft:overworld:"+x+",64,0";
+  props.set("minizin:rftools_machines_v2",JSON.stringify({
+    [key(0)]:{type:gen.typeId,energy:100,dimension:dimension.id,location:gen.location},
+    [key(1)]:{type:cell.typeId,energy:3995,dimension:dimension.id,location:cell.location}
+  }));
+  system.interval();
+  const migrated=read(world,"minizin:rftools_machines_v3",{});
+  assert.equal(migrated[key(0)].energy,95);
+  assert.equal(migrated[key(1)].energy,4000);
+});

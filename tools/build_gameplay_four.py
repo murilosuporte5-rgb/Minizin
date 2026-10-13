@@ -21,12 +21,20 @@ def build(output):
             'world.beforeEvents.chatSend?.subscribe('))
     folder=output/'rftools';rp,bp=folder/'RP',folder/'BP'
     terrain={}
-    for name in ['coalgenerator','powercell']:
+    machine_blocks=[
+        ('machine_frame', 'geometry.minizin.rftools.machine_frame'),
+        ('coalgenerator', 'geometry.minizin.rftools.coalgenerator'),
+        ('powercell', 'geometry.minizin.rftools.powercell'),
+        ('powercell_simple', 'geometry.minizin.rftools.powercell_simple'),
+        ('powercell_advanced', 'geometry.minizin.rftools.powercell_advanced'),
+        ('powercell_creative', 'geometry.minizin.rftools.powercell_creative'),
+    ]
+    for name,geometry in machine_blocks:
         texture='textures/entity/minizin/rftools_'+name
         terrain[name]={'textures':texture}
         doc={'format_version':'1.21.90','minecraft:block':{
             'description':{'identifier':'minizin_rftools:'+name,'menu_category':{'category':'construction'}},
-            'components':{'minecraft:geometry':{'identifier':'geometry.minizin.rftools.'+name},
+            'components':{'minecraft:geometry':{'identifier':geometry},
                 'minecraft:material_instances':{'*':{'texture':name,'render_method':'opaque'}},
                 'minecraft:destructible_by_mining':{'seconds_to_destroy':3},
                 'minecraft:loot':'loot_tables/blocks/'+name+'.json'}}}
@@ -35,6 +43,39 @@ def build(output):
         (bp/'loot_tables/blocks').mkdir(parents=True,exist_ok=True)
         (bp/'loot_tables/blocks'/f'{name}.json').write_text(json.dumps({'pools':[{'rolls':1,'entries':[
             {'type':'item','name':'minizin_rftools:'+name,'weight':1}]}]}))
+    recipes={
+      'machine_frame':{
+        'pattern':['ili','g g','ili'],
+        'key':{'i':{'item':'minecraft:iron_ingot'},'l':{'item':'minecraft:lapis_lazuli'},'g':{'item':'minecraft:gold_nugget'}},
+        'result':'minizin_rftools:machine_frame'},
+      'infused_diamond':{
+        'pattern':['sss','sds','sss'],
+        'key':{'s':{'item':'minizin:rftools_items_dimensionalsharditem'},'d':{'item':'minecraft:diamond'}},
+        'result':'minizin:rftools_items_infuseddiamond'},
+      'coalgenerator':{
+        'pattern':['cTc','cMc','cTc'],
+        'key':{'c':{'item':'minecraft:coal'},'T':{'item':'minecraft:redstone_torch'},'M':{'item':'minizin_rftools:machine_frame'}},
+        'result':'minizin_rftools:coalgenerator'},
+      'powercell_simple':{
+        'pattern':['rdr','bMb','rdr'],
+        'key':{'r':{'item':'minecraft:redstone_block'},'d':{'item':'minecraft:diamond'},'b':{'item':'minecraft:quartz'},'M':{'item':'minizin_rftools:machine_frame'}},
+        'result':'minizin_rftools:powercell_simple'},
+      'powercell':{
+        'pattern':['rdr','bMb','rer'],
+        'key':{'r':{'item':'minecraft:redstone_block'},'d':{'item':'minecraft:diamond'},'b':{'item':'minecraft:prismarine_shard'},'e':{'item':'minecraft:emerald'},'M':{'item':'minizin_rftools:machine_frame'}},
+        'result':'minizin_rftools:powercell'},
+      'powercell_advanced':{
+        'pattern':['rir','iMi','rir'],
+        'key':{'r':{'item':'minecraft:redstone_block'},'i':{'item':'minizin:rftools_items_infuseddiamond'},'M':{'item':'minizin_rftools:powercell'}},
+        'result':'minizin_rftools:powercell_advanced'}
+    }
+    (bp/'recipes').mkdir(exist_ok=True)
+    for name,spec in recipes.items():
+        (bp/'recipes'/f'{name}.json').write_text(json.dumps({
+          'format_version':'1.20.10','minecraft:recipe_shaped':{
+            'description':{'identifier':'minizin_rftools:'+name},
+            'tags':['crafting_table'],'pattern':spec['pattern'],'key':spec['key'],
+            'result':{'item':spec['result'],'count':1}}},indent=2))
     (rp/'textures/terrain_texture.json').write_text(json.dumps({'resource_pack_name':'Minizin RFTools',
         'texture_name':'atlas.terrain','padding':8,'num_mip_levels':4,'texture_data':terrain},indent=2))
     shutil.copy2(ROOT/'bedrock/runtime/rftools_machines.js',bp/'scripts/rftools_machines.js')
