@@ -188,6 +188,54 @@ def add_source_backed_alex_items(rp,bp,registry):
         added.append(ident)
     return added
 
+
+def add_source_backed_alex_simple_blocks(rp,bp,registry):
+    """Port Alex blocks whose pinned Java model is an explicit cube model."""
+    source_root=ROOT/'mods/42-alexs-caves/upstream/src/main/resources/assets/alexscaves'
+    registry_java=ROOT/'mods/42-alexs-caves/upstream/src/main/java/com/github/alexmodguy/alexscaves/server/block/ACBlockRegistry.java'
+    names=set(re.findall(r'(?:registerBlockAndItem|DEF_REG\.register)\("([a-z0-9_]+)"',registry_java.read_text(encoding='utf-8')))
+    model_dir=source_root/'models/block';texture_dir=rp/'textures/blocks/alexscaves';texture_dir.mkdir(parents=True,exist_ok=True)
+    terrain_path=rp/'textures/terrain_texture.json';terrain=json.loads(terrain_path.read_text(encoding='utf-8'));terrain_data=terrain.setdefault('texture_data',{})
+    added=[];skipped={};loot_added=0
+    for name in sorted(names):
+        model_path=model_dir/(name+'.json')
+        if not model_path.is_file():skipped['missing_model']=skipped.get('missing_model',0)+1;continue
+        try:model=json.loads(model_path.read_text(encoding='utf-8'))
+        except (OSError,ValueError):skipped['invalid_model']=skipped.get('invalid_model',0)+1;continue
+        parent=model.get('parent','')
+        if parent not in {'minecraft:block/cube_all','minecraft:block/cube_column','minecraft:block/cube_bottom_top','block/cube_bottom_top'}:
+            skipped['non_cube_model']=skipped.get('non_cube_model',0)+1;continue
+        resolved={};valid=True
+        for face,ref in model.get('textures',{}).items():
+            if not isinstance(ref,str) or not ref.startswith('alexscaves:'):valid=False;break
+            local=ref.split(':',1)[1];source_texture=source_root/'textures'/f'{local}.png'
+            if not source_texture.is_file():valid=False;break
+            safe=local.replace('/','_');rel='textures/blocks/alexscaves/'+safe
+            shutil.copy2(source_texture,rp/(rel+'.png'));icon='alexscaves_'+safe
+            registry.setdefault('texture_data',{})[icon]={'textures':rel};terrain_data[icon]={'textures':rel};resolved[face]=(icon,rel)
+        if not valid or not resolved:skipped['non_source_texture']=skipped.get('non_source_texture',0)+1;continue
+        ident='minizin_alexscaves:'+name
+        if parent=='minecraft:block/cube_column':
+            side=resolved.get('side') or resolved.get('all') or next(iter(resolved.values()));top=resolved.get('end') or resolved.get('top') or side
+            materials={face:{'texture':tex[0],'render_method':'opaque'} for face,tex in [('up',top),('down',top),('north',side),('south',side),('east',side),('west',side)]};icon_rel=top[1]
+        elif parent in {'minecraft:block/cube_bottom_top','block/cube_bottom_top'}:
+            side=resolved.get('side') or resolved.get('all') or next(iter(resolved.values()));top=resolved.get('top') or side;bottom=resolved.get('bottom') or top
+            materials={'up':{'texture':top[0],'render_method':'opaque'},'down':{'texture':bottom[0],'render_method':'opaque'},**{face:{'texture':side[0],'render_method':'opaque'} for face in ('north','south','east','west')}};icon_rel=top[1]
+        else:
+            all_texture=resolved.get('all') or next(iter(resolved.values()));materials={'*':{'texture':all_texture[0],'render_method':'opaque'}};icon_rel=all_texture[1]
+        block_components={'minecraft:geometry':'minecraft:geometry.full_block','minecraft:material_instances':materials,'minecraft:destructible_by_mining':{'seconds_to_destroy':1.5}}
+        loot_rel='loot_tables/blocks/alexscaves/'+name+'.json';source_loot=ROOT/'mods/42-alexs-caves/upstream/src/main/resources/data/alexscaves/loot_tables/blocks'/f'{name}.json'
+        if source_loot.is_file():
+            try:table=json.loads(source_loot.read_text(encoding='utf-8'));direct=all(e.get('type')=='minecraft:item' and e.get('name') in {f'alexscaves:{name}',f'minecraft:{name}'} and not e.get('conditions') and not any(fn.get('conditions') for fn in e.get('functions',[])) for pool in table.get('pools',[]) for e in pool.get('entries',[]))
+            except (OSError,ValueError):direct=False
+            if direct:
+                target=bp/loot_rel;target.parent.mkdir(parents=True,exist_ok=True);write(target,{'pools':[{'rolls':1,'entries':[{'type':'item','name':ident,'weight':1}]}]});block_components['minecraft:loot']=loot_rel;loot_added+=1
+        write(bp/'blocks/alexscaves'/f'{name}.json',{'format_version':'1.21.90','minecraft:block':{'description':{'identifier':ident,'menu_category':{'category':'construction'}},'components':block_components}})
+        item_icon='alexscaves_block_'+name;registry.setdefault('texture_data',{})[item_icon]={'textures':icon_rel};write(bp/'items/alexscaves_blocks'/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{'description':{'identifier':ident,'menu_category':{'category':'construction'}},'components':{'minecraft:icon':{'textures':{'default':item_icon}},'minecraft:block_placer':{'block':ident},'minecraft:max_stack_size':64,'minecraft:display_name':{'value':'tile.'+ident+'.name'}}}})
+        added.append({'id':ident,'parent':parent,'textures':sorted(set(v[1] for v in resolved.values()))})
+    terrain_path.write_text(json.dumps(terrain,indent=2)+'\n',encoding='utf-8')
+    return {'added':added,'count':len(added),'loot_added':loot_added,'skipped':skipped}
+
 def add_source_backed_cataclysm_items(rp,bp,registry):
     """Expose Cataclysm's registered-looking original item icons.
 
@@ -1312,6 +1360,7 @@ def repair(source,output):
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
     alex_items=add_source_backed_alex_items(rp,bp,registry)
+    alex_blocks=add_source_backed_alex_simple_blocks(rp,bp,registry)
     cataclysm_items=add_source_backed_cataclysm_items(rp,bp,registry)
     cataclysm_blocks=add_source_backed_cataclysm_simple_blocks(rp,bp,registry)
     write(registry_path,registry)
@@ -1530,6 +1579,7 @@ def repair(source,output):
       'mowzie_entities':mowzie_entities,
       'alex_entities':alex_entities,
       'alex_items':alex_items,
+      'alex_blocks':alex_blocks,
       'cataclysm_items':cataclysm_items,
       'cataclysm_blocks':cataclysm_blocks,
       'cataclysm_recipes':cataclysm_recipe_report,

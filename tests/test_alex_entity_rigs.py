@@ -43,3 +43,18 @@ class AlexEntityRigs(unittest.TestCase):
             self.assertIn(icon, atlas)
             self.assertTrue((root / 'RP/textures/items/alexscaves' / f'{name}.png').is_file())
 
+    def test_candidate_exposes_source_backed_alex_cube_blocks(self):
+        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes'))
+        if not candidates:
+            self.skipTest('v96 candidate not built yet')
+        root = max(candidates, key=lambda path: json.loads((path / 'FIX_REPORT.json').read_text()).get('alex_blocks', {}).get('count', 0))
+        report = json.loads((root / 'FIX_REPORT.json').read_text())
+        self.assertEqual(report['alex_blocks']['count'], 77)
+        self.assertEqual(report['alex_blocks']['loot_added'], 64)
+        for name in ('limestone', 'pewen_log', 'guanostone_tiles'):
+            block = json.loads((root / 'BP/blocks/alexscaves' / f'{name}.json').read_text())
+            ident = block['minecraft:block']['description']['identifier']
+            self.assertEqual(ident, f'minizin_alexscaves:{name}')
+            self.assertIn('minecraft:geometry.full_block', block['minecraft:block']['components']['minecraft:geometry'])
+            self.assertTrue((root / 'BP/items/alexscaves_blocks' / f'{name}.json').is_file())
+
