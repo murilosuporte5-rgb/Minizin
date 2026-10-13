@@ -3,12 +3,41 @@ import {held,tell} from "./core.js";
 
 // Entity carry keeps the real entity (inventory, custom name, health, AI).
 const MOBS=new Set(["minecraft:cow","minecraft:sheep","minecraft:pig",
-  "minecraft:chicken","minecraft:goat","minecraft:villager","minecraft:villager_v2"]);
+  "minecraft:chicken","minecraft:goat","minecraft:villager","minecraft:villager_v2",
+  "minecraft:rabbit","minecraft:fox","minecraft:wolf","minecraft:cat","minecraft:ocelot",
+  "minecraft:horse","minecraft:donkey","minecraft:mule","minecraft:llama","minecraft:trader_llama",
+  "minecraft:camel","minecraft:mooshroom","minecraft:strider","minecraft:bee","minecraft:panda",
+  "minecraft:polar_bear","minecraft:turtle","minecraft:armadillo"]);
 const BLOCKS=new Set(["minecraft:chest","minecraft:trapped_chest","minecraft:barrel",
   "minecraft:furnace","minecraft:blast_furnace","minecraft:smoker","minecraft:stone",
   "minecraft:cobblestone","minecraft:oak_planks","minecraft:crafting_table",
   "minecraft:bookshelf","minecraft:oak_log","minecraft:dirt","minecraft:grass_block",
   "minecraft:deepslate","minecraft:anvil","minecraft:iron_block"]);
+const BLOCK_BLACKLIST=new Set(["minecraft:end_portal","minecraft:end_gateway","minecraft:piston_head",
+  "minecraft:big_dripleaf_stem","minecraft:waterlily","minecraft:cake","minecraft:nether_portal",
+  "minecraft:tall_grass","minecraft:large_fern","minecraft:peony","minecraft:rose_bush",
+  "minecraft:lilac","minecraft:sunflower","minecraft:tall_seagrass","minecraft:fire",
+  "minecraft:soul_fire","minecraft:water","minecraft:lava"]);
+const ENTITY_BLACKLIST=new Set(["minecraft:player","minecraft:end_crystal","minecraft:ender_dragon",
+  "minecraft:ghast","minecraft:fireball","minecraft:small_fireball","minecraft:shulker",
+  "minecraft:leash_knot","minecraft:armor_stand","minecraft:item_frame","minecraft:painting",
+  "minecraft:shulker_bullet","minecraft:evoker_fangs","minecraft:dragon_fireball","minecraft:tnt",
+  "minecraft:trident","minecraft:arrow","minecraft:spectral_arrow"]);
+function isCarryableBlock(block){
+  if(!block||block.isAir||!block.typeId)return false;
+  if(BLOCKS.has(block.typeId))return true;
+  if(!block.typeId.startsWith("minecraft:")||BLOCK_BLACKLIST.has(block.typeId))return false;
+  const name=block.typeId.slice("minecraft:".length);
+  if(name.endsWith("_bed")||name.endsWith("_door")||name.endsWith("_trapdoor")||
+    name.endsWith("_fence_gate")||name.endsWith("_button")||name.endsWith("_pressure_plate"))return false;
+  return true;
+}
+function isCarryableEntity(entity){
+  if(!entity||ENTITY_BLACKLIST.has(entity.typeId))return false;
+  if(MOBS.has(entity.typeId))return true;
+  if(!entity.typeId.startsWith("minecraft:")&&!entity.typeId.startsWith("minizin_"))return false;
+  try{return Boolean(entity.getComponent?.("minecraft:health"));}catch{return false;}
+}
 const STORAGE="minizin:carry_block_v2";
 const carrying=new Map(),locks=new Set();
 const FACE={Up:[0,1,0],Down:[0,-1,0],North:[0,0,-1],
@@ -53,7 +82,7 @@ export function pickedBlock(player){
 }
 function grab(player,position,dimensionId){
   const block=player.dimension.getBlock(position);
-  if(!block||!BLOCKS.has(block.typeId)) {
+  if(!isCarryableBlock(block)) {
     tell(player,"Este bloco não está na lista de tipos transportáveis.");return;
   }
   if(distance(player,block)>5)return;
@@ -128,7 +157,7 @@ export function installCarryOn(){
   world.beforeEvents.playerInteractWithBlock.subscribe(e=>{
     if(e.isFirstEvent===false||!e.player.isSneaking||e.itemStack?.typeId!=="minecraft:stick")return;
     const {player}=e,pos={...e.block.location},dim=e.block.dimension.id,face=e.blockFace;
-    if(!state(player)&&!BLOCKS.has(e.block.typeId))return;
+    if(!state(player)&&!isCarryableBlock(e.block))return;
     e.cancel=true;
     system.run(()=>{
       if(locks.has(player.id))return;
@@ -138,7 +167,7 @@ export function installCarryOn(){
     });
   });
   world.afterEvents.playerInteractWithEntity.subscribe(e=>{
-    if(!e.player.isSneaking||!MOBS.has(e.target.typeId))return;
+    if(!e.player.isSneaking||!isCarryableEntity(e.target))return;
     const hand=e.beforeItemStack??e.itemStack??held(e.player);
     if(hand?.typeId!=="minecraft:stick")return;
     system.run(()=>{

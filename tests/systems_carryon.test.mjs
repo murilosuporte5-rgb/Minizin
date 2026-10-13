@@ -47,3 +47,14 @@ test("chest is moved using persisted structure and not cloned",()=>{
   assert.equal(api.pickedBlock(player),null);
   assert.equal(structures.size,0);
 });
+
+test("Carry On follows Java blacklist boundaries while accepting ordinary vanilla blocks",()=>{
+  const api=new Function(source+"\nreturn {isCarryableBlock,isCarryableEntity};")();
+  assert.equal(api.isCarryableBlock({typeId:"minecraft:barrel",isAir:false}),true);
+  assert.equal(api.isCarryableBlock({typeId:"minecraft:glass",isAir:false}),true);
+  assert.equal(api.isCarryableBlock({typeId:"minecraft:oak_door",isAir:false}),false);
+  assert.equal(api.isCarryableBlock({typeId:"minecraft:end_portal",isAir:false}),false);
+  assert.equal(api.isCarryableEntity({typeId:"minecraft:cat",isValid:true}),true);
+  assert.equal(api.isCarryableEntity({typeId:"minecraft:ender_dragon",isValid:true}),false);
+  assert.equal(api.isCarryableEntity({typeId:"minizin_cataclysm:ignis",getComponent(){return {};}}),true);
+});
