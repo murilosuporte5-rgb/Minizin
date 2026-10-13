@@ -22,6 +22,9 @@ test('Aether virtual accessory menu matches Java slot categories and counts',()=
 
 test('Aether accessories are usable without the native offhand',()=>{
   assert.match(runtime,/world\.afterEvents\.itemUse/);
+  assert.match(runtime,/openAetherAccessoryMenu/);
+  assert.match(runtime,/world\.beforeEvents\.chatSend\?\.subscribe/);
+  assert.match(runtime,/!aether slots/);
   assert.match(runtime,/independentes da mão secundária/);
   assert.match(runtime,/LEGACY_SLOT_KEY/);
   assert.match(runtime,/EquipmentSlot\.Offhand/);

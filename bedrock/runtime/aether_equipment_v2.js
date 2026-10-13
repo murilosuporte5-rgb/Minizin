@@ -91,12 +91,18 @@ async function menu(player){
     }else player.sendMessage("§eSegure um acessório do Aether para equipar, ou deixe a mão vazia para retirar.");
   }catch(error){player.sendMessage("§c[Aether] "+String(error));}finally{busy.delete(player.id);}
 }
+export async function openAetherAccessoryMenu(player){return menu(player);}
 world.beforeEvents.playerInteractWithBlock.subscribe(event=>{
   if(event.isFirstEvent===false)return;const held=event.itemStack;
   if(!EQUIPMENT[held?.typeId]?.accessory&&!(event.player.isSneaking&&!held))return;
   event.cancel=true;system.run(()=>menu(event.player));
 });
 world.afterEvents.itemUse.subscribe(({source,itemStack})=>{if(EQUIPMENT[itemStack?.typeId]?.accessory)system.run(()=>menu(source));});
+world.beforeEvents.chatSend?.subscribe(event=>{
+  const command=event.message.trim().toLowerCase();
+  if(!["!aether","!aether slots","!aether acessórios","!aether accessories"].includes(command))return;
+  event.cancel=true;system.run(()=>menu(event.sender));
+});
 function wear(player,amount){
   if(String(player.getGameMode?.()).toLowerCase()==="creative")return;
   const inv=inventory(player),slot=player.selectedSlotIndex,item=inv?.getItem(slot);
