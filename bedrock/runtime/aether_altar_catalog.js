@@ -14,3 +14,19 @@ const groups=[
 ];
 export const AETHER_ALTAR_REPAIRS=groups.flatMap(([time,items])=>items.map(input=>({input,time})));
 export const AETHER_ALTAR_FUEL={"minizin_aether:ambrosium_shard":250,"minizin_aether:ambrosium_block":2500};
+
+// Exact Aether Java EnchantingRecipe data. Block outputs intentionally use
+// their Bedrock block-item IDs; the pack registers their source-backed icons.
+const acceptedMusicDiscs=["minecraft:music_disc_11","minecraft:music_disc_13","minecraft:music_disc_blocks","minecraft:music_disc_chirp","minecraft:music_disc_far","minecraft:music_disc_mall","minecraft:music_disc_mellohi","minecraft:music_disc_stal","minecraft:music_disc_wait","minecraft:music_disc_ward","minecraft:music_disc_otherside"];
+export const AETHER_ALTAR_ENCHANTING=[
+  ...acceptedMusicDiscs.map(input=>({kind:"enchanting",input,output:"minizin_aether:music_disc_aether_tune",count:1,time:500})),
+  {kind:"enchanting",input:"minecraft:music_disc_strad",output:"minizin_aether:music_disc_chinchilla",count:1,time:500},
+  {kind:"enchanting",input:"minizin_aether:blue_berry",output:"minizin_aether:enchanted_berry",count:1,time:250},
+  {kind:"enchanting",input:"minizin_aether:golden_dart",output:"minizin_aether:enchanted_dart",count:1,time:50},
+  {kind:"enchanting",input:"minizin_aether:golden_dart_shooter",output:"minizin_aether:enchanted_dart_shooter",count:1,time:750},
+  {kind:"enchanting",input:"minizin_aether:gravitite_ore",output:"minizin_aether:enchanted_gravitite",count:1,time:750},
+  {kind:"enchanting",input:"minizin_aether:cold_aercloud",output:"minizin_aether:golden_aercloud",count:1,time:1000},
+  {kind:"enchanting",input:"minizin_aether:holystone",output:"minizin_aether:healing_stone",count:1,time:500},
+  {kind:"enchanting",input:"minizin_aether:quicksoil",output:"minizin_aether:quicksoil_glass",count:1,time:250},
+  {kind:"enchanting",input:"minizin_aether:skyroot_poison_bucket",output:"minizin_aether:skyroot_remedy_bucket",count:1,time:500}
+];

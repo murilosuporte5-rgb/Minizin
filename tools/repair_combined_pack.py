@@ -230,6 +230,40 @@ def add_aether_incubator_items(rp,bp):
     write(registry_path,registry);return added
 
 
+def add_aether_enchanting_items(rp,bp):
+    """Register every non-block item used by the ten Java altar enchanting recipes."""
+    assets=ROOT/'mods/41-the-aether/upstream/src/main/resources/assets/aether'
+    entries={
+      'blue_berry':('item/food/blue_berry.png','Blue Berry','Blue Berry do Aether.'),
+      'enchanted_berry':('item/food/enchanted_berry.png','Enchanted Berry','Enchanted Berry do Aether.'),
+      'golden_dart':('item/weapons/golden_dart.png','Golden Dart','Munição do Golden Dart Shooter.'),
+      'enchanted_dart':('item/weapons/enchanted_dart.png','Enchanted Dart','Munição encantada do Aether.'),
+      'golden_dart_shooter':('item/weapons/golden_dart_shooter.png','Golden Dart Shooter','Dispara Golden Darts.'),
+      'enchanted_dart_shooter':('item/weapons/enchanted_dart_shooter.png','Enchanted Dart Shooter','Dispara Enchanted Darts.'),
+      'healing_stone':('item/food/healing_stone.png','Healing Stone','Pedra de cura do Aether.'),
+      'music_disc_aether_tune':('item/miscellaneous/music_disc_aether_tune.png','Blue Music Disc','Aether Tune de Noisestorm.'),
+      'skyroot_poison_bucket':('item/miscellaneous/skyroot_poison_bucket.png','Skyroot Poison Bucket','Balde Skyroot com veneno.'),
+      'skyroot_remedy_bucket':('item/miscellaneous/skyroot_remedy_bucket.png','Skyroot Remedy Bucket','Balde Skyroot com remédio.')}
+    registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text(encoding='utf-8'));added=0
+    for name,(relative,title,lore) in entries.items():
+        source=assets/'textures'/relative
+        if not source.is_file():raise FileNotFoundError(f'Missing source-backed Aether Enchanting item icon: {source}')
+        ident='minizin_aether:'+name;icon='minizin_aether_enchanting_'+name;texture='textures/items/aether_enchanting/'+name
+        target=rp/(texture+'.png');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
+        registry.setdefault('texture_data',{})[icon]={'textures':texture}
+        max_stack=1 if ('shooter' in name or 'bucket' in name or 'music_disc' in name or name=='healing_stone') else 64
+        write(bp/'items/aether_enchanting'/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{
+          'description':{'identifier':ident,'menu_category':{'category':'items'}},'components':{
+            'minecraft:icon':{'textures':{'default':icon}},'minecraft:max_stack_size':max_stack,
+            'minecraft:display_name':{'value':'item.'+ident+'.name'},'minecraft:lore':{'value':[lore]}}}})
+        pt={'blue_berry':'Blue Berry','enchanted_berry':'Fruta Encantada','golden_dart':'Dardo Dourado','enchanted_dart':'Dardo Encantado','golden_dart_shooter':'Atirador de Dardos Dourados','enchanted_dart_shooter':'Atirador de Dardos Encantados','healing_stone':'Pedra de Cura','music_disc_aether_tune':'Disco Azul','skyroot_poison_bucket':'Balde Skyroot com Veneno','skyroot_remedy_bucket':'Balde Skyroot de Remédio'}[name]
+        for language in ('en_US','pt_BR'):
+            lang=rp/'texts'/f'{language}.lang';lang.parent.mkdir(parents=True,exist_ok=True)
+            with lang.open('a',encoding='utf-8') as file:file.write(f'item.{ident}.name={title if language=="en_US" else pt}\n')
+        added+=1
+    write(registry_path,registry);return added
+
+
 def add_aether_recipes(bp):
     """Convert source Aether vanilla recipes whose IDs exist in this BP.
 
@@ -484,6 +518,7 @@ def repair(source,output):
     aether_material_count=add_aether_material_items(rp,bp)
     aether_freezer_item_count=add_aether_freezer_items(rp,bp)
     aether_incubator_item_count=add_aether_incubator_items(rp,bp)
+    aether_enchanting_item_count=add_aether_enchanting_items(rp,bp)
     creature_item_count=add_creature_items(rp,bp)
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
@@ -644,6 +679,7 @@ def repair(source,output):
     counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
       'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
       'aether_freezer_items':aether_freezer_item_count,
+      'aether_enchanting_items':aether_enchanting_item_count,
       'aether_incubator_items':aether_incubator_item_count,
       'waystone_scrolls':waystone_scroll_count,
       'aether_freezer_recipes':9,

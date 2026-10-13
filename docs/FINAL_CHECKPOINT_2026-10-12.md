@@ -4,8 +4,8 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 
 ## Pacote gerado
 
-- `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon` (candidato v57)
-- SHA-256: `0e087a835ac83a46ee15bf4a00b862cce12f12c331e39a49ea61e2dae4561210`.
+- `Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon` (candidato v59)
+- SHA-256: `20fec30fbcdec5bc70c283a3f82cd234415f8b057a1ca37b326d2ecfa5e0928b`.
 - Estruturalmente: 43 entidades, 375 blocos, 37 scripts, 48 animações e 8 sons.
 - ZIP externo e os dois `.mcpack` internos íntegros.
 - Aether no pacote: 21 estruturas `.mcstructure`, 21 entidades (16 modelos convertidos, 3 rigs Slime vanilla e 2 atores procedurais de partículas) e scripts de dimensão, biomas, loot, bosses e fauna. Ice and Fire: 3 dragões montáveis e 3 ovos incubáveis. Cataclysm/Mowzie: adapters de ataques específicos para quatro bosses.
@@ -17,7 +17,8 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 - Correção v42: o Freezer do Aether deixou de ser apenas estrutura/contador. O runtime persistente implementa as nove receitas Java de congelamento, com tempos originais, saída e sobras de balde; os quatro itens não-vanilla necessários foram registrados com ícones do upstream.
 - Correção v42: o builder combinado preserva o `main.js` original do Aether sem deduplicar linhas de controle de fluxo. O builder independente também mescla atlas e idiomas de Waystones sem apagar os ícones Aether.
 - Correção v55: o Incubator do Aether agora tem runtime persistente source-backed, combustível Ambrosium de 500 ticks, três receitas Java de ovos de Moa de 1000 ticks, exige duas tochas por receita, spawn configurado como bebê e recuperação de slots ao quebrar o bloco.
-- Correção v57: o Altar do Aether agora implementa as 97 receitas Java `*_repairing`, com os dois combustíveis Java, cálculo de burn time, preservação de metadados e reset de durabilidade após conclusão; as 10 receitas Java `enchanting` continuam pendentes.
+- Correção v57: o Altar do Aether agora implementa as 97 receitas Java `*_repairing`, com os dois combustíveis Java, cálculo de burn time, preservação de metadados e reset de durabilidade após conclusão.
+- Correção v59: o Altar do Aether implementa as 10 receitas Java `enchanting`, inclusive o tag de 11 discos aceitos, com itens source-backed, tempos originais, consumo proporcional de fuel e saída protegida contra falta de espaço.
 - Bundle independente: `Minizin_Independent_Packs_2026-10-12.zip`, com 11 `.mcaddon` e os dois `.mcpack` do Sophisticated Backpacks; SHA-256 `e12f499711237474686cc8b53205d6948acf2e2098b8999d8a851b85a6bac5b5`.
 - Pack independente atualizado de criaturas: `Minizin_Creatures_Research.mcaddon`, SHA-256 `c5f7a2c24f47fa8935a3626ee8430576e3ff268ab92b4034d55a229ab9e4b41c`; inclui os 32 itens canônicos de armadura gerados dos ícones Java originais e as chaves PT-BR para itens e ovos geradores.
 
@@ -31,7 +32,7 @@ O ciclo atual integrou o runtime funcional do Aether, corrigiu a regressão de W
 - Origins: ciclo v40 testado com 5 testes direcionados; além dos poderes adaptados anteriores, o inventário Shulk de 9 espaços preserva item real e metadados em round-trip. Phasing, elytra real, restrições de armadura/alcance e os demais poderes ainda continuam explicitamente pendentes.
 - Aether Freezer: 9/9 receitas Java catalogadas, 9/9 tempos preservados, runtime persistente e quatro itens auxiliares registrados; a interface é uma adaptação via formulário server-side, não a tela nativa Java. Teste no cliente Bedrock/Android ainda não realizado.
 - Aether Incubator: 3/3 receitas Java catalogadas, tempo de 1000 ticks e combustível de 500 ticks preservados; duas tochas são exigidas como no ciclo de queima Java. A interface é uma adaptação via formulário server-side e a coloração/skin específica de ovos e Moas ainda não é 1:1.
-- Aether Altar: 97/97 receitas Java de reparo catalogadas e runtime persistente implementado; 10 receitas Java de enchanting, GUI nativa e teste no cliente Bedrock/Android continuam pendentes.
+- Aether Altar: 97/97 receitas Java de reparo e 10/10 receitas Java de enchanting catalogadas e implementadas no runtime persistente; GUI nativa e teste no cliente Bedrock/Android continuam pendentes.
 - MCA: profissões Java `none`, `guard`, `archer`, `outlaw`, `adventurer`, `mercenary` e `cultist` podem ser escolhidas e ficam persistidas no NPC; guarda/arqueiro têm defesa adaptada contra monstros. Comércio, roupas e rotinas Java completas continuam pendentes.
 - RFTools: Machine Frame, gerador, Power Cell normal/simple/advanced/creative e seis receitas derivadas dos recursos Java estão no candidato; o runtime migra o estado `v2` e limita transferência pela capacidade de cada tier. A unidade continua sendo Minizin, não Forge FE.
 - Carry On: a whitelist efetiva foi ampliada para blocos vanilla comuns, com portas, camas, portais, líquidos, plantas não transportáveis e entidades críticas bloqueados conforme a blacklist Java; estruturas e estados continuam persistentes e a duplicação permanece bloqueada em escrita incerta.

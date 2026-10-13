@@ -118,6 +118,32 @@ def expand(source,output):
             title=incubator_titles[name][0 if language=='en_US' else 1]
             with (rp/'texts'/f'{language}.lang').open('a') as f:f.write('item.'+ident+'.name='+title+'\n')
         provenance.append({'source':str(png.relative_to(ROOT)),'sha256':hashlib.sha256(png.read_bytes()).hexdigest(),'identifier':ident})
+    enchanting_items={
+      'blue_berry':'item/food/blue_berry.png','enchanted_berry':'item/food/enchanted_berry.png',
+      'golden_dart':'item/weapons/golden_dart.png','enchanted_dart':'item/weapons/enchanted_dart.png',
+      'golden_dart_shooter':'item/weapons/golden_dart_shooter.png','enchanted_dart_shooter':'item/weapons/enchanted_dart_shooter.png',
+      'healing_stone':'item/food/healing_stone.png','music_disc_aether_tune':'item/miscellaneous/music_disc_aether_tune.png',
+      'skyroot_poison_bucket':'item/miscellaneous/skyroot_poison_bucket.png','skyroot_remedy_bucket':'item/miscellaneous/skyroot_remedy_bucket.png'}
+    enchanting_titles={'blue_berry':('Blue Berry','Blue Berry'),'enchanted_berry':('Enchanted Berry','Fruta Encantada'),
+      'golden_dart':('Golden Dart','Dardo Dourado'),'enchanted_dart':('Enchanted Dart','Dardo Encantado'),
+      'golden_dart_shooter':('Golden Dart Shooter','Atirador de Dardos Dourados'),'enchanted_dart_shooter':('Enchanted Dart Shooter','Atirador de Dardos Encantados'),
+      'healing_stone':('Healing Stone','Pedra de Cura'),'music_disc_aether_tune':('Blue Music Disc','Disco Azul'),
+      'skyroot_poison_bucket':('Skyroot Poison Bucket','Balde Skyroot com Veneno'),'skyroot_remedy_bucket':('Skyroot Remedy Bucket','Balde Skyroot de Remédio')}
+    for name,relative in enchanting_items.items():
+        png=assets/'textures'/relative
+        if not png.is_file():raise ValueError('Original Enchanting item icon missing '+name)
+        ident='minizin_aether:'+name;icon='minizin_aether_enchanting_'+name;texture='textures/items/aether_enchanting/'+name
+        target=rp/(texture+'.png');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(png,target)
+        registry['texture_data'][icon]={'textures':texture}
+        max_stack=1 if ('shooter' in name or 'bucket' in name or 'music_disc' in name or name=='healing_stone') else 64
+        write(bp/'items/aether_enchanting'/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{
+          'description':{'identifier':ident,'menu_category':{'category':'items'}},'components':{
+            'minecraft:icon':{'textures':{'default':icon}},'minecraft:max_stack_size':max_stack,
+            'minecraft:display_name':{'value':'item.'+ident+'.name'}}}})
+        for language in translations:
+            title=enchanting_titles[name][0 if language=='en_US' else 1]
+            with (rp/'texts'/f'{language}.lang').open('a') as f:f.write('item.'+ident+'.name='+title+'\n')
+        provenance.append({'source':str(png.relative_to(ROOT)),'sha256':hashlib.sha256(png.read_bytes()).hexdigest(),'identifier':ident})
     # Reuse the existing independent Waystones implementation, not a new model.
     ws=ROOT/'bedrock/packs/waystones'
     for role in ['RP','BP']:
