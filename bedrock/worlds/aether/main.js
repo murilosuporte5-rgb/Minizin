@@ -45,7 +45,8 @@ function terrain(x, z, cx, cz) {
 }
 function getKey(pos) { return Math.floor(pos.x) + ":" + Math.floor(pos.y) + ":" + Math.floor(pos.z); }
 
-system.beforeEvents.startup.subscribe((event) => {
+const startup = system.beforeEvents?.startup;
+if (startup?.subscribe) startup.subscribe((event) => {
   // Exactly one custom dimension; creating another dimension ID would alter
   // saved-world identity and should be done only by a migration.
   try {
@@ -63,6 +64,7 @@ system.beforeEvents.startup.subscribe((event) => {
     console.warn("[Minizin Aether] custom dimension registration: " + message);
   }
 });
+else console.warn("[Minizin Aether] startup dimension registry is unavailable; Aether travel remains disabled.");
 
 function isBlock(dimension, pos, typeId) {
   try { return dimension.getBlock(pos)?.typeId === typeId; }

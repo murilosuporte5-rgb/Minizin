@@ -976,6 +976,10 @@ def repair(source,output):
     # pack. The old candidate only counted these custom serializers and left
     # the visible block inert.
     aether_scripts=bp/'scripts/aether_full_v3';aether_scripts.mkdir(parents=True,exist_ok=True)
+    # Re-copy the authoritative world runtime before appending the machine
+    # modules. This prevents the combined addon from silently retaining an
+    # older Aether startup/dimension implementation.
+    shutil.copy2(ROOT/'bedrock/worlds/aether/main.js',aether_scripts/'main.js')
     shutil.copy2(ROOT/'bedrock/runtime/aether_freezer.js',aether_scripts/'aether_freezer.js')
     shutil.copy2(ROOT/'bedrock/runtime/aether_freezer_catalog.js',aether_scripts/'aether_freezer_catalog.js')
     shutil.copy2(ROOT/'bedrock/runtime/aether_incubator.js',aether_scripts/'aether_incubator.js')

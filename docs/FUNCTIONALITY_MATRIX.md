@@ -19,7 +19,7 @@ Atualização: 2026-10-13. Esta matriz separa o que foi implementado e validado 
 
 ## Estado do pacote de correção
 
-- Candidato gerado: `build/combined_all_bosses_final_v79_mowzie_sun_adapted/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
+- Candidato gerado: `build/combined_all_bosses_final_v80_aether_startup_guard/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
 - Estruturalmente: 45 entidades, 375 blocos, 40 scripts, 91 animações e 8 sons.
 - O v37 mantém a correção do protótipo de 2 anéis para 8 posições virtuais baseadas no `AetherAccessorySlots` Java; o offhand só é usado para migrar mundos criados pelo protótipo antigo.
 - O v37 mantém 106 receitas geradas pelo Aether, incluindo 22 stonecutting, 9 smelting e 9 blasting, e inclui durabilidade/dano/encantabilidade/escavação dos tiers `AetherItemTiers`; serializers Java especiais são contabilizados como pendentes, não simulados.
@@ -44,5 +44,6 @@ Atualização: 2026-10-13. Esta matriz separa o que foi implementado e validado 
 - O ciclo v72 aproximou o voo montado de `DragonAIRide`: impulso orientado pela câmera com sprint, amortecimento de velocidade, restauração do estado `flight` persistido e bloqueio da IA de combate enquanto o dono está montado. Isso é uma adaptação Bedrock, não equivalência 1:1, porque `xxa/zza` do Java não são expostos pela API disponível.
 - O ciclo v78 corrigiu a leitura de localizações Java em `.lang` (além de JSON), sanitizou títulos corrompidos com `�` e eliminou fallbacks técnicos de RFTools quando havia chaves source-backed; a auditoria encontrou 882/882 itens com ícone resolvido e zero IDs duplicados.
 - O ciclo v79 integrou Umvuthi e Umvuthana a partir dos assets Java pinados: geometrias, texturas, animações e propriedades de ataque foram preservadas; o runtime solar foi isolado no namespace canônico `minizin_mowzies` e passou por validação estrutural e sintaxe JavaScript.
+- O ciclo v80 protegeu o registro inicial da dimensão Aether quando `system.beforeEvents.startup` não existe e passou a recopiá-lo do runtime-fonte em cada reconstrução do combined; o teste específico do mundo passou. Isso evita abortar o pacote inteiro, mas não cria a dimensão quando a API/experimento não está disponível.
 - A referência visual Java `Minizin_Referencias_Visuais_Java_para_Codex.md` não estava disponível no filesystem nesta execução; a comparação imagem-a-imagem continua pendente e não foi inferida.
 - Erros de pacote que aparecerem no Android devem ser reconciliados com o log/manifesto e não tratados como equivalência confirmada apenas pelo ZIP válido.

@@ -151,6 +151,8 @@ class WorldBuilderTests(unittest.TestCase):
     def test_static_script_uses_beta_registration_and_safe_preload(self):
         src = (SCRIPT.parent / "aether/main.js").read_text(encoding="utf-8")
         self.assertIn("registerCustomDimension(SKY_ID)", src)
+        self.assertIn("system.beforeEvents?.startup", src)
+        self.assertIn("startup dimension registry is unavailable", src)
         self.assertIn("createTickingArea", src)
         self.assertIn("playerInteractWithBlock", src)
         self.assertIn("world.setDynamicProperty(key, true)", src)

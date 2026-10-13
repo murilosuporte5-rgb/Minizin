@@ -47,6 +47,9 @@ class AetherCombinedRuntime(unittest.TestCase):
         self.assertEqual(len(list((bp / 'structures' / pack_namespace / 'minizin_aether').rglob('*.mcstructure'))), 21)
         self.assertEqual(len(list((bp / 'loot_tables' / pack_namespace / 'minizin_aether').rglob('*.json'))), 40)
         self.assertTrue((root / 'RP/models/entity' / pack_namespace).is_dir())
+        aether_main = (scripts / 'main.js').read_text(encoding='utf-8')
+        self.assertIn('system.beforeEvents?.startup', aether_main)
+        self.assertIn('startup dimension registry is unavailable', aether_main)
 
 
 if __name__ == '__main__':
