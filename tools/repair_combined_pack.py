@@ -105,6 +105,37 @@ def add_source_backed_mowzie_entities(rp,bp):
         added.append({'id':ident,'bones':report['bones'],'boxes':report['box_total'],'texture':texture_size})
     return added
 
+def add_source_backed_cataclysm_items(rp,bp,registry):
+    """Expose Cataclysm's registered-looking original item icons.
+
+    Cataclysm's Java item models are often custom-rendered; only the original
+    2D icon and a plain Bedrock item are created here.  Ghost/layer PNGs are
+    render overlays, not inventory entries, and are intentionally excluded.
+    Special Java abilities remain unclaimed until a matching Bedrock runtime
+    exists.
+    """
+    source=ROOT/'mods/43-cataclysm/upstream/src/main/resources/assets/cataclysm/textures/item'
+    item_dir=bp/'items/cataclysm';texture_dir=rp/'textures/items/cataclysm'
+    item_dir.mkdir(parents=True,exist_ok=True);texture_dir.mkdir(parents=True,exist_ok=True)
+    excluded=('_ghost.png','_layer.png')
+    single_words=('sword','axe','hoe','pickaxe','shovel','spear','shield','bow','gauntlet','claws','render','annihilator','immolator','incinerator','gatling','weapon','armor','helmet','boots','chestplate','leggings','pauldrons','effigy','forge','targe','astrape','athame','brontes','ceraunus','khopesh','zweiender')
+    added=[]
+    for source_path in sorted(source.glob('*.png')):
+        if source_path.name.endswith(excluded):continue
+        name=source_path.stem
+        ident='minizin_cataclysm:'+name;icon='minizin_cataclysm_'+name;rel='textures/items/cataclysm/'+name
+        target=rp/(rel+'.png');shutil.copy2(source_path,target)
+        registry.setdefault('texture_data',{})[icon]={'textures':rel}
+        one=any(token in name for token in single_words) or name.startswith(('music_disc_','empty_'))
+        components={'minecraft:icon':{'textures':{'default':icon}},
+          'minecraft:display_name':{'value':'item.'+ident+'.name'},
+          'minecraft:max_stack_size':1 if one else 64}
+        if one and any(token in name for token in ('sword','axe','pickaxe','shovel','hoe','spear','bow','gauntlet','claws','annihilator','immolator','incinerator','gatling','zweiender')):
+            components['minecraft:hand_equipped']=True
+        write(item_dir/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{'description':{'identifier':ident,'menu_category':{'category':'items'}},'components':components}})
+        added.append(ident)
+    return added
+
 def add_dragon_armor_layers(rp,bp):
     """Render Ice and Fire's original four dragon-armor overlay layers.
 
@@ -985,6 +1016,7 @@ def repair(source,output):
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
+    cataclysm_items=add_source_backed_cataclysm_items(rp,bp,registry)
     mowzie_item_count=add_source_backed_mowzie_items(rp,bp,registry)
     waystone_scroll_count=add_waystone_scrolls(rp,bp,registry)
     bop_biome_count=add_bop_worldgen(rp,bp)
@@ -1197,6 +1229,7 @@ def repair(source,output):
       'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
       'mowzie_sun_bosses':mowzie_sun_bosses,
       'mowzie_entities':mowzie_entities,
+      'cataclysm_items':cataclysm_items,
       'mowzie_items':mowzie_item_count,
       'aether_freezer_items':aether_freezer_item_count,
       'aether_enchanting_items':aether_enchanting_item_count,
