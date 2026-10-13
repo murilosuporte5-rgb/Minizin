@@ -16,7 +16,7 @@ def add_aether_accessories(rp,bp):
     registry_path=rp/'textures/item_texture.json'
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
     names=[tier+'_'+kind for tier in ['skyroot','holystone','zanite','gravitite','valkyrie']
-      for kind in ['pickaxe','axe','shovel']]
+      for kind in ['pickaxe','axe','shovel','hoe']]
     names += [tier+'_sword' for tier in ['skyroot','holystone','zanite','gravitite','flaming']]
     names += [
       'vampire_blade','iron_ring','golden_ring','ice_ring','zanite_ring',
@@ -43,6 +43,15 @@ def add_aether_accessories(rp,bp):
       'gravitite_gloves':1561,'valkyrie_gloves':1561,'neptune_gloves':250,
       'phoenix_gloves':1561,'obsidian_gloves':2031,'shield_of_repulsion':512
     }
+    tool_tiers={
+      'skyroot':{'durability':59,'speed':2.0,'bonus':0.0,'enchantability':15},
+      'holystone':{'durability':131,'speed':4.0,'bonus':1.0,'enchantability':5},
+      'zanite':{'durability':250,'speed':6.0,'bonus':2.0,'enchantability':14},
+      'gravitite':{'durability':1561,'speed':8.0,'bonus':3.0,'enchantability':10},
+      'valkyrie':{'durability':1561,'speed':8.0,'bonus':3.0,'enchantability':10},
+      'flaming':{'durability':502,'speed':8.0,'bonus':3.0,'enchantability':10},
+      'vampire':{'durability':2031,'speed':8.0,'bonus':3.0,'enchantability':10},
+    }
     catalog={}
     for name in names:
         found=list((assets/'textures/item').rglob(name+'.png'))
@@ -60,6 +69,16 @@ def add_aether_accessories(rp,bp):
                     'minecraft:display_name':{'value':'item.'+ident+'.name'}}
         if not is_accessory:
             components['minecraft:hand_equipped']=True
+            tier='vampire' if name=='vampire_blade' else name.split('_')[0]
+            kind='sword' if name=='vampire_blade' else name.split('_')[-1]
+            spec=tool_tiers.get(tier)
+            if spec and kind in {'sword','axe','pickaxe','shovel','hoe'}:
+                components['minecraft:durability']={'max_durability':spec['durability']}
+                components['minecraft:damage']=int(spec['bonus']+{'sword':3,'axe':5,'pickaxe':1,'shovel':1,'hoe':1}[kind])
+                components['minecraft:enchantable']={'slot':kind,'value':spec['enchantability']}
+                if kind in {'pickaxe','axe','shovel'}:
+                    tags={'pickaxe':'stone','axe':'wood','shovel':'dirt'}
+                    components['minecraft:digger']={'use_efficiency':True,'destroy_speeds':[{'block':{'tags':"q.any_tag('"+tags[kind]+"')"},'speed':spec['speed']}]}
         if name in durability:components['minecraft:durability']={'max_durability':durability[name]}
         catalog[ident]={'accessory':is_accessory}
         if is_accessory:catalog[ident]['slot']=accessory_slots[name]
@@ -112,6 +131,132 @@ def add_creature_items(rp,bp):
               'minecraft:max_stack_size':64}}})
     write(registry_path,registry)
     return len([x for x in sources.values() if x.is_file()])
+
+
+def add_aether_material_items(rp,bp):
+    """Stage small source-backed materials required by Aether recipes."""
+    assets=ROOT/'mods/41-the-aether/upstream/src/main/resources/assets/aether'
+    names={'skyroot_stick':'item/materials/skyroot_stick.png'}
+    registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text(encoding='utf-8'))
+    added=0
+    for name,relative in names.items():
+        source=assets/'textures'/relative
+        if not source.is_file():continue
+        ident='minizin_aether:'+name;icon='minizin_aether_'+name;texture='textures/items/aether_materials/'+name
+        target=rp/(texture+'.png');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
+        registry.setdefault('texture_data',{})[icon]={'textures':texture}
+        write(bp/'items/aether_materials'/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{
+          'description':{'identifier':ident,'menu_category':{'category':'items'}},
+          'components':{'minecraft:icon':{'textures':{'default':icon}},'minecraft:max_stack_size':64,
+            'minecraft:display_name':{'value':'item.'+ident+'.name'}}}})
+        added+=1
+    write(registry_path,registry);return added
+
+
+def add_aether_recipes(bp):
+    """Convert source Aether vanilla recipes whose IDs exist in this BP.
+
+    The Java pack also defines altar/freezing/incubation/enchanting recipes.
+    Those custom serializers are intentionally skipped here; emitting them as
+    crafting recipes would be a false equivalence and can make Bedrock reject
+    the whole behavior pack.
+    """
+    source_root=ROOT/'mods/41-the-aether/upstream/src/generated/resources'
+    recipe_root=source_root/'data/aether/recipe'
+    tag_root=source_root/'data/aether/tags/item'
+    common_tag_root=source_root/'data/c/tags/item'
+    out=bp/'recipes/aether';out.mkdir(parents=True,exist_ok=True)
+    registered=set()
+    for path in list((bp/'items').rglob('*.json'))+list((bp/'blocks').rglob('*.json')):
+        try:
+            doc=json.loads(path.read_text(encoding='utf-8'))
+            registered.add(doc.get('minecraft:item',{}).get('description',{}).get('identifier'))
+            registered.add(doc.get('minecraft:block',{}).get('description',{}).get('identifier'))
+        except (OSError,ValueError):
+            continue
+    registered.discard(None)
+    common={
+      'c:strings':['minecraft:string'],
+      'c:gems/diamond':['minecraft:diamond'],
+      'c:ingots/iron':['minecraft:iron_ingot'],
+      'c:ingots/gold':['minecraft:gold_ingot'],
+      'c:rods/wooden':['minecraft:stick','minizin_aether:skyroot_stick'],
+    }
+    tag_cache={}
+    def ident(value):
+        if not isinstance(value,str):return None
+        if value.startswith('aether:'):value='minizin_aether:'+value.split(':',1)[1]
+        if value.startswith('minecraft:') or value in registered:return value
+        return value if value in registered else None
+    def tag_values(tag,seen=()):
+        if tag in common:return common[tag]
+        if tag in seen:return []
+        if tag in tag_cache:return tag_cache[tag]
+        if not tag.startswith('aether:'):return []
+        rel=tag.split(':',1)[1]+'.json';path=tag_root/rel
+        if not path.is_file():return []
+        try:values=json.loads(path.read_text(encoding='utf-8')).get('values',[])
+        except (OSError,ValueError):return []
+        result=[]
+        for value in values:
+            if isinstance(value,str) and value.startswith('#'):result.extend(tag_values(value[1:],seen+(tag,)))
+            else:
+                resolved=ident(value)
+                if resolved:result.append(resolved)
+        tag_cache[tag]=list(dict.fromkeys(result));return tag_cache[tag]
+    def ingredient_options(entry):
+        if not isinstance(entry,dict):return []
+        if 'item' in entry:
+            value=ident(entry['item']);return [{'item':value}] if value else []
+        if 'tag' in entry:
+            tag=entry['tag']
+            if isinstance(tag,str) and tag.startswith('minecraft:'):
+                return [{'tag':tag}]
+            return [{'item':value} for value in tag_values(tag)]
+        return []
+    def variants(entries,limit=64):
+        rows=[{}]
+        for name,options in entries:
+            if not options:return []
+            next_rows=[]
+            for row in rows:
+                for option in options:
+                    copy=dict(row);copy[name]=option;next_rows.append(copy)
+                    if len(next_rows)>=limit:break
+                if len(next_rows)>=limit:break
+            rows=next_rows
+        return rows
+    def result_id(recipe):
+        result=recipe.get('result',{})
+        return ident(result.get('id') or result.get('item') or result.get('block'))
+    written=[];skipped={}
+    for path in sorted(recipe_root.glob('*.json')):
+        try:recipe=json.loads(path.read_text(encoding='utf-8'))
+        except (OSError,ValueError):skipped['invalid_json']=skipped.get('invalid_json',0)+1;continue
+        recipe_type=recipe.get('type','')
+        if recipe_type not in {'minecraft:crafting_shaped','minecraft:crafting_shapeless'}:
+            skipped[recipe_type]=skipped.get(recipe_type,0)+1;continue
+        output=result_id(recipe)
+        if not output or not output.startswith('minizin_aether:'):
+            skipped['missing_output']=skipped.get('missing_output',0)+1;continue
+        if recipe_type=='minecraft:crafting_shaped':
+            key_entries=[]
+            for key,value in recipe.get('key',{}).items():key_entries.append((key,ingredient_options(value)))
+            combinations=variants(key_entries)
+            if not combinations:skipped['unresolved_ingredient']=skipped.get('unresolved_ingredient',0)+1;continue
+            for ordinal,combination in enumerate(combinations,1):
+                body={'description':{'identifier':'minizin_aether:'+path.stem+(f'_v{ordinal}' if len(combinations)>1 else '')},'tags':['crafting_table'],
+                  'pattern':recipe.get('pattern',[]),'key':combination,'result':{'item':output,'count':recipe.get('result',{}).get('count',1)}}
+                target=out/(body['description']['identifier'].split(':',1)[1]+'.json');target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shaped':body},indent=2)+'\n',encoding='utf-8');written.append(target)
+        else:
+            entries=[(str(index),ingredient_options(value)) for index,value in enumerate(recipe.get('ingredients',[]))]
+            combinations=variants(entries)
+            if not combinations:skipped['unresolved_ingredient']=skipped.get('unresolved_ingredient',0)+1;continue
+            for ordinal,combination in enumerate(combinations,1):
+                body={'description':{'identifier':'minizin_aether:'+path.stem+(f'_v{ordinal}' if len(combinations)>1 else '')},'tags':['crafting_table'],
+                  'ingredients':[combination[str(index)] for index in range(len(entries))],'result':{'item':output,'count':recipe.get('result',{}).get('count',1)}}
+                target=out/(body['description']['identifier'].split(':',1)[1]+'.json');target.write_text(json.dumps({'format_version':'1.20.10','minecraft:recipe_shapeless':body},indent=2)+'\n',encoding='utf-8');written.append(target)
+    return {'written':len(written),'skipped':skipped,'registered_ids':len(registered)}
 
 
 def write(path,doc):
@@ -170,6 +315,7 @@ def repair(source,output):
         return key
     registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text(encoding='utf-8'))
     accessory_count=add_aether_accessories(rp,bp)
+    aether_material_count=add_aether_material_items(rp,bp)
     creature_item_count=add_creature_items(rp,bp)
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
@@ -232,6 +378,7 @@ def repair(source,output):
                 comp['minecraft:icon']={'textures':{'default':icon}}
         if 'ring' in ident:comp['minecraft:max_stack_size']=1
         write(path,doc)
+    aether_recipe_report=add_aether_recipes(bp)
     for path in (rp/'entity').rglob('*.json'):
         doc=json.loads(path.read_text());desc=doc['minecraft:client_entity']['description'];ident=desc['identifier']
         if not spawnable.get(ident,True):
@@ -274,10 +421,13 @@ def repair(source,output):
             if 'uuid' in dependency:dependency['version']=[0,2,2]
         write(path,doc)
     counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
-      'aether_accessories':accessory_count,'creature_items':creature_item_count,
+      'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
+      'aether_recipes':aether_recipe_report,
       'fixes':['Preserved models/entity and models/blocks loader paths','Original-pixel explicit block placer icons',
         'Names from upstream language files where available','Individual spawn egg colors from original textures',
-        'MCA rings: 50 affinity engagement, 100 marriage','Origins orb opens original selection menu'],
+         'MCA rings: 50 affinity engagement, 100 marriage','Origins orb opens original selection menu',
+         'Aether vanilla recipes converted only when source IDs resolve in the BP',
+         'AetherItemTiers durability, damage, enchantability and digger components preserved'],
       'language_warnings':language_warnings,'android_retest_pending':True,'remaining':['Unimplemented catalog items','Full animation/AI ports','World generation and dimensions']})
     addon=output/'Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon'
     with zipfile.ZipFile(addon,'w',zipfile.ZIP_STORED) as archive:
