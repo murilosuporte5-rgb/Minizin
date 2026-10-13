@@ -4,7 +4,7 @@
  * category/count contract is persisted in a server-ui accessory menu. The
  * native offhand is only a one-time migration path for old prototype worlds.
  */
-import {world,system,ItemStack,EquipmentSlot} from "@minecraft/server";
+import {world,system,ItemStack,EquipmentSlot,EnchantmentTypes} from "@minecraft/server";
 import {ActionFormData} from "@minecraft/server-ui";
 import {EQUIPMENT} from "./aether_equipment_catalog.js";
 const SLOT_KEY="minizin:aether_accessories_v2",LEGACY_SLOT_KEY="minizin:aether_accessories_v1";
@@ -32,10 +32,15 @@ function slotFor(index){
 }
 function emptySlots(){return Array(COUNT).fill(null);}
 function read(p){
-  try{
-    const value=p.getDynamicProperty(SLOT_KEY),rows=typeof value==="string"?JSON.parse(value):null;
-    if(Array.isArray(rows)&&rows.length===COUNT)return rows;
-  }catch{}
+  const value=p.getDynamicProperty(SLOT_KEY);
+  if(value!==undefined){
+    let rows;
+    try{rows=typeof value==="string"?JSON.parse(value):null;}
+    catch{throw Error("Dados dos acessórios inválidos; preservados para recuperação.");}
+    if(!Array.isArray(rows)||rows.length!==COUNT)
+      throw Error("Slots dos acessórios inválidos; dados preservados para recuperação.");
+    return rows;
+  }
   try{
     const legacy=p.getDynamicProperty(LEGACY_SLOT_KEY),rows=typeof legacy==="string"?JSON.parse(legacy):null;
     if(Array.isArray(rows)&&rows.length===2)return [rows[0]||null,rows[1]||null,...emptySlots().slice(2)];
@@ -57,8 +62,15 @@ function deserialize(data){
   if(!EQUIPMENT[data.type]?.accessory)throw Error("Acessório inválido");
   const item=new ItemStack(data.type,1);if(data.name!==undefined)item.nameTag=data.name;item.setLore(data.lore||[]);
   const durability=item.getComponent("minecraft:durability");if(durability&&data.damage!==undefined)durability.damage=data.damage;
-  // EnchantmentTypes changed across Bedrock Android releases; optional enchantments
-  // must not make the complete pack fail to load.
+  const enchantable=item.getComponent("minecraft:enchantable");
+  if((data.enchantments||[]).length){
+    if(!enchantable)throw Error("Acessório encantado sem componente de encantamento.");
+    enchantable.addEnchantments(data.enchantments.map(entry=>{
+      const type=EnchantmentTypes.get(entry.id);
+      if(!type)throw Error("Encantamento desconhecido: "+entry.id);
+      return {type,level:entry.level};
+    }));
+  }
   for(const [key,value] of Object.entries(data.props||{}))item.setDynamicProperty(key,value);
   return item;
 }

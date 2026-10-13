@@ -38,9 +38,15 @@ def backpack_standalone(build_root: Path) -> Path:
     destination = target / 'RP/textures/items/backpack.png'
     destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(image, destination)
+    for name in ('filter_upgrade','expansion_upgrade'):
+        icon=build_root/f'candidate/RP/textures/items/backpack_{name}.png'
+        if not icon.exists():raise FileNotFoundError(icon)
+        shutil.copy2(icon,target/'RP/textures/items'/f'backpack_{name}.png')
     registry = {'resource_pack_name': 'Minizin Sophisticated Backpacks',
                 'texture_name': 'atlas.items',
-                'texture_data': {'minizin_backpack': {'textures': 'textures/items/backpack'}}}
+                'texture_data': {'minizin_backpack': {'textures': 'textures/items/backpack'},
+                                 **{f'minizin_backpack_{name}':{'textures':f'textures/items/backpack_{name}'}
+                                    for name in ('filter_upgrade','expansion_upgrade')}}}
     (target / 'RP/textures/item_texture.json').write_text(
         json.dumps(registry, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     item = target / 'BP/items/backpack.json'
@@ -48,6 +54,12 @@ def backpack_standalone(build_root: Path) -> Path:
     definition['minecraft:item']['components']['minecraft:icon'] = {
         'textures': {'default': 'minizin_backpack'}}
     item.write_text(json.dumps(definition, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    for name in ('filter_upgrade','expansion_upgrade'):
+        path=target/'BP/items'/f'{name}.json'
+        definition=json.loads(path.read_text(encoding='utf-8'))
+        definition['minecraft:item']['components']['minecraft:icon']={
+            'textures':{'default':f'minizin_backpack_{name}'}}
+        path.write_text(json.dumps(definition,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     return target
 
 

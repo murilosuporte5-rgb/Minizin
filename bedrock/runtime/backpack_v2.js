@@ -65,8 +65,9 @@ function validate(data){
 }
 function getState(id){
   const value=world.getDynamicProperty(dataKey(id));
+  if(value===undefined)return {slots:empty(),revision:0};
   const state=parse(value,null);
-  if(!state)return {slots:empty(),revision:0};
+  if(!state)throw Error("Dados da mochila ilegíveis; armazenamento preservado para recuperação.");
   if(!Array.isArray(state.slots)||state.slots.length!==CAPACITY)throw Error("Mochila com dados inválidos.");
   return state;
 }
@@ -144,7 +145,7 @@ function compatible(left,right){
   return JSON.stringify(a)===JSON.stringify(b);
 }
 function snapshot(inv){
-  return Array.from({length:inv.size},(_,i)=>inv.getItem(i));
+  return Array.from({length:inv.size},(_,i)=>inv.getItem(i)?.clone());
 }
 function restore(inv,items){
   items.forEach((item,i)=>inv.setItem(i,item));

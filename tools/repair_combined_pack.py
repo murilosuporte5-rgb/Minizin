@@ -617,6 +617,9 @@ def repair(source,output):
     origins_script=bp/'scripts/origins/origins.js'
     if origins_script.parent.is_dir():
         shutil.copy2(ROOT/'bedrock/packs/next_four/BP/scripts/origins.js',origins_script)
+    carryon_script=bp/'scripts/carryon/carryon.js'
+    if carryon_script.parent.is_dir():
+        shutil.copy2(ROOT/'bedrock/packs/next_four/BP/scripts/carryon.js',carryon_script)
     # Port the source-backed Aether Freezer recipe runtime into the combined
     # pack. The old candidate only counted these custom serializers and left
     # the visible block inert.

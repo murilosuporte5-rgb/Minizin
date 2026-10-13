@@ -12,7 +12,7 @@ def build(output):
     if output.exists():raise ValueError('Choose a new output directory; previous build preserved')
     stage=output/'source_snapshot'
     shutil.copytree(ROOT/'generated/next_four',stage)
-    for name in ['origins.js','mca.js']:
+    for name in ['origins.js','mca.js','carryon.js','rftools.js']:
         shutil.copy2(ROOT/'bedrock/packs/next_four/BP/scripts'/name,stage/'BP/scripts'/name)
     for mod in ['mca','carryon','origins','rftools']:
         build_one(mod,stage,output)

@@ -51,6 +51,10 @@ def add(source,upstream,output):
     if icon.getchannel('A').getbbox() is None:raise ValueError('Backpack original mesh icon empty')
     itemtex=rp/'textures/items/backpack.png';itemtex.parent.mkdir(parents=True,exist_ok=True);icon.save(itemtex)
     registry=rp/'textures/item_texture.json';doc=json.loads(registry.read_text());doc['texture_data']['minizin_backpack']={'textures':'textures/items/backpack'};registry.write_text(json.dumps(doc,indent=2))
+    for name,original in [('filter_upgrade','filter_upgrade'),('expansion_upgrade','upgrade_base')]:
+        shutil.copy2(assets/'textures/item'/f'{original}.png',rp/'textures/items'/f'backpack_{name}.png')
+        doc['texture_data'][f'minizin_backpack_{name}']={'textures':f'textures/items/backpack_{name}'}
+    registry.write_text(json.dumps(doc,indent=2))
     definition={'format_version':'1.21.90','minecraft:item':{'description':{'identifier':'minizin:backpack','menu_category':{'category':'items'}},
         'components':{'minecraft:icon':{'textures':{'default':'minizin_backpack'}},'minecraft:max_stack_size':1,
             'minecraft:display_name':{'value':'item.minizin:backpack.name'}}}}
@@ -65,11 +69,16 @@ def add(source,upstream,output):
     # implementation that is already present in the systems workstream.
     shutil.copy2(ROOT/'bedrock/packs/sophisticated_backpacks/BP/scripts/main.js',
                  bp/'scripts/backpack.js')
-    for name in ('filter_upgrade.json',):
+    for name in ('filter_upgrade.json','expansion_upgrade.json'):
         shutil.copy2(ROOT/'bedrock/packs/sophisticated_backpacks/BP/items'/name,
                      bp/'items'/name)
         shutil.copy2(ROOT/'bedrock/packs/sophisticated_backpacks/BP/recipes'/name,
                      bp/'recipes'/name)
+        item_path=bp/'items'/name
+        item_def=json.loads(item_path.read_text())
+        item_def['minecraft:item']['components']['minecraft:icon']={
+            'textures':{'default':'minizin_backpack_'+name.removesuffix('.json')}}
+        item_path.write_text(json.dumps(item_def,indent=2))
     with (bp/'scripts/main.js').open('a') as f:f.write('\nimport "./backpack.js";\n')
     for role in ['RP','BP']:
         path=output/role/'manifest.json';doc=json.loads(path.read_text());doc['header']['version']=[0,2,3]
