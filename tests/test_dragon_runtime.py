@@ -1,4 +1,5 @@
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -24,7 +25,7 @@ class DragonRuntime(unittest.TestCase):
     def test_combined_candidate_contains_current_dragon_items_and_runtime(self):
         candidates = sorted((ROOT / 'build').glob('combined_all_*_final_v*/BP'))
         self.assertTrue(candidates)
-        bp = candidates[-1]
+        bp = max(candidates, key=lambda path: int(re.search(r'_v(\d+)', path.parent.name).group(1)))
         source = (bp / 'scripts' / 'creatures.js').read_text(encoding='utf-8')
         for value in ('minizin_iceandfire:firedragon', 'minizin_iceandfire:dragon_egg_fire',
                       'dragon_flute', 'minecraft:rideable'):
@@ -35,6 +36,14 @@ class DragonRuntime(unittest.TestCase):
         }
         self.assertIn('minizin_iceandfire:dragon_meal', item_ids)
         self.assertIn('minizin_iceandfire:dragon_egg_fire', item_ids)
+
+    def test_combined_creature_runtime_has_unique_boss_adapters(self):
+        candidates = sorted((ROOT / 'build').glob('combined_all_*_final_v*/BP'))
+        bp = max(candidates, key=lambda path: int(re.search(r'_v(\d+)', path.parent.name).group(1)))
+        source = (bp / 'scripts' / 'creatures.js').read_text(encoding='utf-8')
+        for value in ('minizin_cataclysm:ignis', 'hellfire_burst', 'laser', 'blackhole',
+                      'minizin_mowzies:bluff', 'fissure'):
+            self.assertIn(value, source)
 
 
 if __name__ == '__main__':

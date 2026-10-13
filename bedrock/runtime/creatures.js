@@ -141,6 +141,81 @@ function installDragonInteractions() {
   });
 }
 installDragonInteractions();
+const SPECIAL_BOSSES = new Set([
+  'minizin_cataclysm:ignis','minizin_cataclysm:harbinger',
+  'minizin_cataclysm:ender_guardian','minizin_mowzies:bluff'
+]);
+const bossKey = (entity,key,fallback=0) => {
+  try { return entity.getDynamicProperty('minizin:boss_'+key) ?? fallback; }
+  catch { return fallback; }
+};
+const setBossKey = (entity,key,value) => {
+  try { entity.setDynamicProperty('minizin:boss_'+key,value); } catch {}
+};
+const segmentDistance = (point,from,to) => {
+  const dx=to.x-from.x,dz=to.z-from.z;
+  const t=Math.max(0,Math.min(1,((point.x-from.x)*dx+(point.z-from.z)*dz)/Math.max(0.001,dx*dx+dz*dz)));
+  return Math.hypot(point.x-(from.x+t*dx),point.z-(from.z+t*dz));
+};
+function bossStrike(entity,target,damage,particle='minecraft:basic_smoke_particle',knock=0) {
+  try {
+    target.applyDamage(damage,{cause:EntityDamageCause.entityAttack,damagingEntity:entity});
+    if(knock) target.applyImpulse({x:0,y:knock,z:0});
+    entity.dimension.spawnParticle(particle,target.location);
+    entity.setProperty('minizin:attacking',true);
+  } catch {}
+}
+function specialBossAttack(entity,target,tick,health) {
+  if(!SPECIAL_BOSSES.has(entity.typeId)||!target)return false;
+  const distanceTo=length(difference(target.location,entity.location));
+  const cooldown=Number(bossKey(entity,'cooldown',0));
+  if(tick<cooldown)return false;
+  const ratio=health.currentValue/Math.max(1,health.effectiveMax);
+  if(entity.typeId==='minizin_cataclysm:ignis') {
+    const phase=ratio<=1/3?2:ratio<=2/3?1:0;setBossKey(entity,'phase',phase);
+    if(phase===2&&distanceTo<=24) {
+      setBossKey(entity,'cooldown',tick+140);setBossKey(entity,'move','hellfire_burst');
+      bossStrike(entity,target,18,'minecraft:basic_flame_particle',0.45);try{target.setOnFire(5,true);}catch{};return true;
+    }
+    if(phase>=1&&distanceTo>7&&distanceTo<=20) {
+      setBossKey(entity,'cooldown',tick+80);setBossKey(entity,'move','flame_wave');
+      bossStrike(entity,target,12,'minecraft:basic_flame_particle',0.25);try{target.setOnFire(3,true);}catch{};return true;
+    }
+    if(distanceTo<=7) {
+      setBossKey(entity,'cooldown',tick+45);setBossKey(entity,'move','sword_slash');
+      bossStrike(entity,target,10,'minecraft:basic_smoke_particle',0.55);return true;
+    }
+  }
+  if(entity.typeId==='minizin_cataclysm:harbinger'&&distanceTo<=32) {
+    setBossKey(entity,'cooldown',tick+100);setBossKey(entity,'move','laser');
+    const players=entity.dimension.getPlayers({location:entity.location,maxDistance:32});
+    for(const player of players) if(segmentDistance(player.location,entity.location,target.location)<=2.5)
+      bossStrike(entity,player,14,'minecraft:basic_flame_particle',0.15);
+    return true;
+  }
+  if(entity.typeId==='minizin_cataclysm:ender_guardian') {
+    if(distanceTo<=6) {
+      setBossKey(entity,'cooldown',tick+65);setBossKey(entity,'move','stomp');
+      bossStrike(entity,target,13,'minecraft:basic_smoke_particle',0.8);return true;
+    }
+    if(distanceTo<=18) {
+      setBossKey(entity,'cooldown',tick+120);setBossKey(entity,'move','blackhole');
+      bossStrike(entity,target,11,'minecraft:basic_portal_particle',0.25);try{target.addEffect('slowness',80,{amplifier:2});}catch{};return true;
+    }
+    if(distanceTo<=32) {
+      setBossKey(entity,'cooldown',tick+180);setBossKey(entity,'move','air_strike');
+      bossStrike(entity,target,15,'minecraft:basic_smoke_particle',0.35);return true;
+    }
+  }
+  if(entity.typeId==='minizin_mowzies:bluff'&&distanceTo<=18) {
+    setBossKey(entity,'cooldown',tick+90);setBossKey(entity,'move','fissure');
+    const players=entity.dimension.getPlayers({location:entity.location,maxDistance:20});
+    for(const player of players) if(segmentDistance(player.location,entity.location,target.location)<=3)
+      bossStrike(entity,player,9,'minecraft:basic_smoke_particle',0.2);
+    return true;
+  }
+  return false;
+}
 world.afterEvents.entityHurt.subscribe(({hurtEntity,damageSource}) => {
   if (CREATURES[hurtEntity.typeId]?.kind === 'atlatitan' && damageSource.damagingEntity?.typeId === 'minecraft:player')
     retaliation.set(hurtEntity.id,{player:damageSource.damagingEntity.id,until:system.currentTick+200});
@@ -198,6 +273,7 @@ system.runInterval(() => {
           }
           const health = entity.getComponent('minecraft:health');
           entity.setProperty('minizin:enraged', health.currentValue < health.effectiveMax/2);
+          if (specialBossAttack(entity,closest.player,system.currentTick,health)) continue;
           // Flight is a combat adaptation: native flying navigation plus bounded lift.
           const flying = spec.kind==='dragon' && closest.distance>5 && closest.distance<24;
           if (flying !== entity.getProperty('minizin:flying')) {

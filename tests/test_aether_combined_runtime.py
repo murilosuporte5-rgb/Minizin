@@ -1,4 +1,5 @@
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -27,7 +28,7 @@ class AetherCombinedRuntime(unittest.TestCase):
     def test_combined_candidate_contains_aether_runtime_and_beta_api(self):
         candidates = sorted((ROOT / 'build').glob('combined_all_*_final_v*/BP'))
         self.assertTrue(candidates, 'build the corrected combined Aether candidate before this test')
-        bp = candidates[-1]
+        bp = max(candidates, key=lambda path: int(re.search(r'_v(\d+)', path.parent.name).group(1)))
         root = bp.parent
         scripts = next(path.parent for path in (bp / 'scripts').glob('*/main.js'))
         for name in ('main.js', 'biome_profiles.js', 'dungeon_loot.js', 'bosses.js', 'wildlife.js'):
