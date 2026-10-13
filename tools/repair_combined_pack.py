@@ -105,6 +105,57 @@ def add_source_backed_mowzie_entities(rp,bp):
         added.append({'id':ident,'bones':report['bones'],'boxes':report['box_total'],'texture':texture_size})
     return added
 
+
+def add_source_backed_alex_entities(rp,bp):
+    """Recover selected Alex's Caves rigs from the pinned Citadel sources.
+
+    Constructor geometry, pivots, UVs and original PNGs are preserved.  The
+    source animation methods are not interpreted as Bedrock animation clips;
+    the entity gets only a documented baseline navigation/target contract so
+    it can spawn without being presented as a complete Java port.
+    """
+    source_root=ROOT/'mods/42-alexs-caves/upstream/src/main'
+    assets=source_root/'resources/assets/alexscaves'
+    model_root=source_root/'java/com/github/alexmodguy/alexscaves/client/model'
+    specs={
+      'beholder': {'model':'BeholderModel.java','texture':'textures/entity/beholder.png','health':20,'attack':4,'width':0.9,'height':0.9,'hostile':True,'bounds':[2,2]},
+      'boundroid': {'model':'BoundroidModel.java','texture':'textures/entity/boundroid.png','health':20,'attack':5,'width':0.9,'height':1.1,'hostile':True,'bounds':[2,2]},
+      'candicorn': {'model':'CandicornModel.java','texture':'textures/entity/candicorn_0.png','health':30,'attack':6,'width':1.4,'height':1.8,'hostile':False,'bounds':[4,3]},
+      'caniac': {'model':'CaniacModel.java','texture':'textures/entity/caniac.png','health':38,'attack':2,'width':0.9,'height':2.0,'hostile':True,'bounds':[2,3]},
+      'corrodent': {'model':'CorrodentModel.java','texture':'textures/entity/corrodent.png','health':16,'attack':3,'width':0.8,'height':0.8,'hostile':True,'bounds':[2,2]},
+      'deep_one': {'model':'DeepOneModel.java','texture':'textures/entity/deep_one/deep_one.png','health':30,'attack':3,'width':0.8,'height':1.9,'hostile':True,'bounds':[2,3]},
+      'gammaroach': {'model':'GammaroachModel.java','texture':'textures/entity/gammaroach.png','health':14,'attack':2,'width':0.8,'height':0.7,'hostile':True,'bounds':[2,2]},
+      'grottoceratops': {'model':'GrottoceratopsModel.java','texture':'textures/entity/grottoceratops.png','health':50,'attack':10,'width':2.2,'height':2.4,'hostile':True,'bounds':[4,4]},
+      'vallumraptor': {'model':'VallumraptorModel.java','texture':'textures/entity/vallumraptor.png','health':28,'attack':3,'width':1.0,'height':1.6,'hostile':True,'bounds':[3,3]},
+    }
+    added=[]
+    for name,spec in specs.items():
+        model_path=model_root/spec['model'];texture_path=assets/spec['texture']
+        if not model_path.is_file() or not texture_path.is_file():
+            raise FileNotFoundError(str(model_path if not model_path.is_file() else texture_path))
+        with Image.open(texture_path) as image:texture_size=(image.width,image.height)
+        geometry,report=recover_models([model_path.read_text(encoding='utf-8')],f'geometry.minizin_alexscaves.{name}')
+        geometry['minecraft:geometry'][0]['description'].update({'visible_bounds_width':spec['bounds'][0],'visible_bounds_height':spec['bounds'][1],'visible_bounds_offset':[0,1,0]})
+        write(rp/'models/entity/alexscaves'/f'{name}.geo.json',geometry)
+        texture_rel=f'textures/alexscaves/entity/{name}';target=rp/(texture_rel+'.png');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(texture_path,target)
+        ident='minizin_alexscaves:'+name
+        components={'minecraft:type_family':{'family':['minizin_creature','alexscaves',name]},'minecraft:health':{'value':spec['health'],'max':spec['health']},'minecraft:collision_box':{'width':spec['width'],'height':spec['height']},'minecraft:physics':{'has_gravity':True},'minecraft:movement':{'value':0.2},'minecraft:navigation.walk':{'can_path_over_water':True,'avoid_damage_blocks':True},'minecraft:movement.basic':{},'minecraft:behavior.look_at_player':{'priority':6,'look_distance':18,'probability':0.8},'minecraft:behavior.random_stroll':{'priority':7,'speed_multiplier':0.8}}
+        if spec['hostile']:
+            components['minecraft:behavior.nearest_attackable_target']={'priority':1,'within_radius':24,'reselect_targets':True,'entity_types':[{'filters':{'test':'is_family','subject':'other','value':'player'},'max_dist':24}]}
+            components['minecraft:behavior.melee_attack']={'priority':2,'track_target':True,'speed_multiplier':1.0,'reach_multiplier':1.2}
+            components['minecraft:behavior.move_towards_target']={'priority':3,'speed_multiplier':0.8,'within_radius':8}
+        write(bp/'entities/alexscaves'/f'{name}.json',{'format_version':'1.21.90','minecraft:entity':{'description':{'identifier':ident,'is_spawnable':True,'is_summonable':True,'is_experimental':False},'components':components}})
+        write(rp/'entity/alexscaves'/f'{name}.entity.json',{'format_version':'1.10.0','minecraft:client_entity':{'description':{'identifier':ident,'materials':{'default':'entity_alphatest'},'textures':{'default':texture_rel},'geometry':{'default':f'geometry.minizin_alexscaves.{name}'},'render_controllers':['controller.render.alexscaves.'+name]}}})
+        write(rp/'render_controllers/alexscaves'/f'{name}.json',{'format_version':'1.8.0','render_controllers':{'controller.render.alexscaves.'+name:{'geometry':'Geometry.default','materials':[{'*':'Material.default'}],'textures':['Texture.default']}}})
+        write(rp/'models/entity/alexscaves'/f'{name}.conversion.json',{'source_model':str(model_path.relative_to(ROOT)),'source_texture':str(texture_path.relative_to(ROOT)),'bones':report['bones'],'box_total':report['box_total'],'texture':texture_size,'unsupported':report.get('unsupported',[])})
+        added.append({'id':ident,'bones':report['bones'],'boxes':report['box_total'],'texture':texture_size,'source_model':str(model_path.relative_to(ROOT))})
+    catalog_path=bp/'scripts/creature_catalog.js'
+    if catalog_path.is_file():
+        raw=catalog_path.read_text(encoding='utf-8');prefix='export const CREATURES = ';catalog=json.loads(raw[len(prefix):].rstrip(' ;\n'))
+        for item in added:catalog[item['id']]={'kind':'alexscaves','element':None,'sound':None}
+        catalog_path.write_text(prefix+json.dumps(catalog,ensure_ascii=False,sort_keys=True)+';\n',encoding='utf-8')
+    return added
+
 def add_source_backed_cataclysm_items(rp,bp,registry):
     """Expose Cataclysm's registered-looking original item icons.
 
@@ -1224,6 +1275,7 @@ def repair(source,output):
     creature_item_count=add_creature_items(rp,bp)
     mowzie_sun_bosses=add_source_backed_mowzie_sun_bosses(rp,bp)
     mowzie_entities=add_source_backed_mowzie_entities(rp,bp)
+    alex_entities=add_source_backed_alex_entities(rp,bp)
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
@@ -1443,6 +1495,7 @@ def repair(source,output):
       'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
       'mowzie_sun_bosses':mowzie_sun_bosses,
       'mowzie_entities':mowzie_entities,
+      'alex_entities':alex_entities,
       'cataclysm_items':cataclysm_items,
       'cataclysm_blocks':cataclysm_blocks,
       'cataclysm_recipes':cataclysm_recipe_report,
