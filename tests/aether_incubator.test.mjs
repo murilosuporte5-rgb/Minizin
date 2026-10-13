@@ -10,6 +10,8 @@ test('Aether Incubator preserves the three Java Moa incubation recipes and fuel 
   assert.equal((catalog.match(/id:/g)||[]).length,3);
   assert.match(catalog,/time:1000/);
   assert.match(catalog,/ambrosium_torch.*500/);
+  assert.match(runtime,/needed=Math\.ceil\(recipe\.time\/burn\)/);
+  assert.match(runtime,/fuel\.amount<needed/);
 });
 
 test('Incubator runtime persists two slots and spawns a configured baby Moa only after completion',()=>{
