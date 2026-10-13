@@ -519,11 +519,74 @@ def repair(source,output):
     for namespace,mod in upstream.items():
         dictionaries[namespace]={}
         for language in languages:
-            files=list((ROOT/'mods'/mod/'upstream').glob('**/assets/'+namespace+'/lang/'+language.lower()+'.json'))
+            lang_root=ROOT/'mods'/mod/'upstream'
+            files=[]
+            for extension in ('json','lang'):
+                files.extend(lang_root.glob('**/assets/'+namespace+'/lang/'+language.lower()+'.'+extension))
             dictionaries[namespace][language]={}
             for file in files:
-                try:dictionaries[namespace][language].update(json.loads(file.read_text(encoding='utf-8-sig'),strict=False))
-                except ValueError as error:language_warnings.append({'source':str(file.relative_to(ROOT)),'error':str(error)})
+                try:
+                    if file.suffix.lower()=='.json':
+                        dictionaries[namespace][language].update(json.loads(file.read_text(encoding='utf-8-sig'),strict=False))
+                    else:
+                        for line in file.read_text(encoding='utf-8-sig',errors='replace').splitlines():
+                            line=line.strip()
+                            if not line or line.startswith('#') or '=' not in line:continue
+                            key,value=line.split('=',1)
+                            dictionaries[namespace][language][key.strip()]=value.strip()
+                except (ValueError,UnicodeError) as error:language_warnings.append({'source':str(file.relative_to(ROOT)),'error':str(error)})
+    def humanized_name(value):
+        # Generated identifiers can contain both snake_case and Java-style
+        # camelCase fragments (for example syringeitem0). Keep the fallback
+        # readable without pretending it is an upstream translation.
+        value=re.sub(r'([a-z])([A-Z])',r'\1 \2',str(value))
+        value=re.sub(r'([A-Za-z])(\d+)$',r'\1 \2',value)
+        value=re.sub(r'[_-]+',' ',value).strip()
+        return value.title() or 'Unnamed'
+    def valid_title(value):
+        text=str(value or '').replace('\\n',' ').strip()
+        return bool(text) and '\ufffd' not in text and not any(ord(char)<32 for char in text)
+    def portuguese_fallback(value):
+        text=humanized_name(value)
+        replacements=((' Bottom',' Base'),(' Top',' Topo'),(' Slab',' Laje'),
+          (' Block',' Bloco'),(' Leaves',' Folhas'),(' Leaf',' Folha'),
+          (' Log',' Tronco'),(' Wood',' Madeira'),(' Planks',' Tábuas'),
+          (' Sapling',' Muda'),(' Flower',' Flor'),(' Grass',' Grama'),
+          (' Plant',' Planta'),(' Lit',' Aceso'),(' Alt',' Alternativo'),
+          (' Light ',' Luz '),(' Dark ',' Escuro '))
+        for source_text,target_text in replacements:text=text.replace(source_text,target_text)
+        return text
+    def rftools_fallback(value):
+        text=str(value)
+        for prefix in ('items_','envmodules_','modules_','storage_'):
+            text=text.replace(prefix,'')
+        text=re.sub(r'emoduleitem$', '_module', text)
+        text=re.sub(r'moduleitem$', '_module', text)
+        text=re.sub(r'iteml(\d+)$', r'_item_l\1', text)
+        text=re.sub(r'item(\d+)$', r'_\1', text)
+        for source_text,target_text in (
+          ('advchargedporter','advanced_charged_porter'),
+          ('chargedporter','charged_porter'),('elevatorbutton','elevator_button'),
+          ('machineinformation','machine_information'),('networkmonitor','network_monitor'),
+          ('powercellcard','power_cell_card'),('securitycard','security_card'),
+          ('shapecard','shape_card'),('smartwrench','smart_wrench'),
+          ('teleportprobe','teleport_probe'),('dimensionalshard','dimensional_shard'),
+          ('developersdelight','developers_delight')):
+            text=text.replace(source_text,target_text)
+        return portuguese_fallback(text)
+    def source_name_candidates(namespace,name):
+        candidates=[name]
+        if namespace=='rftools':
+            candidate=name
+            for prefix in ('items_','envmodules_','modules_','storage_'):
+                if candidate.startswith(prefix):candidate=candidate[len(prefix):]
+            candidates.append(candidate)
+            candidates.append(re.sub(r'moduleitem$', '_module', candidate))
+            candidates.append(re.sub(r'emoduleitem$', '_module', candidate))
+            candidates.append(re.sub(r'iteml\d+$', '', candidate))
+            candidates.append(re.sub(r'item\d+$', '', candidate))
+            candidates.append(re.sub(r'item$', '', candidate))
+        return list(dict.fromkeys(candidates))
     pt_overrides={
       'minizin:andesite_waystone_block':'Marco de Teleporte',
       'minizin:warp_stone':'Pedra de Teleporte',
@@ -570,8 +633,39 @@ def repair(source,output):
         key=('tile.' if kind=='block' else 'item.')+ident+'.name'
         for language in languages:
             originals=dictionaries.get(namespace,{}).get(language,{})
-            title=originals.get(kind+'.'+namespace+'.'+name,name.replace('_',' ').title())
+            title=''
+            for candidate in source_name_candidates(namespace,name):
+                source_kind='tile' if kind=='block' else 'item'
+                for source_key in (source_kind+'.'+namespace+'.'+candidate+'.name',source_kind+'.'+namespace+'.'+candidate,
+                                   source_kind+'.'+candidate+'.name',source_kind+'.'+candidate,
+                                   kind+'.'+namespace+'.'+candidate+'.name',kind+'.'+namespace+'.'+candidate,
+                                   kind+'.'+candidate+'.name',kind+'.'+candidate):
+                    title=originals.get(source_key,'')
+                    if valid_title(title):break
+                if valid_title(title):break
             if language=='pt_BR' and ident in pt_overrides:title=pt_overrides[ident]
+            if namespace=='rftools' and re.search(r'(?:moduleitem|iteml\d*|porteritem)',str(title),re.I):
+                title=rftools_fallback(name)
+            if not valid_title(title):
+                # A corrupt/missing upstream value must never reach Bedrock as
+                # replacement glyphs or a technical identifier. If English is
+                # valid, retain its source name; otherwise use a readable
+                # generated fallback. This does not claim Java translation
+                # parity where no source localization exists.
+                english=''
+                for candidate in source_name_candidates(namespace,name):
+                    english_map=dictionaries.get(namespace,{}).get('en_US',{})
+                    source_kind='tile' if kind=='block' else 'item'
+                    for source_key in (source_kind+'.'+namespace+'.'+candidate+'.name',source_kind+'.'+namespace+'.'+candidate,
+                                       source_kind+'.'+candidate+'.name',source_kind+'.'+candidate,
+                                       kind+'.'+namespace+'.'+candidate+'.name',kind+'.'+namespace+'.'+candidate,
+                                       kind+'.'+candidate+'.name',kind+'.'+candidate):
+                        english=english_map.get(source_key,'')
+                        if valid_title(english):break
+                    if valid_title(english):break
+                title=english if valid_title(english) else (portuguese_fallback(name) if language=='pt_BR' else humanized_name(name))
+            if namespace=='rftools' and re.search(r'(?:moduleitem|iteml\d*|porteritem)',str(title),re.I):
+                title=rftools_fallback(name)
             languages[language][key]=str(title).replace('\n',' ')
         return key
     registry_path=rp/'textures/item_texture.json';registry=json.loads(registry_path.read_text(encoding='utf-8'))
