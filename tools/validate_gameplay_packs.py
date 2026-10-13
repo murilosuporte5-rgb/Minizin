@@ -10,7 +10,18 @@ def check(folders):
     uuids=set();identifiers=set();counts={'packs':0,'entities':0,'blocks':0,'scripts':0,'animations':0,'sounds':0}
     for folder in folders:
         rp,bp,n=validate(folder);counts['packs']+=1;counts['entities']+=n
-        geometries={}
+        geometries={
+            # These are supplied by Bedrock itself and need not be packaged
+            # as custom geometry files.
+            'minecraft:geometry.full_block': {},
+            'geometry.cow.v2': {},
+            'geometry.pig.v3': {},
+            'geometry.humanoid': {},
+            'geometry.humanoid.custom': {},
+            'geometry.player': {},
+            'geometry.zombie': {},
+            'geometry.skeleton': {},
+        }
         for path in rp.rglob('*.geo.json'):
             rel=path.relative_to(rp).parts
             if len(rel)<3 or rel[0]!='models' or rel[1] not in ['entity','blocks']:

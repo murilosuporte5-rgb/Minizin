@@ -1,0 +1,26 @@
+# Minizin — matriz funcional Java → Bedrock
+
+Atualização: 2026-10-12. Esta matriz separa o que foi implementado e validado offline do que ainda precisa de teste dentro do Minecraft Bedrock Android. “Implementado” significa que há arquivos, referências e lógica no pacote; não significa equivalência total ao Java nem aprovação em dispositivo.
+
+| Modo | Escopo Java coberto nesta entrega | Implementação Bedrock atual | Evidência offline | Lacuna conhecida / próxima correção |
+|---|---|---|---|---|
+| The Aether | Blocos, itens-base, fauna, dungeons, loot, portal, dimensão e progressão inicial | Dimensão customizada, ilhas, portal glowstone+água, biomas determinísticos, estruturas convertidas, Slider/Valkyrie Queen/Sun Spirit, fauna e loot | `build/worlds_v2/aether`: 46 blocos funcionais, 16 entidades, 21 estruturas, 40 loot tables; candidato combinado: 371 blocos e scripts Aether presentes | Progressão completa, receitas, todas as animações/IA e validação de geração em Android ainda pendentes |
+| Biomes O’ Plenty | Catálogo de blocos e perfis de bioma do material de origem | Blocos, atlas, itens de bloco e catálogo empacotado | Validação estrutural do pacote combinado, referências de atlas e ícones | Geração procedural e integração de todos os biomas Java ainda não equivalentes |
+| Ice and Fire | Dragões, ovos, alimentação, crescimento, armaduras, flauta, ataques e montaria | Entidades/modelos/texturas, itens nomeados/iconizados e runtime de combate/crescimento parcial | `tests/creatures_logic.test.mjs`; itens `minizin_iceandfire:*` no pacote | Domar/incubar, voo montado, armadura equipada e IA/ataques elementais ainda exigem implementação dedicada |
+| Alex’s Caves | Criaturas, blocos e itens de cavernas | Entidades, modelos, blocos/itens e lógica compartilhada de criatura | Pacote combinado validado e itens originais presentes quando disponíveis | Biomas/cavernas especiais, efeitos, máquinas e comportamento individual ainda incompletos |
+| Mowzie’s Mobs | Bosses com fases, ataques, animações e partículas | Bluff e demais entidades/modelos com runtime de combate/fases parcial | `tests/creatures_logic.test.mjs`; 42 animações no candidato | IA única, animações sincronizadas, partículas e todos os bosses ainda precisam de adapters próprios |
+| Cataclysm | Bosses, arenas, armas, armaduras, efeitos e estruturas | Entidades/modelos, blocos/itens e combate genérico com thresholds para bosses conhecidos | Validação estrutural e testes de fases do Ignis | Ataques, arenas, loot e animações Java-específicos ainda não estão completos |
+| Waystones | Bloco Waystone, ativação, nomes, destinos, teleporte e migração | Bloco real com `block_placer`, geometria/ícone explícitos, componente v2, persistência, migração de marcador e fallback de chunk | 36 testes JS; ícones e nomes reparados; sem entidade como representação primária | Teste visual Android ainda pendente; API beta/versão do jogo pode exigir ajuste de compatibilidade |
+| MCA Reborn | NPCs, afinidade, casamento, filhos e persistência por jogador | NPCs e skins, animação de caminhada, anéis e sistema de relacionamento | `tests/systems_mca_origins.test.mjs`; 10 NPCs no pacote | Herança genética, profissões, rotinas e reprodução visual completa ainda incompletas |
+| Carry On | Segurar/mover blocos e entidades com preservação de estado | Runtime de transporte com persistência e bloqueio de contêineres não suportados | `tests/systems_carryon.test.mjs`; `systems_pack_integrity.py` | Casos especiais de entidades, líquidos e todos os metadados Java precisam de compatibilidade Android |
+| RFTools | Rede de energia, cabos, células, geradores e lâmpadas | Runtime de energia persistente e modelos de blocos | `tests/systems_rftools.test.mjs`; cadeia cabo→célula→lâmpada coberta | Dimensional shards, máquinas e GUI Java ainda não estão completos |
+| Origins | Seleção de origem e poderes principais, incluindo Elytrian | Orbe/menu de seleção, poderes implementados no catálogo atual e cooldown persistente | `tests/systems_mca_origins.test.mjs`; `docs/systems/STATUS.md` | Catálogo total de 61 poderes, telas e combinações ainda não é equivalente ao Java |
+| Sophisticated Backpacks | Mochilas, upgrades, filtros, inventário e metadados | Inventário persistente, upgrades/filtros, ordenação, depósito em massa e migração | `tests/backpack_v2.test.mjs`, `tests/systems_backpack.test.mjs`; `systems_pack_integrity.py` | Baús/upgrades raros, efeitos e UI completa ainda precisam de teste no Android |
+
+## Estado do pacote de correção
+
+- Candidato gerado: `build/combined_all_aether_final_v11/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
+- Estruturalmente: 35 entidades, 371 blocos, 29 scripts, 42 animações e 8 sons.
+- O Aether usa `@minecraft/server` `beta` porque o registro de dimensão customizada e as APIs de ticking area exigem essa superfície no código atual.
+- O pacote não foi executado em um aparelho Android nesta sessão. Portanto, carregamento real, renderização intermitente, FPS, memória, multiplayer e compatibilidade com a versão instalada do Bedrock permanecem “não testados”, mesmo quando a validação offline passa.
+- Erros de pacote que aparecerem no Android devem ser reconciliados com o log/manifesto e não tratados como equivalência confirmada apenas pelo ZIP válido.

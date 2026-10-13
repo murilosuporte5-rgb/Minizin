@@ -9,8 +9,15 @@ from validate_gameplay_packs import check
 def combine(folders,output):
     if output.exists():raise ValueError('Choose a fresh output folder')
     registries={};catalog={};imports=[];report=[]
+    server_dependency='2.0.0'
     for folder in folders:
         mod=folder.name;report.append(mod)
+        source_manifest=folder/'BP/manifest.json'
+        if source_manifest.exists():
+            source_doc=json.loads(source_manifest.read_text(encoding='utf-8'))
+            for dependency in source_doc.get('dependencies',[]):
+                if dependency.get('module_name')=='@minecraft/server' and dependency.get('version')=='beta':
+                    server_dependency='beta'
         terrain_path=folder/'RP/textures/terrain_texture.json'
         terrain=json.loads(terrain_path.read_text()).get('texture_data',{}) if terrain_path.exists() else {}
         def rewrite(value):
@@ -35,7 +42,10 @@ def combine(folders,output):
                     target=output/role/'models'/rel.parts[1]/mod/Path(*rel.parts[2:])
                 target.parent.mkdir(parents=True,exist_ok=True)
                 if path.suffix!='.json':shutil.copy2(path,target);continue
-                doc=rewrite(json.loads(path.read_text()))
+                doc=rewrite(json.loads(path.read_text(encoding='utf-8')))
+                if not isinstance(doc,dict):
+                    target.write_text(json.dumps(doc,indent=2,ensure_ascii=False),encoding='utf-8')
+                    continue
                 registry_key=next((k for k in ['texture_data','sound_definitions'] if k in doc),None)
                 if registry_key:
                     canonical=output/role/rel
@@ -78,7 +88,7 @@ def combine(folders,output):
             doc['modules'].append({'type':'script','language':'javascript','entry':'scripts/main.js',
                 'uuid':str(uuid.uuid5(uuid.NAMESPACE_URL,'minizin/all-gameplay/script')),'version':[0,2,1]})
             doc['dependencies']=[{'uuid':rp_uuid,'version':[0,2,1]},
-                {'module_name':'@minecraft/server','version':'2.0.0'},{'module_name':'@minecraft/server-ui','version':'2.0.0'}]
+                {'module_name':'@minecraft/server','version':server_dependency},{'module_name':'@minecraft/server-ui','version':'2.0.0'}]
         (output/role/'manifest.json').write_text(json.dumps(doc,indent=2))
     validate(output)
     counts=check([output])

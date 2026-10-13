@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 
-const src=readFileSync(new URL("../bedrock/packs/waystones/BP/scripts/main.js",import.meta.url),"utf8")
+const src=readFileSync(new URL("../bedrock/packs/waystones/BP/scripts/waystones_block.js",import.meta.url),"utf8")
   .replace(/^import .*;$/gm,"").replace(/^export /gm,"");
 function harness(){
   const worldProps=new Map(),playerProps=new Map(),blocks=new Map();

@@ -157,7 +157,9 @@ def repair(source,output):
         comp=block['components'];display=translated('block',ident);comp['minecraft:display_name']=display
         material=comp['minecraft:material_instances']['*'];atlas_ref=terrain[material['texture']]['textures']
         atlas=Image.open(rp/(atlas_ref+'.png')).convert('RGBA')
-        geo=geometries[comp['minecraft:geometry']['identifier']]
+        geometry_spec=comp.get('minecraft:geometry')
+        geometry_id=geometry_spec.get('identifier') if isinstance(geometry_spec,dict) else geometry_spec
+        geo=geometries.get(geometry_id,{})
         candidates=[]
         for bone in geo.get('bones',[]):
             for cube in bone.get('cubes',[]):

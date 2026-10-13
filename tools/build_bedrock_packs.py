@@ -22,7 +22,18 @@ def validate(root):
         uuid.UUID(manifest["header"]["uuid"])
         for module in manifest.get("modules",[]): uuid.UUID(module["uuid"])
     clients={}
-    geos=set()
+    geos={
+        # Vanilla geometry identifiers may be referenced by converted client
+        # entities without a custom .geo.json in the resource pack.
+        "minecraft:geometry.full_block",
+        "geometry.cow.v2",
+        "geometry.pig.v3",
+        "geometry.humanoid",
+        "geometry.humanoid.custom",
+        "geometry.player",
+        "geometry.zombie",
+        "geometry.skeleton",
+    }
     animations=set()
     for file,doc in data["RP"].items():
         if not isinstance(doc,dict): continue  # texts/languages.json is an array

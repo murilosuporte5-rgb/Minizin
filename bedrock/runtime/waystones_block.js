@@ -70,7 +70,9 @@ function arrival(row) {
   const dim=dimensionOf(row.dimension),base={
     x:Math.floor(row.x),y:Math.floor(row.y),z:Math.floor(row.z)
   };
-  if(dim.getBlock(base)?.typeId!==BLOCK) return null;
+  try {
+    if(dim.getBlock(base)?.typeId!==BLOCK) return null;
+  } catch { return null; }
   for(const [dx,dz] of DIRECTION) {
     const here={x:base.x+dx,y:base.y,z:base.z+dz};
     try {
@@ -88,15 +90,37 @@ export function travelTo(player,id) {
     player.sendMessage("§eDestino removido ou não ativado.");return false;
   }
   const safe=arrival(row);
-  if(!safe) {
-    player.sendMessage("§eDestino bloqueado ou região descarregada.");return false;
+  if(safe) {
+    try {
+      player.teleport(safe.location,{dimension:safe.dimension,checkForBlocks:true});
+      player.sendMessage("§bTeleportado para "+row.name+".");return true;
+    } catch {
+      player.sendMessage("§cTeleporte impedido: destino inacessível.");return false;
+    }
   }
+  const previous={location:{...player.location},dimension:player.dimension};
+  let dimension;
   try {
-    player.teleport(safe.location,{dimension:safe.dimension,checkForBlocks:true});
-    player.sendMessage("§bTeleportado para "+row.name+".");return true;
-  } catch {
-    player.sendMessage("§eNão foi possível completar o teleporte.");return false;
+    dimension=dimensionOf(row.dimension);
+    player.teleport({x:Math.floor(row.x)+1.5,y:Math.floor(row.y)+1,z:Math.floor(row.z)+0.5},
+      {dimension,checkForBlocks:true});
+  } catch (error) {
+    player.sendMessage("§cRegião distante ainda indisponível: "+String(error));return false;
   }
+  system.runTimeout(()=>{
+    if(!player.isValid)return;
+    try {
+      const loaded=arrival(row);
+      if(loaded) {
+        player.teleport(loaded.location,{dimension:loaded.dimension,checkForBlocks:true});
+        player.sendMessage("§bChegada segura em "+row.name+".");
+      } else {
+        player.teleport(previous.location,{dimension:previous.dimension,checkForBlocks:true});
+        player.sendMessage("§eDestino removido, bloqueado ou não carregado; viagem revertida.");
+      }
+    } catch(error) { player.sendMessage("§cFalha de verificação do destino: "+String(error)); }
+  },10);
+  return true;
 }
 async function chooseDestination(player,origin) {
   const known=read(player,KNOWN);
