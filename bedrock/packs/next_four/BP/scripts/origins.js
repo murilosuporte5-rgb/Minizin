@@ -5,6 +5,30 @@ import {tell} from "./core.js";
 const KEY="minizin:origin_v1";
 const busy=new Set();
 const cooldown=new Map();
+const FIRE_CAUSES=new Set(["fire","fireTick","lava","campfire","soulCampfire","hotFloor"]);
+const SOLID_FOR_CLIMB=new Set([
+  "minecraft:stone","minecraft:cobblestone","minecraft:deepslate","minecraft:cobbled_deepslate",
+  "minecraft:brick_block","minecraft:bricks","minecraft:oak_planks","minecraft:birch_planks",
+  "minecraft:spruce_planks","minecraft:jungle_planks","minecraft:acacia_planks","minecraft:dark_oak_planks",
+  "minecraft:netherrack","minecraft:end_stone","minecraft:iron_block","minecraft:gold_block",
+  "minecraft:diamond_block","minecraft:obsidian"
+]);
+function originOf(player){
+  const id=player.getDynamicProperty(KEY);
+  return typeof id==="string"?id:null;
+}
+function inWater(player){return Boolean(player.isInWater||player.isInWaterOrRain);
+}
+function adjacentSolid(player){
+  const p=player.location;
+  for(const [x,z] of [[1,0],[-1,0],[0,1],[0,-1]]){
+    try{
+      const block=player.dimension.getBlock({x:Math.floor(p.x+x),y:Math.floor(p.y),z:Math.floor(p.z+z)});
+      if(block&&!block.isAir&&(SOLID_FOR_CLIMB.has(block.typeId)||block.typeId.startsWith("minecraft:")))return true;
+    }catch{}
+  }
+  return false;
+}
 /** @param {import('@minecraft/server').Player} player */
 export function activateOrigin(player){
   const id=player.getDynamicProperty(KEY),now=system.currentTick;
@@ -32,6 +56,10 @@ export function activateOrigin(player){
     tell(player,"Nenhum destino livre com chão seguro nessa direção.");return;
   }
   if(id==="arachnid"){
+    if(player.isSneaking&&adjacentSolid(player)){
+      try{player.applyImpulse({x:0,y:0.16,z:0});cooldown.set(player.id,now);tell(player,"Escalada ativada enquanto agachado.");return;}
+      catch(error){tell(player,"Falha na escalada: "+String(error));return;}
+    }
     try {
       const hit=player.getBlockFromViewDirection({maxDistance:8});
       if(!hit){tell(player,"Mire em um bloco próximo para produzir a teia.");return;}
@@ -81,9 +109,19 @@ export function installOrigins(){
   world.afterEvents.playerLeave.subscribe(({playerId})=>cooldown.delete(playerId));
   world.beforeEvents.entityHurt.subscribe(e=>{
     try{
-      if(e.damageSource.cause==="fall"&&e.hurtEntity.typeId==="minecraft:player"
-        &&e.hurtEntity.getDynamicProperty(KEY)==="feline")e.cancel=true;
+      if(e.hurtEntity.typeId!=="minecraft:player")return;
+      const id=originOf(e.hurtEntity),cause=e.damageSource?.cause;
+      if(cause==="fall"&&(id==="feline"||id==="avian"))e.cancel=true;
+      if(id==="blazeborn"&&FIRE_CAUSES.has(cause))e.cancel=true;
     }catch(error){console.warn("[Minizin Origins] fall immunity: "+String(error));}
+  });
+  world.afterEvents.entityHitEntity.subscribe(e=>{
+    try{
+      const attacker=e.damagingEntity,target=e.hitEntity;
+      if(attacker?.typeId!=="minecraft:player"||!target?.isValid)return;
+      if(originOf(attacker)==="blazeborn"&&attacker.isOnFire)
+        target.applyDamage(3);
+    }catch(error){console.warn("[Minizin Origins] burning wrath: "+String(error));}
   });
   world.afterEvents.itemUse.subscribe(({source,itemStack})=>{
     if(itemStack.typeId==="minecraft:feather"&&source.isSneaking)system.run(()=>activateOrigin(source));
@@ -101,8 +139,23 @@ export function installOrigins(){
         const passive=IMPLEMENTED_PASSIVES[id];
         if(passive)player.addEffect(passive.effect,120,{amplifier:0,showParticles:false});
         if(id==="shulk")player.addEffect("resistance",100,{amplifier:0,showParticles:false});
-        if(id==="merling"&&player.isInWater)player.addEffect("speed",90,{amplifier:1,showParticles:false});
-        if((id==="blazeborn"||id==="enderian")&&player.isInWater)
+        if(id==="shulk")player.addEffect("haste",100,{amplifier:0,showParticles:false});
+        if(id==="merling"){
+          player.addEffect("water_breathing",100,{amplifier:0,showParticles:false});
+          if(inWater(player)){
+            player.addEffect("speed",90,{amplifier:1,showParticles:false});
+            player.addEffect("night_vision",100,{amplifier:0,showParticles:false});
+          }
+        }
+        if(id==="avian"&&!player.isOnGround)
+          player.addEffect("slow_falling",100,{amplifier:0,showParticles:false});
+        if(id==="feline"&&player.isSprinting)
+          player.addEffect("jump_boost",100,{amplifier:0,showParticles:false});
+        if(id==="elytrian"&&!player.isOnGround)
+          player.addEffect("slow_falling",100,{amplifier:0,showParticles:false});
+        if(id==="phantom"&&player.isSneaking)
+          player.addEffect("invisibility",100,{amplifier:0,showParticles:false});
+        if((id==="blazeborn"||id==="enderian")&&inWater(player))
           player.applyDamage(1);
       }catch(e){console.warn("[Minizin Origins] ",String(e));}
     }
@@ -111,5 +164,16 @@ export function installOrigins(){
 export function currentOrigin(player){
   const id=player.getDynamicProperty(KEY);
   const o=ORIGINS_CATALOG.find(x=>x.id===id);
-  tell(player,o?"Sua origem: "+o.label+" ("+(IMPLEMENTED_PASSIVES[id]?"passivo experimental":"sem poderes portados")+")":"Nenhuma origem selecionada. Digite !minizin origins.");
+  const implemented={
+    arachnid:"teia real + escalada agachada (adaptada)",
+    avian:"queda lenta + imunidade a queda",
+    blazeborn:"imunidade ao fogo + dano incendiário + vulnerabilidade à água",
+    elytrian:"impulso aéreo + queda lenta (elytra visual ainda não equipado)",
+    enderian:"teleporte seguro + vulnerabilidade à água",
+    feline:"visão noturna + salto de sprint + imunidade a queda",
+    merling:"respiração/visão aquática + velocidade na água",
+    phantom:"invisibilidade agachado + ativação temporária",
+    shulk:"resistência + pressa (inventário extra não portado)"
+  };
+  tell(player,o?"Sua origem: "+o.label+" ("+(implemented[id]??"sem poderes portados")+")":"Nenhuma origem selecionada. Digite !minizin origins.");
 }

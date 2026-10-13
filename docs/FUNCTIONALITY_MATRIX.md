@@ -14,13 +14,14 @@ Atualização: 2026-10-12. Esta matriz separa o que foi implementado e validado 
 | MCA Reborn | NPCs, afinidade, casamento, filhos e persistência por jogador | NPCs e skins, animação de caminhada, anéis e sistema de relacionamento | `tests/systems_mca_origins.test.mjs`; 10 NPCs no pacote | Herança genética, profissões, rotinas e reprodução visual completa ainda incompletas |
 | Carry On | Segurar/mover blocos e entidades com preservação de estado | Runtime de transporte com persistência e bloqueio de contêineres não suportados | `tests/systems_carryon.test.mjs`; `systems_pack_integrity.py` | Casos especiais de entidades, líquidos e todos os metadados Java precisam de compatibilidade Android |
 | RFTools | Rede de energia, cabos, células, geradores e lâmpadas | Runtime de energia persistente e modelos de blocos | `tests/systems_rftools.test.mjs`; cadeia cabo→célula→lâmpada coberta | Dimensional shards, máquinas e GUI Java ainda não estão completos |
-| Origins | Seleção de origem e poderes principais, incluindo Elytrian | Orbe/menu de seleção, poderes implementados no catálogo atual e cooldown persistente | `tests/systems_mca_origins.test.mjs`; `docs/systems/STATUS.md` | Catálogo total de 61 poderes, telas e combinações ainda não é equivalente ao Java |
+| Origins | Seleção de origem e poderes principais, incluindo Elytrian | Orbe/menu de seleção, cooldown persistente, imunidade a fogo, vulnerabilidade à água, respiração/visão aquática, queda lenta, salto felino, resistência/pressa Shulk, invisibilidade Phantom e escalada/teia Arachnid adaptadas | `tests/systems_mca_origins.test.mjs`; `mods/55-origins/upstream/src/main/resources/data/origins/{origins,powers}`; `node --check` no BP final | Catálogo total de 61 poderes, phasing, inventário Shulker, elytra real, telas e combinações ainda não são equivalentes ao Java |
 | Sophisticated Backpacks | Mochilas, upgrades, filtros, inventário e metadados | Inventário persistente, upgrades/filtros, ordenação, depósito em massa e migração | `tests/backpack_v2.test.mjs`, `tests/systems_backpack.test.mjs`; `systems_pack_integrity.py` | Baús/upgrades raros, efeitos e UI completa ainda precisam de teste no Android |
 
 ## Estado do pacote de correção
 
-- Candidato gerado: `build/combined_all_bosses_final_v13/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
+- Candidato gerado: `build/combined_all_bosses_final_v15/Minizin_Todos_Juntos_Correcao_Mobile_v0.2.2.mcaddon`.
 - Estruturalmente: 38 entidades, 371 blocos, 29 scripts, 42 animações e 8 sons.
 - O Aether usa `@minecraft/server` `beta` porque o registro de dimensão customizada e as APIs de ticking area exigem essa superfície no código atual.
 - O pacote não foi executado em um aparelho Android nesta sessão. Portanto, carregamento real, renderização intermitente, FPS, memória, multiplayer e compatibilidade com a versão instalada do Bedrock permanecem “não testados”, mesmo quando a validação offline passa.
+- A referência visual Java `Minizin_Referencias_Visuais_Java_para_Codex.md` não estava disponível no filesystem nesta execução; a comparação imagem-a-imagem continua pendente e não foi inferida.
 - Erros de pacote que aparecerem no Android devem ser reconciliados com o log/manifesto e não tratados como equivalência confirmada apenas pelo ZIP válido.

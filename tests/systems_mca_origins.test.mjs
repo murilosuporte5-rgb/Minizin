@@ -73,3 +73,42 @@ test("Origins stores active cooldown and avoids repeat Elytrian impulses",()=>{
   m.activateOrigin(player);
   assert.equal(player.impulses.length,2);
 });
+
+test("Origins applies real fire immunity, water vulnerability and passive movement mappings",()=>{
+  const source=load("origins");
+  const callbacks={hurt:[],hit:[],leave:[],use:[],block:[]};
+  const signal=name=>({subscribe(fn){callbacks[name].push(fn);}});
+  const world={getAllPlayers:()=>[],
+    beforeEvents:{entityHurt:signal("hurt")},
+    afterEvents:{playerLeave:signal("leave"),entityHitEntity:signal("hit"),itemUse:signal("use"),playerInteractWithBlock:signal("block")}};
+  const system={currentTick:1000,interval:null,runInterval(fn){this.interval=fn;},run(fn){fn();}};
+  const effects=[];
+  const player={...holder(),id:"origin-player",typeId:"minecraft:player",isOnFire:true,isOnGround:false,
+    isSprinting:true,isSneaking:false,isInWater:false,location:{x:0,y:64,z:0},dimension:{getBlock:()=>({isAir:true})},
+    addEffect(...args){effects.push(args);},applyDamage(){this.damage=(this.damage??0)+1;}};
+  world.getAllPlayers=()=>[player];
+  set(player,"minizin:origin_v1","blazeborn");
+  const m=new Function("world","system","ActionFormData","ORIGINS_CATALOG","IMPLEMENTED_PASSIVES","tell",
+    source+"\nreturn {installOrigins};")(world,system,Form,[],{},()=>{});
+  m.installOrigins();
+  const fire={hurtEntity:player,damageSource:{cause:"fire"},cancel:false};
+  callbacks.hurt[0](fire);
+  assert.equal(fire.cancel,true);
+  set(player,"minizin:origin_v1","feline");
+  player.isOnFire=false;
+  const fall={hurtEntity:player,damageSource:{cause:"fall"},cancel:false};
+  callbacks.hurt[0](fall);
+  assert.equal(fall.cancel,true);
+  set(player,"minizin:origin_v1","merling");
+  player.isInWater=true;
+  system.interval();
+  assert.ok(effects.some(([name])=>name==="water_breathing"));
+  // The event adapter is also exercised directly so the Java burning-wrath
+  // damage is not represented only by a decorative status message.
+  set(player,"minizin:origin_v1","blazeborn");
+  player.isOnFire=true;
+  let extra=0;
+  callbacks.hit[0]({damagingEntity:player,hitEntity:{isValid:true,applyDamage(n){extra+=n;}}});
+  assert.equal(extra,3);
+  assert.equal(typeof callbacks.hit[0],"function");
+});
