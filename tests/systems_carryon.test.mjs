@@ -6,7 +6,9 @@ const source=readFileSync(new URL("../bedrock/packs/next_four/BP/scripts/carryon
 test("chest is moved using persisted structure and not cloned",()=>{
   const records=new Map(),props=new Map(),blocks=new Map();
   const k=p=>p.x+","+p.y+","+p.z;
+  let unloadOrigin=false;
   const dimension={id:"minecraft:overworld",getBlock(pos){
+    if(unloadOrigin&&k(pos)==="1,64,0")return undefined;
     if(!blocks.has(k(pos))){
       const block={location:{...pos},typeId:"minecraft:air",isAir:true,dimension,
         data:[],setType(type){this.typeId=type;this.isAir=type==="minecraft:air";}};
@@ -33,13 +35,18 @@ test("chest is moved using persisted structure and not cloned",()=>{
     getDynamicProperty:id=>props.get(id),setDynamicProperty:(id,v)=>props.set(id,v)};
   const notices=[];
   const api=new Function("world","system","held","tell",source+
-    "\nreturn {grab,put,pickedBlock};")(world,system,()=>null,(p,t)=>notices.push(t));
+    "\nreturn {grab,put,pickedBlock,recoverBlock};")(world,system,()=>null,(p,t)=>notices.push(t));
   api.grab(player,src.location,dimension.id);
   assert.equal(src.typeId,"minecraft:air");
   assert.equal(api.pickedBlock(player),"minecraft:chest");
   assert.equal(structures.size,1);
   const support=dimension.getBlock({x:2,y:64,z:0});
   support.setType("minecraft:stone");
+  unloadOrigin=true;
+  api.put(player,support.location,"Up");
+  assert.equal(api.pickedBlock(player),"minecraft:chest");
+  assert.equal(api.recoverBlock(player),true); // still held, no second structure placed
+  unloadOrigin=false;
   api.put(player,support.location,"Up");
   const dest=dimension.getBlock({x:2,y:65,z:0});
   assert.equal(dest.typeId,"minecraft:chest");

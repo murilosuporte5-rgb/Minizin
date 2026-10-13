@@ -15,6 +15,7 @@ class Stack {
   getDynamicProperty(k){return this.props[k];}
   setDynamicProperty(k,v){this.props[k]=v;}
   getLore(){return this.lore;}setLore(v){this.lore=v;}
+  clone(){const copy=new Stack(this.typeId,this.amount);Object.assign(copy,structuredClone(this));return copy;}
   getCanDestroy(){return this.destroy;}getCanPlaceOn(){return this.place;}
   setCanDestroy(v){this.destroy=v;}setCanPlaceOn(v){this.place=v;}
   getComponent(name){
@@ -40,10 +41,10 @@ function harness() {
     setDynamicProperty:(k,v)=>playerProps.set(k,v)};
   const api=new Function("world","system","ItemStack","EnchantmentTypes",
     "ActionFormData","ModalFormData",source+
-    "\nreturn {assign,encode,decode,getState,writeState,migrateLegacy,validate,compatible,depositAll,sortBag,configureFilter};")(
+    "\nreturn {assign,encode,decode,getState,writeState,migrateLegacy,validate,compatible,depositAll,sortBag,configureFilter,installExpansion};")(
       world,{},Stack,{get:id=>({id})},class {title(){return this;}body(){return this;}button(){return this;}async show(){return {canceled:false,selection:1};}},class {}
     );
-  return {api,worldProps,playerProps,inv,player};
+  return {api,world,worldProps,playerProps,inv,player};
 }
 test("roundtrip preserves item metadata; containers and special items rejected",()=>{
   const {api}=harness(),s=new Stack("minecraft:diamond_sword",1);
@@ -119,4 +120,25 @@ test("a consumed filter upgrade belongs to one bag and restricts bulk deposit",a
   assert.equal(inv.getItem(3).amount,7);
   assert.equal(api.getState(id).slots[0].type,"minecraft:stone");
   assert.equal(api.getState(id).revision,3);
+});
+test("expansions preserve contents, consume each item and cap at 81",()=>{
+  const {api,inv,player,world,worldProps}=harness(),id=api.assign(player);
+  const stone=api.encode(new Stack("minecraft:stone",7));
+  api.writeState(id,{slots:[stone,...Array(26).fill(null)],revision:1});
+  inv.items[1]=new Stack("minizin:backpack_expansion_upgrade",2);
+  api.installExpansion(player,id,1);
+  assert.equal(inv.items[1].amount,1);
+  assert.equal(api.getState(id).slots.length,54);
+  assert.deepEqual(api.getState(id).slots[0],JSON.parse(JSON.stringify(stone)));
+  api.installExpansion(player,id,2);
+  assert.equal(api.getState(id).slots.length,81);
+  assert.equal(inv.items[1],undefined);
+  const key="minizin:bag_"+id,old=worldProps.get(key);
+  worldProps.set(key,"{broken");
+  assert.throws(()=>api.getState(id),/ilegíveis/);
+  worldProps.set(key,old);
+  inv.items[1]=new Stack("minizin:backpack_expansion_upgrade",2);
+  world.setDynamicProperty=()=>{throw Error("storage unavailable");};
+  api.installExpansion(player,id,3); // at capacity: no consumption
+  assert.equal(inv.items[1].amount,2);
 });

@@ -53,9 +53,11 @@ class DragonRuntime(unittest.TestCase):
             self.assertIn(display_key+'='+expected_title, lang)
 
         runtime = (bp / 'scripts' / 'creatures.js').read_text(encoding='utf-8')
-        for token in ('dragon_armor_'+ 'iron', 'armor_'+ "'+armor.slot",
-                      "['head','neck','body','tail']", 'dragonsteel_lightning'):
+        for token in ('dragon_armor_'+ 'iron', 'armor_'+ "'+armor.slot", 'ARMOR_SLOTS'):
             self.assertIn(token, runtime)
+        armor_catalog = (bp / 'scripts' / 'dragon_armor.js').read_text(encoding='utf-8')
+        self.assertIn("['head','neck','body','tail']", armor_catalog)
+        self.assertIn('dragonsteel_lightning', armor_catalog)
 
     def test_current_ice_and_fire_ids_have_mountable_dragon_and_egg_entities(self):
         candidates = list((ROOT / 'build').glob('combined_all_*_final_v*/BP'))

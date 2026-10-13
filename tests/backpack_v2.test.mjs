@@ -15,6 +15,7 @@ class Stack {
   getDynamicProperty(k){return this.props[k];}
   setDynamicProperty(k,v){this.props[k]=v;}
   getLore(){return this.lore;}setLore(v){this.lore=v;}
+  clone(){const copy=new Stack(this.typeId,this.amount);Object.assign(copy,structuredClone(this));return copy;}
   getCanDestroy(){return this.destroy;}getCanPlaceOn(){return this.place;}
   setCanDestroy(v){this.destroy=v;}setCanPlaceOn(v){this.place=v;}
   getComponent(name){
@@ -83,4 +84,10 @@ test("migration never discards legacy data when a target already holds other ite
   assert.throws(()=>api.migrateLegacy(player,id),/Mochila ocupada/);
   assert.deepEqual(JSON.parse(playerProps.get("minizin:personal_backpack_v1")),[old]);
   assert.deepEqual(api.getState(id).slots[0],existing);
+});
+test("corrupt persistent bag data is retained and refuses access",()=>{
+  const {api,player,worldProps}=harness(),id=api.assign(player),key="minizin:bag_"+id;
+  worldProps.set(key,"{broken");
+  assert.throws(()=>api.getState(id),/ilegíveis/);
+  assert.equal(worldProps.get(key),"{broken");
 });
