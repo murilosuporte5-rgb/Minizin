@@ -53,3 +53,8 @@ Waystones/Carry On/Origins (sistemas); Mowzie's Mobs (geometrias já próximas d
 ## Conversões publicadas na branch generated-bedrock
 
 **OBRIGATÓRIO:** leia `CODEX_HANDOFF.md` e obtenha `generated/` de `origin/generated-bedrock` antes de criar novos modelos. O Codex deve reutilizar os PNG, geometrias, OBJ/Blend, JSON de animação e regras existentes. Não sobrescreva recursos já implementados; salve antes/depois e registre testes.
+
+
+## Referências visuais originais obrigatórias para o Codex
+
+Antes de editar modelos, texturas, itens, anéis, NPCs, dragões, bosses, biomas ou interfaces, consulte [docs/visual-references/README.md](docs/visual-references/README.md). A galeria contém fotografias reais dos 12 mods Java, anéis do Aether, anéis do MCA Reborn, armas, máquinas e mochilas, com links diretos e instruções de verificação. Compare o recurso da **mesma versão Java** com o Bedrock, preserve fontes e licenças, e registre diferenças observadas e testes no Android. Imagens são referências, não autorização de redistribuição. Não declare fidelidade visual ou funcional sem evidência.
