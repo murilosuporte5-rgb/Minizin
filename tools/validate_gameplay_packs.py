@@ -29,10 +29,15 @@ def check(folders):
             for geo in json.loads(path.read_text(encoding='utf-8')).get('minecraft:geometry',[]):
                 geometries[geo['description']['identifier']]=geo
         item_registry=rp/'textures/item_texture.json'
+        item_identifiers=set()
         if item_registry.exists():
             icons=json.loads(item_registry.read_text(encoding='utf-8'))['texture_data']
             for item_path in (bp/'items').rglob('*.json'):
                 item=json.loads(item_path.read_text(encoding='utf-8'))['minecraft:item']
+                ident=item['description']['identifier']
+                if ident in item_identifiers:
+                    raise ValueError('Item identifier conflict: '+ident)
+                item_identifiers.add(ident)
                 icon=item.get('components',{}).get('minecraft:icon')
                 ref=icon if isinstance(icon,str) else icon.get('textures',{}).get('default') if icon else None
                 if ref not in icons:
