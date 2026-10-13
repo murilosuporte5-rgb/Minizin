@@ -126,6 +126,27 @@ test("Origins applies real fire immunity, water vulnerability and passive moveme
   assert.equal(typeof callbacks.hit[0],"function");
 });
 
+test("Origins Enderian launches a real Bedrock Ender Pearl with the Java cooldown",()=>{
+  const source=load("origins");
+  const pearls=[];
+  const player={...holder(),id:"ender-player",location:{x:0,y:64,z:0},
+    getViewDirection(){return {x:0,y:0,z:1};},
+    getHeadLocation(){return {x:0,y:65.5,z:0};},
+    dimension:{spawnEntity(type,location){const pearl={type,location,impulses:[],applyImpulse(v){this.impulses.push(v);}};pearls.push(pearl);return pearl;}}};
+  set(player,"minizin:origin_v1","enderian");
+  const system={currentTick:1000};
+  const m=new Function("world","system","ActionFormData","ORIGINS_CATALOG","IMPLEMENTED_PASSIVES","tell",
+    source+"\nreturn {activateOrigin};")({afterEvents:{}},system,Form,[],{},()=>{});
+  m.activateOrigin(player);
+  m.activateOrigin(player);
+  assert.equal(pearls.length,1);
+  assert.equal(pearls[0].type,"minecraft:ender_pearl");
+  assert.deepEqual(pearls[0].impulses[0],{x:0,y:0,z:1.5});
+  system.currentTick+=30;
+  m.activateOrigin(player);
+  assert.equal(pearls.length,2);
+});
+
 test("Origins Shulk inventory persists a real item payload across UI transfers",async()=>{
   const source=load("origins");
   class Stack{

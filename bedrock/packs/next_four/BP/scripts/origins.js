@@ -110,28 +110,24 @@ export async function openShulkInventory(player){
 /** @param {import('@minecraft/server').Player} player */
 export function activateOrigin(player){
   const id=player.getDynamicProperty(KEY),now=system.currentTick;
-  if(now-(cooldown.get(player.id)??-1000)<200){tell(player,"Poder recarregando (10s).");return;}
+  const abilityCooldown=id==="enderian"?30:200;
+  if(now-(cooldown.get(player.id)??-1000)<abilityCooldown){tell(player,"Poder recarregando ("+(abilityCooldown/20)+"s).");return;}
   if(id==="elytrian"){
     player.applyImpulse({x:0,y:1.2,z:0});
     cooldown.set(player.id,now);tell(player,"Impulso aéreo ativado.");return;
   }
   if(id==="enderian"){
-    const direction=player.getViewDirection(),start=player.getHeadLocation();
-    const hit=player.dimension.getBlockFromRay(start,direction,{maxDistance:12});
-    const limit=hit?Math.max(0,Math.hypot(hit.block.location.x-start.x,hit.block.location.y-start.y,hit.block.location.z-start.z)-1):12;
-    for(let d=Math.floor(limit);d>=2;d--){
-      const at={x:Math.floor(start.x+direction.x*d)+0.5,y:Math.floor(start.y+direction.y*d),z:Math.floor(start.z+direction.z*d)+0.5};
-      try{
-        const feet=player.dimension.getBlock(at),head=player.dimension.getBlock({...at,y:at.y+1}),floor=player.dimension.getBlock({...at,y:at.y-1});
-        const safeFloor=new Set(['minecraft:stone','minecraft:dirt','minecraft:grass_block','minecraft:cobblestone',
-          'minecraft:deepslate','minecraft:cobbled_deepslate','minecraft:bedrock','minecraft:netherrack','minecraft:end_stone',
-          'minecraft:oak_planks','minecraft:birch_planks','minecraft:spruce_planks','minecraft:sandstone','minecraft:bricks']);
-        if(!feet?.isAir||!head?.isAir||!safeFloor.has(floor?.typeId))continue;
-        player.teleport(at,{dimension:player.dimension,checkForBlocks:true});
-        cooldown.set(player.id,now);tell(player,"Teleporte ativado.");return;
-      }catch{}
-    }
-    tell(player,"Nenhum destino livre com chão seguro nessa direção.");return;
+    // Java's throw_ender_pearl is a projectile power, not a direct teleport.
+    // Use the native Bedrock projectile so collision, landing and damage stay
+    // owned by the engine instead of fabricating a destination search.
+    const direction=player.getViewDirection?.()??{x:0,y:0,z:1};
+    const base=player.getHeadLocation?.()??{x:player.location.x,y:player.location.y+1.5,z:player.location.z};
+    try{
+      const pearl=player.dimension.spawnEntity("minecraft:ender_pearl",base);
+      pearl.applyImpulse({x:direction.x*1.5,y:direction.y*1.5,z:direction.z*1.5});
+      cooldown.set(player.id,now);tell(player,"Pérola do Ender lançada.");
+    }catch(error){tell(player,"Não foi possível lançar a Pérola do Ender: "+String(error));}
+    return;
   }
   if(id==="arachnid"){
     if(player.isSneaking&&adjacentSolid(player)){
@@ -253,7 +249,7 @@ export function currentOrigin(player){
     avian:"queda lenta + imunidade a queda",
     blazeborn:"imunidade ao fogo + dano incendiário + vulnerabilidade à água",
     elytrian:"impulso aéreo + queda lenta (elytra visual ainda não equipado)",
-    enderian:"teleporte seguro + vulnerabilidade à água",
+    enderian:"Pérola do Ender real + vulnerabilidade à água",
     feline:"visão noturna + salto de sprint + imunidade a queda",
     merling:"respiração/visão aquática + velocidade na água",
     phantom:"invisibilidade agachado + ativação temporária",
