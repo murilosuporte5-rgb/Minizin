@@ -1,3 +1,7 @@
 item.minizin:warp_stone.name=Warp Stone
 tile.minizin:andesite_waystone_block.name=Waystone
 item.minizin:andesite_waystone_block.name=Waystone
+item.minizin:blank_scroll.name=Unbound Scroll
+item.minizin:bound_scroll.name=Bound Scroll
+item.minizin:warp_scroll.name=Warp Scroll
+item.minizin:return_scroll.name=Return Scroll

@@ -311,6 +311,27 @@ def write(path,doc):
     path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(doc,indent=2)+'\n')
 
 
+def add_waystone_scrolls(rp,bp,registry):
+    """Stage the Java Waystones scroll family with original source icons."""
+    source=ROOT/'bedrock/packs/waystones'
+    names=('blank_scroll','bound_scroll','warp_scroll','return_scroll')
+    item_dir=bp/'items/waystones_v2';recipe_dir=bp/'recipes/waystones_v2'
+    texture_dir=rp/'textures/waystones_v2/items/waystones'
+    item_dir.mkdir(parents=True,exist_ok=True);recipe_dir.mkdir(parents=True,exist_ok=True);texture_dir.mkdir(parents=True,exist_ok=True)
+    count=0
+    for name in names:
+        item=json.loads((source/'BP/items'/f'{name}.json').read_text(encoding='utf-8'))
+        icon=f'waystones_v2_minizin_{name}'
+        item['minecraft:item']['components']['minecraft:icon']={'textures':{'default':icon}}
+        write(item_dir/f'{name}.json',item)
+        shutil.copy2(source/'RP/textures/items/waystones'/f'{name}.png',texture_dir/f'{name}.png')
+        registry.setdefault('texture_data',{})[icon]={'textures':f'textures/waystones_v2/items/waystones/{name}'}
+        recipe=source/'BP/recipes'/f'{name}.json'
+        if recipe.is_file():shutil.copy2(recipe,recipe_dir/f'{name}.json')
+        count+=1
+    return count
+
+
 def repair(source,output):
     if output.exists():raise ValueError('Fresh output required')
     shutil.copytree(source,output)
@@ -338,6 +359,10 @@ def repair(source,output):
     pt_overrides={
       'minizin:andesite_waystone_block':'Marco de Teleporte',
       'minizin:warp_stone':'Pedra de Teleporte',
+      'minizin:blank_scroll':'Pergaminho em Branco',
+      'minizin:bound_scroll':'Pergaminho Vinculado',
+      'minizin:warp_scroll':'Pergaminho de Teleporte',
+      'minizin:return_scroll':'Pergaminho de Retorno',
       'minizin_aether:iron_ring':'Anel de Ferro',
       'minizin_aether:golden_ring':'Anel de Ouro',
       'minizin_aether:ice_ring':'Anel de Gelo',
@@ -388,6 +413,7 @@ def repair(source,output):
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
+    waystone_scroll_count=add_waystone_scrolls(rp,bp,registry)
     terrain=json.loads((rp/'textures/terrain_texture.json').read_text())['texture_data']
     geometries={}
     for path in (rp/'models').rglob('*.geo.json'):
@@ -489,6 +515,18 @@ def repair(source,output):
     # be silently lost when the combined addon is rebuilt from an older stage.
     shutil.copy2(ROOT/'bedrock/runtime/waystones_block.js',bp/'scripts/waystones_v2/waystones_block.js')
     shutil.copy2(ROOT/'bedrock/runtime/warp_stone.js',bp/'scripts/waystones_v2/warp_stone.js')
+    shutil.copy2(ROOT/'bedrock/runtime/waystone_scrolls.js',bp/'scripts/waystones_v2/waystone_scrolls.js')
+    waystone_main=bp/'scripts/waystones_v2/main.js'
+    waystone_lines=waystone_main.read_text(encoding='utf-8').splitlines() if waystone_main.exists() else []
+    if 'import "./waystone_scrolls.js";' not in waystone_lines:
+        waystone_lines.append('import "./waystone_scrolls.js";')
+    waystone_main.write_text('\n'.join(dict.fromkeys(line for line in waystone_lines if line.strip()))+'\n',encoding='utf-8')
+    # Refresh Origins from the audited source as well.  The combined candidate
+    # previously kept a stale copy, so new Java-backed powers could pass in the
+    # standalone pack while silently disappearing from the Android addon.
+    origins_script=bp/'scripts/origins/origins.js'
+    if origins_script.parent.is_dir():
+        shutil.copy2(ROOT/'bedrock/packs/next_four/BP/scripts/origins.js',origins_script)
     # Keep the entrypoint idempotent.  Re-running this repair used to append
     # item_actions.js repeatedly, producing noisy and fragile combined packs.
     main=bp/'scripts/main.js'
@@ -511,6 +549,7 @@ def repair(source,output):
         write(path,doc)
     counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
       'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
+      'waystone_scrolls':waystone_scroll_count,
       'aether_recipes':aether_recipe_report,
       'fixes':['Preserved models/entity and models/blocks loader paths','Original-pixel explicit block placer icons',
         'Names from upstream language files where available','Individual spawn egg colors from original textures',

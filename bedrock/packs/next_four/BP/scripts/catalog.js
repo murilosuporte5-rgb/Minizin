@@ -18,4 +18,6 @@ export const IMPLEMENTED_PASSIVES={
   feline:{effect:"night_vision",title:"Visão noturna"},
   merling:{effect:"water_breathing",title:"Respiração aquática"}
 };
-// All other Apoli/Origins powers remain catalog-only, not ported.
+// The 61 Java powers remain cataloged for audit. Shulk's 9-slot inventory is
+// implemented as persistent server storage because Bedrock exposes no API for
+// adding a native player inventory tab; this boundary is documented and tested.

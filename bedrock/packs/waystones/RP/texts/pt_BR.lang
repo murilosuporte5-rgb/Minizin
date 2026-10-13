@@ -1,3 +1,7 @@
 item.minizin:warp_stone.name=Pedra de Teleporte
 tile.minizin:andesite_waystone_block.name=Marco de Teleporte
 item.minizin:andesite_waystone_block.name=Marco de Teleporte
+item.minizin:blank_scroll.name=Pergaminho em Branco
+item.minizin:bound_scroll.name=Pergaminho Vinculado
+item.minizin:warp_scroll.name=Pergaminho de Teleporte
+item.minizin:return_scroll.name=Pergaminho de Retorno

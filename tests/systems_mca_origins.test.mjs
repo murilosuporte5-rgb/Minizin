@@ -125,3 +125,47 @@ test("Origins applies real fire immunity, water vulnerability and passive moveme
   assert.equal(extra,3);
   assert.equal(typeof callbacks.hit[0],"function");
 });
+
+test("Origins Shulk inventory persists a real item payload across UI transfers",async()=>{
+  const source=load("origins");
+  class Stack{
+    constructor(type,amount){this.typeId=type;this.amount=amount;this.nameTag=undefined;this.lore=[];this.props={};this.damage=0;}
+    getDynamicPropertyIds(){return Object.keys(this.props);}
+    getDynamicProperty(k){return this.props[k];}
+    setDynamicProperty(k,v){this.props[k]=v;}
+    getLore(){return this.lore;}
+    setLore(v){this.lore=v;}
+    getCanDestroy(){return ["minecraft:stone"];}
+    getCanPlaceOn(){return ["minecraft:dirt"];}
+    getComponent(name){
+      if(name==="minecraft:durability")return {damage:this.damage};
+      if(name==="minecraft:enchantable")return {getEnchantments:()=>[{type:{id:"minecraft:sharpness"},level:2}],addEnchantments(){}};
+      return undefined;
+    }
+  }
+  const callbacks={};const signal=name=>({subscribe(fn){callbacks[name]=fn;}});
+  const world={getAllPlayers:()=>[],beforeEvents:{entityHurt:signal("hurt"),chatSend:signal("chat")},
+    afterEvents:{playerLeave:signal("leave"),entityHitEntity:signal("hit"),itemUse:signal("use"),playerInteractWithBlock:signal("block")}};
+  const system={currentTick:1000,runInterval(){},run(fn){fn();}};
+  const messages=[];
+  const slot=new Stack("minecraft:diamond_pickaxe",2);slot.nameTag="Picareta fiel";slot.lore=["Java"];
+  slot.props["minizin:test"]="preservar";slot.damage=7;
+  const items=[slot];const container={getItem(i){return items[i];},setItem(i,v){items[i]=v;}};
+  const player={...holder(),id:"shulk-player",isValid:true,selectedSlotIndex:0,
+    getComponent(name){return name==="minecraft:inventory"?{container}:undefined;},sendMessage(m){messages.push(m);}};
+  set(player,"minizin:origin_v1","shulk");
+  const engine=new Function("world","system","ActionFormData","ORIGINS_CATALOG","IMPLEMENTED_PASSIVES","tell","ItemStack","EnchantmentTypes",
+    source+"\nreturn {openShulkInventory};")(world,system,Form,[],{},(p,m)=>messages.push(m),Stack,{get:()=>({id:"minecraft:sharpness"})});
+  Form.selection=0;
+  await engine.openShulkInventory(player);
+  assert.equal(items[0],undefined);
+  const saved=JSON.parse(get(player,"minizin:origins_shulk_inventory_v1"));
+  assert.equal(saved[0].type,"minecraft:diamond_pickaxe");
+  assert.equal(saved[0].name,"Picareta fiel");
+  assert.equal(saved[0].amount,2);
+  assert.equal(saved[0].props["minizin:test"],"preservar");
+  await engine.openShulkInventory(player);
+  assert.equal(items[0].typeId,"minecraft:diamond_pickaxe");
+  assert.equal(items[0].amount,2);
+  assert.equal(items[0].nameTag,"Picareta fiel");
+});

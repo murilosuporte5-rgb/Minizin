@@ -1,10 +1,14 @@
-import {world,system} from "@minecraft/server";
+import {world,system,ItemStack,EnchantmentTypes} from "@minecraft/server";
 import {ActionFormData} from "@minecraft/server-ui";
 import {ORIGINS_CATALOG,IMPLEMENTED_PASSIVES} from "./catalog.js";
 import {tell} from "./core.js";
 const KEY="minizin:origin_v1";
 const busy=new Set();
+const inventoryBusy=new Set();
 const cooldown=new Map();
+const SHULK_KEY="minizin:origins_shulk_inventory_v1";
+const SHULK_SLOTS=9;
+const SHULK_MAX_BYTES=24000;
 const FIRE_CAUSES=new Set(["fire","fireTick","lava","campfire","soulCampfire","hotFloor"]);
 const SOLID_FOR_CLIMB=new Set([
   "minecraft:stone","minecraft:cobblestone","minecraft:deepslate","minecraft:cobbled_deepslate",
@@ -28,6 +32,80 @@ function adjacentSolid(player){
     }catch{}
   }
   return false;
+}
+function parseShulk(player){
+  const raw=player.getDynamicProperty(SHULK_KEY);
+  if(raw===undefined)return Array(SHULK_SLOTS).fill(null);
+  const rows=JSON.parse(raw);
+  if(!Array.isArray(rows)||rows.length!==SHULK_SLOTS)throw Error("Inventário Shulk corrompido; dados preservados para inspeção.");
+  return rows;
+}
+function writeShulk(player,rows){
+  if(!Array.isArray(rows)||rows.length!==SHULK_SLOTS)throw Error("Quantidade inválida de espaços Shulk.");
+  const raw=JSON.stringify(rows);
+  if(raw.length>SHULK_MAX_BYTES)throw Error("Os metadados excedem o limite seguro do inventário Shulk.");
+  player.setDynamicProperty(SHULK_KEY,raw);
+}
+function encodeShulkItem(item){
+  if(!item?.typeId)throw Error("Item ausente.");
+  if(item.typeId.endsWith("shulker_box")||item.typeId==="minecraft:bundle"||item.getComponent?.("minecraft:storage_item"))
+    throw Error("Contêineres aninhados não são permitidos no inventário Shulk.");
+  const props={};for(const key of item.getDynamicPropertyIds?.()||[])props[key]=item.getDynamicProperty(key);
+  const enchantable=item.getComponent?.("minecraft:enchantable");
+  const data={type:item.typeId,amount:item.amount,lore:item.getLore?.()||[],
+    damage:item.getComponent?.("minecraft:durability")?.damage,
+    enchantments:enchantable?.getEnchantments?.().map(x=>({id:x.type.id,level:x.level}))||[],
+    props};
+  if(item.nameTag!==undefined)data.name=item.nameTag;
+  try{data.keep=item.keepOnDeath;data.lock=item.lockMode;data.destroy=item.getCanDestroy?.()||[];data.place=item.getCanPlaceOn?.()||[];}catch{}
+  return data;
+}
+function decodeShulkItem(data){
+  if(!data?.type||!Number.isInteger(data.amount)||data.amount<1)throw Error("Item armazenado inválido.");
+  const item=new ItemStack(data.type,data.amount);
+  if(data.name!==undefined)item.nameTag=data.name;
+  item.setLore(data.lore||[]);
+  if(data.keep!==undefined)item.keepOnDeath=Boolean(data.keep);
+  if(data.lock!==undefined)try{item.lockMode=data.lock;}catch{}
+  try{item.setCanDestroy(data.destroy||[]);item.setCanPlaceOn(data.place||[]);}catch{}
+  const durability=item.getComponent?.("minecraft:durability");
+  if(durability&&data.damage!==undefined)durability.damage=data.damage;
+  const enchantable=item.getComponent?.("minecraft:enchantable");
+  if(enchantable&&(data.enchantments||[]).length){
+    enchantable.addEnchantments(data.enchantments.map(x=>({type:EnchantmentTypes.get(x.id),level:x.level})));
+  }
+  for(const [key,value] of Object.entries(data.props||{}))item.setDynamicProperty(key,value);
+  return item;
+}
+function shulkLabel(row,index){
+  if(!row)return "Espaço "+(index+1)+": vazio";
+  return "Espaço "+(index+1)+": "+(row.name||row.type.split(":").pop().replace(/_/g," "))+" x"+row.amount;
+}
+export async function openShulkInventory(player){
+  if(originOf(player)!=="shulk"){tell(player,"O inventário Shulk exige a origem Shulk.");return;}
+  if(inventoryBusy.has(player.id))return;
+  inventoryBusy.add(player.id);
+  try{
+    const rows=parseShulk(player),form=new ActionFormData().title("Origins • Inventário Shulk")
+      .body("9 espaços persistentes do poder Java shulker_inventory. Segure um item para trocar com o espaço; deixe a mão vazia para retirar.");
+    rows.forEach((row,index)=>form.button(shulkLabel(row,index)));
+    const response=await form.show(player);
+    if(response.canceled||response.selection===undefined||!player.isValid)return;
+    const index=response.selection,inv=player.getComponent("minecraft:inventory")?.container;
+    if(!inv)throw Error("Inventário do jogador indisponível.");
+    const fresh=parseShulk(player);if(JSON.stringify(fresh)!==JSON.stringify(rows))throw Error("Inventário Shulk mudou; abra novamente para evitar perda.");
+    const held=inv.getItem(player.selectedSlotIndex),stored=fresh[index];
+    if(!held&&!stored){tell(player,"Este espaço já está vazio.");return;}
+    const replacement=stored?decodeShulkItem(stored):undefined;
+    const next=[...fresh];
+    if(held)next[index]=encodeShulkItem(held);else next[index]=null;
+    try{
+      inv.setItem(player.selectedSlotIndex,replacement);
+      writeShulk(player,next);
+    }catch(error){inv.setItem(player.selectedSlotIndex,held);throw error;}
+    tell(player,held?"Item guardado no espaço Shulk; o item anterior foi colocado na mão.":"Item retirado do espaço Shulk.");
+  }catch(error){tell(player,"Inventário Shulk: "+String(error));}
+  finally{inventoryBusy.delete(player.id);}
 }
 /** @param {import('@minecraft/server').Player} player */
 export function activateOrigin(player){
@@ -91,9 +169,9 @@ export async function chooseOrigin(player){
   try{
     const prev=player.getDynamicProperty(KEY);
     const form=new ActionFormData().title("Minizin • Origins")
-      .body("Escolha sua origem. Os poderes Java ainda estão em conversão; este pacote implementa apenas os efeitos listados.\nAtual: "+(prev??"nenhuma"));
+      .body("Escolha sua origem. Os poderes portados aparecem como adaptação verificável; os demais continuam catalogados.\nAtual: "+(prev??"nenhuma"));
     for(const item of ORIGINS_CATALOG){
-      const flag=IMPLEMENTED_PASSIVES[item.id]?"[passivo]":"[catálogo]";
+      const flag=IMPLEMENTED_PASSIVES[item.id]?"[passivo]":item.id==="shulk"?"[parcial]":"[catálogo]";
       form.button(item.label+" "+flag);
     }
     const choice=await form.show(player);
@@ -101,12 +179,18 @@ export async function chooseOrigin(player){
     const selected=ORIGINS_CATALOG[choice.selection];
     if(!selected)return;
     player.setDynamicProperty(KEY,selected.id);
-    tell(player,"Origem selecionada: "+selected.label+". Poderes do Java ainda não foram integralmente portados.");
+    tell(player,"Origem selecionada: "+selected.label+". Use !origins inventario para o poder Shulk quando aplicável.");
   }catch(e){tell(player,"Não foi possível abrir Origins: "+String(e));}
   finally{busy.delete(player.id);}
 }
 export function installOrigins(){
   world.afterEvents.playerLeave.subscribe(({playerId})=>cooldown.delete(playerId));
+  world.beforeEvents.chatSend?.subscribe(ev=>{
+    const command=ev.message.trim().toLowerCase();
+    if(command!=="!origins inventario"&&command!=="!origins inventário"&&command!=="!origins shulk")return;
+    ev.cancel=true;
+    system.run(()=>openShulkInventory(ev.sender));
+  });
   world.beforeEvents.entityHurt.subscribe(e=>{
     try{
       if(e.hurtEntity.typeId!=="minecraft:player")return;
@@ -173,7 +257,7 @@ export function currentOrigin(player){
     feline:"visão noturna + salto de sprint + imunidade a queda",
     merling:"respiração/visão aquática + velocidade na água",
     phantom:"invisibilidade agachado + ativação temporária",
-    shulk:"resistência + pressa (inventário extra não portado)"
+    shulk:"resistência + pressa + inventário persistente de 9 espaços (UI adaptada; sem aba nativa)"
   };
   tell(player,o?"Sua origem: "+o.label+" ("+(implemented[id]??"sem poderes portados")+")":"Nenhuma origem selecionada. Digite !minizin origins.");
 }

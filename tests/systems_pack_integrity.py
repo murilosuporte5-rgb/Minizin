@@ -36,7 +36,9 @@ def main():
         atlas=data(r/"textures/terrain_texture.json")["texture_data"]
         for name in names:
             block=data(b/"blocks"/(name+".json"))["minecraft:block"]
-            component=block["components"]; geom=component["minecraft:geometry"]
+            component=block["components"]
+            geometry_spec=component["minecraft:geometry"]
+            geom=geometry_spec.get("identifier") if isinstance(geometry_spec,dict) else geometry_spec
             alias=component["minecraft:material_instances"]["*"]["texture"]
             check(geom in known,f"No resource geometry for {name}: {geom}")
             check(alias in atlas,f"No atlas alias for {name}: {alias}")
