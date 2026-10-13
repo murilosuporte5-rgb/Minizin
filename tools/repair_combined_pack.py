@@ -323,6 +323,50 @@ def add_source_backed_mowzie_sun_bosses(rp,bp):
     return added
 
 
+def add_source_backed_mowzie_items(rp,bp,registry):
+    """Stage the Java Mowzie item catalog whose original PNGs are available.
+
+    This deliberately does not create entity meshes for Frostmaw/Wroughtnaut
+    and friends: their pinned source exposes Java model classes but no
+    redistributable Bedrock geometry in this checkout.
+    """
+    root=ROOT/'mods/44-mowzies-mobs/upstream/src/main/resources/assets/mowziesmobs'
+    specs={
+      'foliaath_seed':'foliaath_seed.png','captured_grottol':'captured_grottol.png',
+      'frostmaw_plushie':'frostmaw_plushie.png','glowing_jelly':'glowing_jelly.png',
+      'naga_fang':'naga_fang.png','naga_fang_dagger':'naga_fang_dagger.png',
+      'wrought_axe':'wrought_axe_icon.png','wrought_helmet':'wrought_helmet_icon.png',
+      'earthrend_gauntlet':'earthrend_gauntlet_icon.png','sculptor_staff':'sculptor_staff_icon.png',
+      'sol_visage':'sol_visage.png','spear':'spear_icon.png','blowgun':'blowgun.png',
+      'dart':'dart.png','ice_crystal':'icecrystal.png','mob_remover':'mob_remover.png',
+      'bluff_rod':'bluff_rod.png','grant_suns_blessing':'grant_suns_blessing.png',
+      'geomancer_beads':'geomancer_beads.png','geomancer_robe':'geomancer_robe.png',
+      'geomancer_belt':'geomancer_belt.png','geomancer_sandals':'geomancer_sandals.png',
+    }
+    item_dir=bp/'items/mowzies';texture_dir=rp/'textures/items/mowzies'
+    item_dir.mkdir(parents=True,exist_ok=True);texture_dir.mkdir(parents=True,exist_ok=True)
+    added=0
+    for name,filename in specs.items():
+        source=root/'textures/item'/filename
+        if not source.is_file():continue
+        ident='minizin_mowzies:'+name;icon='minizin_mowzies_'+name;rel='textures/items/mowzies/'+name
+        shutil.copy2(source,rp/(rel+'.png'));registry.setdefault('texture_data',{})[icon]={'textures':rel}
+        components={'minecraft:icon':{'textures':{'default':icon}},
+                    'minecraft:display_name':{'value':'item.'+ident+'.name'},
+                    'minecraft:max_stack_size':1 if name in {'wrought_axe','wrought_helmet','earthrend_gauntlet','sculptor_staff','sol_visage','spear','blowgun','naga_fang_dagger'} else 64}
+        if name in {'wrought_axe','naga_fang_dagger','earthrend_gauntlet','sculptor_staff','blowgun'}:
+            components['minecraft:hand_equipped']=True
+            components['minecraft:damage']={'wrought_axe':9,'naga_fang_dagger':5,'earthrend_gauntlet':7,'sculptor_staff':5,'blowgun':1}[name]
+            components['minecraft:durability']={'wrought_axe':500,'naga_fang_dagger':250,'earthrend_gauntlet':512,'sculptor_staff':200,'blowgun':300}[name]
+        write(item_dir/f'{name}.json',{'format_version':'1.21.90','minecraft:item':{'description':{'identifier':ident,'menu_category':{'category':'items'}},'components':components}})
+        added+=1
+    recipes=bp/'recipes/mowzies';recipes.mkdir(parents=True,exist_ok=True)
+    write(recipes/'naga_fang_dagger.json',{'format_version':'1.20.10','minecraft:recipe_shaped':{'description':{'identifier':'minizin_mowzies:naga_fang_dagger'},'tags':['crafting_table'],'pattern':['F','I','S'],'key':{'F':{'item':'minizin_mowzies:naga_fang'},'I':{'item':'minecraft:iron_ingot'},'S':{'item':'minecraft:stick'}},'result':{'item':'minizin_mowzies:naga_fang_dagger','count':1}}})
+    for kind in ('smelting','blasting'):
+        write(recipes/f'grottol_{kind}.json',{'format_version':'1.20.10','minecraft:recipe_'+kind:{'description':{'identifier':'minizin_mowzies:grottol_'+kind},'tags':['furnace' if kind=='smelting' else 'blast_furnace'],'input':'minizin_mowzies:captured_grottol','output':'minecraft:diamond'}})
+    return added
+
+
 def add_aether_material_items(rp,bp):
     """Stage small source-backed materials required by Aether recipes."""
     assets=ROOT/'mods/41-the-aether/upstream/src/main/resources/assets/aether'
@@ -843,6 +887,7 @@ def repair(source,output):
     # add_aether_accessories updates the on-disk atlas; continue with that
     # merged registry so later block/item processing cannot erase its entries.
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
+    mowzie_item_count=add_source_backed_mowzie_items(rp,bp,registry)
     waystone_scroll_count=add_waystone_scrolls(rp,bp,registry)
     bop_biome_count=add_bop_worldgen(rp,bp)
     terrain=json.loads((rp/'textures/terrain_texture.json').read_text())['texture_data']
@@ -1053,6 +1098,7 @@ def repair(source,output):
     counts=check([output]);write(output/'FIX_REPORT.json',{'structural':counts,'explicit_block_icons':block_items,
       'aether_accessories':accessory_count,'aether_materials':aether_material_count,'creature_items':creature_item_count,
       'mowzie_sun_bosses':mowzie_sun_bosses,
+      'mowzie_items':mowzie_item_count,
       'aether_freezer_items':aether_freezer_item_count,
       'aether_enchanting_items':aether_enchanting_item_count,
       'aether_incubator_items':aether_incubator_item_count,
