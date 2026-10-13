@@ -90,8 +90,8 @@ def add(source,upstream,output):
     counts=check([output]);commit=subprocess.check_output(['git','-C',str(upstream),'rev-parse','HEAD'],text=True).strip()
     shutil.copy2(upstream/'LICENSE.md',output/'SOPHISTICATED_BACKPACKS_LICENSE.md')
     (output/'BACKPACK_REPORT.json').write_text(json.dumps({'upstream':'https://github.com/P3pp3rF1y/SophisticatedBackpacks','commit':commit,
-        'provenance':provenance,'issues':issues,'capacity':27,'storage':'persistent per-backpack item identity (v2)',
-        'limits':['Filter/sort/deposit present; other Java upgrades, wearable attachment and native menu remain pending',
+        'provenance':provenance,'issues':issues,'capacity':[27,54,81],'storage':'persistent per-backpack item identity (v2)',
+        'limits':['Filter/sort/deposit and Bedrock capacity expansion present; other Java upgrades, wearable attachment and native menu remain pending',
                   'Containers cannot be nested','Inventory transfer crash consistency not Android-tested'],
         'android_retest_pending':True,'structural':counts},indent=2))
     addon=output/'Minizin_Todos_Juntos_Correcao_e_Mochila_v0.2.3.mcaddon'
