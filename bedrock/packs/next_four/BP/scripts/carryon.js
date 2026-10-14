@@ -61,6 +61,10 @@ function sameBlock(dim,at,type){
   try{return world.getDimension(dim).getBlock(at)?.typeId===type;}
   catch{return false;}
 }
+function blockType(dim,at){
+  try{return world.getDimension(dim).getBlock(at)?.typeId??null;}
+  catch{return null;}
+}
 function adjacentChest(block){
   if(!block.typeId.includes("chest"))return false;
   const p=block.location;
@@ -79,6 +83,29 @@ export function release(player){
 }
 export function pickedBlock(player){
   return state(player)?.type??null;
+}
+export function recoverBlock(player){
+  const cargo=state(player);
+  if(!cargo){tell(player,"Nenhum bloco transportado.");return false;}
+  if(cargo.stage==="held"){
+    tell(player,"Carga pronta. Agache e toque no destino com um graveto.");return true;
+  }
+  const origin=blockType(cargo.originDimension,cargo.origin);
+  if(origin===null){tell(player,"Carregue o local original antes de recuperar a carga.");return false;}
+  const target=cargo.target&&cargo.targetDimension?
+    blockType(cargo.targetDimension,cargo.target):"minecraft:air";
+  if(target===null){tell(player,"Carregue o último destino antes de recuperar a carga.");return false;}
+  if(target===cargo.type&&origin==="minecraft:air"){
+    finalize(player,cargo);
+    tell(player,"Bloco encontrado no destino; transporte concluído.");return true;
+  }
+  if(origin==="minecraft:air"&&target==="minecraft:air"&&manager().get(cargo.id)){
+    save(player,{id:cargo.id,type:cargo.type,origin:cargo.origin,
+      originDimension:cargo.originDimension,stage:"held"});
+    tell(player,"Estrutura preservada; carga liberada para nova colocação.");return true;
+  }
+  tell(player,"A posição original ou o destino contém um bloco; carga retida para evitar duplicação.");
+  return false;
 }
 function grab(player,position,dimensionId){
   const block=player.dimension.getBlock(position);
@@ -121,7 +148,11 @@ function put(player,base,face){
   const off=FACE[face];
   if(!off){tell(player,"Face do bloco desconhecida.");return;}
   // Crash recovery: if the original block remains, do not create a duplicate.
-  if(sameBlock(cargo.originDimension,cargo.origin,cargo.type)){
+  const origin=blockType(cargo.originDimension,cargo.origin);
+  if(origin===null){
+    tell(player,"Carregue o local original antes de colocar este bloco.");return;
+  }
+  if(origin===cargo.type){
     save(player,{...cargo,stage:"uncertain"});
     tell(player,"Bloco no local original: carga bloqueada para evitar duplicação.");return;
   }
