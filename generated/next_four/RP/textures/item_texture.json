@@ -1,0 +1,1131 @@
+{
+  "resource_pack_name": "minizin_next_four",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "minizin_mca_item_baby_boy": {
+      "textures": "textures/items/minizin/mca/item/baby_boy"
+    },
+    "minizin_mca_item_baby_boy_empty": {
+      "textures": "textures/items/minizin/mca/item/baby_boy_empty"
+    },
+    "minizin_mca_item_baby_girl": {
+      "textures": "textures/items/minizin/mca/item/baby_girl"
+    },
+    "minizin_mca_item_baby_girl_empty": {
+      "textures": "textures/items/minizin/mca/item/baby_girl_empty"
+    },
+    "minizin_mca_item_blueprint": {
+      "textures": "textures/items/minizin/mca/item/blueprint"
+    },
+    "minizin_mca_item_book_blueprint": {
+      "textures": "textures/items/minizin/mca/item/book_blueprint"
+    },
+    "minizin_mca_item_book_cult": {
+      "textures": "textures/items/minizin/mca/item/book_cult"
+    },
+    "minizin_mca_item_book_death": {
+      "textures": "textures/items/minizin/mca/item/book_death"
+    },
+    "minizin_mca_item_book_family": {
+      "textures": "textures/items/minizin/mca/item/book_family"
+    },
+    "minizin_mca_item_book_infection": {
+      "textures": "textures/items/minizin/mca/item/book_infection"
+    },
+    "minizin_mca_item_book_romance": {
+      "textures": "textures/items/minizin/mca/item/book_romance"
+    },
+    "minizin_mca_item_book_rose_gold": {
+      "textures": "textures/items/minizin/mca/item/book_rose_gold"
+    },
+    "minizin_mca_item_book_supporters": {
+      "textures": "textures/items/minizin/mca/item/book_supporters"
+    },
+    "minizin_mca_item_bouquet": {
+      "textures": "textures/items/minizin/mca/item/bouquet"
+    },
+    "minizin_mca_item_civil_registry": {
+      "textures": "textures/items/minizin/mca/item/civil_registry"
+    },
+    "minizin_mca_item_comb": {
+      "textures": "textures/items/minizin/mca/item/comb"
+    },
+    "minizin_mca_item_crib_beds_black": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/black"
+    },
+    "minizin_mca_item_crib_beds_blue": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/blue"
+    },
+    "minizin_mca_item_crib_beds_brown": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/brown"
+    },
+    "minizin_mca_item_crib_beds_cyan": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/cyan"
+    },
+    "minizin_mca_item_crib_beds_gray": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/gray"
+    },
+    "minizin_mca_item_crib_beds_green": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/green"
+    },
+    "minizin_mca_item_crib_beds_light_blue": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/light_blue"
+    },
+    "minizin_mca_item_crib_beds_light_gray": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/light_gray"
+    },
+    "minizin_mca_item_crib_beds_lime": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/lime"
+    },
+    "minizin_mca_item_crib_beds_magenta": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/magenta"
+    },
+    "minizin_mca_item_crib_beds_orange": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/orange"
+    },
+    "minizin_mca_item_crib_beds_pink": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/pink"
+    },
+    "minizin_mca_item_crib_beds_purple": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/purple"
+    },
+    "minizin_mca_item_crib_beds_red": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/red"
+    },
+    "minizin_mca_item_crib_beds_white": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/white"
+    },
+    "minizin_mca_item_crib_beds_yellow": {
+      "textures": "textures/items/minizin/mca/item/crib/beds/yellow"
+    },
+    "minizin_mca_item_crib_frames_acacia": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/acacia"
+    },
+    "minizin_mca_item_crib_frames_bamboo": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/bamboo"
+    },
+    "minizin_mca_item_crib_frames_birch": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/birch"
+    },
+    "minizin_mca_item_crib_frames_cherry": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/cherry"
+    },
+    "minizin_mca_item_crib_frames_crimson": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/crimson"
+    },
+    "minizin_mca_item_crib_frames_dark_oak": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/dark_oak"
+    },
+    "minizin_mca_item_crib_frames_jungle": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/jungle"
+    },
+    "minizin_mca_item_crib_frames_mangrove": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/mangrove"
+    },
+    "minizin_mca_item_crib_frames_oak": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/oak"
+    },
+    "minizin_mca_item_crib_frames_spruce": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/spruce"
+    },
+    "minizin_mca_item_crib_frames_warped": {
+      "textures": "textures/items/minizin/mca/item/crib/frames/warped"
+    },
+    "minizin_mca_item_divorce_papers": {
+      "textures": "textures/items/minizin/mca/item/divorce_papers"
+    },
+    "minizin_mca_item_egg_female": {
+      "textures": "textures/items/minizin/mca/item/egg_female"
+    },
+    "minizin_mca_item_egg_male": {
+      "textures": "textures/items/minizin/mca/item/egg_male"
+    },
+    "minizin_mca_item_engagement_ring": {
+      "textures": "textures/items/minizin/mca/item/engagement_ring"
+    },
+    "minizin_mca_item_engagement_ring_rg": {
+      "textures": "textures/items/minizin/mca/item/engagement_ring_rg"
+    },
+    "minizin_mca_item_family_tree": {
+      "textures": "textures/items/minizin/mca/item/family_tree"
+    },
+    "minizin_mca_item_letter": {
+      "textures": "textures/items/minizin/mca/item/letter"
+    },
+    "minizin_mca_item_matchmakers_ring": {
+      "textures": "textures/items/minizin/mca/item/matchmakers_ring"
+    },
+    "minizin_mca_item_needle_and_thread": {
+      "textures": "textures/items/minizin/mca/item/needle_and_thread"
+    },
+    "minizin_mca_item_potion_of_femininity": {
+      "textures": "textures/items/minizin/mca/item/potion_of_femininity"
+    },
+    "minizin_mca_item_potion_of_masculinity": {
+      "textures": "textures/items/minizin/mca/item/potion_of_masculinity"
+    },
+    "minizin_mca_item_rose_gold_dust": {
+      "textures": "textures/items/minizin/mca/item/rose_gold_dust"
+    },
+    "minizin_mca_item_rose_gold_ingot": {
+      "textures": "textures/items/minizin/mca/item/rose_gold_ingot"
+    },
+    "minizin_mca_item_scythe": {
+      "textures": "textures/items/minizin/mca/item/scythe"
+    },
+    "minizin_mca_item_staff_of_life": {
+      "textures": "textures/items/minizin/mca/item/staff_of_life"
+    },
+    "minizin_mca_item_tombstone": {
+      "textures": "textures/items/minizin/mca/item/tombstone"
+    },
+    "minizin_mca_item_villager_editor": {
+      "textures": "textures/items/minizin/mca/item/villager_editor"
+    },
+    "minizin_mca_item_villager_tracker_00": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_00"
+    },
+    "minizin_mca_item_villager_tracker_01": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_01"
+    },
+    "minizin_mca_item_villager_tracker_02": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_02"
+    },
+    "minizin_mca_item_villager_tracker_03": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_03"
+    },
+    "minizin_mca_item_villager_tracker_04": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_04"
+    },
+    "minizin_mca_item_villager_tracker_05": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_05"
+    },
+    "minizin_mca_item_villager_tracker_06": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_06"
+    },
+    "minizin_mca_item_villager_tracker_07": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_07"
+    },
+    "minizin_mca_item_villager_tracker_08": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_08"
+    },
+    "minizin_mca_item_villager_tracker_09": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_09"
+    },
+    "minizin_mca_item_villager_tracker_10": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_10"
+    },
+    "minizin_mca_item_villager_tracker_11": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_11"
+    },
+    "minizin_mca_item_villager_tracker_12": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_12"
+    },
+    "minizin_mca_item_villager_tracker_13": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_13"
+    },
+    "minizin_mca_item_villager_tracker_14": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_14"
+    },
+    "minizin_mca_item_villager_tracker_15": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_15"
+    },
+    "minizin_mca_item_villager_tracker_16": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_16"
+    },
+    "minizin_mca_item_villager_tracker_17": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_17"
+    },
+    "minizin_mca_item_villager_tracker_18": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_18"
+    },
+    "minizin_mca_item_villager_tracker_19": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_19"
+    },
+    "minizin_mca_item_villager_tracker_20": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_20"
+    },
+    "minizin_mca_item_villager_tracker_21": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_21"
+    },
+    "minizin_mca_item_villager_tracker_22": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_22"
+    },
+    "minizin_mca_item_villager_tracker_23": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_23"
+    },
+    "minizin_mca_item_villager_tracker_24": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_24"
+    },
+    "minizin_mca_item_villager_tracker_25": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_25"
+    },
+    "minizin_mca_item_villager_tracker_26": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_26"
+    },
+    "minizin_mca_item_villager_tracker_27": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_27"
+    },
+    "minizin_mca_item_villager_tracker_28": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_28"
+    },
+    "minizin_mca_item_villager_tracker_29": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_29"
+    },
+    "minizin_mca_item_villager_tracker_30": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_30"
+    },
+    "minizin_mca_item_villager_tracker_31": {
+      "textures": "textures/items/minizin/mca/item/villager_tracker_31"
+    },
+    "minizin_mca_item_wedding_ring": {
+      "textures": "textures/items/minizin/mca/item/wedding_ring"
+    },
+    "minizin_mca_item_wedding_ring_rg": {
+      "textures": "textures/items/minizin/mca/item/wedding_ring_rg"
+    },
+    "minizin_mca_item_whistle": {
+      "textures": "textures/items/minizin/mca/item/whistle"
+    },
+    "minizin_rftools_items_advchargedporteriteml0": {
+      "textures": "textures/items/minizin/rftools/items/advchargedporteriteml0"
+    },
+    "minizin_rftools_items_advchargedporteriteml1": {
+      "textures": "textures/items/minizin/rftools/items/advchargedporteriteml1"
+    },
+    "minizin_rftools_items_advchargedporteriteml2": {
+      "textures": "textures/items/minizin/rftools/items/advchargedporteriteml2"
+    },
+    "minizin_rftools_items_advchargedporteriteml3": {
+      "textures": "textures/items/minizin/rftools/items/advchargedporteriteml3"
+    },
+    "minizin_rftools_items_advchargedporteriteml4": {
+      "textures": "textures/items/minizin/rftools/items/advchargedporteriteml4"
+    },
+    "minizin_rftools_items_advchargedporteriteml5": {
+      "textures": "textures/items/minizin/rftools/items/advchargedporteriteml5"
+    },
+    "minizin_rftools_items_advchargedporteriteml6": {
+      "textures": "textures/items/minizin/rftools/items/advchargedporteriteml6"
+    },
+    "minizin_rftools_items_advchargedporteriteml7": {
+      "textures": "textures/items/minizin/rftools/items/advchargedporteriteml7"
+    },
+    "minizin_rftools_items_advchargedporteriteml8": {
+      "textures": "textures/items/minizin/rftools/items/advchargedporteriteml8"
+    },
+    "minizin_rftools_items_chargedporteriteml0": {
+      "textures": "textures/items/minizin/rftools/items/chargedporteriteml0"
+    },
+    "minizin_rftools_items_chargedporteriteml1": {
+      "textures": "textures/items/minizin/rftools/items/chargedporteriteml1"
+    },
+    "minizin_rftools_items_chargedporteriteml2": {
+      "textures": "textures/items/minizin/rftools/items/chargedporteriteml2"
+    },
+    "minizin_rftools_items_chargedporteriteml3": {
+      "textures": "textures/items/minizin/rftools/items/chargedporteriteml3"
+    },
+    "minizin_rftools_items_chargedporteriteml4": {
+      "textures": "textures/items/minizin/rftools/items/chargedporteriteml4"
+    },
+    "minizin_rftools_items_chargedporteriteml5": {
+      "textures": "textures/items/minizin/rftools/items/chargedporteriteml5"
+    },
+    "minizin_rftools_items_chargedporteriteml6": {
+      "textures": "textures/items/minizin/rftools/items/chargedporteriteml6"
+    },
+    "minizin_rftools_items_chargedporteriteml7": {
+      "textures": "textures/items/minizin/rftools/items/chargedporteriteml7"
+    },
+    "minizin_rftools_items_chargedporteriteml8": {
+      "textures": "textures/items/minizin/rftools/items/chargedporteriteml8"
+    },
+    "minizin_rftools_items_developersdelightitem": {
+      "textures": "textures/items/minizin/rftools/items/developersdelightitem"
+    },
+    "minizin_rftools_items_dimensionalsharditem": {
+      "textures": "textures/items/minizin/rftools/items/dimensionalsharditem"
+    },
+    "minizin_rftools_items_envmodules_blindnessemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/blindnessemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_featherfallingemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/featherfallingemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_featherfallingplusemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/featherfallingplusemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_flightemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/flightemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_glowingemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/glowingemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_hasteemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/hasteemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_hasteplusemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/hasteplusemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_luckemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/luckemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_nightvisionemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/nightvisionemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_noteleportemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/noteleportemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_peacefulemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/peacefulemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_poisonemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/poisonemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_regenerationemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/regenerationemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_regenerationplusemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/regenerationplusemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_saturationemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/saturationemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_saturationplusemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/saturationplusemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_slownessemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/slownessemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_speedemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/speedemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_speedplusemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/speedplusemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_waterbreathingemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/waterbreathingemoduleitem"
+    },
+    "minizin_rftools_items_envmodules_weaknessemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/envmodules/weaknessemoduleitem"
+    },
+    "minizin_rftools_items_infuseddiamond": {
+      "textures": "textures/items/minizin/rftools/items/infuseddiamond"
+    },
+    "minizin_rftools_items_infusedenderpearl": {
+      "textures": "textures/items/minizin/rftools/items/infusedenderpearl"
+    },
+    "minizin_rftools_items_modifiermodule": {
+      "textures": "textures/items/minizin/rftools/items/modifiermodule"
+    },
+    "minizin_rftools_items_modules_buttonmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/buttonmoduleitem"
+    },
+    "minizin_rftools_items_modules_clockmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/clockmoduleitem"
+    },
+    "minizin_rftools_items_modules_computermoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/computermoduleitem"
+    },
+    "minizin_rftools_items_modules_countermoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/countermoduleitem"
+    },
+    "minizin_rftools_items_modules_counterplusmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/counterplusmoduleitem"
+    },
+    "minizin_rftools_items_modules_dumpmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/dumpmoduleitem"
+    },
+    "minizin_rftools_items_modules_elevatorbuttonmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/elevatorbuttonmoduleitem"
+    },
+    "minizin_rftools_items_modules_energymoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/energymoduleitem"
+    },
+    "minizin_rftools_items_modules_energyplusmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/energyplusmoduleitem"
+    },
+    "minizin_rftools_items_modules_fluidmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/fluidmoduleitem"
+    },
+    "minizin_rftools_items_modules_fluidplusmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/fluidplusmoduleitem"
+    },
+    "minizin_rftools_items_modules_inventorymoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/inventorymoduleitem"
+    },
+    "minizin_rftools_items_modules_inventoryplusmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/inventoryplusmoduleitem"
+    },
+    "minizin_rftools_items_modules_machineinformationmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/machineinformationmoduleitem"
+    },
+    "minizin_rftools_items_modules_redstonemoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/redstonemoduleitem"
+    },
+    "minizin_rftools_items_modules_storagecontrolmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/storagecontrolmoduleitem"
+    },
+    "minizin_rftools_items_modules_textmoduleitem": {
+      "textures": "textures/items/minizin/rftools/items/modules/textmoduleitem"
+    },
+    "minizin_rftools_items_networkmonitoritem": {
+      "textures": "textures/items/minizin/rftools/items/networkmonitoritem"
+    },
+    "minizin_rftools_items_orphaningcarditem": {
+      "textures": "textures/items/minizin/rftools/items/orphaningcarditem"
+    },
+    "minizin_rftools_items_peaceessence": {
+      "textures": "textures/items/minizin/rftools/items/peaceessence"
+    },
+    "minizin_rftools_items_powercellcarditem": {
+      "textures": "textures/items/minizin/rftools/items/powercellcarditem"
+    },
+    "minizin_rftools_items_rftoolsmanual": {
+      "textures": "textures/items/minizin/rftools/items/rftoolsmanual"
+    },
+    "minizin_rftools_items_rftoolsshapemanual": {
+      "textures": "textures/items/minizin/rftools/items/rftoolsshapemanual"
+    },
+    "minizin_rftools_items_securitycarditem": {
+      "textures": "textures/items/minizin/rftools/items/securitycarditem"
+    },
+    "minizin_rftools_items_securitycarditem_linked": {
+      "textures": "textures/items/minizin/rftools/items/securitycarditem_linked"
+    },
+    "minizin_rftools_items_shapecardcfortuneitem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardcfortuneitem"
+    },
+    "minizin_rftools_items_shapecardcquarryitem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardcquarryitem"
+    },
+    "minizin_rftools_items_shapecardcsilkitem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardcsilkitem"
+    },
+    "minizin_rftools_items_shapecardfortuneitem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardfortuneitem"
+    },
+    "minizin_rftools_items_shapecarditem": {
+      "textures": "textures/items/minizin/rftools/items/shapecarditem"
+    },
+    "minizin_rftools_items_shapecardliquiditem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardliquiditem"
+    },
+    "minizin_rftools_items_shapecardpumpclearitem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardpumpclearitem"
+    },
+    "minizin_rftools_items_shapecardpumpitem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardpumpitem"
+    },
+    "minizin_rftools_items_shapecardquarryitem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardquarryitem"
+    },
+    "minizin_rftools_items_shapecardsilkitem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardsilkitem"
+    },
+    "minizin_rftools_items_shapecardvoiditem": {
+      "textures": "textures/items/minizin/rftools/items/shapecardvoiditem"
+    },
+    "minizin_rftools_items_shardwanditem": {
+      "textures": "textures/items/minizin/rftools/items/shardwanditem"
+    },
+    "minizin_rftools_items_smartwrenchitem": {
+      "textures": "textures/items/minizin/rftools/items/smartwrenchitem"
+    },
+    "minizin_rftools_items_smartwrenchselectitem": {
+      "textures": "textures/items/minizin/rftools/items/smartwrenchselectitem"
+    },
+    "minizin_rftools_items_spacechambercarditem": {
+      "textures": "textures/items/minizin/rftools/items/spacechambercarditem"
+    },
+    "minizin_rftools_items_storage_dimletmodule": {
+      "textures": "textures/items/minizin/rftools/items/storage/dimletmodule"
+    },
+    "minizin_rftools_items_storage_filtermodule": {
+      "textures": "textures/items/minizin/rftools/items/storage/filtermodule"
+    },
+    "minizin_rftools_items_storage_genericmodule": {
+      "textures": "textures/items/minizin/rftools/items/storage/genericmodule"
+    },
+    "minizin_rftools_items_storage_oredictmodule": {
+      "textures": "textures/items/minizin/rftools/items/storage/oredictmodule"
+    },
+    "minizin_rftools_items_storage_storagemodule0": {
+      "textures": "textures/items/minizin/rftools/items/storage/storagemodule0"
+    },
+    "minizin_rftools_items_storage_storagemodule1": {
+      "textures": "textures/items/minizin/rftools/items/storage/storagemodule1"
+    },
+    "minizin_rftools_items_storage_storagemodule2": {
+      "textures": "textures/items/minizin/rftools/items/storage/storagemodule2"
+    },
+    "minizin_rftools_items_storage_storagemodule6": {
+      "textures": "textures/items/minizin/rftools/items/storage/storagemodule6"
+    },
+    "minizin_rftools_items_storage_storagemodule6active": {
+      "textures": "textures/items/minizin/rftools/items/storage/storagemodule6active"
+    },
+    "minizin_rftools_items_storage_storagemoduletablet": {
+      "textures": "textures/items/minizin/rftools/items/storage/storagemoduletablet"
+    },
+    "minizin_rftools_items_storage_storagemoduletabletempty": {
+      "textures": "textures/items/minizin/rftools/items/storage/storagemoduletabletempty"
+    },
+    "minizin_rftools_items_storage_storagemoduletabletscanner": {
+      "textures": "textures/items/minizin/rftools/items/storage/storagemoduletabletscanner"
+    },
+    "minizin_rftools_items_syringeitem0": {
+      "textures": "textures/items/minizin/rftools/items/syringeitem0"
+    },
+    "minizin_rftools_items_syringeitem1": {
+      "textures": "textures/items/minizin/rftools/items/syringeitem1"
+    },
+    "minizin_rftools_items_syringeitem2": {
+      "textures": "textures/items/minizin/rftools/items/syringeitem2"
+    },
+    "minizin_rftools_items_syringeitem3": {
+      "textures": "textures/items/minizin/rftools/items/syringeitem3"
+    },
+    "minizin_rftools_items_syringeitem4": {
+      "textures": "textures/items/minizin/rftools/items/syringeitem4"
+    },
+    "minizin_rftools_items_syringeitem5": {
+      "textures": "textures/items/minizin/rftools/items/syringeitem5"
+    },
+    "minizin_rftools_items_teleportprobeitem": {
+      "textures": "textures/items/minizin/rftools/items/teleportprobeitem"
+    },
+    "minizin_origins_item_orb_of_origin": {
+      "textures": "textures/items/minizin/origins/item/orb_of_origin"
+    },
+    "minizin_mca_item_black_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_acacia_crib"
+    },
+    "minizin_mca_item_black_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_bamboo_crib"
+    },
+    "minizin_mca_item_black_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_birch_crib"
+    },
+    "minizin_mca_item_black_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_cherry_crib"
+    },
+    "minizin_mca_item_black_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_crimson_crib"
+    },
+    "minizin_mca_item_black_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_dark_oak_crib"
+    },
+    "minizin_mca_item_black_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_jungle_crib"
+    },
+    "minizin_mca_item_black_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_mangrove_crib"
+    },
+    "minizin_mca_item_black_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_oak_crib"
+    },
+    "minizin_mca_item_black_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_spruce_crib"
+    },
+    "minizin_mca_item_black_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/black_warped_crib"
+    },
+    "minizin_mca_item_blue_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_acacia_crib"
+    },
+    "minizin_mca_item_blue_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_bamboo_crib"
+    },
+    "minizin_mca_item_blue_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_birch_crib"
+    },
+    "minizin_mca_item_blue_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_cherry_crib"
+    },
+    "minizin_mca_item_blue_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_crimson_crib"
+    },
+    "minizin_mca_item_blue_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_dark_oak_crib"
+    },
+    "minizin_mca_item_blue_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_jungle_crib"
+    },
+    "minizin_mca_item_blue_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_mangrove_crib"
+    },
+    "minizin_mca_item_blue_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_oak_crib"
+    },
+    "minizin_mca_item_blue_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_spruce_crib"
+    },
+    "minizin_mca_item_blue_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/blue_warped_crib"
+    },
+    "minizin_mca_item_brown_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_acacia_crib"
+    },
+    "minizin_mca_item_brown_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_bamboo_crib"
+    },
+    "minizin_mca_item_brown_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_birch_crib"
+    },
+    "minizin_mca_item_brown_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_cherry_crib"
+    },
+    "minizin_mca_item_brown_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_crimson_crib"
+    },
+    "minizin_mca_item_brown_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_dark_oak_crib"
+    },
+    "minizin_mca_item_brown_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_jungle_crib"
+    },
+    "minizin_mca_item_brown_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_mangrove_crib"
+    },
+    "minizin_mca_item_brown_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_oak_crib"
+    },
+    "minizin_mca_item_brown_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_spruce_crib"
+    },
+    "minizin_mca_item_brown_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/brown_warped_crib"
+    },
+    "minizin_mca_item_cyan_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_acacia_crib"
+    },
+    "minizin_mca_item_cyan_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_bamboo_crib"
+    },
+    "minizin_mca_item_cyan_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_birch_crib"
+    },
+    "minizin_mca_item_cyan_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_cherry_crib"
+    },
+    "minizin_mca_item_cyan_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_crimson_crib"
+    },
+    "minizin_mca_item_cyan_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_dark_oak_crib"
+    },
+    "minizin_mca_item_cyan_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_jungle_crib"
+    },
+    "minizin_mca_item_cyan_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_mangrove_crib"
+    },
+    "minizin_mca_item_cyan_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_oak_crib"
+    },
+    "minizin_mca_item_cyan_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_spruce_crib"
+    },
+    "minizin_mca_item_cyan_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/cyan_warped_crib"
+    },
+    "minizin_mca_item_gray_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_acacia_crib"
+    },
+    "minizin_mca_item_gray_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_bamboo_crib"
+    },
+    "minizin_mca_item_gray_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_birch_crib"
+    },
+    "minizin_mca_item_gray_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_cherry_crib"
+    },
+    "minizin_mca_item_gray_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_crimson_crib"
+    },
+    "minizin_mca_item_gray_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_dark_oak_crib"
+    },
+    "minizin_mca_item_gray_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_jungle_crib"
+    },
+    "minizin_mca_item_gray_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_mangrove_crib"
+    },
+    "minizin_mca_item_gray_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_oak_crib"
+    },
+    "minizin_mca_item_gray_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_spruce_crib"
+    },
+    "minizin_mca_item_gray_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/gray_warped_crib"
+    },
+    "minizin_mca_item_green_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_acacia_crib"
+    },
+    "minizin_mca_item_green_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_bamboo_crib"
+    },
+    "minizin_mca_item_green_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_birch_crib"
+    },
+    "minizin_mca_item_green_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_cherry_crib"
+    },
+    "minizin_mca_item_green_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_crimson_crib"
+    },
+    "minizin_mca_item_green_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_dark_oak_crib"
+    },
+    "minizin_mca_item_green_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_jungle_crib"
+    },
+    "minizin_mca_item_green_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_mangrove_crib"
+    },
+    "minizin_mca_item_green_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_oak_crib"
+    },
+    "minizin_mca_item_green_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_spruce_crib"
+    },
+    "minizin_mca_item_green_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/green_warped_crib"
+    },
+    "minizin_mca_item_light_blue_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_acacia_crib"
+    },
+    "minizin_mca_item_light_blue_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_bamboo_crib"
+    },
+    "minizin_mca_item_light_blue_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_birch_crib"
+    },
+    "minizin_mca_item_light_blue_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_cherry_crib"
+    },
+    "minizin_mca_item_light_blue_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_crimson_crib"
+    },
+    "minizin_mca_item_light_blue_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_dark_oak_crib"
+    },
+    "minizin_mca_item_light_blue_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_jungle_crib"
+    },
+    "minizin_mca_item_light_blue_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_mangrove_crib"
+    },
+    "minizin_mca_item_light_blue_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_oak_crib"
+    },
+    "minizin_mca_item_light_blue_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_spruce_crib"
+    },
+    "minizin_mca_item_light_blue_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_blue_warped_crib"
+    },
+    "minizin_mca_item_light_gray_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_acacia_crib"
+    },
+    "minizin_mca_item_light_gray_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_bamboo_crib"
+    },
+    "minizin_mca_item_light_gray_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_birch_crib"
+    },
+    "minizin_mca_item_light_gray_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_cherry_crib"
+    },
+    "minizin_mca_item_light_gray_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_crimson_crib"
+    },
+    "minizin_mca_item_light_gray_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_dark_oak_crib"
+    },
+    "minizin_mca_item_light_gray_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_jungle_crib"
+    },
+    "minizin_mca_item_light_gray_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_mangrove_crib"
+    },
+    "minizin_mca_item_light_gray_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_oak_crib"
+    },
+    "minizin_mca_item_light_gray_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_spruce_crib"
+    },
+    "minizin_mca_item_light_gray_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/light_gray_warped_crib"
+    },
+    "minizin_mca_item_lime_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_acacia_crib"
+    },
+    "minizin_mca_item_lime_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_bamboo_crib"
+    },
+    "minizin_mca_item_lime_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_birch_crib"
+    },
+    "minizin_mca_item_lime_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_cherry_crib"
+    },
+    "minizin_mca_item_lime_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_crimson_crib"
+    },
+    "minizin_mca_item_lime_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_dark_oak_crib"
+    },
+    "minizin_mca_item_lime_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_jungle_crib"
+    },
+    "minizin_mca_item_lime_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_mangrove_crib"
+    },
+    "minizin_mca_item_lime_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_oak_crib"
+    },
+    "minizin_mca_item_lime_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_spruce_crib"
+    },
+    "minizin_mca_item_lime_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/lime_warped_crib"
+    },
+    "minizin_mca_item_magenta_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_acacia_crib"
+    },
+    "minizin_mca_item_magenta_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_bamboo_crib"
+    },
+    "minizin_mca_item_magenta_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_birch_crib"
+    },
+    "minizin_mca_item_magenta_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_cherry_crib"
+    },
+    "minizin_mca_item_magenta_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_crimson_crib"
+    },
+    "minizin_mca_item_magenta_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_dark_oak_crib"
+    },
+    "minizin_mca_item_magenta_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_jungle_crib"
+    },
+    "minizin_mca_item_magenta_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_mangrove_crib"
+    },
+    "minizin_mca_item_magenta_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_oak_crib"
+    },
+    "minizin_mca_item_magenta_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_spruce_crib"
+    },
+    "minizin_mca_item_magenta_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/magenta_warped_crib"
+    },
+    "minizin_mca_item_orange_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_acacia_crib"
+    },
+    "minizin_mca_item_orange_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_bamboo_crib"
+    },
+    "minizin_mca_item_orange_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_birch_crib"
+    },
+    "minizin_mca_item_orange_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_cherry_crib"
+    },
+    "minizin_mca_item_orange_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_crimson_crib"
+    },
+    "minizin_mca_item_orange_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_dark_oak_crib"
+    },
+    "minizin_mca_item_orange_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_jungle_crib"
+    },
+    "minizin_mca_item_orange_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_mangrove_crib"
+    },
+    "minizin_mca_item_orange_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_oak_crib"
+    },
+    "minizin_mca_item_orange_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_spruce_crib"
+    },
+    "minizin_mca_item_orange_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/orange_warped_crib"
+    },
+    "minizin_mca_item_pink_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_acacia_crib"
+    },
+    "minizin_mca_item_pink_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_bamboo_crib"
+    },
+    "minizin_mca_item_pink_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_birch_crib"
+    },
+    "minizin_mca_item_pink_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_cherry_crib"
+    },
+    "minizin_mca_item_pink_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_crimson_crib"
+    },
+    "minizin_mca_item_pink_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_dark_oak_crib"
+    },
+    "minizin_mca_item_pink_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_jungle_crib"
+    },
+    "minizin_mca_item_pink_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_mangrove_crib"
+    },
+    "minizin_mca_item_pink_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_oak_crib"
+    },
+    "minizin_mca_item_pink_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_spruce_crib"
+    },
+    "minizin_mca_item_pink_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/pink_warped_crib"
+    },
+    "minizin_mca_item_purple_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_acacia_crib"
+    },
+    "minizin_mca_item_purple_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_bamboo_crib"
+    },
+    "minizin_mca_item_purple_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_birch_crib"
+    },
+    "minizin_mca_item_purple_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_cherry_crib"
+    },
+    "minizin_mca_item_purple_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_crimson_crib"
+    },
+    "minizin_mca_item_purple_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_dark_oak_crib"
+    },
+    "minizin_mca_item_purple_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_jungle_crib"
+    },
+    "minizin_mca_item_purple_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_mangrove_crib"
+    },
+    "minizin_mca_item_purple_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_oak_crib"
+    },
+    "minizin_mca_item_purple_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_spruce_crib"
+    },
+    "minizin_mca_item_purple_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/purple_warped_crib"
+    },
+    "minizin_mca_item_red_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_acacia_crib"
+    },
+    "minizin_mca_item_red_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_bamboo_crib"
+    },
+    "minizin_mca_item_red_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_birch_crib"
+    },
+    "minizin_mca_item_red_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_cherry_crib"
+    },
+    "minizin_mca_item_red_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_crimson_crib"
+    },
+    "minizin_mca_item_red_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_dark_oak_crib"
+    },
+    "minizin_mca_item_red_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_jungle_crib"
+    },
+    "minizin_mca_item_red_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_mangrove_crib"
+    },
+    "minizin_mca_item_red_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_oak_crib"
+    },
+    "minizin_mca_item_red_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_spruce_crib"
+    },
+    "minizin_mca_item_red_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/red_warped_crib"
+    },
+    "minizin_mca_item_white_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_acacia_crib"
+    },
+    "minizin_mca_item_white_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_bamboo_crib"
+    },
+    "minizin_mca_item_white_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_birch_crib"
+    },
+    "minizin_mca_item_white_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_cherry_crib"
+    },
+    "minizin_mca_item_white_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_crimson_crib"
+    },
+    "minizin_mca_item_white_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_dark_oak_crib"
+    },
+    "minizin_mca_item_white_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_jungle_crib"
+    },
+    "minizin_mca_item_white_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_mangrove_crib"
+    },
+    "minizin_mca_item_white_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_oak_crib"
+    },
+    "minizin_mca_item_white_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_spruce_crib"
+    },
+    "minizin_mca_item_white_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/white_warped_crib"
+    },
+    "minizin_mca_item_yellow_acacia_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_acacia_crib"
+    },
+    "minizin_mca_item_yellow_bamboo_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_bamboo_crib"
+    },
+    "minizin_mca_item_yellow_birch_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_birch_crib"
+    },
+    "minizin_mca_item_yellow_cherry_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_cherry_crib"
+    },
+    "minizin_mca_item_yellow_crimson_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_crimson_crib"
+    },
+    "minizin_mca_item_yellow_dark_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_dark_oak_crib"
+    },
+    "minizin_mca_item_yellow_jungle_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_jungle_crib"
+    },
+    "minizin_mca_item_yellow_mangrove_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_mangrove_crib"
+    },
+    "minizin_mca_item_yellow_oak_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_oak_crib"
+    },
+    "minizin_mca_item_yellow_spruce_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_spruce_crib"
+    },
+    "minizin_mca_item_yellow_warped_crib": {
+      "textures": "textures/items/minizin/mca_generated/yellow_warped_crib"
+    }
+  }
+}

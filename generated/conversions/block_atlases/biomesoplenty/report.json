@@ -1,0 +1,3440 @@
+{
+  "namespace": "biomesoplenty",
+  "total": 1133,
+  "converted": 275,
+  "failed": 858,
+  "failures": [
+    {
+      "name": "algal_end_stone",
+      "error": "texture not found minecraft:block/end_stone"
+    },
+    {
+      "name": "black_sandstone_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "black_sandstone_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "black_sandstone_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "black_sandstone_wall_inventory",
+      "error": "unhandled parent minecraft:block/wall_inventory"
+    },
+    {
+      "name": "black_sandstone_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "black_sandstone_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "black_sandstone_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "blood",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "bramble",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "bramble_leaves",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "bramble_side",
+      "error": "can't multiply sequence by non-int of type 'float'"
+    },
+    {
+      "name": "bush",
+      "error": "texture not found biomesoplenty:block/bush"
+    },
+    {
+      "name": "clover_1",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "clover_2",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "clover_3",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "clover_4",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "cross_with_overlay",
+      "error": "unresolved texture variable"
+    },
+    {
+      "name": "cypress_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "dead_branch",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "dead_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "dead_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "dead_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "dead_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "dead_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "dead_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "dead_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "dead_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "dead_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "dead_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "dead_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "dead_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "dead_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "dead_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "dead_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "dead_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "dead_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "dead_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "dead_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "dead_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "dead_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "dead_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "dead_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "dead_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "dead_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "dead_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "dead_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "dead_leaves_inventory",
+      "error": "unhandled parent block/leaves"
+    },
+    {
+      "name": "dead_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "dead_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "dead_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "dead_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "dead_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "dead_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "dead_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "dead_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "dead_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "dead_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "dead_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "dead_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "dead_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "dead_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "dead_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "dead_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "dead_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "dead_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "dead_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "dead_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "dead_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "empyreal_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "empyreal_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "empyreal_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "empyreal_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "empyreal_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "empyreal_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "empyreal_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "empyreal_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "empyreal_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "empyreal_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "empyreal_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "empyreal_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "empyreal_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "empyreal_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "empyreal_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "empyreal_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "empyreal_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "empyreal_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "empyreal_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "empyreal_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "empyreal_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "empyreal_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "empyreal_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "empyreal_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "empyreal_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "empyreal_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "empyreal_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "empyreal_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "empyreal_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "empyreal_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "empyreal_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "empyreal_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "empyreal_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "empyreal_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "empyreal_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "empyreal_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "empyreal_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "empyreal_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "empyreal_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "empyreal_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "empyreal_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "empyreal_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "empyreal_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "empyreal_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "empyreal_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "empyreal_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "empyreal_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "empyreal_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "fir_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "fir_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "fir_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "fir_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "fir_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "fir_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "fir_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "fir_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "fir_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "fir_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "fir_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "fir_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "fir_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "fir_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "fir_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "fir_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "fir_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "fir_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "fir_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "fir_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "fir_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "fir_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "fir_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "fir_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "fir_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "fir_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "fir_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "fir_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "fir_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "fir_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "fir_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "fir_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "fir_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "fir_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "fir_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "fir_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "fir_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "fir_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "fir_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "fir_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "fir_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "fir_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "fir_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "fir_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "fir_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "fir_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "fir_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "fir_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "flat_on_floor",
+      "error": "unresolved texture variable"
+    },
+    {
+      "name": "flower_stem",
+      "error": "can't multiply sequence by non-int of type 'float'"
+    },
+    {
+      "name": "glowing_moss_block",
+      "error": "can't multiply sequence by non-int of type 'float'"
+    },
+    {
+      "name": "glowing_moss_carpet",
+      "error": "unhandled parent block/thin_block"
+    },
+    {
+      "name": "glowshroom",
+      "error": "unhandled parent minecraft:block/cross_emissive"
+    },
+    {
+      "name": "glowshroom_block",
+      "error": "unhandled parent minecraft:block/template_single_face"
+    },
+    {
+      "name": "glowshroom_block_inside",
+      "error": "unhandled parent minecraft:block/template_single_face"
+    },
+    {
+      "name": "hellbark_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "hellbark_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "hellbark_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "hellbark_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "hellbark_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "hellbark_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "hellbark_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "hellbark_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "hellbark_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "hellbark_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "hellbark_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "hellbark_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "hellbark_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "hellbark_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "hellbark_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "hellbark_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "hellbark_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "hellbark_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "hellbark_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "hellbark_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "hellbark_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "hellbark_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "hellbark_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "hellbark_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "hellbark_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "hellbark_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "hellbark_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "hellbark_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "hellbark_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "hellbark_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "hellbark_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "hellbark_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "hellbark_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "hellbark_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "hellbark_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "hellbark_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "hellbark_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "hellbark_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "hellbark_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "hellbark_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "hellbark_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "hellbark_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "hellbark_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "hellbark_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "hellbark_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "hellbark_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "hellbark_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "hellbark_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "huge_clover_petal",
+      "error": "rotated rescale element requires baking"
+    },
+    {
+      "name": "huge_lily_pad_north_east",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "huge_lily_pad_north_west",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "huge_lily_pad_south_east",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "huge_lily_pad_south_west",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "icy_iris_bottom",
+      "error": "unhandled parent minecraft:block/cross_emissive"
+    },
+    {
+      "name": "jacaranda_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "jacaranda_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "jacaranda_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "jacaranda_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "jacaranda_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "jacaranda_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "jacaranda_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "jacaranda_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "jacaranda_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "jacaranda_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "jacaranda_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "jacaranda_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "jacaranda_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "jacaranda_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "jacaranda_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "jacaranda_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "jacaranda_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "jacaranda_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "jacaranda_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "jacaranda_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "jacaranda_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "jacaranda_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "jacaranda_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "jacaranda_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "jacaranda_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "jacaranda_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "jacaranda_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "jacaranda_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "jacaranda_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "jacaranda_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "jacaranda_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "jacaranda_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "jacaranda_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "jacaranda_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "jacaranda_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "jacaranda_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "jacaranda_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "jacaranda_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "jacaranda_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "jacaranda_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "jacaranda_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "jacaranda_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "jacaranda_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "jacaranda_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "jacaranda_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "jacaranda_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "jacaranda_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "jacaranda_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "leaf_pile",
+      "error": "unresolved texture variable"
+    },
+    {
+      "name": "leaves_overlay",
+      "error": "unresolved texture variable"
+    },
+    {
+      "name": "liquid_null",
+      "error": "'int' object is not iterable"
+    },
+    {
+      "name": "magenta_maple_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "magic_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "magic_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "magic_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "magic_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "magic_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "magic_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "magic_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "magic_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "magic_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "magic_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "magic_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "magic_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "magic_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "magic_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "magic_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "magic_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "magic_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "magic_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "magic_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "magic_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "magic_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "magic_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "magic_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "magic_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "magic_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "magic_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "magic_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "magic_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "magic_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "magic_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "magic_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "magic_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "magic_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "magic_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "magic_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "magic_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "magic_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "magic_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "magic_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "magic_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "magic_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "magic_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "magic_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "magic_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "magic_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "magic_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "magic_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "magic_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "mahogany_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "mahogany_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "mahogany_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "mahogany_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "mahogany_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "mahogany_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "mahogany_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "mahogany_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "mahogany_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "mahogany_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "mahogany_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "mahogany_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "mahogany_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "mahogany_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "mahogany_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "mahogany_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "mahogany_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "mahogany_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "mahogany_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "mahogany_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "mahogany_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "mahogany_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "mahogany_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "mahogany_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "mahogany_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "mahogany_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "mahogany_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "mahogany_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "mahogany_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "mahogany_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "mahogany_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "mahogany_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "mahogany_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "mahogany_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "mahogany_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "mahogany_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "mahogany_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "mahogany_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "mahogany_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "mahogany_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "mahogany_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "mahogany_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "mahogany_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "mahogany_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "mahogany_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "mahogany_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "mahogany_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "mahogany_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "maple_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "maple_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "maple_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "maple_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "maple_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "maple_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "maple_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "maple_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "maple_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "maple_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "maple_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "maple_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "maple_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "maple_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "maple_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "maple_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "maple_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "maple_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "maple_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "maple_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "maple_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "maple_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "maple_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "maple_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "maple_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "maple_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "maple_leaf_litter_1",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "maple_leaf_litter_2",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "maple_leaf_litter_3",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "maple_leaf_litter_4",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "maple_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "maple_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "maple_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "maple_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "maple_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "maple_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "maple_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "maple_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "maple_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "maple_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "maple_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "maple_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "maple_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "maple_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "maple_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "maple_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "maple_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "maple_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "maple_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "maple_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "maple_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "null_leaves",
+      "error": "unhandled parent block/leaves"
+    },
+    {
+      "name": "null_leaves_alt",
+      "error": "unhandled parent block/leaves"
+    },
+    {
+      "name": "orange_sandstone_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "orange_sandstone_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "orange_sandstone_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "orange_sandstone_wall_inventory",
+      "error": "unhandled parent minecraft:block/wall_inventory"
+    },
+    {
+      "name": "orange_sandstone_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "orange_sandstone_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "orange_sandstone_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "origin_grass_block",
+      "error": "texture not found minecraft:block/dirt"
+    },
+    {
+      "name": "origin_grass_block_snow",
+      "error": "texture not found minecraft:block/dirt"
+    },
+    {
+      "name": "origin_oak_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "origin_oak_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "origin_oak_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "origin_oak_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "origin_oak_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "origin_oak_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "origin_oak_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "origin_oak_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "origin_oak_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "origin_oak_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "origin_oak_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "origin_oak_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "origin_oak_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "origin_oak_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "origin_oak_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "origin_oak_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "origin_oak_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "origin_oak_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "origin_oak_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "origin_oak_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "origin_oak_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "origin_oak_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "origin_oak_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "origin_oak_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "origin_oak_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "origin_oak_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "origin_oak_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "origin_oak_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "origin_oak_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "origin_oak_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "origin_oak_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "origin_oak_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "origin_oak_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "origin_oak_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "origin_oak_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "origin_oak_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "origin_oak_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "origin_oak_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "origin_oak_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "origin_oak_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "origin_oak_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "origin_oak_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "origin_oak_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "origin_oak_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "origin_oak_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "origin_oak_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "origin_oak_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "origin_oak_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "orpiment_brick_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "orpiment_brick_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "orpiment_brick_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "orpiment_brick_wall_inventory",
+      "error": "unhandled parent minecraft:block/wall_inventory"
+    },
+    {
+      "name": "orpiment_brick_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "orpiment_brick_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "orpiment_brick_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "orpiment_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "orpiment_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "orpiment_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "orpiment_wall_inventory",
+      "error": "unhandled parent minecraft:block/wall_inventory"
+    },
+    {
+      "name": "orpiment_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "orpiment_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "orpiment_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "palm_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "palm_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "palm_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "palm_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "palm_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "palm_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "palm_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "palm_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "palm_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "palm_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "palm_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "palm_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "palm_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "palm_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "palm_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "palm_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "palm_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "palm_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "palm_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "palm_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "palm_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "palm_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "palm_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "palm_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "palm_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "palm_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "palm_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "palm_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "palm_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "palm_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "palm_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "palm_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "palm_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "palm_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "palm_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "palm_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "palm_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "palm_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "palm_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "palm_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "palm_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "palm_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "palm_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "palm_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "palm_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "palm_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "palm_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "palm_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "pine_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "pine_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "pine_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "pine_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "pine_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "pine_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "pine_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "pine_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "pine_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "pine_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "pine_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "pine_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "pine_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "pine_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "pine_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "pine_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "pine_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "pine_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "pine_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "pine_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "pine_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "pine_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "pine_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "pine_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "pine_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "pine_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "pine_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "pine_log_knot_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "pine_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "pine_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "pine_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "pine_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "pine_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "pine_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "pine_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "pine_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "pine_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "pine_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "pine_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "pine_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "pine_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "pine_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "pine_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "pine_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "pine_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "pine_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "pine_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "pine_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "pink_daffodil",
+      "error": "rotated rescale element requires baking"
+    },
+    {
+      "name": "pink_maple_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "polished_orpiment_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "polished_orpiment_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "polished_orpiment_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "polished_orpiment_wall_inventory",
+      "error": "unhandled parent minecraft:block/wall_inventory"
+    },
+    {
+      "name": "polished_orpiment_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "polished_orpiment_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "polished_orpiment_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "polished_sphalerite_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "polished_sphalerite_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "polished_sphalerite_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "polished_sphalerite_wall_inventory",
+      "error": "unhandled parent minecraft:block/wall_inventory"
+    },
+    {
+      "name": "polished_sphalerite_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "polished_sphalerite_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "polished_sphalerite_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "potted_burning_blossom",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_cypress_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_dead_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_empyreal_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_endbloom",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_fir_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_flower_bud",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_flowering_oak_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_glowflower",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_glowshroom",
+      "error": "unhandled parent minecraft:block/flower_pot_cross_emissive"
+    },
+    {
+      "name": "potted_hellbark_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_jacaranda_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_lavender",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_magic_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_mahogany_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_maple_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_marigold",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_orange_cosmos",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_origin_dandelion",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_origin_oak_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_origin_rose",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_palm_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_pine_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_pink_daffodil",
+      "error": "texture not found block/flower_pot"
+    },
+    {
+      "name": "potted_pink_hibiscus",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_redwood_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_snowblossom_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_sprout",
+      "error": "texture not found minecraft:block/flower_pot"
+    },
+    {
+      "name": "potted_tiny_cactus",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_tiny_cactus_alt",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_toadstool",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_umbran_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_violet",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_white_lavender",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_willow_sapling",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "potted_wilted_lily",
+      "error": "unhandled parent minecraft:block/flower_pot_cross"
+    },
+    {
+      "name": "purple_maple_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "purple_wildflowers_1",
+      "error": "unhandled parent minecraft:block/flowerbed_1"
+    },
+    {
+      "name": "purple_wildflowers_2",
+      "error": "unhandled parent minecraft:block/flowerbed_2"
+    },
+    {
+      "name": "purple_wildflowers_3",
+      "error": "unhandled parent minecraft:block/flowerbed_3"
+    },
+    {
+      "name": "purple_wildflowers_4",
+      "error": "unhandled parent minecraft:block/flowerbed_4"
+    },
+    {
+      "name": "redwood_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "redwood_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "redwood_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "redwood_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "redwood_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "redwood_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "redwood_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "redwood_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "redwood_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "redwood_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "redwood_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "redwood_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "redwood_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "redwood_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "redwood_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "redwood_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "redwood_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "redwood_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "redwood_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "redwood_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "redwood_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "redwood_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "redwood_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "redwood_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "redwood_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "redwood_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "redwood_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "redwood_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "redwood_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "redwood_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "redwood_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "redwood_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "redwood_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "redwood_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "redwood_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "redwood_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "redwood_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "redwood_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "redwood_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "redwood_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "redwood_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "redwood_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "redwood_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "redwood_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "redwood_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "redwood_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "redwood_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "redwood_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "smooth_black_sandstone_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "smooth_black_sandstone_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "smooth_black_sandstone_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "smooth_orange_sandstone_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "smooth_orange_sandstone_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "smooth_orange_sandstone_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "smooth_white_sandstone_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "smooth_white_sandstone_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "smooth_white_sandstone_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "snowblossom_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "sphalerite_brick_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "sphalerite_brick_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "sphalerite_brick_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "sphalerite_brick_wall_inventory",
+      "error": "unhandled parent minecraft:block/wall_inventory"
+    },
+    {
+      "name": "sphalerite_brick_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "sphalerite_brick_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "sphalerite_brick_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "sphalerite_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "sphalerite_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "sphalerite_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "sphalerite_wall_inventory",
+      "error": "unhandled parent minecraft:block/wall_inventory"
+    },
+    {
+      "name": "sphalerite_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "sphalerite_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "sphalerite_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "spider_egg",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "stringy_cobweb",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "stringy_cobweb_alt",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "stringy_cobweb_bottom",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "stripped_dead_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_empyreal_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_fir_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_hellbark_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_jacaranda_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_magic_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_mahogany_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_maple_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_origin_oak_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_palm_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_pine_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_redwood_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_umbran_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "stripped_willow_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "template_maple_leaf_litter_1",
+      "error": "unresolved texture variable"
+    },
+    {
+      "name": "template_maple_leaf_litter_2",
+      "error": "unresolved texture variable"
+    },
+    {
+      "name": "template_maple_leaf_litter_3",
+      "error": "unresolved texture variable"
+    },
+    {
+      "name": "template_maple_leaf_litter_4",
+      "error": "unresolved texture variable"
+    },
+    {
+      "name": "toadstool_block",
+      "error": "unhandled parent minecraft:block/template_single_face"
+    },
+    {
+      "name": "umbran_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "umbran_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "umbran_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "umbran_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "umbran_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "umbran_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "umbran_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "umbran_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "umbran_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "umbran_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "umbran_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "umbran_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "umbran_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "umbran_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "umbran_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "umbran_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "umbran_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "umbran_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "umbran_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "umbran_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "umbran_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "umbran_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "umbran_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "umbran_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "umbran_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "umbran_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "umbran_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "umbran_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "umbran_log_knot_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "umbran_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "umbran_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "umbran_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "umbran_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "umbran_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "umbran_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "umbran_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "umbran_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "umbran_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "umbran_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "umbran_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "umbran_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "umbran_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "umbran_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "umbran_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "umbran_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "umbran_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "umbran_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "umbran_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "umbran_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    },
+    {
+      "name": "unmapped_end_stone",
+      "error": "texture not found block/end_stone"
+    },
+    {
+      "name": "waterlily",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "webbing",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "white_petals_1",
+      "error": "unhandled parent minecraft:block/flowerbed_1"
+    },
+    {
+      "name": "white_petals_2",
+      "error": "unhandled parent minecraft:block/flowerbed_2"
+    },
+    {
+      "name": "white_petals_3",
+      "error": "unhandled parent minecraft:block/flowerbed_3"
+    },
+    {
+      "name": "white_petals_4",
+      "error": "unhandled parent minecraft:block/flowerbed_4"
+    },
+    {
+      "name": "white_sandstone_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "white_sandstone_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "white_sandstone_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "white_sandstone_wall_inventory",
+      "error": "unhandled parent minecraft:block/wall_inventory"
+    },
+    {
+      "name": "white_sandstone_wall_post",
+      "error": "unhandled parent minecraft:block/template_wall_post"
+    },
+    {
+      "name": "white_sandstone_wall_side",
+      "error": "unhandled parent minecraft:block/template_wall_side"
+    },
+    {
+      "name": "white_sandstone_wall_side_tall",
+      "error": "unhandled parent minecraft:block/template_wall_side_tall"
+    },
+    {
+      "name": "willow_button",
+      "error": "unhandled parent minecraft:block/button"
+    },
+    {
+      "name": "willow_button_inventory",
+      "error": "unhandled parent minecraft:block/button_inventory"
+    },
+    {
+      "name": "willow_button_pressed",
+      "error": "unhandled parent minecraft:block/button_pressed"
+    },
+    {
+      "name": "willow_door_bottom_left",
+      "error": "unhandled parent minecraft:block/door_bottom_left"
+    },
+    {
+      "name": "willow_door_bottom_left_open",
+      "error": "unhandled parent minecraft:block/door_bottom_left_open"
+    },
+    {
+      "name": "willow_door_bottom_right",
+      "error": "unhandled parent minecraft:block/door_bottom_right"
+    },
+    {
+      "name": "willow_door_bottom_right_open",
+      "error": "unhandled parent minecraft:block/door_bottom_right_open"
+    },
+    {
+      "name": "willow_door_top_left",
+      "error": "unhandled parent minecraft:block/door_top_left"
+    },
+    {
+      "name": "willow_door_top_left_open",
+      "error": "unhandled parent minecraft:block/door_top_left_open"
+    },
+    {
+      "name": "willow_door_top_right",
+      "error": "unhandled parent minecraft:block/door_top_right"
+    },
+    {
+      "name": "willow_door_top_right_open",
+      "error": "unhandled parent minecraft:block/door_top_right_open"
+    },
+    {
+      "name": "willow_fence_gate",
+      "error": "unhandled parent minecraft:block/template_fence_gate"
+    },
+    {
+      "name": "willow_fence_gate_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_open"
+    },
+    {
+      "name": "willow_fence_gate_wall",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall"
+    },
+    {
+      "name": "willow_fence_gate_wall_open",
+      "error": "unhandled parent minecraft:block/template_fence_gate_wall_open"
+    },
+    {
+      "name": "willow_fence_inventory",
+      "error": "unhandled parent minecraft:block/fence_inventory"
+    },
+    {
+      "name": "willow_fence_post",
+      "error": "unhandled parent minecraft:block/fence_post"
+    },
+    {
+      "name": "willow_fence_side",
+      "error": "unhandled parent minecraft:block/fence_side"
+    },
+    {
+      "name": "willow_hanging_sign_attached_rot_0",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_0"
+    },
+    {
+      "name": "willow_hanging_sign_attached_rot_1",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_1"
+    },
+    {
+      "name": "willow_hanging_sign_attached_rot_2",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_2"
+    },
+    {
+      "name": "willow_hanging_sign_attached_rot_3",
+      "error": "unhandled parent minecraft:block/template_attached_hanging_sign_rot_3"
+    },
+    {
+      "name": "willow_hanging_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_0"
+    },
+    {
+      "name": "willow_hanging_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_1"
+    },
+    {
+      "name": "willow_hanging_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_2"
+    },
+    {
+      "name": "willow_hanging_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_hanging_sign_rot_3"
+    },
+    {
+      "name": "willow_leaves",
+      "error": "unhandled parent minecraft:block/leaves"
+    },
+    {
+      "name": "willow_log_horizontal",
+      "error": "unhandled parent minecraft:block/cube_column_horizontal"
+    },
+    {
+      "name": "willow_pressure_plate",
+      "error": "unhandled parent minecraft:block/pressure_plate_up"
+    },
+    {
+      "name": "willow_pressure_plate_down",
+      "error": "unhandled parent minecraft:block/pressure_plate_down"
+    },
+    {
+      "name": "willow_shelf",
+      "error": "unhandled parent minecraft:block/template_shelf_body"
+    },
+    {
+      "name": "willow_shelf_center",
+      "error": "unhandled parent minecraft:block/template_shelf_center"
+    },
+    {
+      "name": "willow_shelf_inventory",
+      "error": "unhandled parent minecraft:block/template_shelf_inventory"
+    },
+    {
+      "name": "willow_shelf_left",
+      "error": "unhandled parent minecraft:block/template_shelf_left"
+    },
+    {
+      "name": "willow_shelf_right",
+      "error": "unhandled parent minecraft:block/template_shelf_right"
+    },
+    {
+      "name": "willow_shelf_unconnected",
+      "error": "unhandled parent minecraft:block/template_shelf_unconnected"
+    },
+    {
+      "name": "willow_shelf_unpowered",
+      "error": "unhandled parent minecraft:block/template_shelf_unpowered"
+    },
+    {
+      "name": "willow_sign_rot_0",
+      "error": "unhandled parent minecraft:block/template_sign_rot_0"
+    },
+    {
+      "name": "willow_sign_rot_1",
+      "error": "unhandled parent minecraft:block/template_sign_rot_1"
+    },
+    {
+      "name": "willow_sign_rot_2",
+      "error": "unhandled parent minecraft:block/template_sign_rot_2"
+    },
+    {
+      "name": "willow_sign_rot_3",
+      "error": "unhandled parent minecraft:block/template_sign_rot_3"
+    },
+    {
+      "name": "willow_stairs",
+      "error": "unhandled parent minecraft:block/stairs"
+    },
+    {
+      "name": "willow_stairs_inner",
+      "error": "unhandled parent minecraft:block/inner_stairs"
+    },
+    {
+      "name": "willow_stairs_outer",
+      "error": "unhandled parent minecraft:block/outer_stairs"
+    },
+    {
+      "name": "willow_trapdoor_bottom",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_bottom"
+    },
+    {
+      "name": "willow_trapdoor_open",
+      "error": "unhandled parent minecraft:block/template_orientable_trapdoor_open"
+    },
+    {
+      "name": "willow_vine",
+      "error": "UV rect non-positive"
+    },
+    {
+      "name": "willow_wall_hanging_sign",
+      "error": "unhandled parent minecraft:block/template_wall_hanging_sign"
+    },
+    {
+      "name": "willow_wall_sign",
+      "error": "unhandled parent minecraft:block/template_wall_sign"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.minizin.waystones.sharestone_runes",
+        "texture_width": 232,
+        "texture_height": 7,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "block_part_0",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -7.1,
+                2.9,
+                -7.1
+              ],
+              "size": [
+                14.2,
+                4.199999999999999,
+                14.2
+              ],
+              "uv": {
+                "north": {
+                  "uv": [
+                    0,
+                    0
+                  ],
+                  "uv_size": [
+                    28,
+                    7
+                  ]
+                },
+                "east": {
+                  "uv": [
+                    29,
+                    0
+                  ],
+                  "uv_size": [
+                    28,
+                    7
+                  ]
+                },
+                "south": {
+                  "uv": [
+                    58,
+                    0
+                  ],
+                  "uv_size": [
+                    28,
+                    7
+                  ]
+                },
+                "west": {
+                  "uv": [
+                    87,
+                    0
+                  ],
+                  "uv_size": [
+                    28,
+                    7
+                  ]
+                }
+              }
+            },
+            {
+              "origin": [
+                -7.1,
+                24.9,
+                -7.1
+              ],
+              "size": [
+                14.2,
+                4.200000000000003,
+                14.2
+              ],
+              "uv": {
+                "north": {
+                  "uv": [
+                    116,
+                    0
+                  ],
+                  "uv_size": [
+                    28,
+                    7
+                  ]
+                },
+                "east": {
+                  "uv": [
+                    145,
+                    0
+                  ],
+                  "uv_size": [
+                    28,
+                    7
+                  ]
+                },
+                "south": {
+                  "uv": [
+                    174,
+                    0
+                  ],
+                  "uv_size": [
+                    28,
+                    7
+                  ]
+                },
+                "west": {
+                  "uv": [
+                    203,
+                    0
+                  ],
+                  "uv_size": [
+                    28,
+                    7
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "classes": 2,
+  "unsupported": [
+    "right_Hand: thin plane; Bedrock zero-size cube behavior requires QA",
+    "right_Hand: thin plane; Bedrock zero-size cube behavior requires QA",
+    "left_Hand: thin plane; Bedrock zero-size cube behavior requires QA",
+    "left_Hand: thin plane; Bedrock zero-size cube behavior requires QA",
+    "dewlap: thin plane; Bedrock zero-size cube behavior requires QA",
+    "cube_r7: thin plane; Bedrock zero-size cube behavior requires QA",
+    "cube_r8: thin plane; Bedrock zero-size cube behavior requires QA",
+    "cube_r9: thin plane; Bedrock zero-size cube behavior requires QA",
+    "cube_r10: thin plane; Bedrock zero-size cube behavior requires QA",
+    "Animation/runtime poses not recovered.",
+    "Inherited rotations need visual QA.",
+    "Large model render bounds are approximate.",
+    "Not game-tested."
+  ],
+  "models": [
+    {
+      "parsed_classes": 20,
+      "events": 91
+    },
+    {
+      "parsed_classes": 32,
+      "events": 66
+    }
+  ],
+  "box_total": 50,
+  "bones": 32,
+  "texture": [
+    512,
+    512
+  ],
+  "unmodeled_animation": true
+}

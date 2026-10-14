@@ -108,6 +108,8 @@ def convert(root,ns,keys,ident):
                 if face not in FACES:continue
                 tex=resolve_tex(info.get("texture","#texture"),model.get("textures",{}))
                 uv=info.get("uv") or face_uv(face,el)
+                if uv[0]==uv[2] or uv[1]==uv[3]:
+                    continue  # original zero-area UV face has no visible pixels
                 rot=int(info.get("rotation",0))
                 if rot not in (0,90,180,270):raise ValueError("UV rotation unsupported")
                 key=(tex,tuple(uv),rot)
@@ -126,8 +128,10 @@ def convert(root,ns,keys,ident):
         coords=[int(round(box[0]*sx)),int(round(box[1]*sy)),
                 int(round(box[2]*sx)),int(round(box[3]*sy))]
         left,top,right,bottom=coords
-        if right<=left or bottom<=top:raise ValueError("UV rect non-positive")
-        tile=img.crop(coords)
+        if right==left or bottom==top:raise ValueError("UV rect zero-area after pixel quantization")
+        tile=img.crop([min(left,right),min(top,bottom),max(left,right),max(top,bottom)])
+        if right<left:tile=tile.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+        if bottom<top:tile=tile.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
         if rot:tile=tile.rotate(rot,expand=True, resample=Image.Resampling.NEAREST)
         cropped[key]=tile
         if ih>iw:issues.append("animated texture: static frame only "+texture)

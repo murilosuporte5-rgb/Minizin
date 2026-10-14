@@ -1,0 +1,163 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.minizin.cataclysm.playersandstorm_model",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 20,
+        "visible_bounds_height": 20,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "cubes": []
+        },
+        {
+          "name": "storm",
+          "pivot": [
+            0.0,
+            4.0,
+            0.0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -4.0,
+                0.0,
+                -4.0
+              ],
+              "size": [
+                8.0,
+                8.0,
+                8.0
+              ],
+              "uv": [
+                65,
+                72
+              ]
+            }
+          ]
+        },
+        {
+          "name": "storm2",
+          "pivot": [
+            0.0,
+            13.0,
+            0.0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "parent": "storm",
+          "cubes": [
+            {
+              "origin": [
+                -8.0,
+                9.0,
+                -8.0
+              ],
+              "size": [
+                16.0,
+                8.0,
+                16.0
+              ],
+              "uv": [
+                0,
+                72
+              ]
+            }
+          ]
+        },
+        {
+          "name": "storm3",
+          "pivot": [
+            0.0,
+            22.0,
+            0.0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "parent": "storm2",
+          "cubes": [
+            {
+              "origin": [
+                -12.0,
+                18.0,
+                -12.0
+              ],
+              "size": [
+                24.0,
+                8.0,
+                24.0
+              ],
+              "uv": [
+                0,
+                39
+              ]
+            }
+          ]
+        },
+        {
+          "name": "storm4",
+          "pivot": [
+            0.0,
+            31.0,
+            0.0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "parent": "storm3",
+          "cubes": [
+            {
+              "origin": [
+                -15.0,
+                27.0,
+                -15.0
+              ],
+              "size": [
+                30.0,
+                8.0,
+                30.0
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

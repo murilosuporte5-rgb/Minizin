@@ -1,0 +1,1123 @@
+{
+  "scanned": 70,
+  "converted": 41,
+  "skipped": 29,
+  "models": [
+    {
+      "source": "Abyss_Blast_Portal_Model.java",
+      "status": "converted",
+      "boxes": 16,
+      "bones": 2,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "portal: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Abyss_Mine_Model.java",
+      "status": "converted",
+      "boxes": 3,
+      "bones": 3,
+      "texture": [
+        32,
+        32
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Amethyst_Cluster_Projectile_Model.java",
+      "status": "converted",
+      "boxes": 21,
+      "bones": 5,
+      "texture": [
+        32,
+        32
+      ],
+      "issues": [
+        "roots: thin plane; Bedrock zero-size cube behavior requires QA",
+        "roots: thin plane; Bedrock zero-size cube behavior requires QA",
+        "bone: thin plane; Bedrock zero-size cube behavior requires QA",
+        "bone: thin plane; Bedrock zero-size cube behavior requires QA",
+        "bone2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "bone2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "bone4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "bone4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "bone3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "bone3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Amethyst_Crab_Model.java",
+      "status": "converted",
+      "boxes": 54,
+      "bones": 39,
+      "texture": [
+        256,
+        256
+      ],
+      "issues": [
+        "small_amethyst: thin plane; Bedrock zero-size cube behavior requires QA",
+        "small_amethyst2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "small_amethyst3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "small_amethyst4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "small_amethyst5: thin plane; Bedrock zero-size cube behavior requires QA",
+        "small_amethyst6: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_tong_leg: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_tong_leg: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_joint: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_joint: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_joint2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_joint2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_joint3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_joint3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_leg4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_leg4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Ancient_Desert_Stele_Model.java",
+      "status": "converted",
+      "boxes": 2,
+      "bones": 1,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Ancient_Remnant_Rework_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Aptrgangr_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Axe_Blade_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Ceraunus_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Cindaria_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Clawdian_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Coral_Bardiche_Model.java",
+      "status": "converted",
+      "boxes": 7,
+      "bones": 3,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "blade: thin plane; Bedrock zero-size cube behavior requires QA",
+        "blade: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Coral_Golem_Model.java",
+      "status": "converted",
+      "boxes": 28,
+      "bones": 18,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "helmet: thin plane; Bedrock zero-size cube behavior requires QA",
+        "blue_table_coral: thin plane; Bedrock zero-size cube behavior requires QA",
+        "red_table_coral: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_coral: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_coral: thin plane; Bedrock zero-size cube behavior requires QA",
+        "coral_shoulder: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Coral_Spear_Model.java",
+      "status": "converted",
+      "boxes": 5,
+      "bones": 5,
+      "texture": [
+        32,
+        32
+      ],
+      "issues": [
+        "coral: thin plane; Bedrock zero-size cube behavior requires QA",
+        "coral2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "head: thin plane; Bedrock zero-size cube behavior requires QA",
+        "head2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Coralssus_Model.java",
+      "status": "converted",
+      "boxes": 8,
+      "bones": 8,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "missing inherited parent: cube_r1 -> chest",
+        "cube_r1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "missing inherited parent: cube_r2 -> head",
+        "cube_r2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "missing inherited parent: cube_r3 -> head",
+        "cube_r3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "missing inherited parent: cube_r4 -> head",
+        "cube_r4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "missing inherited parent: cube_r5 -> right_arm",
+        "missing inherited parent: cube_r6 -> right_arm",
+        "missing inherited parent: cube_r7 -> left_arm",
+        "cube_r7: thin plane; Bedrock zero-size cube behavior requires QA",
+        "missing inherited parent: cube_r8 -> coral",
+        "cube_r8: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Cursed_Sandstorm_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Deepling_Angler_Model.java",
+      "status": "converted",
+      "boxes": 40,
+      "bones": 15,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "left_leg: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_leg: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_leg: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_leg: thin plane; Bedrock zero-size cube behavior requires QA",
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "thorns: thin plane; Bedrock zero-size cube behavior requires QA",
+        "thorns2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "thorns3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "thorns4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "head2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "head2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Deepling_Brute_Model.java",
+      "status": "converted",
+      "boxes": 16,
+      "bones": 13,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_armor: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm_r1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Deepling_Model.java",
+      "status": "converted",
+      "boxes": 12,
+      "bones": 11,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Deepling_Priest_Model.java",
+      "status": "converted",
+      "boxes": 22,
+      "bones": 16,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "body_coral1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "body_coral2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "head2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "head_coral: thin plane; Bedrock zero-size cube behavior requires QA",
+        "fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Deepling_Warlock_Model.java",
+      "status": "converted",
+      "boxes": 29,
+      "bones": 25,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_shoulder: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_shoulder: thin plane; Bedrock zero-size cube behavior requires QA",
+        "neck_back: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_rib: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_rib: thin plane; Bedrock zero-size cube behavior requires QA",
+        "neck_forward: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_finger1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_finger2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_finger3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_finger4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_finger1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_finger2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_finger3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_finger4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "head2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Draugr_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Drowned_Host_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Elemental_Spear_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Elite_Draugr_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Ender_Golem_Model.java",
+      "status": "converted",
+      "boxes": 16,
+      "bones": 13,
+      "texture": [
+        256,
+        256
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Ender_Guardian_Bullet_Model.java",
+      "status": "skipped",
+      "reason": "No static boxes recovered"
+    },
+    {
+      "source": "Ender_Guardian_Model.java",
+      "status": "converted",
+      "boxes": 24,
+      "bones": 20,
+      "texture": [
+        256,
+        256
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Endermaptera_Model.java",
+      "status": "converted",
+      "boxes": 18,
+      "bones": 17,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_jaw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_jaw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_leg_front: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_leg_front: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_leg_mid: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_leg_mid: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_leg_back: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_leg_back: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Flare_Bomb_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Hippocamtus_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Ignis_Fireball_Model.java",
+      "status": "converted",
+      "boxes": 4,
+      "bones": 3,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Ignis_Model.java",
+      "status": "converted",
+      "boxes": 88,
+      "bones": 53,
+      "texture": [
+        256,
+        256
+      ],
+      "issues": [
+        "right_helmet: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_helmet: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_spike: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_big_spike: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_spike: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_big_spike: thin plane; Bedrock zero-size cube behavior requires QA",
+        "sword: thin plane; Bedrock zero-size cube behavior requires QA",
+        "blade2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Ignited_Berserker_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Ignited_Revenant_Model.java",
+      "status": "converted",
+      "boxes": 71,
+      "bones": 35,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "shield: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_right: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_right: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_left: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_left: thin plane; Bedrock zero-size cube behavior requires QA",
+        "shield2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_right2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_right2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_left2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_left2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "shield3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_right3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_right3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_left3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_left3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "shield4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_right4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_right4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_left4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "spike_left4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Kobolediator_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Koboleton_Model.java",
+      "status": "converted",
+      "boxes": 28,
+      "bones": 25,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "right_foot: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_foot: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_foot: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_foot: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_foot: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_foot: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_arm: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Laser_Beam_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Lava_Bomb_Model.java",
+      "status": "converted",
+      "boxes": 1,
+      "bones": 1,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Lionfish_Model.java",
+      "status": "converted",
+      "boxes": 18,
+      "bones": 11,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_long_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_long_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "upper_jaw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "upper_jaw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "upper_jaw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "jaw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "jaw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Maledictus_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Modern_Remnant_Model.java",
+      "status": "converted",
+      "boxes": 45,
+      "bones": 27,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "upper_body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "right_hand: thin plane; Bedrock zero-size cube behavior requires QA",
+        "left_hand: thin plane; Bedrock zero-size cube behavior requires QA",
+        "neck: thin plane; Bedrock zero-size cube behavior requires QA",
+        "head: thin plane; Bedrock zero-size cube behavior requires QA",
+        "helmet: thin plane; Bedrock zero-size cube behavior requires QA",
+        "helmet: thin plane; Bedrock zero-size cube behavior requires QA",
+        "helmet2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Netherite_Ministrosity_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Netherite_Monstrosity_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Phantom_Halberd_Model.java",
+      "status": "converted",
+      "boxes": 3,
+      "bones": 3,
+      "texture": [
+        256,
+        256
+      ],
+      "issues": [
+        "missing inherited parent: cube_r1 -> halberd",
+        "cube_r1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "missing inherited parent: cube_r2 -> halberd2",
+        "cube_r2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "missing inherited parent: cube_r3 -> halberd2",
+        "cube_r3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "PlayerSandstorm_Model.java",
+      "status": "converted",
+      "boxes": 4,
+      "bones": 5,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Royal_Draugr_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Sandstorm_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Sandstorm_Projectile_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Scylla_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Storm_Serpent_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Symbiocto_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "The_Baby_Leviathan_Model.java",
+      "status": "converted",
+      "boxes": 45,
+      "bones": 38,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "maw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "maw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "main_belly: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_hook1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_hook4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_hook2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_hook3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_hook1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_hook2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_hook3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_hook4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "belly: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_down_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_down_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tail_back: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_spike2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_spike2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "r_spike1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "l_spike1: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "The_Harbinger_Model.java",
+      "status": "converted",
+      "boxes": 44,
+      "bones": 34,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "eyebrows: thin plane; Bedrock zero-size cube behavior requires QA",
+        "jaw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tailbone: thin plane; Bedrock zero-size cube behavior requires QA",
+        "rightside: thin plane; Bedrock zero-size cube behavior requires QA",
+        "leftside: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "The_Leviathan_Model.java",
+      "status": "converted",
+      "boxes": 110,
+      "bones": 74,
+      "texture": [
+        256,
+        256
+      ],
+      "issues": [
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "R_Spike: thin plane; Bedrock zero-size cube behavior requires QA",
+        "L_Spike: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Main_belly: thin plane; Bedrock zero-size cube behavior requires QA",
+        "R_Spike2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "L_Spike2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "R_mini_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "L_mini_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Belly: thin plane; Bedrock zero-size cube behavior requires QA",
+        "R_down_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "R_down_fin2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "L_down_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "L_down_fin2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Tail: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Tail: thin plane; Bedrock zero-size cube behavior requires QA",
+        "R_Spike3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "L_Spike3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Tail2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Tail2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "R_Spike4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "L_Spike4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Tail3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Muscle: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Muscle: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Maw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Maw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Maw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Maw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Maw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Maw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Maw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Skul: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Skul: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Skul: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Skul: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Skul: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Skul: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Skul: thin plane; Bedrock zero-size cube behavior requires QA",
+        "R_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "R_fin3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "L_fin: thin plane; Bedrock zero-size cube behavior requires QA",
+        "L_fin3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Mouth4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Mouth4: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Mouth3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Mouth3: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Mouth2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Mouth2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Mouth: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Mouth: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "The_Leviathan_Tongue_End_Model.java",
+      "status": "converted",
+      "boxes": 3,
+      "bones": 2,
+      "texture": [
+        256,
+        256
+      ],
+      "issues": [
+        "tongue: thin plane; Bedrock zero-size cube behavior requires QA",
+        "tongue: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "The_Leviathan_Tongue_Model.java",
+      "status": "converted",
+      "boxes": 1,
+      "bones": 3,
+      "texture": [
+        256,
+        256
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "The_Prowler_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "The_Watcher_Model.java",
+      "status": "converted",
+      "boxes": 22,
+      "bones": 14,
+      "texture": [
+        128,
+        128
+      ],
+      "issues": [
+        "head: thin plane; Bedrock zero-size cube behavior requires QA",
+        "jaw: thin plane; Bedrock zero-size cube behavior requires QA",
+        "headgear: thin plane; Bedrock zero-size cube behavior requires QA",
+        "sail: thin plane; Bedrock zero-size cube behavior requires QA",
+        "sail2: thin plane; Bedrock zero-size cube behavior requires QA",
+        "booster: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Tidal_Hook_Model.java",
+      "status": "converted",
+      "boxes": 10,
+      "bones": 5,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "body: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Tidal_Tentacle_Claws_Model.java",
+      "status": "converted",
+      "boxes": 4,
+      "bones": 5,
+      "texture": [
+        32,
+        32
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Tidal_Tentacle_Model.java",
+      "status": "converted",
+      "boxes": 1,
+      "bones": 3,
+      "texture": [
+        32,
+        32
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Urchinkin_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Void_Howitzer_Model.java",
+      "status": "converted",
+      "boxes": 4,
+      "bones": 1,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "root: thin plane; Bedrock zero-size cube behavior requires QA",
+        "root: thin plane; Bedrock zero-size cube behavior requires QA",
+        "root: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Void_Rune_Model.java",
+      "status": "converted",
+      "boxes": 3,
+      "bones": 1,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Wadjet_Model.java",
+      "status": "converted",
+      "boxes": 5,
+      "bones": 5,
+      "texture": [
+        256,
+        256
+      ],
+      "issues": [
+        "missing inherited parent: cube_r1 -> head",
+        "missing inherited parent: cube_r2 -> head",
+        "missing inherited parent: cube_r3 -> head",
+        "missing inherited parent: cube_r4 -> head",
+        "missing inherited parent: cube_r5 -> wand",
+        "cube_r5: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Wave_Model.java",
+      "status": "skipped",
+      "reason": "Non-Citadel or procedural model; dedicated Mojang ModelPart converter required"
+    },
+    {
+      "source": "Wither_Homing_Missile_Model.java",
+      "status": "converted",
+      "boxes": 5,
+      "bones": 1,
+      "texture": [
+        32,
+        32
+      ],
+      "issues": [
+        "root: thin plane; Bedrock zero-size cube behavior requires QA",
+        "root: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Wither_Howitzer_Model.java",
+      "status": "converted",
+      "boxes": 6,
+      "bones": 2,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    },
+    {
+      "source": "Wither_Missile_Model.java",
+      "status": "converted",
+      "boxes": 7,
+      "bones": 3,
+      "texture": [
+        64,
+        64
+      ],
+      "issues": [
+        "head: thin plane; Bedrock zero-size cube behavior requires QA",
+        "Animation/runtime poses not recovered.",
+        "Inherited rotations need visual QA.",
+        "Large model render bounds are approximate.",
+        "Not game-tested."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "resource_pack_name": "Minizin Waystones",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "minizin_waystone_original_item": {
+      "textures": "textures/items/waystones/andesite_waystone"
+    },
+    "minizin_warp_stone": {
+      "textures": "textures/items/warp_stone"
+    },
+    "minizin_blank_scroll": {
+      "textures": "textures/items/waystones/blank_scroll"
+    },
+    "minizin_bound_scroll": {
+      "textures": "textures/items/waystones/bound_scroll"
+    },
+    "minizin_warp_scroll": {
+      "textures": "textures/items/waystones/warp_scroll"
+    },
+    "minizin_return_scroll": {
+      "textures": "textures/items/waystones/return_scroll"
+    }
+  }
+}
