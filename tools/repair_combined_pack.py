@@ -1271,6 +1271,36 @@ def add_bop_worldgen(rp,bp):
         return len(list((source/'BP/biomes').glob('*.json')))
 
 
+def add_sophisticated_backpacks(rp,bp):
+    """Integrate the tested item-bound backpack system into the combined pack.
+
+    The standalone pack already contains the authoritative Bedrock item and
+    recipe definitions. The combined pack must stage those resources too; its
+    shared main entrypoint imports only the isolated runtime module so Origins,
+    Carry On and MCA are not installed twice. This is a functional adaptation,
+    not a claim that Bedrock can expose the Java native backpack GUI.
+    """
+    source=ROOT/'bedrock/packs/sophisticated_backpacks'
+    added=[]
+    for folder in ('items','recipes'):
+        for path in (source/'BP'/folder).glob('*.json'):
+            target=bp/folder/path.name
+            target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copy2(path,target)
+            added.append(str(target.relative_to(bp)))
+    runtime=bp/'scripts/backpack_v2.js'
+    shutil.copy2(ROOT/'bedrock/runtime/backpack_v2.js',runtime)
+    main=bp/'scripts/main.js'
+    lines=main.read_text(encoding='utf-8').splitlines() if main.is_file() else []
+    import_line='import "./backpack_v2.js";'
+    if import_line not in lines:
+        lines.append(import_line)
+    main.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    return {'items':len(list((source/'BP/items').glob('*.json'))),
+            'recipes':len(list((source/'BP/recipes').glob('*.json'))),
+            'runtime':'backpack_v2.js','files':added}
+
+
 def repair(source,output):
     if output.exists():raise ValueError('Fresh output required')
     shutil.copytree(source,output)
@@ -1374,6 +1404,8 @@ def repair(source,output):
       'minizin_iceandfire:dragon_flute':'Flauta de Dragão',
       'minizin_iceandfire:dragon_armor_iron':'Armadura de Dragão de Ferro',
       'minizin_alexscaves:serene_salad':'Salada Serena',
+      'minizin:backpack':'Mochila — 27 espaços pessoais',
+      'minizin:backpack_filter_upgrade':'Melhoria de Filtro para Mochila',
     }
     armor_material_titles={
       'iron':'Armadura de Ferro para Dragão',
@@ -1398,7 +1430,10 @@ def repair(source,output):
                 languages[language][key]=str(title).replace('\\n',' ')
             return key
         if ns=='minizin':
-            namespace,name=name.split('_',1)
+            if '_' in name:
+                namespace,name=name.split('_',1)
+            else:
+                namespace='minizin'
             if name.startswith('item_'):name=name[5:]
         else:namespace=ns.removeprefix('minizin_')
         key=('tile.' if kind=='block' else 'item.')+ident+'.name'
@@ -1462,6 +1497,7 @@ def repair(source,output):
     mowzie_item_count=add_source_backed_mowzie_items(rp,bp,registry)
     waystone_scroll_count=add_waystone_scrolls(rp,bp,registry)
     bop_biome_count=add_bop_worldgen(rp,bp)
+    backpacks=add_sophisticated_backpacks(rp,bp)
     terrain=json.loads((rp/'textures/terrain_texture.json').read_text())['texture_data']
     geometries={}
     for path in (rp/'models').rglob('*.geo.json'):
@@ -1686,6 +1722,7 @@ def repair(source,output):
       'aether_incubator_items':aether_incubator_item_count,
       'waystone_scrolls':waystone_scroll_count,
       'bop_biomes':bop_biome_count,
+      'sophisticated_backpacks':backpacks,
       'aether_freezer_recipes':9,
       'aether_recipes':aether_recipe_report,
       'fixes':['Preserved models/entity and models/blocks loader paths','Original-pixel explicit block placer icons',
