@@ -1,4 +1,4 @@
-import {world, system, EntityDamageCause} from '@minecraft/server';
+import {world, system, EntityDamageCause, ItemStack} from '@minecraft/server';
 import {planAttack} from './combat.js';
 import {CREATURES} from './creature_catalog.js';
 
@@ -152,10 +152,28 @@ function installDragonInteractions() {
       }
       const armor=dragonArmor(item);
       if(armor) {
-        if(!consumeHeld(player,item))return;
-        setDragonKey(entity,'armor_'+armor.slot,armor.material);
-        setDragonKey(entity,'armor_'+armor.slot+'_item',item);
-        syncDragonArmorProperty(entity,armor.slot,armor.material);
+        const inventory=player.getComponent('minecraft:inventory')?.container;
+        const selected=inventory?.getItem(player.selectedSlotIndex);
+        if(!selected||selected.typeId!==item||selected.amount!==1){
+          player.sendMessage('Use uma única peça de armadura selecionada para equipar.');return;
+        }
+        const old=String(dragonKey(entity,'armor_'+armor.slot+'_item',''));
+        const oldMaterial=String(dragonKey(entity,'armor_'+armor.slot,''));
+        if(old===item){player.sendMessage('Esta peça já está equipada.');return;}
+        const creative=String(player.getGameMode?.()).toLowerCase()==='creative';
+        try {
+          setDragonKey(entity,'armor_'+armor.slot,armor.material);
+          setDragonKey(entity,'armor_'+armor.slot+'_item',item);
+          syncDragonArmorProperty(entity,armor.slot,armor.material);
+          // The selected inventory slot is the transaction boundary: in
+          // Survival it receives the previous piece, so replacing armor can
+          // never silently delete a Java source-backed item.
+          if(!creative)inventory.setItem(player.selectedSlotIndex,old?new ItemStack(old,1):undefined);
+        } catch(error) {
+          setDragonKey(entity,'armor_'+armor.slot,oldMaterial);
+          setDragonKey(entity,'armor_'+armor.slot+'_item',old);
+          player.sendMessage('Não foi possível trocar a armadura: '+String(error));return;
+        }
         player.sendMessage('Armadura de '+armor.material+' equipada: '+armor.slot+'.');return;
       }
       if(!item&&dragonStage(Number(dragonKey(entity,'days',0)))>=3) {

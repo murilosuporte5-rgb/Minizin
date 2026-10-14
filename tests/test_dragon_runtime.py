@@ -127,6 +127,16 @@ class DragonRuntime(unittest.TestCase):
                       'minizin_mowzies:bluff', 'fissure'):
             self.assertIn(value, source)
 
+    def test_latest_candidate_replaces_dragon_armor_without_item_loss(self):
+        candidates = sorted(ROOT.glob('build/combined_all_*_v106*'))
+        if not candidates:
+            self.skipTest('v106 candidate not built yet')
+        root = max(candidates, key=lambda path: (path / 'FIX_REPORT.json').stat().st_mtime)
+        runtime = (root / 'BP/scripts/creatures.js').read_text(encoding='utf-8')
+        self.assertIn('const old=String(dragonKey(entity', runtime)
+        self.assertIn('new ItemStack(old,1)', runtime)
+        self.assertIn('selected.amount!==1', runtime)
+
 
 if __name__ == '__main__':
     unittest.main()
