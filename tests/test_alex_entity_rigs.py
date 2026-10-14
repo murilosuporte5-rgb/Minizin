@@ -44,7 +44,7 @@ class AlexEntityRigs(unittest.TestCase):
             self.assertTrue((root / 'RP/textures/items/alexscaves' / f'{name}.png').is_file())
 
     def test_candidate_exposes_source_backed_alex_cube_blocks(self):
-        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes'))
+        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes*'))
         if not candidates:
             self.skipTest('v96 candidate not built yet')
         root = max(candidates, key=lambda path: json.loads((path / 'FIX_REPORT.json').read_text()).get('alex_blocks', {}).get('count', 0))
@@ -59,7 +59,7 @@ class AlexEntityRigs(unittest.TestCase):
             self.assertTrue((root / 'BP/items/alexscaves_blocks' / f'{name}.json').is_file())
 
     def test_candidate_exposes_source_backed_alex_cave_biomes_with_honest_routing_boundary(self):
-        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes'))
+        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes*'))
         if not candidates:
             self.skipTest('Alex biome candidate not built yet')
         candidates = [path for path in candidates
