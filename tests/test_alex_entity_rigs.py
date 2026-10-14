@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class AlexEntityRigs(unittest.TestCase):
     def test_candidate_contains_source_backed_alex_rigs_and_textures(self):
-        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes'))
+        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes*'))
         if not candidates:
             self.skipTest('v93 candidate not built yet')
         root = max(candidates, key=lambda path: len(json.loads((path / 'FIX_REPORT.json').read_text()).get('alex_entities', [])))
@@ -25,7 +25,7 @@ class AlexEntityRigs(unittest.TestCase):
             self.assertIn(f'minizin_alexscaves:{name}', catalog)
 
     def test_candidate_exposes_original_alex_inventory_icons(self):
-        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes'))
+        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes*'))
         if not candidates:
             self.skipTest('v94 candidate not built yet')
         root = max(candidates, key=lambda path: len(json.loads((path / 'FIX_REPORT.json').read_text()).get('alex_items', [])))
@@ -57,4 +57,23 @@ class AlexEntityRigs(unittest.TestCase):
             self.assertEqual(ident, f'minizin_alexscaves:{name}')
             self.assertIn('minecraft:geometry.full_block', block['minecraft:block']['components']['minecraft:geometry'])
             self.assertTrue((root / 'BP/items/alexscaves_blocks' / f'{name}.json').is_file())
+
+    def test_candidate_exposes_source_backed_alex_cave_biomes_with_honest_routing_boundary(self):
+        candidates = sorted(ROOT.glob('build/combined_all_*_v92*cataclysm_recipes'))
+        if not candidates:
+            self.skipTest('Alex biome candidate not built yet')
+        candidates = [path for path in candidates
+                      if 'alex_biomes' in json.loads((path / 'FIX_REPORT.json').read_text())]
+        if not candidates:
+            self.skipTest('Alex biome report not built yet')
+        root = max(candidates, key=lambda path: json.loads((path / 'FIX_REPORT.json').read_text())['alex_biomes']['source_count'])
+        report = json.loads((root / 'FIX_REPORT.json').read_text())['alex_biomes']
+        self.assertEqual(report['source_count'], 6)
+        self.assertFalse(report['native_cave_routing'])
+        self.assertGreaterEqual(report['configured_feature_count'], 70)
+        for name in ('abyssal_chasm', 'candy_cavity', 'forlorn_hollows', 'magnetic_caves', 'primordial_caves', 'toxic_caves'):
+            biome = json.loads((root / 'BP/biomes' / f'{name}.json').read_text())
+            self.assertEqual(biome['minecraft:biome']['description']['identifier'], f'minizin_alexscaves:{name}')
+            self.assertIn('cave', biome['minecraft:biome']['components']['minecraft:tags']['tags'])
+            self.assertTrue((root / 'RP/biomes_client' / f'{name}.biome_client.json').is_file())
 

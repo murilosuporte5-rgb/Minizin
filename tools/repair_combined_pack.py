@@ -236,6 +236,99 @@ def add_source_backed_alex_simple_blocks(rp,bp,registry):
     terrain_path.write_text(json.dumps(terrain,indent=2)+'\n',encoding='utf-8')
     return {'added':added,'count':len(added),'loot_added':loot_added,'skipped':skipped}
 
+
+def add_source_backed_alex_biomes(rp,bp):
+    """Expose Alex's Caves biome climate/effects without faking cave routing.
+
+    The Java mod injects these six biomes into an underground biome source and
+    drives hundreds of configured features. Bedrock has no equivalent public
+    cave-biome router in the target format, so this phase writes real named
+    biome definitions, source-derived climate/client colors and an auditable
+    feature/spawn coverage report, but deliberately installs no Overworld
+    replacement rule. This keeps the identifiers usable for future native
+    worldgen work without making ordinary surface worlds falsely claim to be
+    Alex's Caves.
+    """
+    source=ROOT/'mods/42-alexs-caves/upstream/src/main/resources/data/alexscaves/worldgen/biome'
+    biome_dir=bp/'biomes';client_dir=rp/'biomes_client'
+    biome_dir.mkdir(parents=True,exist_ok=True);client_dir.mkdir(parents=True,exist_ok=True)
+    rows=[]
+
+    def color(value,default):
+        if isinstance(value,int) and 0 <= value <= 0xFFFFFF:
+            return f'#{value:06x}'
+        if isinstance(value,str) and value.startswith('#'):
+            return value
+        return default
+
+    for path in sorted(source.glob('*.json')):
+        src=json.loads(path.read_text(encoding='utf-8'));name=path.stem
+        effects=src.get('effects',{})
+        refs=[str(ref) for group in src.get('features',[]) if isinstance(group,list) for ref in group]
+        spawners={group:[entry.get('type') for entry in entries if isinstance(entry,dict)
+                         and isinstance(entry.get('type'),str)]
+                  for group,entries in src.get('spawners',{}).items() if isinstance(entries,list)}
+        identifier=f'minizin_alexscaves:{name}'
+        biome={
+            'format_version':'1.21.110',
+            'minecraft:biome':{
+                'description':{'identifier':identifier},
+                'components':{
+                    'minecraft:climate':{
+                        'temperature':float(src.get('temperature',0.5)),
+                        'downfall':float(src.get('downfall',0.5)),
+                        'snow_accumulation':[0.0,0.0],
+                        'ash':0,'red_spores':0,'white_ash':0,
+                    },
+                    'minecraft:overworld_height':{'noise_type':'default'},
+                    'minecraft:surface_parameters':{
+                        'sea_floor_depth':7,
+                        'sea_floor_material':'minecraft:gravel',
+                        'foundation_material':'minecraft:stone',
+                        'mid_material':'minecraft:stone',
+                        'top_material':'minecraft:stone',
+                        'sea_material':'minecraft:water',
+                    },
+                    'minecraft:tags':{'tags':['minizin_alexscaves',name,'cave','no_legacy_worldgen']},
+                },
+            },
+        }
+        write(biome_dir/f'{name}.json',biome)
+        client_components={
+            'minecraft:water_appearance':{
+                'surface_color':color(effects.get('water_color'),'#3f76e4'),
+                'surface_opacity':0.6,
+            },
+        }
+        for component,key in (('minecraft:grass_appearance','grass_color'),
+                              ('minecraft:foliage_appearance','foliage_color')):
+            if key in effects:
+                client_components[component]={'color':color(effects[key],'#7fb238')}
+        write(client_dir/f'{name}.biome_client.json',{
+            'format_version':'1.21.110',
+            'minecraft:client_biome':{
+                'description':{'identifier':identifier},
+                'components':client_components,
+            },
+        })
+        rows.append({
+            'java_id':f'alexscaves:{name}','bedrock_id':identifier,
+            'temperature':src.get('temperature'),'downfall':src.get('downfall'),
+            'has_precipitation':src.get('has_precipitation'),
+            'java_feature_refs':refs,'java_feature_ref_count':len(refs),
+            'java_spawner_groups':spawners,
+            'bedrock_generation':'not_routed',
+            'reason':'Java underground biome source/router has no equivalent public Bedrock component',
+        })
+    report={'source_count':len(rows),'bedrock_biomes_written':len(rows),
+            'original_java_worldgen_equivalence':False,
+            'native_cave_routing':False,
+            'configured_feature_count':len(list((ROOT/'mods/42-alexs-caves/upstream/src/main/resources/data/alexscaves/worldgen/configured_feature').glob('*.json'))),
+            'biomes':rows}
+    report_path=bp.parent/'alexscaves_worldgen_conversion_report.json'
+    report_path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    return report
+
 def add_source_backed_cataclysm_items(rp,bp,registry):
     """Expose Cataclysm's registered-looking original item icons.
 
@@ -1361,6 +1454,7 @@ def repair(source,output):
     registry=json.loads(registry_path.read_text(encoding='utf-8'))
     alex_items=add_source_backed_alex_items(rp,bp,registry)
     alex_blocks=add_source_backed_alex_simple_blocks(rp,bp,registry)
+    alex_biomes=add_source_backed_alex_biomes(rp,bp)
     cataclysm_items=add_source_backed_cataclysm_items(rp,bp,registry)
     cataclysm_blocks=add_source_backed_cataclysm_simple_blocks(rp,bp,registry)
     write(registry_path,registry)
@@ -1376,7 +1470,9 @@ def repair(source,output):
     for path in (bp/'blocks').rglob('*.json'):
         doc=json.loads(path.read_text());block=doc['minecraft:block'];ident=block['description']['identifier']
         comp=block['components'];display=translated('block',ident);comp['minecraft:display_name']=display
-        material=comp['minecraft:material_instances']['*'];atlas_ref=terrain[material['texture']]['textures']
+        materials=comp['minecraft:material_instances']
+        material=materials.get('*') or next(iter(materials.values()))
+        atlas_ref=terrain[material['texture']]['textures']
         atlas=Image.open(rp/(atlas_ref+'.png')).convert('RGBA')
         geometry_spec=comp.get('minecraft:geometry')
         geometry_id=geometry_spec.get('identifier') if isinstance(geometry_spec,dict) else geometry_spec
@@ -1580,6 +1676,7 @@ def repair(source,output):
       'alex_entities':alex_entities,
       'alex_items':alex_items,
       'alex_blocks':alex_blocks,
+      'alex_biomes':alex_biomes,
       'cataclysm_items':cataclysm_items,
       'cataclysm_blocks':cataclysm_blocks,
       'cataclysm_recipes':cataclysm_recipe_report,
