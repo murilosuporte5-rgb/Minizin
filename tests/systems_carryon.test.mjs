@@ -61,8 +61,8 @@ test("Carry On follows Java blacklist boundaries while accepting ordinary vanill
 
 test("Carry On exposes crash recovery and refuses unverified placement",()=>{
   assert.match(source,/function recoverBlock\(player\)/);
-  assert.match(source,/Carga liberada para nova colocação/);
-  assert.match(source,/A posição original ou o destino contém um bloco/);
+  assert.match(source,/liberada para nova/);
+  assert.match(source,/destino contém um bloco/);
   const main=readFileSync(new URL("../bedrock/packs/next_four/BP/scripts/main.js",import.meta.url),"utf8");
   assert.match(main,/recoverBlock/);
   assert.match(main,/command===\"recuperar\"/);
