@@ -6,7 +6,8 @@ import {world,system,ItemStack,EnchantmentTypes} from "@minecraft/server";
 import {ActionFormData,ModalFormData} from "@minecraft/server-ui";
 const ID="minizin:backpack",IDENT="minizin:backpack_id_v2";
 const LEGACY="minizin:personal_backpack_v1",MIGRATION="minizin:backpack_migration_v2";
-const CAPACITY=27,MAX_BYTES=30000;
+const CAPACITY=27,MAX_CAPACITY=81,MAX_BYTES=30000;
+const EXPANSION="minizin:backpack_expansion_upgrade";
 const busyPlayers=new Set(),busyBags=new Set();
 const unsupported=new Set(["minecraft:filled_map","minecraft:written_book",
   "minecraft:writable_book","minecraft:potion","minecraft:splash_potion",
@@ -63,13 +64,16 @@ function validate(data){
 }
 function getState(id){
   const value=world.getDynamicProperty(dataKey(id));
+  if(value===undefined)return {slots:empty(),revision:0};
   const state=parse(value,null);
-  if(!state)return {slots:empty(),revision:0};
-  if(!Array.isArray(state.slots)||state.slots.length!==CAPACITY)throw Error("Mochila com dados inválidos.");
+  if(!state)throw Error("Dados da mochila ilegíveis; armazenamento preservado para recuperação.");
+  if(!Array.isArray(state.slots)||state.slots.length<CAPACITY||state.slots.length>MAX_CAPACITY||state.slots.length%CAPACITY)
+    throw Error("Mochila com dados inválidos.");
   return state;
 }
 function writeState(id,state){
-  if(!Array.isArray(state.slots)||state.slots.length!==CAPACITY)throw Error("Capacidade inválida.");
+  if(!Array.isArray(state.slots)||state.slots.length<CAPACITY||state.slots.length>MAX_CAPACITY||state.slots.length%CAPACITY)
+    throw Error("Capacidade inválida.");
   const raw=JSON.stringify(state);
   if(raw.length>MAX_BYTES)throw Error("Metadados excedem limite do armazenamento.");
   world.setDynamicProperty(dataKey(id),raw);
@@ -216,13 +220,13 @@ async function depositAll(p,id,revision){
     const trial=clone(slots);
     let rest=payload.amount;
     // Preserve the original stack intact if the entire contents cannot fit.
-    for(let n=0;n<CAPACITY&&rest>0;n++){
+    for(let n=0;n<trial.length&&rest>0;n++){
       const cur=trial[n];
       if(!cur||!compatible(cur,payload))continue;
       const can=Math.min(rest,item.maxAmount-cur.amount);
       if(can>0){cur.amount+=can;rest-=can;}
     }
-    for(let n=0;n<CAPACITY&&rest>0;n++){
+    for(let n=0;n<trial.length&&rest>0;n++){
       if(trial[n]!==null)continue;
       const can=Math.min(rest,item.maxAmount);
       trial[n]={...payload,amount:can};rest-=can;
@@ -244,7 +248,7 @@ async function sortBag(p,id,revision){
   const ordered=state.slots.filter(Boolean).map(clone)
     .sort((a,b)=>a.type.localeCompare(b.type)||(a.name??"").localeCompare(b.name??""));
   writeState(id,{...state,revision:state.revision+1,
-    slots:[...ordered,...Array(CAPACITY-ordered.length).fill(null)]});
+    slots:[...ordered,...Array(state.slots.length-ordered.length).fill(null)]});
   tell(p,"Itens reordenados sem alterar seus metadados.");
 }
 async function configureFilter(p,id,revision){
@@ -289,6 +293,21 @@ async function configureFilter(p,id,revision){
   writeState(id,{...latest,filters,revision:latest.revision+1});
   tell(p,"Filtro atualizado: "+(filters.length?filters.join(", "):"sem restrição")+".");
 }
+function installExpansion(p,id,revision){
+  const state=assertSession(p,id,revision);
+  if(state.slots.length>=MAX_CAPACITY){tell(p,"Capacidade máxima: 81 espaços.");return;}
+  const inv=invOf(p);let upgrade=-1;
+  for(let i=0;i<inv.size;i++)if(inv.getItem(i)?.typeId===EXPANSION){upgrade=i;break;}
+  if(upgrade<0){tell(p,"Fabrique uma Expansão de Mochila para abrir mais 27 espaços.");return;}
+  const backup=snapshot(inv),stack=inv.getItem(upgrade);
+  const next={...state,slots:[...state.slots,...Array(CAPACITY).fill(null)],revision:state.revision+1};
+  try{
+    if(stack.amount===1)inv.setItem(upgrade,undefined);
+    else{stack.amount--;inv.setItem(upgrade,stack);}
+    writeState(id,next);
+  }catch(error){restore(inv,backup);throw error;}
+  tell(p,"Mochila expandida para "+next.slots.length+" espaços.");
+}
 async function open(p){
   if(busyPlayers.has(p.id))return;
   busyPlayers.add(p.id);
@@ -298,32 +317,44 @@ async function open(p){
     if(busyBags.has(id)){tell(p,"Esta mochila já está sendo usada.");return;}
     busyBags.add(id);locked=true;
     migrateLegacy(p,id);
-    const state=getState(id);
-    const form=new ActionFormData().title("Mochila • 27 espaços")
-      .body("Escolha um espaço. Os dados pertencem a esta mochila, não ao jogador.");
-    for(let slot=0;slot<CAPACITY;slot++){
-      const item=state.slots[slot];
-      form.button(String(slot+1).padStart(2,"0")+"  "+(item?safeName(item)+" ×"+item.amount:"— vazio —"));
+    let page=0;
+    while(p.isValid){
+      const state=getState(id),pages=state.slots.length/CAPACITY;
+      if(page>=pages)page=pages-1;
+      const start=page*CAPACITY;
+      const form=new ActionFormData().title("Mochila • "+state.slots.length+" espaços")
+        .body("Página "+(page+1)+"/"+pages+" • dados desta mochila.");
+      for(let index=start;index<start+CAPACITY;index++){
+        const item=state.slots[index];
+        form.button(String(index+1).padStart(2,"0")+"  "+(item?safeName(item)+" ×"+item.amount:"— vazio —"));
+      }
+      form.button("Guardar todas as pilhas compatíveis");
+      form.button("Organizar por tipo");
+      form.button("Configurar melhoria de filtro");
+      form.button("Instalar expansão (+27 espaços)");
+      form.button("Página anterior");
+      form.button("Próxima página");
+      const result=await form.show(p);
+      if(result.canceled||result.selection===undefined||!p.isValid)return;
+      const choice=result.selection;
+      if(choice===CAPACITY+4){page=(page+pages-1)%pages;continue;}
+      if(choice===CAPACITY+5){page=(page+1)%pages;continue;}
+      if(choice===CAPACITY){await depositAll(p,id,state.revision);return;}
+      if(choice===CAPACITY+1){await sortBag(p,id,state.revision);return;}
+      if(choice===CAPACITY+2){await configureFilter(p,id,state.revision);return;}
+      if(choice===CAPACITY+3){installExpansion(p,id,state.revision);return;}
+      if(choice<0||choice>=CAPACITY)return;
+      const slot=start+choice,current=assertSession(p,id,state.revision).slots[slot];
+      if(current){
+        const actions=await new ActionFormData().title("Espaço "+(slot+1))
+          .body(safeName(current)+" ×"+current.amount)
+          .button("Retirar itens").button("Empilhar itens").show(p);
+        if(actions.canceled||!p.isValid)return;
+        if(actions.selection===0)await withdraw(p,id,slot,state.revision);
+        if(actions.selection===1)await deposit(p,id,slot,state.revision);
+      }else await deposit(p,id,slot,state.revision);
+      return;
     }
-    form.button("Guardar todas as pilhas compatíveis");
-    form.button("Organizar por tipo");
-    form.button("Configurar melhoria de filtro");
-    const result=await form.show(p);
-    if(result.canceled||result.selection===undefined||!p.isValid)return;
-    const slot=result.selection;
-    if(slot===CAPACITY){await depositAll(p,id,state.revision);return;}
-    if(slot===CAPACITY+1){await sortBag(p,id,state.revision);return;}
-    if(slot===CAPACITY+2){await configureFilter(p,id,state.revision);return;}
-    if(slot<0||slot>=CAPACITY)return;
-    const current=assertSession(p,id,state.revision).slots[slot];
-    if(current){
-      const actions=await new ActionFormData().title("Espaço "+(slot+1))
-        .body(safeName(current)+" ×"+current.amount)
-        .button("Retirar itens").button("Empilhar itens").show(p);
-      if(actions.canceled||!p.isValid)return;
-      if(actions.selection===0)await withdraw(p,id,slot,state.revision);
-      if(actions.selection===1)await deposit(p,id,slot,state.revision);
-    }else await deposit(p,id,slot,state.revision);
   }catch(error){tell(p,"Operação não concluída: "+String(error));}
   finally{busyPlayers.delete(p.id);if(locked)busyBags.delete(id);}
 }
