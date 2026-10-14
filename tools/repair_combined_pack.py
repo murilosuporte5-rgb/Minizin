@@ -1289,7 +1289,10 @@ def add_sophisticated_backpacks(rp,bp):
             shutil.copy2(path,target)
             added.append(str(target.relative_to(bp)))
     runtime=bp/'scripts/backpack_v2.js'
-    shutil.copy2(ROOT/'bedrock/runtime/backpack_v2.js',runtime)
+    # The independent systems pack is the authoritative tested implementation:
+    # it includes filter, sort, deposit-all and legacy migration in addition
+    # to the identity-bound 27-slot persistence core.
+    shutil.copy2(source/'BP/scripts/main.js',runtime)
     main=bp/'scripts/main.js'
     lines=main.read_text(encoding='utf-8').splitlines() if main.is_file() else []
     import_line='import "./backpack_v2.js";'

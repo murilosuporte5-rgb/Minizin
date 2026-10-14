@@ -18,6 +18,10 @@ class CombinedBackpackTests(unittest.TestCase):
         self.assertEqual(report['recipes'], 2)
         self.assertTrue((root / 'BP/scripts/backpack_v2.js').is_file())
         self.assertIn('import "./backpack_v2.js";', (root / 'BP/scripts/main.js').read_text())
+        runtime = (root / 'BP/scripts/backpack_v2.js').read_text()
+        self.assertIn('depositAll', runtime)
+        self.assertIn('configureFilter', runtime)
+        self.assertIn('migrateLegacy', runtime)
         for name in ('backpack.json', 'filter_upgrade.json'):
             self.assertTrue((root / 'BP/items' / name).is_file())
         for name in ('backpack.json', 'filter_upgrade.json'):
