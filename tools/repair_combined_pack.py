@@ -1661,6 +1661,22 @@ def repair(source,output):
     origins_script=bp/'scripts/origins/origins.js'
     if origins_script.parent.is_dir():
         shutil.copy2(ROOT/'bedrock/packs/next_four/BP/scripts/origins.js',origins_script)
+    # Refresh Carry On from the audited systems source so crash recovery is
+    # present in the combined addon, not only in the standalone pack.
+    carryon_script=bp/'scripts/carryon/carryon.js'
+    carryon_script.parent.mkdir(parents=True,exist_ok=True)
+    shutil.copy2(ROOT/'bedrock/packs/next_four/BP/scripts/carryon.js',carryon_script)
+    carryon_main=bp/'scripts/carryon/main.js'
+    carryon_lines=carryon_main.read_text(encoding='utf-8').splitlines() if carryon_main.exists() else []
+    carryon_lines=[line.replace('installCarryOn,release','installCarryOn,release,recoverBlock') for line in carryon_lines]
+    carryon_lines=[line.replace('if(cmd!=="!carryon soltar"&&cmd!=="!minizin soltar")return;',
+                                 'if(cmd!=="!carryon soltar"&&cmd!=="!minizin soltar"&&cmd!=="!minizin recuperar")return;')
+                   for line in carryon_lines]
+    carryon_lines=[line.replace('if(!release(ev.sender))tell(ev.sender,"Você não está carregando um animal.");',
+                                 'if(cmd==="!minizin recuperar")recoverBlock(ev.sender);\n'
+                                 '    else if(!release(ev.sender))tell(ev.sender,"Você não está carregando um animal.");')
+                   for line in carryon_lines]
+    carryon_main.write_text('\n'.join(carryon_lines)+'\n',encoding='utf-8')
     # Port the source-backed Aether Freezer recipe runtime into the combined
     # pack. The old candidate only counted these custom serializers and left
     # the visible block inert.
