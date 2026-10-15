@@ -1,0 +1,31 @@
+name: Build OriginsPE Vampire Night Vision Fix
+on:
+  push:
+    branches:
+      - downloads/vampiro-nightvision-fix-v0.3
+    paths:
+      - .github/workflows/build-originspe-vampire-fix.yml
+      - scripts/build_origins_vampire_v601.py
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout separate download branch
+        uses: actions/checkout@v4
+        with:
+          ref: downloads/vampiro-nightvision-fix-v0.3
+      - name: Build patched full mcaddon from MIT licensed official release
+        run: python3 scripts/build_origins_vampire_v601.py
+      - name: Verify addon ZIP
+        run: |
+          python3 -m zipfile -t releases/OriginsPE_v6.0.1_Vampiro_Nocturnal_Fix.mcaddon
+      - name: Publish artifact on this branch, never main
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add releases/OriginsPE_v6.0.1_Vampiro_Nocturnal_Fix.mcaddon
+          git diff --cached --quiet && exit 0
+          git commit -m "artifact: OriginsPE Vampire Nocturnal fix v6.0.1"
+          git push origin HEAD:downloads/vampiro-nightvision-fix-v0.3
